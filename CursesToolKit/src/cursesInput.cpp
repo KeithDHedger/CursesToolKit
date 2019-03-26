@@ -59,13 +59,13 @@ void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 {
 	if(hilite==true)
 		{
-			SETFORECOL(BLACK);
-			SETBACKCOL(CYAN);
+			setBackColour(this->hiliteCol);
+			setForeColour(this->hiliteforeCol);
 		}
 	else
 		{
-			SETFORECOL(BLACK);
-			SETBACKCOL(YELLOW);
+			setBackColour(this->backCol);
+			setForeColour(this->foreCol);
 		}
 
 	MOVETO(this->sx,this->sy);

@@ -33,21 +33,15 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		{
-			//SETFORECOL(CYAN);
-			//setForeColour(this->hiliteCol);
-			setForeColour(this->hiliteCol);
-			//SETBACKCOL(BLACK);
-			setBackColour(this->backCol);
+			setBackColour(this->hiliteCol);
+			setForeColour(this->hiliteforeCol);
 		}
 	else
 		{
-			
-			//SETFORECOL(RED);
-			//SETBACKCOL(BLACK);
 			setBackColour(this->backCol);
-			setForeColour(this->forCol);
+			setForeColour(this->foreCol);
 		}
-	printf("\e[7m%s\e[27m",this->label);
+	printf("%s",this->label);
 }
 
 void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const char *label)
@@ -67,5 +61,5 @@ void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *))
 
 void CTK_cursesButtonClass::CTK_setColours(int forcol,int backcol,int hilite)
 {
-	this->forCol=forcol;
+	this->foreCol=forcol;
 }

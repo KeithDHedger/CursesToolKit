@@ -23,13 +23,6 @@
 
 #include <string>
 #include <vector>
-//#include<stdio.h>
-#include<iostream>
-//#include<string>
-//#include<vector>
-//#include<algorithm>
-//#include<cctype>
-#include<sstream>
 
 #include "cursesLib.h"
 
@@ -57,6 +50,10 @@ class CTK_cursesTextBoxClass
 		std::string					blank;
 		std::vector<std::string>	txtstrings;
 		bool						canSelect=true;
+		int							foreCol=NWHITE;
+		int							backCol=NBBLACK;
+		int							hiliteCol=NBCYAN;
+		int							hiliteforeCol=NBLACK;
 
 		void						scroll(bool scrollup,int numlines);
 };

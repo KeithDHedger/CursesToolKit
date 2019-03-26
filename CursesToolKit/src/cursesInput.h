@@ -47,6 +47,10 @@ class CTK_cursesInputClass
 		std::string	text;
 		std::string	blank;
 		TermKey		*tk;
+		int			foreCol=NBLACK;
+		int			backCol=NBYELLOW;
+		int			hiliteCol=NBCYAN;
+		int			hiliteforeCol=NBLACK;
 };
 
 #endif
