@@ -1,1 +1,16 @@
 *.pc
+.libs
+Makefile
+*.la
+.deps
+.dirstamp
+*.lo
+config.log
+config.status
+libtool
+stamp-*
+*.[oa]
+*.l[oa]
+*~
+*.BAK
+config.h
