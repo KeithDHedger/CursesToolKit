@@ -14,3 +14,4 @@ Main application class including event handlers etc.
 
 1st commit.
 Loads to do yet, see the examples for a taster.
+
