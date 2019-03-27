@@ -29,6 +29,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 		delete this->buttons[j];
 	for(int j=0;j<this->inputs.size();j++)
 		delete this->inputs[j];
+	for(int j=0;j<this->lists.size();j++)
+		delete this->lists[j];
 }
 
 CTK_mainAppClass::CTK_mainAppClass()
@@ -62,6 +64,13 @@ void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char
 	this->inputs.push_back(inp);
 }
 
+void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
+{
+//	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
+//	inp->CTK_newInput(x,y,width,hite,label);
+//	this->inputs.push_back(inp);
+}
+
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
 {
 	this->menuBar=mb;
@@ -80,6 +89,11 @@ void CTK_mainAppClass::CTK_addButton(CTK_cursesButtonClass *btn)
 void CTK_mainAppClass::CTK_addInput(CTK_cursesInputClass *inp)
 {
 	this->inputs.push_back(inp);
+}
+
+void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBox *lb)
+{
+	this->lists.push_back(lb);
 }
 
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
@@ -110,6 +124,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->inputs[j]->CTK_drawInput(true);
 			else
 				app->inputs[j]->CTK_drawInput(false);
+		}
+
+	for(int j=0;j<app->lists.size();j++)
+		{
+			if(app->hiliteListNum==j)
+				app->lists[j]->CTK_drawListWindow(true);
+			else
+				app->lists[j]->CTK_drawListWindow(false);
 		}
 
 	app->menuBar->CTK_drawMenuBar();
@@ -198,10 +220,20 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 													if(this->hiliteInputNum>=this->inputs.size())
 														{
 															this->hiliteInputNum=-1;
+															this->hiliting=LISTS;
+														}
+													else
+														break;
+												case LISTS:
+													this->hiliteListNum++;
+													if(this->hiliteListNum>=this->lists.size())
+														{
+															this->hiliteListNum=-1;
 															this->hiliting=NONE;
 														}
 													else
 														break;
+
 											}
 										break;
 //scroll txt boxes
@@ -214,9 +246,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(false);
 										break;
 									case TERMKEY_SYM_PAGEUP:
+										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
+										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
 										break;
 

@@ -133,8 +133,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libcursestoolkit_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
 am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
-	../src/cursesInput.lo ../src/cursesMenus.lo \
-	../src/cursesTextBox.lo
+	../src/cursesInput.lo ../src/cursesListBox.lo \
+	../src/cursesMenus.lo ../src/cursesTextBox.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -340,7 +340,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			-DLIBDIR=\""${libdir}/${PACKAGE}"\" \
 			$(TERMKEY_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesInput.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesInput.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -430,6 +430,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesInput.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/cursesListBox.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesMenus.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesTextBox.lo: ../src/$(am__dirstamp) \
@@ -449,6 +451,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesApplication.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesButton.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesInput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesListBox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesMenus.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesTextBox.Plo@am__quote@
 

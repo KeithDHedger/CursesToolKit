@@ -106,6 +106,15 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addNewInput(8,18,32,1,"Some input");
 
+	CTK_cursesListBox	*lb=new CTK_cursesListBox();
+	lb->CTK_newListBox(90,3,40,10);
+	lb->CTK_addListItem("Item 1");
+	lb->CTK_addListItem("Item 2");
+	lb->CTK_addListItem("Item 3");
+	lb->CTK_addListItem("Item 4");
+
+	mainApp->CTK_addListBox(lb);
+
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
