@@ -14,3 +14,4 @@ stamp-*
 *~
 *.BAK
 config.h
+autom4te.cache
