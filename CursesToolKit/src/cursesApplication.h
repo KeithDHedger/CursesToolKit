@@ -43,10 +43,16 @@ class CTK_mainAppClass
 		bool									runEventLoop=false;
 		void									(*eventLoopCB)(void*,void*);
 
-		void									CTK_addMenuBar(void);
-		void									CTK_addTextBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
-		void									CTK_addButton(int x,int y,int width,int hite,const char *label);
-		void									CTK_addInput(int x,int y,int width,int hite,const char *label);
+//build new gadgets
+		void									CTK_addNewMenuBar(void);
+		void									CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
+		void									CTK_addNewButton(int x,int y,int width,int hite,const char *label);
+		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
+//add existing gadgets
+		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
+		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
+		void									CTK_addButton(CTK_cursesButtonClass *btn);
+		void									CTK_addInput(CTK_cursesInputClass *inp);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);

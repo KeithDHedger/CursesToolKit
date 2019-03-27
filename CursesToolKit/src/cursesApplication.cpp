@@ -35,30 +35,50 @@ CTK_mainAppClass::CTK_mainAppClass()
 {
 }
 
-void CTK_mainAppClass::CTK_addMenuBar(void)
+void CTK_mainAppClass::CTK_addNewMenuBar(void)
 {
 	this->menuBar=new CTK_cursesMenuClass();
 	this->menuBar->CTK_setUpdateCB(this->CTK_updateScreen,this);
 }
 
-void CTK_mainAppClass::CTK_addTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
 	txtbox->CTK_newBox(x,y,width,hite,txt,selectable);
 	this->textBoxes.push_back(txtbox);
 }
 
-void CTK_mainAppClass::CTK_addButton(int x,int y,int width,int hite,const char *label)
+void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass();
 	btn->CTK_newButton(x,y,width,hite,label);
 	this->buttons.push_back(btn);
 }
 
-void CTK_mainAppClass::CTK_addInput(int x,int y,int width,int hite,const char *label)
+void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
 	inp->CTK_newInput(x,y,width,hite,label);
+	this->inputs.push_back(inp);
+}
+
+void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
+{
+	this->menuBar=mb;
+}
+
+void CTK_mainAppClass::CTK_addTextBox(CTK_cursesTextBoxClass *txtbox)
+{
+	this->textBoxes.push_back(txtbox);
+}
+
+void CTK_mainAppClass::CTK_addButton(CTK_cursesButtonClass *btn)
+{
+	this->buttons.push_back(btn);
+}
+
+void CTK_mainAppClass::CTK_addInput(CTK_cursesInputClass *inp)
+{
 	this->inputs.push_back(inp);
 }
 

@@ -70,7 +70,7 @@ Shortcut keys can be used ( without the CTRL key when menus are open )\n\
 Pasting is done via middle click of mouse as usual.\
 ";
 
-	mainApp->CTK_addMenuBar();
+	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);//0
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[1]);//1
@@ -95,16 +95,16 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
-	mainApp->CTK_addTextBox(1,3,80,10,sampletxt);
-	mainApp->CTK_addTextBox(1,20,64,1,"Results",false);
+	mainApp->CTK_addNewTextBox(1,3,80,10,sampletxt);
+	mainApp->CTK_addNewTextBox(1,20,64,1,"Results",false);
 	
 
-	mainApp->CTK_addButton(8,16,30,1,"Hello World");
+	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addButton(32,16,11,1,"A Button");
+	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
 
-	mainApp->CTK_addInput(8,18,32,1,"Some input");
+	mainApp->CTK_addNewInput(8,18,32,1,"Some input");
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
