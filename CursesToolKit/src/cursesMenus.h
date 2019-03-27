@@ -86,6 +86,10 @@ class CTK_cursesMenuClass
 		int							menuHite=1;
 		int							rows=0;
 		unsigned					maxRows=0;
+		int							foreCol=FORE_BLACK;
+		int							backCol=BACK_GREEN;
+		int							hiliteForeCol=FORE_GREEN;
+		int							hiliteBackCol=BACK_BLACK;
 };
 
 #endif

@@ -26,40 +26,7 @@
 #define TABCHAR		"\t"
 #define NEXTSCRLINE "\n\e[8C"
 
-#define	FOREBLACK "\e[30m"
-#define FORERED "\e[31m"
-#define FOREGREEN "\e[32m"
-#define FOREYELLOW "\e[33m"
-#define FOREBLUE "\e[34m"
-#define FOREMAGENTA "\e[35m"
-#define FORECYAN "\e[36m"
-#define FOREWHITE "\e[37m"
-
-#define	BACKBLACK "\e[40m"
-#define BACKRED "\e[41m"
-#define BACKGREEN "\e[42m"
-#define BACKYELLOW "\e[43m"
-#define BACKBLUE "\e[44m"
-#define BACKMAGENTA "\e[45m"
-#define BACKCYAN "\e[46m"
-#define BACKWHITE "\e[47m"
-
-//#define INVERTON "\e[7m"
-//#define INVERTOFF "\e[27m"
-
-#define BLACK "0"
-#define RED "1"
-#define GREEN "2"
-#define YELLOW "3"
-#define BLUE "4"
-#define MAGENTA "5"
-#define CYAN "6"
-#define WHITE "7"
-#define FORECOL(x) "\e[3" x "m"
-#define BACKCOL(x) "\e[4" x "m"
-#define SETFORECOL(x) printf(FORECOL(x));
-#define SETBACKCOL(x) printf(BACKCOL(x));
-#define	SETNORMAL printf("\e[39;49m\e[0m")
+#define	SETNORMAL printf("\e[0m")
 
 #define NORMAL "\e[0m"
 
@@ -67,18 +34,6 @@
 #define UNDERSCOREOFF "\e[24m"
 #define INVERSEON "\e[7m"
 #define INVERSEOFF "\e[27m"
-
-#define SETINVERSEON printf(INVERSEON);
-#define SETINVERSEOFF printf(INVERSEOFF);
-
-#define FORECOL256(col) "\e[38;5;" #col "m"
-#define BACKCOL256(col) "\e[48;5;" #col "m"
-
-#define CLEARTOEOL "\e[0K"
-#define CLEARTOSOL "\e[1K"
-#define CLEARTOEOS "\e[0J"
-
-#define GETCURSPOS	"\e[6n"
 
 #define SETHIDECURS printf("\e[?25l")
 #define SETSHOWCURS printf("\e[?25h")
@@ -109,8 +64,8 @@
 //#define CURSHOMECONS '1'
 //#define CURSENDCONS '4'
 
-enum FORECOL8 {NBLACK=30,NRED,NGREEN,NYELLOW,NBLUE,NMAGENTA,NCYAN,NWHITE,BBLACK=90,BRED,BGREEN,BYELLOW,BBLUE,BMAGENTA,BCYAN,BWHITE};
-enum BACKCOL8 {NBBLACK=40,NBRED,NBGREEN,NBYELLOW,NBBLUE,NBMAGENTA,NBCYAN,NBWHITE,BBBLACK=100,BBRED,BBGREEN,BBYELLOW,BBBLUE,BBMAGENTA,BBCYAN,BBWHITE};
+enum FORECOL8 {FORE_BLACK=30,FORE_RED,FORE_GREEN,FORE_YELLOW,FORE_BLUE,FORE_MAGENTA,FORE_CYAN,FORE_WHITE,FORE_BOLD_BLACK=90,FORE_BOLD_RED,FORE_BOLD_GREEN,FORE_BOLD_YELLOW,FORE_BOLD_BLUE,FORE_BOLD_MAGENTA,FORE_BOLD_CYAN,FORE_BOLD_WHITE};
+enum BACKCOL8 {BACK_BLACK=40,BACK_RED,BACK_GREEN,BACK_YELLOW,BACK_BLUE,BACK_MAGENTA,BACK_CYAN,BACK_WHITE,BACK_BOLD_BLACK=100,BACK_BOLD_RED,BACK_BOLD_GREEN,BACK_BOLD_YELLOW,BACK_BOLD_BLUE,BACK_BOLD_MAGENTA,BACK_BOLD_CYAN,BACK_BOLD_WHITE};
 
 static void setForeColour(int fc)
 {

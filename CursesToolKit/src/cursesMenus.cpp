@@ -106,15 +106,13 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	MOVETO(x,y);
 	switch(style)
 		{
-			case FLATNORM:
-				SETINVERSEON
-				SETFORECOL(GREEN);
-				SETBACKCOL(BLACK);
-				break;
 			case FLATINVERT:
-				SETINVERSEOFF
-				SETFORECOL(GREEN);
-				SETBACKCOL(BLACK);
+				setBackColour(this->hiliteBackCol);
+				setForeColour(this->hiliteForeCol);
+				break;
+			case FLATNORM:
+				setBackColour(this->backCol);
+				setForeColour(this->foreCol);
 				break;
 		}
 

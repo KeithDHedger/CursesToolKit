@@ -50,10 +50,10 @@ class CTK_cursesTextBoxClass
 		std::string					blank;
 		std::vector<std::string>	txtstrings;
 		bool						canSelect=true;
-		int							foreCol=NWHITE;
-		int							backCol=NBBLACK;
-		int							hiliteCol=NBCYAN;
-		int							hiliteforeCol=NBLACK;
+		int							foreCol=FORE_WHITE;
+		int							backCol=BACK_BLACK;
+		int							hiliteForeCol=FORE_BLACK;
+		int							hiliteBackCol=BACK_CYAN;
 
 		void						scroll(bool scrollup,int numlines);
 };

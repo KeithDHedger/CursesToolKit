@@ -42,10 +42,10 @@ class CTK_cursesButtonClass
 		int		sy;
 		int		wid;
 		int		hite;
-		int		foreCol=NBLACK;
-		int		backCol=NBRED;
-		int		hiliteCol=NBCYAN;
-		int		hiliteforeCol=NBLACK;
+		int		foreCol=FORE_BLACK;
+		int		backCol=BACK_RED;
+		int		hiliteForeCol=FORE_BLACK;
+		int		hiliteBackCol=BACK_CYAN;
 };
 
 #endif

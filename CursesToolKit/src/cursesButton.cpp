@@ -33,8 +33,8 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		{
-			setBackColour(this->hiliteCol);
-			setForeColour(this->hiliteforeCol);
+			setBackColour(this->hiliteBackCol);
+			setForeColour(this->hiliteForeCol);
 		}
 	else
 		{

@@ -118,7 +118,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 	while(this->runEventLoop==true)
 		{
 			ret=termkey_waitkey(tk,&key);
-
+//fprintf(stderr,"key.code.sym=%i<<\n",key.code.sym);
+//fprintf(stderr,"key.code.codepoint=%i<<\n",key.code.codepoint);
+//char	*buffer=(char*)alloca(256);;
+//termkey_strfkey(tk, buffer, 255, &key, format);
+//fprintf(stderr,"buffer=%s<<\n",buffer);
 			switch(key.type)
 				{
 					case TERMKEY_TYPE_KEYSYM:

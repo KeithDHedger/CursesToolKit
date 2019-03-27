@@ -89,8 +89,8 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 
 	if(hilite==true)
 		{
-			setBackColour(this->hiliteCol);
-			setForeColour(this->hiliteforeCol);
+			setBackColour(this->hiliteBackCol);
+			setForeColour(this->hiliteForeCol);
 		}
 	else
 		{
