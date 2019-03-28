@@ -277,7 +277,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteListNum!=-1)
 											{
 												this->lists[this->hiliteListNum]->selectCB((void*)this->lists[this->hiliteListNum]);
-												this->hiliteListNum=-1;
+												if(this->lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)
+													this->hiliteListNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 										

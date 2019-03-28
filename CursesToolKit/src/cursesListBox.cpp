@@ -117,4 +117,15 @@ void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup)
 		}
 }
 
+void CTK_cursesListBoxClass::CTK_setEnterDeselects(bool deselect)
+{
+	this->enterDeselects=deselect;
+}
+
+bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
+{
+	return(this->enterDeselects);
+}
+
+
 //TODO page up/down

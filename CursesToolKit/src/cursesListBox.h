@@ -59,12 +59,15 @@ class CTK_cursesListBoxClass
 		void						CTK_clearList(void);
 		void						CTK_drawListWindow(bool hilite);
 		void						CTK_keyUpDown(bool doup);
+		void						CTK_setEnterDeselects(bool deselect);
+		bool						CTK_getEnterDeselects(void);
 
 	private:
 		int							sx;
 		int							sy;
 		int							wid;
 		int							hite;
+		bool						enterDeselects=true;
 		std::string					blank;
 
 		int							foreCol=FORE_BLACK;
