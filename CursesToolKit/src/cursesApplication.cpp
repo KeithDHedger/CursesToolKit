@@ -91,7 +91,7 @@ void CTK_mainAppClass::CTK_addInput(CTK_cursesInputClass *inp)
 	this->inputs.push_back(inp);
 }
 
-void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBox *lb)
+void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBoxClass *lb)
 {
 	this->lists.push_back(lb);
 }
@@ -236,14 +236,18 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 
 											}
 										break;
-//scroll txt boxes
+//scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
 										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(true);
+										if(this->hiliteListNum!=-1)
+											this->lists[hiliteListNum]->CTK_keyUpDown(true);
 										break;
 									case TERMKEY_SYM_DOWN:
 										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(false);
+										if(this->hiliteListNum!=-1)
+											this->lists[hiliteListNum]->CTK_keyUpDown(false);
 										break;
 									case TERMKEY_SYM_PAGEUP:
 										if(this->hiliteTxtBoxNum!=-1)
@@ -267,6 +271,13 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 												this->hiliteInputNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
+										if(this->hiliteListNum!=-1)
+											{
+												this->lists[this->hiliteListNum]->selectCB((void*)this->lists[this->hiliteListNum]);
+												this->hiliteListNum=-1;
+												this->CTK_updateScreen(this,NULL);
+											}
+										
 										break;
 								}
 						}

@@ -42,7 +42,17 @@ void buttonselctCB(void *inst)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
+
 	sprintf(buffer,"Button '%s' clicked.",bc->label);
+	mainApp->textBoxes[1]->CTK_updateText(buffer);
+}
+
+void listselctCB(void *inst)
+{
+	char						*buffer=(char*)alloca(256);
+	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
+
+	sprintf(buffer,"List item '%s' clicked.",ls->listItems[ls->listItemNumber].c_str());
 	mainApp->textBoxes[1]->CTK_updateText(buffer);
 }
 
@@ -106,12 +116,16 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 
-	CTK_cursesListBox	*lb=new CTK_cursesListBox();
-	lb->CTK_newListBox(80,2,10,8);
+	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
+	lb->CTK_newListBox(82,2,10,4);
 	lb->CTK_addListItem("Item 1");
 	lb->CTK_addListItem("Item 2");
 	lb->CTK_addListItem("Item 3");
 	lb->CTK_addListItem("Item 4");
+	lb->CTK_addListItem("Item 5");
+	lb->CTK_addListItem("Item 6");
+	lb->CTK_addListItem("Item 7");
+	lb->CTK_setSelectCB(listselctCB);
 
 	mainApp->CTK_addListBox(lb);
 

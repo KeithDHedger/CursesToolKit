@@ -39,7 +39,7 @@ class CTK_mainAppClass
 		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
 		std::vector<CTK_cursesButtonClass*>		buttons;
 		std::vector<CTK_cursesInputClass*>		inputs;
-		std::vector<CTK_cursesListBox*>			lists;
+		std::vector<CTK_cursesListBoxClass*>			lists;
 		CTK_cursesMenuClass						*menuBar;
 
 		bool									runEventLoop=false;
@@ -56,7 +56,7 @@ class CTK_mainAppClass
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
 		void									CTK_addButton(CTK_cursesButtonClass *btn);
 		void									CTK_addInput(CTK_cursesInputClass *inp);
-		void									CTK_addListBox(CTK_cursesListBox *lb);
+		void									CTK_addListBox(CTK_cursesListBoxClass *lb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);

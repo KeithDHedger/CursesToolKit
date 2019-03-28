@@ -35,50 +35,32 @@
 
 #include "cursesLib.h"
 
-class CTK_cursesListBox
+class CTK_cursesListBoxClass
 {
 	public:
-		CTK_cursesListBox();
-		~CTK_cursesListBox();
+		CTK_cursesListBoxClass();
+		~CTK_cursesListBoxClass();
 		int							listStart=0;
-//		int							listCnt=0;
-		int							listItemNumber=-1;
+		int							listItemNumber=0;
 		void						CTK_newListBox(int x,int y,int width,int hite);
 		
-//		void						CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp);
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);
 
 		std::vector<std::string>	listItems;
 
-//		void						CTK_drawListBar(void);
-//		void						CTK_addListToBar(const char *name);
 		void						CTK_addListItem(const char *itemtxt);
 		void						CTK_clearList(void);
-		int							CTK_doListEvent(int sx,int sy,bool doshortcut);//togo private
-//		bool						CTK_doShortCutKey(char key,int listnum);
 		void						CTK_drawListWindow(bool hilite);
+		void						CTK_keyUpDown(bool doup);
 
 	private:
-		void						(*updateCB)(void *,void*);
-//		void						*mainApp=NULL;
-		unsigned					listWidth=0;
-		int							listNamesStartX=0;
-//		int							pad=1;
 		int							sx;
 		int							sy;
 		int							wid;
 		int							hite;
 		std::string					blank;
 
-		void						drawListStyle(int listnum,int listitem,int x,int y,int style,bool doshortcut,bool dopad);
-//		char						setShortCut(const char *name);
-//termkey
-		TermKey						*tk;
-//		int							mBarHite=1;
-		int							listHite=1;
-		int							rows=0;
-		unsigned					maxRows=0;
 		int							foreCol=FORE_BLACK;
 		int							backCol=BACK_WHITE;
 		int							hiliteForeCol=FORE_BLACK;
