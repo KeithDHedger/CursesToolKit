@@ -52,7 +52,7 @@ void listselctCB(void *inst)
 	char						*buffer=(char*)alloca(256);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 
-	sprintf(buffer,"List item '%s' clicked.",ls->listItems[ls->listItemNumber].c_str());
+	sprintf(buffer,"List item '%s' clicked, user data=%p.",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 	mainApp->textBoxes[1]->CTK_updateText(buffer);
 }
 
@@ -120,11 +120,11 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_newListBox(82,2,10,4);
 	lb->CTK_addListItem("Item 1");
 	lb->CTK_addListItem("Item 2");
-	lb->CTK_addListItem("Item 3");
+	lb->CTK_addListItem("Item 3",(void*)0xdeadbeef);
 	lb->CTK_addListItem("Item 4");
 	lb->CTK_addListItem("Item 5");
 	lb->CTK_addListItem("Item 6");
-	lb->CTK_addListItem("Item 7");
+	lb->CTK_addListItem("Item 7",(void*)7);
 	lb->CTK_setSelectCB(listselctCB);
 
 	mainApp->CTK_addListBox(lb);

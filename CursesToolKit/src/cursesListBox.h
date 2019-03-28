@@ -35,6 +35,12 @@
 
 #include "cursesLib.h"
 
+struct listItemStruct
+{
+	std::string	label;
+	void		*userData;
+};
+
 class CTK_cursesListBoxClass
 {
 	public:
@@ -47,9 +53,9 @@ class CTK_cursesListBoxClass
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);
 
-		std::vector<std::string>	listItems;
+		std::vector<listItemStruct*>	listItems;
 
-		void						CTK_addListItem(const char *itemtxt);
+		void						CTK_addListItem(const char *label,void *ud=NULL);
 		void						CTK_clearList(void);
 		void						CTK_drawListWindow(bool hilite);
 		void						CTK_keyUpDown(bool doup);

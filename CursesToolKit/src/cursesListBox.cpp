@@ -29,9 +29,12 @@ CTK_cursesListBoxClass::CTK_cursesListBoxClass()
 {
 }
 
-void CTK_cursesListBoxClass::CTK_addListItem(const char *itemtxt)
+void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 {
-	this->listItems.push_back(itemtxt);
+	listItemStruct	*ls=new listItemStruct;
+	ls->label=label;
+	ls->userData=ud;
+	this->listItems.push_back(ls);
 }
 
 void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
@@ -60,7 +63,7 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 			if(j<this->listItems.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf("%s",this->listItems[j+this->listStart].c_str());
+					printf("%s",this->listItems[j+this->listStart]->label.c_str());
 				}
 		}
 }
