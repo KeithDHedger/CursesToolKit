@@ -134,7 +134,10 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->lists[j]->CTK_drawListWindow(false);
 		}
 
-	app->menuBar->CTK_drawMenuBar();
+	if(app->menuBar!=NULL)
+		app->menuBar->CTK_drawMenuBar();
+
+	SETNORMAL;
 }
 
 void CTK_mainAppClass::CTK_mainEventLoop(void)

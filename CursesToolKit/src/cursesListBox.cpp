@@ -60,19 +60,21 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 
 			MOVETO(this->sx,this->sy+j);
 			printf("%s",this->blank.c_str());
+
 			if(j<this->listItems.size())
 				{
 					MOVETO(this->sx,this->sy+j);
 					printf("%s",this->listItems[j+this->listStart]->label.c_str());
 				}
 		}
+	MOVETO(this->sx,this->sy+this->hite);
 }
 
 void CTK_cursesListBoxClass::CTK_clearList(void)
 {
 	this->listItems.clear();
 	this->listStart=0;
-	this->listItemNumber=-1;
+	this->listItemNumber=0;
 }
 
 void CTK_cursesListBoxClass::CTK_setSelectCB(void (*select)(void *))

@@ -39,8 +39,8 @@ class CTK_mainAppClass
 		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
 		std::vector<CTK_cursesButtonClass*>		buttons;
 		std::vector<CTK_cursesInputClass*>		inputs;
-		std::vector<CTK_cursesListBoxClass*>			lists;
-		CTK_cursesMenuClass						*menuBar;
+		std::vector<CTK_cursesListBoxClass*>	lists;
+		CTK_cursesMenuClass						*menuBar=NULL;
 
 		bool									runEventLoop=false;
 		void									(*eventLoopCB)(void*,void*);
