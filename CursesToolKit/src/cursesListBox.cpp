@@ -152,7 +152,7 @@ void CTK_cursesListBox::drawListStyle(int listnum,int listitem,int x,int y,int s
 
 void CTK_cursesListBox::CTK_drawListWindow(bool hilite)
 {
-	for(int j=0;j<this->listItems.size();j++)
+	for(int j=0;j<this->hite;j++)
 		{
 			//if((hilite==true) && (this->listItemNumber==j))
 			if(hilite==true)
@@ -167,8 +167,11 @@ void CTK_cursesListBox::CTK_drawListWindow(bool hilite)
 				}
 			MOVETO(this->sx,this->sy+j);
 			printf("%s",this->blank.c_str());
-			MOVETO(this->sx,this->sy+j);
-			printf("%s",this->listItems[j].c_str());
+			if(j<this->listItems.size())
+				{
+					MOVETO(this->sx,this->sy+j);
+					printf("%s",this->listItems[j].c_str());
+				}
 			//MOVETO(this->sx+this->curs,this->sy);
 		}
 

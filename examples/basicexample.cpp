@@ -95,19 +95,19 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
-	mainApp->CTK_addNewTextBox(1,3,80,10,sampletxt);
-	mainApp->CTK_addNewTextBox(1,20,64,1,"Results",false);
+	mainApp->CTK_addNewTextBox(1,2,80,8,sampletxt);
+	mainApp->CTK_addNewTextBox(1,11,64,1,"Results",false);
 	
 
-	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
+	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
+	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
 
-	mainApp->CTK_addNewInput(8,18,32,1,"Some input");
+	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 
 	CTK_cursesListBox	*lb=new CTK_cursesListBox();
-	lb->CTK_newListBox(90,3,40,10);
+	lb->CTK_newListBox(80,2,10,8);
 	lb->CTK_addListItem("Item 1");
 	lb->CTK_addListItem("Item 2");
 	lb->CTK_addListItem("Item 3");
