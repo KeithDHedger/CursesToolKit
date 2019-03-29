@@ -1,4 +1,5 @@
 0.0.5
+Added pageup/pagedown to list gadget.
 Added example file select.
 Fixed list gadget bugs.
 Added userdata to list items.
