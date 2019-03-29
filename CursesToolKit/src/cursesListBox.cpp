@@ -91,29 +91,37 @@ void CTK_cursesListBoxClass::CTK_newListBox(int x,int y,int width,int hite)
 	this->blank.insert(this->blank.begin(),width,' ');
 }
 
-void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup)
+void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 {
-	if(doup==true)
+	int	lines=1;
+
+	if(page==true)
+		lines=this->hite-1;
+
+	for(int j=0;j<lines;j++)
 		{
-			this->listItemNumber--;
-			if(this->listItemNumber<this->listStart)
-				this->listStart--;
-			if(this->listItemNumber<0)
+			if(doup==true)
 				{
-					this->listItemNumber=0;
-					this->listStart=0;
-				}
-		}
-	else
-		{
-			this->listItemNumber++;
-			if(this->listItemNumber<this->listItems.size())
-				{
-					if(this->listItemNumber>=this->hite)
-						this->listStart++;
+					this->listItemNumber--;
+					if(this->listItemNumber<this->listStart)
+						this->listStart--;
+					if(this->listItemNumber<0)
+						{
+							this->listItemNumber=0;
+							this->listStart=0;
+						}
 				}
 			else
-				this->listItemNumber--;
+				{
+					this->listItemNumber++;
+					if(this->listItemNumber<this->listItems.size())
+						{
+							if((this->listItemNumber-this->listStart)>=this->hite)
+								this->listStart++;
+						}
+					else
+						this->listItemNumber--;
+				}
 		}
 }
 

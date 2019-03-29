@@ -58,7 +58,7 @@ class CTK_cursesListBoxClass
 		void						CTK_addListItem(const char *label,void *ud=NULL);
 		void						CTK_clearList(void);
 		void						CTK_drawListWindow(bool hilite);
-		void						CTK_keyUpDown(bool doup);
+		void						CTK_keyUpDown(bool doup,bool page=false);
 		void						CTK_setEnterDeselects(bool deselect);
 		bool						CTK_getEnterDeselects(void);
 

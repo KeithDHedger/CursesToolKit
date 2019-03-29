@@ -35,7 +35,7 @@ void buttonselctCB(void *inst)
 	mainApp->runEventLoop=false;
 	if(strcmp(bc->label,"  OK  ")==0)
 		{
-			fprintf(stderr,"File '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
+			fprintf(stderr,"\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
 			fprintf(stderr,"Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
 		}
 }
@@ -80,7 +80,8 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
-	char						*buffer=(char*)alloca(PATH_MAX);
+	char	*buffer=(char*)alloca(PATH_MAX);
+
 	infolder=get_current_dir_name();
 	lb->CTK_newListBox(2,2,128,16);
 

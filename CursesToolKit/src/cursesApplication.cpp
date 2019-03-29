@@ -255,10 +255,14 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 									case TERMKEY_SYM_PAGEUP:
 										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
+										if(this->hiliteListNum!=-1)
+											this->lists[hiliteListNum]->CTK_keyUpDown(true,true);
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										if(this->hiliteTxtBoxNum!=-1)
 											this->textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
+										if(this->hiliteListNum!=-1)
+											this->lists[hiliteListNum]->CTK_keyUpDown(false,true);
 										break;
 
 									case TERMKEY_SYM_ENTER:
