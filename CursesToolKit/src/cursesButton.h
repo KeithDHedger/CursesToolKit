@@ -37,6 +37,7 @@ class CTK_cursesButtonClass
 		void	CTK_drawButton(bool hilite=false);
 		void	CTK_setEnterDeselects(bool deselect);
 		bool	CTK_getEnterDeselects(void);
+//		void	CTK_setColours(int fc,int bc,int hfc,int hbc,);
 
 		void	CTK_setSelectCB(void (*select)(void *));
 		void	(*selectCB)(void *);

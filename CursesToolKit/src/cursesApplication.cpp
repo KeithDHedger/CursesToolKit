@@ -32,6 +32,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 		delete this->inputs[j];
 	for(int j=0;j<this->lists.size();j++)
 		delete this->lists[j];
+	for(int j=0;j<this->checkBoxes.size();j++)
+		delete this->checkBoxes[j];
 }
 
 CTK_mainAppClass::CTK_mainAppClass()
@@ -203,6 +205,10 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 									case TERMKEY_SYM_ESCAPE:
 										this->hiliteBtnNum=-1;
 										this->hiliteTxtBoxNum=-1;
+										this->hiliteInputNum=-1;
+										this->hiliteListNum=-1;
+										this->hiliteCheckBoxNum=-1;
+
 										this->hiliting=NONE;
 										this->CTK_updateScreen(this,NULL);
 										selection=this->menuBar->CTK_doMenuEvent(0,1,true);

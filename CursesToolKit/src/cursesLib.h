@@ -67,16 +67,27 @@
 enum FORECOL8 {FORE_BLACK=30,FORE_RED,FORE_GREEN,FORE_YELLOW,FORE_BLUE,FORE_MAGENTA,FORE_CYAN,FORE_WHITE,FORE_BOLD_BLACK=90,FORE_BOLD_RED,FORE_BOLD_GREEN,FORE_BOLD_YELLOW,FORE_BOLD_BLUE,FORE_BOLD_MAGENTA,FORE_BOLD_CYAN,FORE_BOLD_WHITE};
 enum BACKCOL8 {BACK_BLACK=40,BACK_RED,BACK_GREEN,BACK_YELLOW,BACK_BLUE,BACK_MAGENTA,BACK_CYAN,BACK_WHITE,BACK_BOLD_BLACK=100,BACK_BOLD_RED,BACK_BOLD_GREEN,BACK_BOLD_YELLOW,BACK_BOLD_BLUE,BACK_BOLD_MAGENTA,BACK_BOLD_CYAN,BACK_BOLD_WHITE};
 
-static void setForeColour(int fc)
+struct coloursStruct
+{
+	int	foreCol=FORE_BLACK;
+	int	backCol=BACK_WHITE;
+	int	hiliteForeCol=FORE_BLACK;
+	int	hiliteBackCol=BACK_CYAN;
+	int	indicForeCol=FORE_BLACK;
+	int	indicBackCol=BACK_WHITE;
+	int	windowBackCol=BACK_BLACK;
+	int	windowForeCol=FORE_WHITE;
+};
+
+static inline void setForeColour(int fc)
 {
 	printf("\e[%im",fc);
 }
 
-static void setBackColour(int fc)
+static inline void setBackColour(int fc)
 {
 	printf("\e[%im",fc);
 }
-
 
 #endif
 

@@ -90,6 +90,10 @@ Shortcut keys can be used ( without the CTRL key when menus are open )\n\
 Pasting is done via middle click of mouse as usual.\
 ";
 
+	//coloursStruct	cs;
+//
+	//printf("%i %i %i\n",cs.foreCol,cs.backCol,cs.hiliteBackCol);
+	//exit(0);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);//0
@@ -121,10 +125,10 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->buttons[0]->CTK_setEnterDeselects(false);
+	//mainApp->buttons[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
-	mainApp->buttons[1]->CTK_setEnterDeselects(false);
+	//mainApp->buttons[1]->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 
