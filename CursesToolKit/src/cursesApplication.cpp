@@ -18,8 +18,6 @@
  * along with CursesMenus.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#include <termios.h>
-#include <unistd.h>
 
 #include "cursesApplication.h"
 
@@ -39,9 +37,6 @@ CTK_mainAppClass::~CTK_mainAppClass()
 CTK_mainAppClass::CTK_mainAppClass()
 {
 	winsize w;
-	//termios	termconfig;
-//
-	//tcgetattr(STDIN_FILENO,&termConfig);
 
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;

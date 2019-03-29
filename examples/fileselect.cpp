@@ -25,11 +25,15 @@ CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 LFSTK_findClass			*files=new LFSTK_findClass();
 CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 char					*infolder=NULL;
+bool					isValid=false;
 
 void buttonselctCB(void *inst)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
+
+	if(strcmp(bc->label,"  OK  ")==0)
+		isValid=true;
 
 	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	mainApp->runEventLoop=false;
@@ -117,8 +121,12 @@ int main(int argc, char **argv)
 
 	free(infolder);
 	MOVETO(1,mainApp->maxRows-3);
-	printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
-	printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+
+	if(isValid==true)
+		{
+			printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
+			printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+		}
 
 	delete files;
 	delete mainApp;
