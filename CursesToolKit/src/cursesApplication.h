@@ -36,6 +36,8 @@ class CTK_mainAppClass
 		CTK_mainAppClass();
 		~CTK_mainAppClass();
 
+		int										maxCols;
+		int										maxRows;
 		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
 		std::vector<CTK_cursesButtonClass*>		buttons;
 		std::vector<CTK_cursesInputClass*>		inputs;

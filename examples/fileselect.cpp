@@ -33,11 +33,6 @@ void buttonselctCB(void *inst)
 
 	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	mainApp->runEventLoop=false;
-	if(strcmp(bc->label,"  OK  ")==0)
-		{
-			fprintf(stderr,"\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
-			fprintf(stderr,"Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
-		}
 }
 
 void listselctCB(void *inst)
@@ -118,7 +113,13 @@ int main(int argc, char **argv)
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
+	SETNORMAL;
+
 	free(infolder);
+	MOVETO(1,mainApp->maxRows-3);
+	printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
+	printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+
 	delete files;
 	delete mainApp;
 	
