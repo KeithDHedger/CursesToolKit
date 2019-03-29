@@ -63,3 +63,14 @@ void CTK_cursesButtonClass::CTK_setColours(int forcol,int backcol,int hilite)
 {
 	this->foreCol=forcol;
 }
+
+void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)
+{
+	this->enterDeselects=deselect;
+}
+
+bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
+{
+	return(this->enterDeselects);
+}
+

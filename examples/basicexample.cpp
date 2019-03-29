@@ -121,8 +121,10 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
+	mainApp->buttons[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
+	mainApp->buttons[1]->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 
@@ -139,10 +141,12 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addListBox(lb);
 
-	mainApp->CTK_addNewCheckBox(82,13,10,1,"A Checkbox");
+	mainApp->CTK_addNewCheckBox(82,13,10,"A Checkbox");
 	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
-	mainApp->CTK_addNewCheckBox(82,15,10,1,"Checkbox 2");
+	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
+	mainApp->CTK_addNewCheckBox(82,15,10,"Checkbox 2");
 	mainApp->checkBoxes[1]->CTK_setSelectCB(checkselctCB);
+	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

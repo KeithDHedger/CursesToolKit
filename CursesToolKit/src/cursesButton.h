@@ -35,8 +35,12 @@ class CTK_cursesButtonClass
 		void	CTK_newButton(int x,int y,int width,int hite,const char *label="");
 		void	CTK_setColours(int forcol,int backcol,int hilite);
 		void	CTK_drawButton(bool hilite=false);
+		void	CTK_setEnterDeselects(bool deselect);
+		bool	CTK_getEnterDeselects(void);
+
 		void	CTK_setSelectCB(void (*select)(void *));
 		void	(*selectCB)(void *);
+
 	private:
 		int		sx;
 		int		sy;
@@ -46,6 +50,7 @@ class CTK_cursesButtonClass
 		int		backCol=BACK_RED;
 		int		hiliteForeCol=FORE_BLACK;
 		int		hiliteBackCol=BACK_CYAN;
+		bool	enterDeselects=true;
 };
 
 #endif

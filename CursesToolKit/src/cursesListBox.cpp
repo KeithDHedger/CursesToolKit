@@ -135,5 +135,3 @@ bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
 	return(this->enterDeselects);
 }
 
-
-//TODO page up/down

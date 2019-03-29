@@ -32,11 +32,13 @@ class CTK_cursesCheckBoxClass
 		~CTK_cursesCheckBoxClass();
 		char	*label;
 
-		void	CTK_newCheckBox(int x,int y,int width,int hite,const char *label="");
+		void	CTK_newCheckBox(int x,int y,int width,const char *label="");
 		void	CTK_setColours(int forcol,int backcol,int hilite);
 		void	CTK_drawCheckBox(bool hilite=false);
 		void	CTK_setValue(bool val);
 		bool	CTK_getValue(void);
+		void	CTK_setEnterDeselects(bool deselect);
+		bool	CTK_getEnterDeselects(void);
 
 		void	CTK_setSelectCB(void (*select)(void *));
 		void	(*selectCB)(void *);
@@ -50,6 +52,7 @@ class CTK_cursesCheckBoxClass
 		int		hiliteForeCol=FORE_BLACK;
 		int		hiliteBackCol=BACK_CYAN;
 		bool	value=false;
+		bool	enterDeselects=true;
 };
 
 #endif

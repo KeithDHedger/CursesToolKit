@@ -48,12 +48,12 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 	printf("%c %s",val,this->label);
 }
 
-void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,int hite,const char *label)
+void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *label)
 {
 	this->sx=x;
 	this->sy=y;
 	this->wid=width;
-	this->hite=hite;
+	this->hite=1;
 
 	asprintf(&(this->label),"%s",label);
 }
@@ -76,5 +76,15 @@ void CTK_cursesCheckBoxClass::CTK_setValue(bool val)
 bool CTK_cursesCheckBoxClass::CTK_getValue(void)
 {
 	return(this->value);
+}
+
+void CTK_cursesCheckBoxClass::CTK_setEnterDeselects(bool deselect)
+{
+	this->enterDeselects=deselect;
+}
+
+bool CTK_cursesCheckBoxClass::CTK_getEnterDeselects(void)
+{
+	return(this->enterDeselects);
 }
 

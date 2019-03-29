@@ -77,10 +77,10 @@ void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
 //	this->inputs.push_back(inp);
 }
 
-void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,int hite,const char *label)
+void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *label)
 {
 	CTK_cursesCheckBoxClass	*cb=new CTK_cursesCheckBoxClass();
-	cb->CTK_newCheckBox(x,y,width,hite,label);
+	cb->CTK_newCheckBox(x,y,width,label);
 	this->checkBoxes.push_back(cb);
 }
 
@@ -303,7 +303,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteBtnNum!=-1)
 											{
 												this->buttons[this->hiliteBtnNum]->selectCB((void*)this->buttons[this->hiliteBtnNum]);
-												this->hiliteBtnNum=-1;
+												if(this->buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
+													this->hiliteBtnNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 										if(this->hiliteInputNum!=-1)
@@ -322,6 +323,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteCheckBoxNum!=-1)
 											{
 												this->checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->checkBoxes[this->hiliteCheckBoxNum]);
+												if(this->checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
+													this->hiliteCheckBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 									
