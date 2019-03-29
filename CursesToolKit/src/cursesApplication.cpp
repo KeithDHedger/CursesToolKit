@@ -77,6 +77,13 @@ void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
 //	this->inputs.push_back(inp);
 }
 
+void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,int hite,const char *label)
+{
+	CTK_cursesCheckBoxClass	*cb=new CTK_cursesCheckBoxClass();
+	cb->CTK_newCheckBox(x,y,width,hite,label);
+	this->checkBoxes.push_back(cb);
+}
+
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
 {
 	this->menuBar=mb;
@@ -100,6 +107,11 @@ void CTK_mainAppClass::CTK_addInput(CTK_cursesInputClass *inp)
 void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBoxClass *lb)
 {
 	this->lists.push_back(lb);
+}
+
+void CTK_mainAppClass::CTK_addCheckBox(CTK_cursesCheckBoxClass *cb)
+{
+	this->checkBoxes.push_back(cb);
 }
 
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
@@ -138,6 +150,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->lists[j]->CTK_drawListWindow(true);
 			else
 				app->lists[j]->CTK_drawListWindow(false);
+		}
+
+	for(int j=0;j<app->checkBoxes.size();j++)
+		{
+			if(app->hiliteCheckBoxNum==j)
+				app->checkBoxes[j]->CTK_drawCheckBox(true);
+			else
+				app->checkBoxes[j]->CTK_drawCheckBox(false);
 		}
 
 	if(app->menuBar!=NULL)
@@ -238,11 +258,19 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 													if(this->hiliteListNum>=this->lists.size())
 														{
 															this->hiliteListNum=-1;
+															this->hiliting=CHKBOXS;
+														}
+													else
+														break;
+												case CHKBOXS:
+													this->hiliteCheckBoxNum++;
+													if(this->hiliteCheckBoxNum>=this->checkBoxes.size())
+														{
+															this->hiliteCheckBoxNum=-1;
 															this->hiliting=NONE;
 														}
 													else
 														break;
-
 											}
 										break;
 //scroll txt boxes and lists
@@ -291,7 +319,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 													this->hiliteListNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
-										
+										if(this->hiliteCheckBoxNum!=-1)
+											{
+												this->checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->checkBoxes[this->hiliteCheckBoxNum]);
+												this->CTK_updateScreen(this,NULL);
+											}
+									
 										break;
 								}
 						}

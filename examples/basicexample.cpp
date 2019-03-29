@@ -56,6 +56,16 @@ void listselctCB(void *inst)
 	mainApp->textBoxes[1]->CTK_updateText(buffer);
 }
 
+void checkselctCB(void *inst)
+{
+	char					*buffer=(char*)alloca(256);
+	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
+
+	cb->CTK_setValue(!cb->CTK_getValue());
+	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
+	mainApp->textBoxes[1]->CTK_updateText(buffer);
+}
+
 int main(int argc, char **argv)
 {
 
@@ -128,6 +138,11 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_setSelectCB(listselctCB);
 
 	mainApp->CTK_addListBox(lb);
+
+	mainApp->CTK_addNewCheckBox(82,13,10,1,"A Checkbox");
+	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->CTK_addNewCheckBox(82,15,10,1,"Checkbox 2");
+	mainApp->checkBoxes[1]->CTK_setSelectCB(checkselctCB);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

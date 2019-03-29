@@ -28,8 +28,9 @@
 #include "cursesButton.h"
 #include "cursesInput.h"
 #include "cursesListBox.h"
+#include "cursesCheckBox.h"
 
-enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS};
+enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS};
 class CTK_mainAppClass
 {
 	public:
@@ -42,6 +43,7 @@ class CTK_mainAppClass
 		std::vector<CTK_cursesButtonClass*>		buttons;
 		std::vector<CTK_cursesInputClass*>		inputs;
 		std::vector<CTK_cursesListBoxClass*>	lists;
+		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
 
 		bool									runEventLoop=false;
@@ -53,12 +55,14 @@ class CTK_mainAppClass
 		void									CTK_addNewButton(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewListBox(int x,int y,int width,int hite);
+		void									CTK_addNewCheckBox(int x,int y,int width,int hite,const char *label);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
 		void									CTK_addButton(CTK_cursesButtonClass *btn);
 		void									CTK_addInput(CTK_cursesInputClass *inp);
 		void									CTK_addListBox(CTK_cursesListBoxClass *lb);
+		void									CTK_addCheckBox(CTK_cursesCheckBoxClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
@@ -68,6 +72,7 @@ class CTK_mainAppClass
 		int										hiliteTxtBoxNum=-1;
 		int										hiliteInputNum=-1;
 		int										hiliteListNum=-1;
+		int										hiliteCheckBoxNum=-1;
 		HILITING								hiliting=NONE;
 };
 
