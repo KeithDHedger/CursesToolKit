@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey lfstk) -lcursestoolkit "$0" -o fileselect ||exit 1
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit LFSTKFindClass.cpp "$0"  -o fileselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./fileselect "$@"
 retval=$?
 rm fileselect
@@ -17,12 +17,12 @@ exit $retval
 #include <unistd.h>
 #include <linux/limits.h>
 
-#include <lfstk/LFSTKFindClass.h>
+#include "LFSTKFindClass.h"
 
 #include <cursesApplication.h>
 
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-LFSTK_findClass			*fc=new LFSTK_findClass();
+LFSTK_findClass			*files=new LFSTK_findClass();
 CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 char					*infolder=NULL;
 
@@ -32,10 +32,12 @@ void buttonselctCB(void *inst)
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 
 	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
-//	mainApp->textBoxes[1]->CTK_updateText(buffer);
 	mainApp->runEventLoop=false;
 	if(strcmp(bc->label,"  OK  ")==0)
-		fprintf(stderr,"File '%s' selected.",lb->listItems[lb->listItemNumber]->label.c_str());
+		{
+			fprintf(stderr,"File '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
+			fprintf(stderr,"Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+		}
 }
 
 void listselctCB(void *inst)
@@ -43,37 +45,30 @@ void listselctCB(void *inst)
 	char						*buffer=(char*)alloca(PATH_MAX);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 
-//	sprintf(buffer,"List item '%s' clicked, user data=%p.",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
-//	mainApp->textBoxes[1]->CTK_updateText(buffer);
-//	mainApp->runEventLoop=false;
-//	if(strcmp(ls->listItems[ls->listItemNumber]->label.c_str(),"..")==0)
-	if(fc->data[ls->listItemNumber].fileType==FOLDERTYPE)
+	if(files->data[ls->listItemNumber].fileType==FOLDERTYPE)
 		{
-			//sprintf(buffer,"%s/../",infolder);
-			sprintf(buffer,"%s/%s",infolder,fc->data[ls->listItemNumber].name.c_str());
+			sprintf(buffer,"%s/%s",infolder,files->data[ls->listItemNumber].name.c_str());
 			chdir(buffer);
 			infolder=get_current_dir_name();
 			fprintf(stderr,">>%s<<\n",infolder);
-			fc->LFSTK_findFiles(infolder);
-			fc->LFSTK_setSort(false);
-			fc->LFSTK_sortByTypeAndName();
+			files->LFSTK_findFiles(infolder);
+			files->LFSTK_setSort(false);
+			files->LFSTK_sortByTypeAndName();
 
 			lb->CTK_clearList();
-			for(int j=0;j<fc->data.size();j++)
+			for(int j=0;j<files->data.size();j++)
 				{
-					if(fc->data[j].fileType==FOLDERTYPE)
-						sprintf(buffer,"%s/",fc->data[j].name.c_str());
+					if(files->data[j].fileType==FOLDERTYPE)
+						sprintf(buffer,"%s/",files->data[j].name.c_str());
 					else
-						sprintf(buffer,"%s",fc->data[j].name.c_str());
+						sprintf(buffer,"%s",files->data[j].name.c_str());
 					lb->CTK_addListItem(buffer,NULL);
 				}
 		}
 	else
 		{
-			sprintf(buffer,"File: %s",fc->data[ls->listItemNumber].path.c_str());
-			//fprintf(stderr,"File: >>%s<<",fc->data[ls->listItemNumber].path.c_str());
-
+			sprintf(buffer,"File: %s",files->data[ls->listItemNumber].path.c_str());
 			mainApp->textBoxes[0]->CTK_updateText(buffer);
 		}
 }
@@ -89,36 +84,25 @@ int main(int argc, char **argv)
 	infolder=get_current_dir_name();
 	lb->CTK_newListBox(2,2,128,16);
 
-	fc->LFSTK_setFindType(ANYTYPE);
-	fc->LFSTK_setFullPath(true);
-	fc->LFSTK_findFiles(infolder);
-	fc->LFSTK_setSort(false);
-	fc->LFSTK_sortByTypeAndName();
-//listselctCB(lb);
-	for(int j=0;j<fc->data.size();j++)
+	files->LFSTK_setFindType(ANYTYPE);
+	files->LFSTK_setFullPath(true);
+	files->LFSTK_findFiles(infolder);
+	files->LFSTK_setSort(false);
+	files->LFSTK_sortByTypeAndName();
+
+	for(int j=0;j<files->data.size();j++)
 		{
-			if(fc->data[lb->listItemNumber].fileType==FOLDERTYPE)
-		{
-			//sprintf(buffer,"%s/../",infolder);
-		//	fc->LFSTK_findFiles(buffer);
-		//	fc->LFSTK_setSort(false);
-		//	fc->LFSTK_sortByTypeAndName();
-//
-		//	lb->CTK_clearList();
-		//	for(int j=0;j<fc->data.size();j++)
-			//	{
-					if(fc->data[j].fileType==FOLDERTYPE)
-						sprintf(buffer,"%s/",fc->data[j].name.c_str());
+			if(files->data[lb->listItemNumber].fileType==FOLDERTYPE)
+				{
+					if(files->data[j].fileType==FOLDERTYPE)
+						sprintf(buffer,"%s/",files->data[j].name.c_str());
 					else
-						sprintf(buffer,"%s",fc->data[j].name.c_str());
+						sprintf(buffer,"%s",files->data[j].name.c_str());
 					
 					lb->CTK_addListItem(buffer,NULL);
-			//	}
+				}
 		}
 
-//			fprintf(stderr,"%s\n",fc->data[j].name.c_str());
-//			lb->CTK_addListItem(fc->data[j].name.c_str(),NULL);
-		}
 	lb->CTK_setSelectCB(listselctCB);
 	lb->CTK_setEnterDeselects(false);
 
@@ -134,7 +118,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
 	free(infolder);
-	delete fc;
+	delete files;
 	delete mainApp;
 	
 	return 0;
