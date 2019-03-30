@@ -40,6 +40,7 @@ class CTK_cursesTextBoxClass
 		void						CTK_setSelectable(bool canselect);
 		bool						CTK_getSelectable(void);
 		const std::string			CTK_getText(void);
+		void						CTK_setColours(coloursStruct cs);
 
 	private:
 		int							sx;

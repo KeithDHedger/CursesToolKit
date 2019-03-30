@@ -54,6 +54,7 @@ void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const ch
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
 	txtbox->CTK_newBox(x,y,width,hite,txt,selectable);
+	txtbox->CTK_setColours(this->colours);
 	this->textBoxes.push_back(txtbox);
 }
 
@@ -61,6 +62,7 @@ void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const cha
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass();
 	btn->CTK_newButton(x,y,width,hite,label);
+	btn->CTK_setColours(this->colours);
 	this->buttons.push_back(btn);
 }
 
@@ -68,6 +70,7 @@ void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char
 {
 	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
 	inp->CTK_newInput(x,y,width,hite,label);
+	inp->CTK_setColours(this->colours);
 	this->inputs.push_back(inp);
 }
 
@@ -82,6 +85,7 @@ void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *labe
 {
 	CTK_cursesCheckBoxClass	*cb=new CTK_cursesCheckBoxClass();
 	cb->CTK_newCheckBox(x,y,width,label);
+	cb->CTK_setColours(this->colours);
 	this->checkBoxes.push_back(cb);
 }
 
@@ -440,4 +444,21 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 			this->eventLoopCB(this,NULL);
 		}
 }
+void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
+{
+	this->colours=cs;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+//	this->=cs->;
+}
+
+
+
+
 

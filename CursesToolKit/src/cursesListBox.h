@@ -49,6 +49,7 @@ class CTK_cursesListBoxClass
 		int							listStart=0;
 		int							listItemNumber=0;
 		void						CTK_newListBox(int x,int y,int width,int hite);
+		void						CTK_setColours(coloursStruct cs);
 		
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);

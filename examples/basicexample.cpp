@@ -94,6 +94,9 @@ Pasting is done via middle click of mouse as usual.\
 //
 	//printf("%i %i %i\n",cs.foreCol,cs.backCol,cs.hiliteBackCol);
 	//exit(0);
+	coloursStruct cs;
+	//cs.backCol=139;
+	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);//0
@@ -142,6 +145,7 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_addListItem("Item 6");
 	lb->CTK_addListItem("Item 7",(void*)7);
 	lb->CTK_setSelectCB(listselctCB);
+	lb->CTK_setColours(cs);
 
 	mainApp->CTK_addListBox(lb);
 

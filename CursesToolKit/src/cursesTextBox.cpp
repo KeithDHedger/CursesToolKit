@@ -159,6 +159,14 @@ const std::string CTK_cursesTextBoxClass::CTK_getText(void)
 	return(this->text);
 }
 
+void CTK_cursesTextBoxClass::CTK_setColours(coloursStruct cs)
+{
+	this->foreCol=cs.foreCol;
+	this->backCol=cs.backCol;
+	this->hiliteForeCol=cs.hiliteForeCol;
+	this->hiliteBackCol=cs.hiliteBackCol;
+}
+
 
 
 

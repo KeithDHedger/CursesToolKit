@@ -39,6 +39,7 @@ class CTK_cursesCheckBoxClass
 		bool	CTK_getValue(void);
 		void	CTK_setEnterDeselects(bool deselect);
 		bool	CTK_getEnterDeselects(void);
+		void	CTK_setColours(coloursStruct cs);
 
 		void	CTK_setSelectCB(void (*select)(void *));
 		void	(*selectCB)(void *);

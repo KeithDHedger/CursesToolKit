@@ -35,6 +35,7 @@ class CTK_cursesInputClass
 		void		CTK_newInput(int x,int y, int w,int h,const char *txt="");
 		void		CTK_drawInput(bool hilite);
 		void		CTK_doInput(void);
+		void		CTK_setColours(coloursStruct cs);
 
 	private:
 		int			sx;
