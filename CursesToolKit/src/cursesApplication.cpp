@@ -360,6 +360,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 													}
 											}
 										break;
+
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
 										if(this->hiliteTxtBoxNum!=-1)
