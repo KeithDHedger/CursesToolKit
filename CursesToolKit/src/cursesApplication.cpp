@@ -121,6 +121,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	CTK_mainAppClass	*app=static_cast<CTK_mainAppClass*>(object);
 
 	printf("\e[2J\e[H");
+//	fflush(NULL);
+//	printf("\e[2J\e[H");
+
 
 	for(int j=0;j<app->textBoxes.size();j++)
 		{
@@ -146,20 +149,20 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->inputs[j]->CTK_drawInput(false);
 		}
 
-	for(int j=0;j<app->lists.size();j++)
-		{
-			if(app->hiliteListNum==j)
-				app->lists[j]->CTK_drawListWindow(true);
-			else
-				app->lists[j]->CTK_drawListWindow(false);
-		}
-
 	for(int j=0;j<app->checkBoxes.size();j++)
 		{
 			if(app->hiliteCheckBoxNum==j)
 				app->checkBoxes[j]->CTK_drawCheckBox(true);
 			else
 				app->checkBoxes[j]->CTK_drawCheckBox(false);
+		}
+
+	for(int j=0;j<app->lists.size();j++)
+		{
+			if(app->hiliteListNum==j)
+				app->lists[j]->CTK_drawListWindow(true);
+			else
+				app->lists[j]->CTK_drawListWindow(false);
 		}
 
 	if(app->menuBar!=NULL)

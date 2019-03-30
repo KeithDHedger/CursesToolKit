@@ -24,6 +24,7 @@ exit $retval
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 LFSTK_findClass			*files=new LFSTK_findClass();
 CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
+CTK_cursesCheckBoxClass	*hidden=new CTK_cursesCheckBoxClass();
 char					*infolder=NULL;
 bool					isValid=false;
 
@@ -50,7 +51,6 @@ void listselctCB(void *inst)
 			sprintf(buffer,"%s/%s",infolder,files->data[ls->listItemNumber].name.c_str());
 			chdir(buffer);
 			infolder=get_current_dir_name();
-			fprintf(stderr,">>%s<<\n",infolder);
 			files->LFSTK_findFiles(infolder);
 			files->LFSTK_setSort(false);
 			files->LFSTK_sortByTypeAndName();
@@ -72,6 +72,29 @@ void listselctCB(void *inst)
 		}
 }
 
+void checkselctCB(void *inst)
+{
+	char					*buffer=(char*)alloca(256);
+	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
+
+	cb->CTK_setValue(!cb->CTK_getValue());
+
+	files->LFSTK_setIncludeHidden(cb->CTK_getValue());
+	files->LFSTK_findFiles(infolder);
+	files->LFSTK_setSort(false);
+	files->LFSTK_sortByTypeAndName();
+
+	lb->CTK_clearList();
+	for(int j=0;j<files->data.size();j++)
+		{
+			if(files->data[j].fileType==FOLDERTYPE)
+				sprintf(buffer,"%s/",files->data[j].name.c_str());
+			else
+				sprintf(buffer,"%s",files->data[j].name.c_str());
+			lb->CTK_addListItem(buffer,NULL);
+		}
+}
+
 void mainloopCB(void *mainc,void *data)
 {
 	//fprintf(stderr,">>%p %p<<\n",mainc,data);
@@ -82,6 +105,8 @@ int main(int argc, char **argv)
 	char	*buffer=(char*)alloca(PATH_MAX);
 
 	infolder=get_current_dir_name();
+
+
 	lb->CTK_newListBox(2,2,128,16);
 
 	files->LFSTK_setFindType(ANYTYPE);
@@ -113,6 +138,12 @@ int main(int argc, char **argv)
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
 	mainApp->CTK_addNewButton(124,19,11,1,"CANCEL");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
+
+	mainApp->CTK_addNewCheckBox(64-7,19,14,"Show Hidden");
+//	mainApp->CTK_addNewCheckBox(64,1,20,"Show Hidden2");
+	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
+//	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
