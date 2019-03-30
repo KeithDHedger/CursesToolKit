@@ -154,5 +154,12 @@ bool CTK_cursesTextBoxClass::CTK_getSelectable(void)
 	return(this->canSelect);
 }
 
+const std::string CTK_cursesTextBoxClass::CTK_getText(void)
+{
+	return(this->text);
+}
+
+
+
 
 

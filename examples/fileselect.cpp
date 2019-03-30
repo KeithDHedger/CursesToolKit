@@ -27,6 +27,8 @@ CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 CTK_cursesCheckBoxClass	*hidden=new CTK_cursesCheckBoxClass();
 char					*infolder=NULL;
 bool					isValid=false;
+char					*lastSelectedItem=NULL;
+char					*lastSelectedPath=NULL;
 
 void buttonselctCB(void *inst)
 {
@@ -67,7 +69,11 @@ void listselctCB(void *inst)
 		}
 	else
 		{
-			sprintf(buffer,"File: %s",files->data[ls->listItemNumber].path.c_str());
+			freeAndNull(&lastSelectedItem);
+			freeAndNull(&lastSelectedPath);
+			asprintf(&lastSelectedItem,"%s",ls->listItems[ls->listItemNumber]->label.c_str());
+			asprintf(&lastSelectedPath,"%s",files->data[ls->listItemNumber].path.c_str());
+			sprintf(buffer,"File: %s",lastSelectedPath);
 			mainApp->textBoxes[0]->CTK_updateText(buffer);
 		}
 }
@@ -106,8 +112,7 @@ int main(int argc, char **argv)
 
 	infolder=get_current_dir_name();
 
-
-	lb->CTK_newListBox(2,2,128,16);
+	lb->CTK_newListBox(2,2,mainApp->maxCols-2,16);
 
 	files->LFSTK_setFindType(ANYTYPE);
 	files->LFSTK_setFullPath(true);
@@ -136,14 +141,12 @@ int main(int argc, char **argv)
 
 	mainApp->CTK_addNewButton(2,19,1,1,"  OK  ");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addNewButton(124,19,11,1,"CANCEL");
+	mainApp->CTK_addNewButton(mainApp->maxCols-2-4,19,11,1,"CANCEL");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
 
-	mainApp->CTK_addNewCheckBox(64-7,19,14,"Show Hidden");
-//	mainApp->CTK_addNewCheckBox(64,1,20,"Show Hidden2");
+	mainApp->CTK_addNewCheckBox((mainApp->maxCols/2)-8,19,14,"Show Hidden");
 	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
 	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
-//	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
@@ -155,8 +158,13 @@ int main(int argc, char **argv)
 
 	if(isValid==true)
 		{
-			printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
-			printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+			//printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
+			printf("\nFile '%s' selected.\n",lastSelectedItem);
+			//printf("\nFile '%s' selected.\n",mainApp->textBoxes[0]->CTK_getText().c_str());
+//			printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
+			printf("Fullpath: %s\n",lastSelectedPath);
+			freeAndNull(&lastSelectedItem);
+			freeAndNull(&lastSelectedPath);
 		}
 
 	delete files;

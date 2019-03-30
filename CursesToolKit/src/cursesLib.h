@@ -18,6 +18,8 @@
  * along with CursesMenus.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdlib.h>
+
 #ifndef _CURSESLIB_
 #define _CURSESLIB_
 
@@ -87,6 +89,15 @@ static inline void setForeColour(int fc)
 static inline void setBackColour(int fc)
 {
 	printf("\e[%im",fc);
+}
+
+static inline void freeAndNull(char **data)
+{
+	if((data!=NULL) && (*data!=NULL))
+		{
+			free(*data);
+			*data=NULL;
+		}
 }
 
 #endif

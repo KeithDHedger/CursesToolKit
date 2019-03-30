@@ -39,6 +39,7 @@ class CTK_cursesTextBoxClass
 		void						CTK_scrollPage(bool scrollup);
 		void						CTK_setSelectable(bool canselect);
 		bool						CTK_getSelectable(void);
+		const std::string			CTK_getText(void);
 
 	private:
 		int							sx;
