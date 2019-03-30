@@ -1,21 +1,21 @@
 /*
  *
- * ©K. D. Hedger. Sat 23 Mar 14:23:15 GMT 2019 keithdhedger@gmail.com
+ * ©K. D. Hedger. Sat 30 Mar 16:51:25 GMT 2019 keithdhedger@gmail.com
 
- * This file (cursesInput.cpp) is part of CursesMenus.
+ * This file (cursesInput.cpp) is part of CursesToolKit.
 
- * CursesMenus is free software: you can redistribute it and/or modify
+ * CursesToolKit is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * at your option) any later version.
 
- * CursesMenus is distributed in the hope that it will be useful,
+ * CursesToolKit is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
- * along with CursesMenus.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "cursesInput.h"
