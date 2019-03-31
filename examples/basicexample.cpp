@@ -129,11 +129,17 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_addNewTextBox(1,11,80,1,"Results",false);
 	
 
+	mainApp->colours.foreCol=FORE_WHITE;
+	mainApp->colours.backCol=BACK_BLUE;
+	//mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
 	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
 
+	mainApp->colours.foreCol=FORE_BLACK;
+	mainApp->colours.backCol=BACK_WHITE;
+	//mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();

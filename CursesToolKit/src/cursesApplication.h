@@ -45,6 +45,7 @@ class CTK_mainAppClass
 		std::vector<CTK_cursesListBoxClass*>	lists;
 		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
+		coloursStruct							colours;
 		void									CTK_setColours(coloursStruct cs);
 
 		bool									runEventLoop=false;
@@ -76,7 +77,6 @@ class CTK_mainAppClass
 		int										hiliteCheckBoxNum=-1;
 		HILITING								hiliting=NONE;
 
-		coloursStruct							colours;
 };
 
 #endif
