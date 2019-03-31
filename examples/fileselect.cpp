@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 	lb->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addListBox(lb);
-	mainApp->CTK_addNewTextBox(2,18,128,1,"File:",false);
+	mainApp->CTK_addNewTextBox(2,18,mainApp->maxCols-2,1,"File:",false);
 
 	mainApp->CTK_addNewButton(2,19,1,1,"  OK  ");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
