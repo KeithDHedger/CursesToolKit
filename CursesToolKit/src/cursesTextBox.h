@@ -56,6 +56,7 @@ class CTK_cursesTextBoxClass
 		int							backCol=BACK_BLACK;
 		int							hiliteForeCol=FORE_BLACK;
 		int							hiliteBackCol=BACK_CYAN;
+		bool						use256=false;
 
 		void						scroll(bool scrollup,int numlines);
 };

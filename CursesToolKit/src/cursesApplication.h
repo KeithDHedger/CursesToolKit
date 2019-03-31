@@ -77,14 +77,6 @@ class CTK_mainAppClass
 		HILITING								hiliting=NONE;
 
 		coloursStruct							colours;
-		int										foreCol=FORE_BLACK;
-		int										backCol=BACK_WHITE;
-		int										hiliteForeCol=FORE_BLACK;
-		int										hiliteBackCol=BACK_CYAN;
-		int										indicForeCol=FORE_BLACK;
-		int										indicBackCol=BACK_WHITE;
-		int										windowBackCol=BACK_BLACK;
-		int										windowForeCol=FORE_WHITE;
 };
 
 #endif

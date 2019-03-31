@@ -52,6 +52,7 @@ class CTK_cursesInputClass
 		int			backCol=BACK_YELLOW;
 		int			hiliteForeCol=FORE_BLACK;
 		int			hiliteBackCol=BACK_CYAN;
+		bool		use256=false;
 };
 
 #endif

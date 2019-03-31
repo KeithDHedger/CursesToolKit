@@ -35,13 +35,13 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		{
-			setBackColour(this->hiliteBackCol);
-			setForeColour(this->hiliteForeCol);
+			setBackColour(this->hiliteBackCol,this->use256);
+			setForeColour(this->hiliteForeCol,this->use256);
 		}
 	else
 		{
-			setBackColour(this->backCol);
-			setForeColour(this->foreCol);
+			setBackColour(this->backCol,this->use256);
+			setForeColour(this->foreCol,this->use256);
 		}
 	if(this->value==true)
 		val='X';
@@ -94,5 +94,6 @@ void CTK_cursesCheckBoxClass::CTK_setColours(coloursStruct cs)
 	this->backCol=cs.backCol;
 	this->hiliteForeCol=cs.hiliteForeCol;
 	this->hiliteBackCol=cs.hiliteBackCol;
+	this->use256=cs.use256Colours;
 }
 

@@ -71,24 +71,31 @@ enum BACKCOL8 {BACK_BLACK=40,BACK_RED,BACK_GREEN,BACK_YELLOW,BACK_BLUE,BACK_MAGE
 
 struct coloursStruct
 {
-	int	foreCol=FORE_BLACK;
-	int	backCol=BACK_WHITE;
-	int	hiliteForeCol=FORE_BLACK;
-	int	hiliteBackCol=BACK_CYAN;
-	int	indicForeCol=FORE_BLACK;
-	int	indicBackCol=BACK_WHITE;
-	int	windowBackCol=BACK_BLACK;
-	int	windowForeCol=FORE_WHITE;
+	int		foreCol=FORE_BLACK;
+	int		backCol=BACK_WHITE;
+	int		hiliteForeCol=FORE_BLACK;
+	int		hiliteBackCol=BACK_CYAN;
+	int		indicForeCol=FORE_BLACK;
+	int		indicBackCol=BACK_WHITE;
+	int		windowBackCol=BACK_BLACK;
+	int		windowForeCol=FORE_WHITE;
+	bool	use256Colours=false;
 };
 
-static inline void setForeColour(int fc)
+static inline void setForeColour(int fc,bool use256=false)
 {
-	printf("\e[%im",fc);
+	if(use256==false)
+		printf("\e[%im",fc);
+	else
+		printf("\e[38;5;%im",fc);
 }
 
-static inline void setBackColour(int fc)
+static inline void setBackColour(int fc,bool use256=false)
 {
-	printf("\e[%im",fc);
+	if(use256==false)
+		printf("\e[%im",fc);
+	else
+		printf("\e[48;5;%im",fc);
 }
 
 static inline void freeAndNull(char **data)

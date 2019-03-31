@@ -95,7 +95,10 @@ Pasting is done via middle click of mouse as usual.\
 	//printf("%i %i %i\n",cs.foreCol,cs.backCol,cs.hiliteBackCol);
 	//exit(0);
 	coloursStruct cs;
-	//cs.backCol=139;
+	cs.use256Colours=false;
+	//cs.windowBackCol=100;
+	//cs.hiliteBackCol=69;
+	//cs.hiliteForeCol=53;
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
@@ -123,15 +126,13 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
 	mainApp->CTK_addNewTextBox(1,2,80,8,sampletxt);
-	mainApp->CTK_addNewTextBox(1,11,64,1,"Results",false);
+	mainApp->CTK_addNewTextBox(1,11,80,1,"Results",false);
 	
 
 	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	//mainApp->buttons[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
-	//mainApp->buttons[1]->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addNewInput(8,15,32,1,"Some input");
 

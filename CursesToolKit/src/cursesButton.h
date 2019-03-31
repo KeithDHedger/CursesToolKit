@@ -51,6 +51,7 @@ class CTK_cursesButtonClass
 		int		backCol=BACK_RED;
 		int		hiliteForeCol=FORE_BLACK;
 		int		hiliteBackCol=BACK_CYAN;
+		bool	use256=false;
 		bool	enterDeselects=true;
 };
 

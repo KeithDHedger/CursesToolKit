@@ -52,6 +52,7 @@ class CTK_cursesCheckBoxClass
 		int		backCol=BACK_RED;
 		int		hiliteForeCol=FORE_BLACK;
 		int		hiliteBackCol=BACK_CYAN;
+		bool	use256=false;
 		bool	value=false;
 		bool	enterDeselects=true;
 };

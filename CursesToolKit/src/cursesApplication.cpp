@@ -123,10 +123,10 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
 	CTK_mainAppClass	*app=static_cast<CTK_mainAppClass*>(object);
 
-	printf("\e[2J\e[H");
-//	fflush(NULL);
-//	printf("\e[2J\e[H");
+	setBackColour(app->colours.windowBackCol,app->colours.use256Colours);
+	setForeColour(app->colours.windowForeCol,app->colours.use256Colours);
 
+	printf("\e[2J\e[H");
 
 	for(int j=0;j<app->textBoxes.size();j++)
 		{
@@ -444,18 +444,10 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 			this->eventLoopCB(this,NULL);
 		}
 }
+
 void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
-//	this->=cs->;
 }
 
 

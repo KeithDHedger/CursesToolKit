@@ -75,6 +75,7 @@ class CTK_cursesListBoxClass
 		int							backCol=BACK_WHITE;
 		int							hiliteForeCol=FORE_BLACK;
 		int							hiliteBackCol=BACK_CYAN;
+		bool						use256=false;
 };
 
 #endif

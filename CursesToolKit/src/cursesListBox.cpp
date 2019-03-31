@@ -43,19 +43,19 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 		{
 			if(hilite==true)
 				{
-					setBackColour(this->hiliteBackCol);
-					setForeColour(this->hiliteForeCol);
+					setBackColour(this->hiliteBackCol,this->use256);
+					setForeColour(this->hiliteForeCol,this->use256);
 				}
 			else
 				{
-					setBackColour(this->backCol);
-					setForeColour(this->foreCol);
+					setBackColour(this->backCol,this->use256);
+					setForeColour(this->foreCol,this->use256);
 				}
 
 			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
 				{
-					setBackColour(BACK_WHITE);
-					setForeColour(FORE_BLACK);
+					setBackColour(BACK_WHITE,false);
+					setForeColour(FORE_BLACK,false);
 				}
 
 			MOVETO(this->sx,this->sy+j);
@@ -141,5 +141,6 @@ void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
 	this->backCol=cs.backCol;
 	this->hiliteForeCol=cs.hiliteForeCol;
 	this->hiliteBackCol=cs.hiliteBackCol;
+	this->use256=cs.use256Colours;
 }
 
