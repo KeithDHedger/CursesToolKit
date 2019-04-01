@@ -72,11 +72,6 @@ class CTK_cursesListBoxClass
 		std::string					blank;
 
 		coloursStruct				colours;
-//		int							foreCol=FORE_BLACK;
-//		int							backCol=BACK_WHITE;
-//		int							hiliteForeCol=FORE_BLACK;
-//		int							hiliteBackCol=BACK_CYAN;
-//		bool						use256=false;
 };
 
 #endif

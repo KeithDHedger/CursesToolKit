@@ -29,7 +29,6 @@
 #define NEXTSCRLINE "\n\e[8C"
 
 #define	SETNORMAL printf("\e[0m")
-
 #define NORMAL "\e[0m"
 
 #define UNDERSCOREON "\e[4m"
@@ -41,6 +40,22 @@
 #define SETSHOWCURS printf("\e[?25h")
 
 #define MOVETO(x,y) printf("\e[%i;%iH",y,x);fflush(NULL);
+
+#define ALTCHARSET "\e(0"
+#define NORMCHARSET "\e(B"
+#define SETALTCHARSET printf("\e(0")
+#define SETNORMCHARSET printf("\e(B")
+#define TOPLEFT "l"
+#define TOPRITE "k"
+#define BOTTOMLEFT "m"
+#define BOTTOMRITE "j"
+#define VBAR "x"
+#define HBAR "q"
+#define TDOWN "w"
+#define TUP "v"
+#define TLEFT "u"
+#define TRIGHT "t"
+#define CROSS "n"
 
 //ui
 #define BRAKE -1
@@ -69,6 +84,8 @@
 enum FORECOL8 {FORE_BLACK=30,FORE_RED,FORE_GREEN,FORE_YELLOW,FORE_BLUE,FORE_MAGENTA,FORE_CYAN,FORE_WHITE,FORE_BOLD_BLACK=90,FORE_BOLD_RED,FORE_BOLD_GREEN,FORE_BOLD_YELLOW,FORE_BOLD_BLUE,FORE_BOLD_MAGENTA,FORE_BOLD_CYAN,FORE_BOLD_WHITE};
 enum BACKCOL8 {BACK_BLACK=40,BACK_RED,BACK_GREEN,BACK_YELLOW,BACK_BLUE,BACK_MAGENTA,BACK_CYAN,BACK_WHITE,BACK_BOLD_BLACK=100,BACK_BOLD_RED,BACK_BOLD_GREEN,BACK_BOLD_YELLOW,BACK_BOLD_BLUE,BACK_BOLD_MAGENTA,BACK_BOLD_CYAN,BACK_BOLD_WHITE};
 
+enum {PLAINBOX=0,OUTBOX,INBOX};
+
 struct coloursStruct
 {
 	int		foreCol=FORE_BLACK;
@@ -79,6 +96,9 @@ struct coloursStruct
 	int		indicBackCol=BACK_WHITE;
 	int		windowBackCol=BACK_BLACK;
 	int		windowForeCol=FORE_WHITE;
+	//int		boxTLCol=FORE_BLACK;
+	//int		boxBRCol=FORE_WHITE;
+	int		boxType=PLAINBOX;
 	bool	use256Colours=false;
 	bool	fancyGadgets=false;
 };

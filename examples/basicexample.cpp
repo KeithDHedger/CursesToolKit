@@ -90,10 +90,6 @@ Shortcut keys can be used ( without the CTRL key when menus are open )\n\
 Pasting is done via middle click of mouse as usual.\
 ";
 
-	//coloursStruct	cs;
-//
-	//printf("%i %i %i\n",cs.foreCol,cs.backCol,cs.hiliteBackCol);
-	//exit(0);
 	coloursStruct cs;
 	//cs.use256Colours=false;
 	//cs.windowBackCol=100;
@@ -126,29 +122,34 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
-	cs.foreCol=FORE_WHITE;
-	cs.backCol=BACK_BLACK;
-	mainApp->CTK_addNewTextBox(1,2,80,8,sampletxt);
-	mainApp->CTK_addNewTextBox(1,11,80,1,"Results",false);
+	cs.foreCol=FORE_BLACK;
+	cs.backCol=BACK_WHITE;
+	cs.boxType=OUTBOX;
+//cs.fancyGadgets=true;
+	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
+	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 	mainApp->textBoxes[0]->CTK_setColours(cs);
+	cs.boxType=INBOX;
+	mainApp->textBoxes[1]->CTK_setColours(cs);
+//cs.fancyGadgets=false;
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 
-	mainApp->CTK_addNewButton(8,13,30,1,"Hello World");
+	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
 	mainApp->buttons[0]->CTK_setColours(cs);
 	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addNewButton(32,13,11,1,"A Button");
+	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
 	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
 	mainApp->buttons[1]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_YELLOW;
-	mainApp->CTK_addNewInput(8,15,36,1,"Some input");
+	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->inputs[0]->CTK_setColours(cs);
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	lb->CTK_newListBox(82,2,10,4);
+	lb->CTK_newListBox(86,3,10,4);
 	lb->CTK_addListItem("Item 1");
 	lb->CTK_addListItem("Item 2");
 	lb->CTK_addListItem("Item 3",(void*)0xdeadbeef);
@@ -164,10 +165,10 @@ Pasting is done via middle click of mouse as usual.\
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_RED;
-	mainApp->CTK_addNewCheckBox(82,13,10,"A Checkbox");
+	mainApp->CTK_addNewCheckBox(86,8,10,"A Checkbox");
 	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
 	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
-	mainApp->CTK_addNewCheckBox(82,15,10,"Checkbox 2");
+	mainApp->CTK_addNewCheckBox(86,10,10,"Checkbox 2");
 	mainApp->checkBoxes[1]->CTK_setSelectCB(checkselctCB);
 	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
 	mainApp->checkBoxes[0]->CTK_setColours(cs);

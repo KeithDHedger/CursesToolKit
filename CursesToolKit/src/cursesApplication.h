@@ -29,6 +29,7 @@
 #include "cursesInput.h"
 #include "cursesListBox.h"
 #include "cursesCheckBox.h"
+#include "cursesGraphics.h"
 
 enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS};
 class CTK_mainAppClass

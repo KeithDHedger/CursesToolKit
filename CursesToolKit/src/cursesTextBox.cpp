@@ -80,12 +80,20 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	if(xcnt>0)
 		this->txtstrings.push_back(str);
 }
-
+#include "cursesGraphics.h"
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 {
 	int xcnt=0;
 	int ycnt=0;
 	int j=0;
+
+	if(this->colours.fancyGadgets==true)
+		{
+			CTK_cursesGraphicsClass *gc=new CTK_cursesGraphicsClass;
+			gc->CTK_setColours(this->colours);
+			gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.boxType,true);
+			delete gc;
+		}
 
 	if(hilite==true)
 		{
@@ -115,7 +123,7 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 				}
 			else
 				return;
-		}
+		}		
 }
 
 void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)

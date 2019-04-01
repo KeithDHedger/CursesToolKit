@@ -137,11 +137,6 @@ bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
 
 void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
 {
-//	this->foreCol=cs.foreCol;
-//	this->backCol=cs.backCol;
-//	this->hiliteForeCol=cs.hiliteForeCol;
-//	this->hiliteBackCol=cs.hiliteBackCol;
-//	this->use256=cs.use256Colours;
 	this->colours=cs;
 }
 

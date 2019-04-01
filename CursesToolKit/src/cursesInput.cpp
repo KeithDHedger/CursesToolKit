@@ -167,12 +167,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
-//	this->foreCol=cs.foreCol;
-//	this->backCol=cs.backCol;
-//	this->hiliteForeCol=cs.hiliteForeCol;
-//	this->hiliteBackCol=cs.hiliteBackCol;
-//	this->use256=cs.use256Colours;
-//	this->colours=cs;
 }
 
 
