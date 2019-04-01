@@ -52,11 +52,12 @@ class CTK_cursesTextBoxClass
 		std::string					blank;
 		std::vector<std::string>	txtstrings;
 		bool						canSelect=true;
-		int							foreCol=FORE_WHITE;
-		int							backCol=BACK_BLACK;
-		int							hiliteForeCol=FORE_BLACK;
-		int							hiliteBackCol=BACK_CYAN;
-		bool						use256=false;
+		coloursStruct				colours;
+//		int							foreCol=FORE_WHITE;
+//		int							backCol=BACK_BLACK;
+//		int							hiliteForeCol=FORE_BLACK;
+//		int							hiliteBackCol=BACK_CYAN;
+//		bool						use256=false;
 
 		void						scroll(bool scrollup,int numlines);
 };

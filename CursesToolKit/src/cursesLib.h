@@ -80,6 +80,7 @@ struct coloursStruct
 	int		windowBackCol=BACK_BLACK;
 	int		windowForeCol=FORE_WHITE;
 	bool	use256Colours=false;
+	bool	fancyGadgets=false;
 };
 
 static inline void setForeColour(int fc,bool use256=false)

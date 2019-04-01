@@ -48,11 +48,12 @@ class CTK_cursesInputClass
 		std::string	text;
 		std::string	blank;
 		TermKey		*tk;
-		int			foreCol=FORE_BLACK;
-		int			backCol=BACK_YELLOW;
-		int			hiliteForeCol=FORE_BLACK;
-		int			hiliteBackCol=BACK_CYAN;
-		bool		use256=false;
+		coloursStruct	colours;
+//		int			foreCol=FORE_BLACK;
+//		int			backCol=BACK_YELLOW;
+//		int			hiliteForeCol=FORE_BLACK;
+//		int			hiliteBackCol=BACK_CYAN;
+//		bool		use256=false;
 };
 
 #endif

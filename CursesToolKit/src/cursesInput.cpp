@@ -59,13 +59,13 @@ void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 {
 	if(hilite==true)
 		{
-			setBackColour(this->hiliteBackCol,this->use256);
-			setForeColour(this->hiliteForeCol,this->use256);
+			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
+			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
 		}
 	else
 		{
-			setBackColour(this->backCol,this->use256);
-			setForeColour(this->foreCol,this->use256);
+			setBackColour(this->colours.backCol,this->colours.use256Colours);
+			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
 	MOVETO(this->sx,this->sy);
@@ -166,11 +166,13 @@ void CTK_cursesInputClass::CTK_doInput(void)
 
 void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
-	this->foreCol=cs.foreCol;
-	this->backCol=cs.backCol;
-	this->hiliteForeCol=cs.hiliteForeCol;
-	this->hiliteBackCol=cs.hiliteBackCol;
-	this->use256=cs.use256Colours;
+	this->colours=cs;
+//	this->foreCol=cs.foreCol;
+//	this->backCol=cs.backCol;
+//	this->hiliteForeCol=cs.hiliteForeCol;
+//	this->hiliteBackCol=cs.hiliteBackCol;
+//	this->use256=cs.use256Colours;
+//	this->colours=cs;
 }
 
 

@@ -35,17 +35,20 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		{
-			setBackColour(this->hiliteBackCol,this->use256);
-			setForeColour(this->hiliteForeCol,this->use256);
+			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
+			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
 		}
 	else
 		{
-			setBackColour(this->backCol,this->use256);
-			setForeColour(this->foreCol,this->use256);
+			setBackColour(this->colours.backCol,this->colours.use256Colours);
+			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 	if(this->value==true)
 		val='X';
-	printf("%c %s",val,this->label);
+	if(this->colours.fancyGadgets==false)
+		printf("%c %s",val,this->label);
+	else
+		printf("[%c] %s",val,this->label);
 }
 
 void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *label)
@@ -61,11 +64,6 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 void CTK_cursesCheckBoxClass::CTK_setSelectCB(void (*select)(void *))
 {
 	this->selectCB=select;
-}
-
-void CTK_cursesCheckBoxClass::CTK_setColours(int forcol,int backcol,int hilite)
-{
-	this->foreCol=forcol;
 }
 
 void CTK_cursesCheckBoxClass::CTK_setValue(bool val)
@@ -90,10 +88,6 @@ bool CTK_cursesCheckBoxClass::CTK_getEnterDeselects(void)
 
 void CTK_cursesCheckBoxClass::CTK_setColours(coloursStruct cs)
 {
-	this->foreCol=cs.foreCol;
-	this->backCol=cs.backCol;
-	this->hiliteForeCol=cs.hiliteForeCol;
-	this->hiliteBackCol=cs.hiliteBackCol;
-	this->use256=cs.use256Colours;
+	this->colours=cs;
 }
 

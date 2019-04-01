@@ -71,11 +71,12 @@ class CTK_cursesListBoxClass
 		bool						enterDeselects=true;
 		std::string					blank;
 
-		int							foreCol=FORE_BLACK;
-		int							backCol=BACK_WHITE;
-		int							hiliteForeCol=FORE_BLACK;
-		int							hiliteBackCol=BACK_CYAN;
-		bool						use256=false;
+		coloursStruct				colours;
+//		int							foreCol=FORE_BLACK;
+//		int							backCol=BACK_WHITE;
+//		int							hiliteForeCol=FORE_BLACK;
+//		int							hiliteBackCol=BACK_CYAN;
+//		bool						use256=false;
 };
 
 #endif

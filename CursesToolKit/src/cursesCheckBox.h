@@ -33,7 +33,6 @@ class CTK_cursesCheckBoxClass
 		char	*label;
 
 		void	CTK_newCheckBox(int x,int y,int width,const char *label="");
-		void	CTK_setColours(int forcol,int backcol,int hilite);
 		void	CTK_drawCheckBox(bool hilite=false);
 		void	CTK_setValue(bool val);
 		bool	CTK_getValue(void);
@@ -48,11 +47,8 @@ class CTK_cursesCheckBoxClass
 		int		sy;
 		int		wid;
 		int		hite;
-		int		foreCol=FORE_BLACK;
-		int		backCol=BACK_RED;
-		int		hiliteForeCol=FORE_BLACK;
-		int		hiliteBackCol=BACK_CYAN;
-		bool	use256=false;
+
+		coloursStruct	colours;
 		bool	value=false;
 		bool	enterDeselects=true;
 };
