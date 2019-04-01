@@ -25,6 +25,7 @@
 #include <vector>
 
 #include "cursesLib.h"
+#include "cursesGraphics.h"
 
 class CTK_cursesTextBoxClass
 {
@@ -53,6 +54,7 @@ class CTK_cursesTextBoxClass
 		std::vector<std::string>	txtstrings;
 		bool						canSelect=true;
 		coloursStruct				colours;
+		CTK_cursesGraphicsClass *gc;
 
 		void						scroll(bool scrollup,int numlines);
 };

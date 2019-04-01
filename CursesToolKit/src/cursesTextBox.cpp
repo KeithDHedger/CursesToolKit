@@ -22,10 +22,13 @@
 
 CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
 {
+	delete this->gc;
 }
 
 CTK_cursesTextBoxClass::CTK_cursesTextBoxClass()
 {
+	this->gc=new CTK_cursesGraphicsClass;
+	gc->CTK_setColours(this->colours);
 }
 
 void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const char *txt,bool selectable)
@@ -89,10 +92,10 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 
 	if(this->colours.fancyGadgets==true)
 		{
-			CTK_cursesGraphicsClass *gc=new CTK_cursesGraphicsClass;
-			gc->CTK_setColours(this->colours);
+//			CTK_cursesGraphicsClass *gc=new CTK_cursesGraphicsClass;
+//			gc->CTK_setColours(this->colours);
 			gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.boxType,true);
-			delete gc;
+//			delete gc;
 		}
 
 	if(hilite==true)
