@@ -238,8 +238,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 											case TERMKEY_SYM_ESCAPE:
 												loop=false;
 												selection=BRAKE;
-												MOVETO(1,1);
-												printf(CLEARTOEOS);
+												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												return(selection);
 												break;
 											case TERMKEY_SYM_UP:
