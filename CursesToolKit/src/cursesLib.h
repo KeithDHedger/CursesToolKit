@@ -39,6 +39,10 @@
 #define SETHIDECURS printf("\e[?25l")
 #define SETSHOWCURS printf("\e[?25h")
 
+#define CLEARTOEOL "\e[0K"
+#define CLEARTOSOL "\e[1K"
+#define CLEARTOEOS "\e[0J"
+
 #define MOVETO(x,y) printf("\e[%i;%iH",y,x);fflush(NULL);
 
 #define ALTCHARSET "\e(0"
@@ -96,9 +100,10 @@ struct coloursStruct
 	int		indicBackCol=BACK_WHITE;
 	int		windowBackCol=BACK_BLACK;
 	int		windowForeCol=FORE_WHITE;
-	//int		boxTLCol=FORE_BLACK;
-	//int		boxBRCol=FORE_WHITE;
 	int		boxType=PLAINBOX;
+	int		textBoxType=OUTBOX;
+	int		inputBoxType=INBOX;
+	int		listBoxType=INBOX;
 	bool	use256Colours=false;
 	bool	fancyGadgets=false;
 };

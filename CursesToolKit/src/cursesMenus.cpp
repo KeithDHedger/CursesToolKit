@@ -45,6 +45,7 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	maxRows=rows-mBarHite+1;
 	menuHite=rows-mBarHite;
 	this->menuNames.clear();
+	CTK_setColours(this->colours);
 }
 
 void CTK_cursesMenuClass::CTK_drawMenuBar(void)
@@ -107,12 +108,22 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	switch(style)
 		{
 			case FLATINVERT:
-				setBackColour(this->hiliteBackCol);
-				setForeColour(this->hiliteForeCol);
+				//setBackColour(this->hiliteBackCol);
+				setBackColour(this->colours.hiliteBackCol);
+				//setForeColour(this->hiliteForeCol);
+				setForeColour(this->colours.hiliteForeCol);
 				break;
 			case FLATNORM:
-				setBackColour(this->backCol);
-				setForeColour(this->foreCol);
+				setBackColour(this->colours.backCol);
+				setForeColour(this->colours.foreCol);
+//				setBackColour(this->backCol);
+//				setForeColour(this->foreCol);
+				break;
+			case BLANK:
+//				setBackColour(FORE_BLACK);
+//				setForeColour(BACK_BLACK);
+				setBackColour(this->colours.windowBackCol);
+				setForeColour(this->colours.windowBackCol);
 				break;
 		}
 
@@ -121,11 +132,18 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	else
 		themenu=this->menuNames[menunum]->menuItem[menuitem];
 
+	if(style==BLANK)
+		{
+			MOVETO(x+this->menuWidth+1,y);
+			printf(CLEARTOSOL);
+			return;
+		}
+
 	for(unsigned j=0;j<this->menuWidth;j++)
 		{
 			if(j<strlen(themenu->menuName))
 				{
-					if((themenu->menuName[j]=='_') && (doshortcut==true))
+					if((themenu->menuName[j]=='_') && (doshortcut==true) && (style!=BLANK))
 						{
 							j++;
 							printf("%s%c%s",UNDERSCOREON,themenu->menuName[j],UNDERSCOREOFF);
@@ -164,10 +182,17 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
 		{
-			if(prelight==cnt)
-				this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+			if(prelight==-10000)
+				{
+					this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,BLANK,doshortcut,true);
+				}
 			else
-				this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
+				{
+					if(prelight==cnt)
+						this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+					else
+						this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
+				}
 		}
 	SETNORMAL;
 	return(maxitems);
@@ -213,6 +238,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 											case TERMKEY_SYM_ESCAPE:
 												loop=false;
 												selection=BRAKE;
+												MOVETO(1,1);
+												printf(CLEARTOEOS);
 												return(selection);
 												break;
 											case TERMKEY_SYM_UP:
@@ -248,6 +275,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 												break;
 											case TERMKEY_SYM_LEFT:
 												menuStart=0;
+												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuNumber--;
 												if(this->menuNumber<0)
 													this->menuNumber=0;
@@ -257,6 +285,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 												break;
 											case TERMKEY_SYM_RIGHT:
 												menuStart=0;
+												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												selection=0;
 												loop=false;
 												this->menuNumber++;
@@ -300,6 +329,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 												continue;
 												break;
 											case TERMKEY_SYM_ENTER:
+												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuItemNumber=selection+this->menuStart-1;
 												this->selectCB(this);
 												return(SELECTED);
@@ -312,6 +342,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 							case TERMKEY_TYPE_UNICODE:
 								if(key.modifiers==0)
 									{
+										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										tstr[1]=toupper(key.code.codepoint);
 										if(this->CTK_doShortCutKey(tstr[1],this->menuNumber)==true)
 											{
@@ -363,6 +394,11 @@ void CTK_cursesMenuClass::CTK_setUpdateCB(void (*update)(void *,void*),void* mai
 void CTK_cursesMenuClass::CTK_setSelectCB(void (*select)(void *))
 {
 	this->selectCB=select;
+}
+
+void CTK_cursesMenuClass::CTK_setColours(coloursStruct cs)
+{
+	this->colours=cs;
 }
 
 

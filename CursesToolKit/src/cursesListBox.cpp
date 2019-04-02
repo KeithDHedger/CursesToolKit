@@ -23,10 +23,13 @@
 CTK_cursesListBoxClass::~CTK_cursesListBoxClass()
 {
 	this->CTK_clearList();
+	delete this->gc;
 }
 
 CTK_cursesListBoxClass::CTK_cursesListBoxClass()
 {
+	this->gc=new CTK_cursesGraphicsClass;
+	this->gc->CTK_setColours(this->colours);
 }
 
 void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
@@ -39,6 +42,9 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 
 void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 {
+	if(this->colours.fancyGadgets==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,true);
+
 	for(int j=0;j<this->hite;j++)
 		{
 			if(hilite==true)
@@ -138,5 +144,6 @@ bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
 void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
+	this->gc->CTK_setColours(this->colours);
 }
 

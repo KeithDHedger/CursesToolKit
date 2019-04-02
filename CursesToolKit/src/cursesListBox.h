@@ -34,6 +34,7 @@
 #include <vector>
 
 #include "cursesLib.h"
+#include "cursesGraphics.h"
 
 struct listItemStruct
 {
@@ -72,6 +73,7 @@ class CTK_cursesListBoxClass
 		std::string					blank;
 
 		coloursStruct				colours;
+		CTK_cursesGraphicsClass	*gc;
 };
 
 #endif

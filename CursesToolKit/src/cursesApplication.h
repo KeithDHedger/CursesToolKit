@@ -46,6 +46,7 @@ class CTK_mainAppClass
 		std::vector<CTK_cursesListBoxClass*>	lists;
 		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
+		void									CTK_clearScreen(void);
 		coloursStruct							colours;
 		void									CTK_setColours(coloursStruct cs);
 

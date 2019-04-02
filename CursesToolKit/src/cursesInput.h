@@ -25,6 +25,7 @@
 #include <termkey.h>
 
 #include "cursesLib.h"
+#include "cursesGraphics.h"
 
 class CTK_cursesInputClass
 {
@@ -49,6 +50,7 @@ class CTK_cursesInputClass
 		std::string	blank;
 		TermKey		*tk;
 		coloursStruct	colours;
+		CTK_cursesGraphicsClass	*gc;
 };
 
 #endif

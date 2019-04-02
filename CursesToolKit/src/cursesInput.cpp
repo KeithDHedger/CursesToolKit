@@ -22,6 +22,7 @@
 
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
+	delete this->gc;
 }
 
 CTK_cursesInputClass::CTK_cursesInputClass()
@@ -33,6 +34,8 @@ CTK_cursesInputClass::CTK_cursesInputClass()
 			exit(1);
 		}
 
+	this->gc=new CTK_cursesGraphicsClass;
+	gc->CTK_setColours(this->colours);
 }
 
 void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt)
@@ -57,6 +60,9 @@ void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt
 
 void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 {
+	if(this->colours.fancyGadgets==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
+
 	if(hilite==true)
 		{
 			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -167,6 +173,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
+	gc->CTK_setColours(this->colours);
 }
 
 

@@ -45,7 +45,7 @@ struct	menuStruct
 	std::map<int,menuStruct*>		menuItem;
 };
 
-enum menuStyle {FLATNORM=0,FLATINVERT};
+enum menuStyle {FLATNORM=0,FLATINVERT,BLANK};
 
 class CTK_cursesMenuClass
 {
@@ -69,6 +69,7 @@ class CTK_cursesMenuClass
 		void						CTK_clearMenu(int menunum);
 		int							CTK_doMenuEvent(int sx,int sy,bool doshortcut);//togo private
 		bool						CTK_doShortCutKey(char key,int menunum);
+		void						CTK_setColours(coloursStruct cs);
 
 	private:
 		void						(*updateCB)(void *,void*);
@@ -86,10 +87,7 @@ class CTK_cursesMenuClass
 		int							menuHite=1;
 		int							rows=0;
 		unsigned					maxRows=0;
-		int							foreCol=FORE_BLACK;
-		int							backCol=BACK_GREEN;
-		int							hiliteForeCol=FORE_GREEN;
-		int							hiliteBackCol=BACK_BLACK;
+		coloursStruct				colours;
 };
 
 #endif

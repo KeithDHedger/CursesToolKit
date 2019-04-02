@@ -44,10 +44,18 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->maxCols=w.ws_col;
 }
 
+void CTK_mainAppClass::CTK_clearScreen(void)
+{
+	setBackColour(this->colours.windowBackCol,this->colours.use256Colours);
+	setForeColour(this->colours.windowForeCol,this->colours.use256Colours);
+	printf("\e[2J\e[H");
+}
+
 void CTK_mainAppClass::CTK_addNewMenuBar(void)
 {
 	this->menuBar=new CTK_cursesMenuClass();
 	this->menuBar->CTK_setUpdateCB(this->CTK_updateScreen,this);
+	this->menuBar->CTK_setColours(this->colours);
 }
 
 void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
@@ -126,7 +134,10 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	setBackColour(app->colours.windowBackCol,app->colours.use256Colours);
 	setForeColour(app->colours.windowForeCol,app->colours.use256Colours);
 
-	printf("\e[2J\e[H");
+	if(app->menuBar!=NULL)
+		app->menuBar->CTK_drawMenuBar();
+
+//	printf("\e[2J\e[H");
 
 	for(int j=0;j<app->textBoxes.size();j++)
 		{
@@ -168,8 +179,8 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->lists[j]->CTK_drawListWindow(false);
 		}
 
-	if(app->menuBar!=NULL)
-		app->menuBar->CTK_drawMenuBar();
+//	if(app->menuBar!=NULL)
+//		app->menuBar->CTK_drawMenuBar();
 
 	SETNORMAL;
 }
@@ -191,6 +202,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 			exit(1);
 		}
 
+	this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);
 	SETHIDECURS;
 	fflush(NULL);
@@ -200,6 +212,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 			ret=termkey_waitkey(tk,&key);
 //fprintf(stderr,"key.code.sym=%i<<\n",key.code.sym);
 //fprintf(stderr,"key.code.codepoint=%i<<\n",key.code.codepoint);
+//fprintf(stderr,"key.modifiers=%i<<\n",key.modifiers);
 //char	*buffer=(char*)alloca(256);;
 //termkey_strfkey(tk, buffer, 255, &key, format);
 //fprintf(stderr,"buffer=%s<<\n",buffer);
@@ -221,7 +234,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 										break;
 									case TERMKEY_SYM_TAB:
-										if(key.modifiers==1)
+										if((key.modifiers==1) || (key.modifiers==2))
 											{
 												if(this->hiliting==NONE)
 													{
