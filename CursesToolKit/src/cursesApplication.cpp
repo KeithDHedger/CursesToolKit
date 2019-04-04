@@ -97,6 +97,14 @@ void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *labe
 	this->checkBoxes.push_back(cb);
 }
 
+void CTK_mainAppClass::CTK_addNewEditBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+{
+	CTK_cursesEditBoxClass	*edbox=new CTK_cursesEditBoxClass();
+	edbox->CTK_newBox(x,y,width,hite,txt,selectable);
+	edbox->CTK_setColours(this->colours);
+	this->editBoxes.push_back(edbox);
+}
+
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
 {
 	this->menuBar=mb;
@@ -125,6 +133,11 @@ void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBoxClass *lb)
 void CTK_mainAppClass::CTK_addCheckBox(CTK_cursesCheckBoxClass *cb)
 {
 	this->checkBoxes.push_back(cb);
+}
+
+void CTK_mainAppClass::CTK_addEditBox(CTK_cursesEditBoxClass *edbox)
+{
+	this->editBoxes.push_back(edbox);
 }
 
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
@@ -171,6 +184,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->checkBoxes[j]->CTK_drawCheckBox(false);
 		}
 
+	for(int j=0;j<app->editBoxes.size();j++)
+		{
+			if(app->hiliteEditBoxNum==j)
+				app->editBoxes[j]->CTK_drawBox(true);
+			else
+				app->editBoxes[j]->CTK_drawBox(false);
+		}
+
 	for(int j=0;j<app->lists.size();j++)
 		{
 			if(app->hiliteListNum==j)
@@ -179,10 +200,101 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->lists[j]->CTK_drawListWindow(false);
 		}
 
-//	if(app->menuBar!=NULL)
-//		app->menuBar->CTK_drawMenuBar();
-
 	SETNORMAL;
+}
+
+void CTK_mainAppClass::setHilite(bool forward)
+{
+	int addit=1;
+	if(forward==false)
+		addit=-1;
+
+	switch(this->hlhiliting)
+		{
+			case HLNONE:
+				this->hlhiliting+=addit;
+				if(this->hlhiliting==-2)
+					{
+						this->hlhiliting=HLNOMORE-1;
+						this->hiliteEditBoxNum=this->editBoxes.size();
+					}
+				this->setHilite(forward);
+				break;
+			case HLBUTTONS:
+				this->hiliteBtnNum+=addit;
+				if((this->hiliteBtnNum<0) || (this->hiliteBtnNum>=this->buttons.size()))
+					{
+						this->hiliteBtnNum=-1;
+						this->hlhiliting+=addit;
+						if(addit==-1)
+							this->hlhiliting=HLNONE;
+						else
+							this->setHilite(forward);
+					}
+				break;
+			case HLTEXT:
+				this->hiliteTxtBoxNum+=addit;
+					
+				if((this->hiliteTxtBoxNum<0) || (this->hiliteTxtBoxNum>=this->textBoxes.size()))
+					{
+						this->hiliteTxtBoxNum=-1;
+						if(addit==-1)
+							this->hiliteBtnNum=this->buttons.size();
+						this->hlhiliting+=addit;
+						this->setHilite(forward);
+					}
+				else
+					if(this->textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==false)
+						this->setHilite(forward);
+				break;
+			case HLINPUTS:
+				this->hiliteInputNum+=addit;
+				if((this->hiliteInputNum<0) || (this->hiliteInputNum>=this->inputs.size()))
+					{
+						this->hiliteInputNum=-1;
+						if(addit==-1)
+							this->hiliteTxtBoxNum=this->textBoxes.size();
+						this->hlhiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
+			case HLLISTS:
+				this->hiliteListNum+=addit;
+				if((this->hiliteListNum<0) || (this->hiliteListNum>=this->lists.size()))
+					{
+						this->hiliteListNum=-1;
+						if(addit==-1)
+							this->hiliteInputNum=this->inputs.size();
+						this->hlhiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
+			case HLCHKBOXS:
+				this->hiliteCheckBoxNum+=addit;
+				if((this->hiliteCheckBoxNum<0) || (this->hiliteCheckBoxNum>=this->checkBoxes.size()))
+					{
+						this->hiliteCheckBoxNum=-1;
+						if(addit==-1)
+							this->hiliteListNum=this->lists.size();
+						this->hlhiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
+			case HLEDITBOXES:
+				this->hiliteEditBoxNum+=addit;
+				if((this->hiliteEditBoxNum<0) || (this->hiliteEditBoxNum>=this->editBoxes.size()))
+					{
+						this->hiliteEditBoxNum=-1;
+						if(addit==-1)
+							this->hiliteCheckBoxNum=this->checkBoxes.size();
+						this->hlhiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
+			case HLNOMORE:
+				this->hlhiliting=NONE;
+				break;
+		}
 }
 
 void CTK_mainAppClass::CTK_mainEventLoop(void)
@@ -228,154 +340,18 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteInputNum=-1;
 										this->hiliteListNum=-1;
 										this->hiliteCheckBoxNum=-1;
-
 										this->hiliting=NONE;
 										this->CTK_updateScreen(this,NULL);
-										selection=this->menuBar->CTK_doMenuEvent(0,1,true);
+										if(this->menuBar!=NULL)
+											selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 										break;
+
+//tab select
 									case TERMKEY_SYM_TAB:
 										if((key.modifiers==1) || (key.modifiers==2))
-											{
-												if(this->hiliting==NONE)
-													{
-														this->hiliting=CHKBOXS;
-														this->hiliteCheckBoxNum=this->checkBoxes.size();
-													}
-												switch(this->hiliting)
-													{
-														case CHKBOXS:
-															this->hiliteCheckBoxNum--;
-															if(this->hiliteCheckBoxNum<0)
-																{
-																	this->hiliteCheckBoxNum=-1;
-																	this->hiliteListNum=this->lists.size();
-																	this->hiliting=LISTS;
-																}
-															else
-																break;
-														case LISTS:
-															this->hiliteListNum--;
-															if(this->hiliteListNum<0)
-																{
-																	this->hiliteListNum=-1;
-																	this->hiliteInputNum=this->inputs.size();
-																	this->hiliting=INPUTS;
-																}
-															else
-																break;
-														case INPUTS:
-															this->hiliteInputNum--;
-															if(this->hiliteInputNum<0)
-																{
-																	this->hiliteInputNum=-1;
-																	this->hiliteTxtBoxNum=this->textBoxes.size();
-																	this->hiliting=TEXT;
-																}
-															else
-																break;
-														case TEXT:
-															this->hiliteTxtBoxNum--;
-															if(this->hiliteTxtBoxNum<0)
-																{
-																	this->hiliteTxtBoxNum=-1;
-																	this->hiliteBtnNum=this->buttons.size();
-																	this->hiliting=BUTTONS;
-																}
-															else
-																{
-																	if(this->textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==true)
-																		break;
-																	else
-																		{
-																			this->hiliteTxtBoxNum--;
-																			if(this->hiliteTxtBoxNum<0)
-																				{
-																					this->hiliteTxtBoxNum=-1;
-																					this->hiliteBtnNum=this->buttons.size();
-																					this->hiliting=BUTTONS;
-																				}
-																			else
-																				break;
-																		}
-																}
-														case BUTTONS:
-															this->hiliteBtnNum--;
-															if(this->hiliteBtnNum<0)
-																{
-																	this->hiliteBtnNum=-1;
-																	this->hiliting=NONE;
-																}
-															else
-																break;
-													}
-											}
+											setHilite(false);
 										else
-											{
-												if(this->hiliting==NONE)
-													this->hiliting=BUTTONS;
-												switch(this->hiliting)
-													{
-														case BUTTONS:
-															this->hiliteBtnNum++;
-															if(this->hiliteBtnNum>=this->buttons.size())
-																{
-																	this->hiliteBtnNum=-1;
-																	this->hiliting=TEXT;
-																}
-															else
-																break;
-														case TEXT:
-															this->hiliteTxtBoxNum++;
-															if(this->hiliteTxtBoxNum>=this->textBoxes.size())
-																{
-																	this->hiliteTxtBoxNum=-1;
-																	this->hiliting=INPUTS;
-																}
-															else
-																{
-																	if(this->textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==true)
-																		break;
-																	else
-																		{
-																			this->hiliteTxtBoxNum++;
-																			if(this->hiliteTxtBoxNum>=this->textBoxes.size())
-																				{
-																					this->hiliteTxtBoxNum=-1;
-																					this->hiliting=INPUTS;
-																				}
-																			else
-																				break;
-																		}
-																}
-														case INPUTS:
-															this->hiliteInputNum++;
-															if(this->hiliteInputNum>=this->inputs.size())
-																{
-																	this->hiliteInputNum=-1;
-																	this->hiliting=LISTS;
-																}
-															else
-																break;
-														case LISTS:
-															this->hiliteListNum++;
-															if(this->hiliteListNum>=this->lists.size())
-																{
-																	this->hiliteListNum=-1;
-																	this->hiliting=CHKBOXS;
-																}
-															else
-																break;
-														case CHKBOXS:
-															this->hiliteCheckBoxNum++;
-															if(this->hiliteCheckBoxNum>=this->checkBoxes.size())
-																{
-																	this->hiliteCheckBoxNum=-1;
-																	this->hiliting=NONE;
-																}
-															else
-																break;
-													}
-											}
+											setHilite(true);
 										break;
 
 //scroll txt boxes and lists

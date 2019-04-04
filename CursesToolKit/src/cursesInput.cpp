@@ -173,7 +173,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
-	gc->CTK_setColours(this->colours);
+	this->gc->CTK_setColours(this->colours);
 }
 
 

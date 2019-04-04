@@ -131,14 +131,18 @@ Pasting is done via middle click of mouse as usual.\
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
+	mainApp->CTK_setColours(cs);
 //	cs.boxType=OUTBOX;
 //cs.fancyGadgets=true;
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
-	mainApp->textBoxes[0]->CTK_setColours(cs);
+//	mainApp->textBoxes[0]->CTK_setColours(cs);
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 	cs.textBoxType=INBOX;
 	mainApp->textBoxes[1]->CTK_setColours(cs);
 //cs.fancyGadgets=false;
+
+	mainApp->CTK_addNewEditBox(101,3,40,8,sampletxt);
+	mainApp->editBoxes[0]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
@@ -154,6 +158,7 @@ Pasting is done via middle click of mouse as usual.\
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->inputs[0]->CTK_setColours(cs);
+
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	lb->CTK_newListBox(86,3,10,4);

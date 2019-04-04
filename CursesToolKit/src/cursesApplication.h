@@ -29,9 +29,12 @@
 #include "cursesInput.h"
 #include "cursesListBox.h"
 #include "cursesCheckBox.h"
+#include "cursesEditBox.h"
 #include "cursesGraphics.h"
 
-enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS};
+enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS,EDITBOXES,NOMORE};
+enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLNOMORE};
+//enum {NOHILITE=-1,HILITEBTN,HILITETXT,
 class CTK_mainAppClass
 {
 	public:
@@ -40,11 +43,12 @@ class CTK_mainAppClass
 
 		int										maxCols;
 		int										maxRows;
-		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
 		std::vector<CTK_cursesButtonClass*>		buttons;
+		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
 		std::vector<CTK_cursesInputClass*>		inputs;
 		std::vector<CTK_cursesListBoxClass*>	lists;
 		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
+		std::vector<CTK_cursesEditBoxClass*>	editBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
 		void									CTK_clearScreen(void);
 		coloursStruct							colours;
@@ -60,6 +64,7 @@ class CTK_mainAppClass
 		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewListBox(int x,int y,int width,int hite);
 		void									CTK_addNewCheckBox(int x,int y,int width,const char *label);
+		void									CTK_addNewEditBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
@@ -67,17 +72,21 @@ class CTK_mainAppClass
 		void									CTK_addInput(CTK_cursesInputClass *inp);
 		void									CTK_addListBox(CTK_cursesListBoxClass *lb);
 		void									CTK_addCheckBox(CTK_cursesCheckBoxClass *cb);
+		void									CTK_addEditBox(CTK_cursesEditBoxClass *edbox);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
 
 	private:
+		void									setHilite(bool forward);
 		int										hiliteBtnNum=-1;
 		int										hiliteTxtBoxNum=-1;
 		int										hiliteInputNum=-1;
 		int										hiliteListNum=-1;
 		int										hiliteCheckBoxNum=-1;
+		int										hiliteEditBoxNum=-1;
 		HILITING								hiliting=NONE;
+		int										hlhiliting=HLNONE;
 
 };
 

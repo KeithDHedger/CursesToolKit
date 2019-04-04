@@ -1,4 +1,7 @@
 0.0.8
+Cleaned tab select.
+Added edit box class.
+Fixed pressing 'ESC' with no menu bar.
 Various graphics changes.
 Added graphics class.
 
