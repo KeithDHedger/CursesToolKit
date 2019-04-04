@@ -21,6 +21,7 @@
 #include <string>
 #include <termkey.h>
 #include <vector>
+#include <termkey.h>
 
 #include "cursesLib.h"
 #include "cursesGraphics.h"
@@ -38,7 +39,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_setColours(coloursStruct cs);
 		void						CTK_updateText(const char *txt);
 		void						CTK_drawBox(bool hilite=false);
-
+		void						CTK_doEditEvent(void);
 	private:
 		int							sx;
 		int							sy;
@@ -54,6 +55,11 @@ class CTK_cursesEditBoxClass
 		TermKey						*tk;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
+
+		void						scrollLine(bool scrollup);
+		void						scrollPage(bool scrollup);
+		void						scroll(bool scrollup,int numlines);
+
 };
 
 #endif

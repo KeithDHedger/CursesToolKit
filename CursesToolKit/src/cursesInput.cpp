@@ -23,6 +23,7 @@
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
 	delete this->gc;
+	termkey_destroy(this->tk);
 }
 
 CTK_cursesInputClass::CTK_cursesInputClass()

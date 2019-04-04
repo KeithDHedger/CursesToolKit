@@ -381,6 +381,13 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										break;
 
 									case TERMKEY_SYM_ENTER:
+										if(this->hiliteEditBoxNum!=-1)
+											{
+												this->editBoxes[this->hiliteEditBoxNum]->CTK_doEditEvent();
+												this->hiliteEditBoxNum=-1;
+												this->CTK_updateScreen(this,NULL);
+											}
+											
 										if(this->hiliteBtnNum!=-1)
 											{
 												this->buttons[this->hiliteBtnNum]->selectCB((void*)this->buttons[this->hiliteBtnNum]);

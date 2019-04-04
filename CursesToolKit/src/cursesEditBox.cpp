@@ -23,6 +23,7 @@
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {
 	delete this->gc;
+	termkey_destroy(this->tk);
 }
 
 CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
@@ -52,6 +53,7 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->hite=hite;
 	this->canSelect=selectable;
 
+	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
 }
 
@@ -136,4 +138,67 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 		}		
 }
 
+void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
+{
+	bool			loop=true;
+	TermKeyResult	ret;
+	TermKeyKey		key;
+	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
+	char			buffer[32];
 
+	this->CTK_drawBox(false);
+	SETSHOWCURS;
+	fflush(NULL);
+	while(loop==true)
+		{
+			ret=termkey_waitkey(this->tk,&key);
+			termkey_strfkey(this->tk,buffer,32,&key,format);
+			switch(key.type)
+				{
+					case TERMKEY_TYPE_KEYSYM:
+						{
+							switch(key.code.sym)
+								{
+									case TERMKEY_SYM_ESCAPE:
+										loop=false;
+										continue;
+										break;
+									case TERMKEY_SYM_UP:
+										this->scrollLine(true);
+										break;
+									case TERMKEY_SYM_DOWN:
+										this->scrollLine(false);
+										break;
+								}
+						}
+				}
+			this->CTK_drawBox(false);
+		}
+	SETHIDECURS;
+}
+
+void CTK_cursesEditBoxClass::scrollLine(bool scrollup)
+{
+	this->scroll(scrollup,1);
+}
+
+void CTK_cursesEditBoxClass::scrollPage(bool scrollup)
+{
+	this->scroll(scrollup,this->hite);
+}
+
+void CTK_cursesEditBoxClass::scroll(bool scrollup,int numlines)
+{
+	if(scrollup==true)
+		{
+			this->startLine-=numlines;
+			if(this->startLine<0)
+				this->startLine=0;
+		}
+	else
+		{
+			this->startLine+=numlines;
+			if(this->txtstrings.size()-this->startLine<this->hite)
+				this->startLine=this->txtstrings.size()-this->hite;
+		}
+}
