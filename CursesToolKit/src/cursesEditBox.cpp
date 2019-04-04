@@ -59,6 +59,22 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 
 void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
 {
+	char	*ptr=NULL;
+	char	*txtcpy=strdup(txt);
+
+	this->txtstrings.clear();
+
+	ptr=strtok(txtcpy,"\n");
+	while(ptr!=NULL)
+		{
+			this->txtstrings.push_back(ptr);
+			ptr=strtok(NULL,"\n");
+		}
+	free(txtcpy);
+}
+#if 0
+void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
+{
 	char		*line=(char*)alloca(this->wid+1);
 	int			xcnt=0;
 	int			ycnt=0;
@@ -97,6 +113,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
 	if(xcnt>0)
 		this->txtstrings.push_back(str);
 }
+#endif
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 {
@@ -125,6 +142,40 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 			printf("%s",this->blank.c_str());
 		}
 
+int startchr=0;
+int linenum=0;
+int chrsused=0;
+int boxline=0;
+	while(boxline<this->hite)
+		{
+			chrsused=0;
+			startchr=0;
+			
+			while(this->txtstrings[linenum+this->startLine].length()-chrsused>this->wid)
+				{
+					MOVETO(this->sx,this->sy+boxline);
+					fprintf(stderr,"%s\n" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
+					printf( "%s" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
+					startchr+=this->wid;
+					chrsused+=this->wid;
+					boxline++;
+					if(boxline>=this->hite)
+						return;
+				}
+			
+			if(chrsused<this->txtstrings[linenum+this->startLine].length())
+				{
+					MOVETO(this->sx,this->sy+boxline);
+					printf( "%s" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
+					fprintf(stderr,">>%s<<\n" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
+					boxline++;
+					if(boxline>=this->hite)
+						return;
+				}
+			linenum++;
+					//printf( "%s" ,this->txtstrings[j+this->startLine].c_str());
+		}		
+return;
 	while(j<this->hite)
 		{
 			if(j<this->txtstrings.size())

@@ -22,6 +22,7 @@
 #include <termkey.h>
 #include <vector>
 #include <termkey.h>
+#include <string.h>
 
 #include "cursesLib.h"
 #include "cursesGraphics.h"
