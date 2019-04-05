@@ -61,65 +61,41 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
 {
 	char	*ptr=NULL;
 	char	*txtcpy=strdup(txt);
+	char	*buffer=NULL;
+	int		startchr=0;
 
 	this->txtstrings.clear();
 
 	ptr=strtok(txtcpy,"\n");
 	while(ptr!=NULL)
 		{
-			this->txtstrings.push_back(ptr);
+			startchr=0;
+			asprintf(&buffer,"%s",ptr);
+			while(strlen(buffer)-startchr>this->wid)
+				{
+					buffer[startchr+this->wid]=0;
+					fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+					this->txtstrings.push_back(&buffer[startchr]);
+					startchr+=this->wid;
+					sprintf(buffer,"%s",ptr);
+				}
+
+			if(startchr<strlen(buffer))
+				{
+					this->txtstrings.push_back(&buffer[startchr]);
+					fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+				}
+
+			free(buffer);
 			ptr=strtok(NULL,"\n");
 		}
-	free(txtcpy);
 }
-#if 0
-void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
-{
-	char		*line=(char*)alloca(this->wid+1);
-	int			xcnt=0;
-	int			ycnt=0;
-	std::string	str;
-
-	line[0]=0;
-	this->text=txt;
-	this->txtstrings.clear();
-
-	for(int j=0;j<this->text.length();j++)
-		{
-			if(this->text.c_str()[j]=='\n')
-				{
-					ycnt++;
-					sprintf(&line[xcnt],"%c",0);
-					str=line;
-					this->txtstrings.push_back(str);
-					xcnt=0;
-					continue;
-				}
-
-			sprintf(&line[xcnt],"%c",this->text.c_str()[j]);
-			xcnt++;
-
-			if(xcnt>=this->wid)
-				{
-					ycnt++;
-					sprintf(&line[xcnt],"%c",0);
-					str=line;
-					this->txtstrings.push_back(str);
-					xcnt=0;
-				}
-		}
-
-	str=line;
-	if(xcnt>0)
-		this->txtstrings.push_back(str);
-}
-#endif
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 {
-	int xcnt=0;
-	int ycnt=0;
-	int j=0;
+	int	startchr=0;
+	int	linenum=0;
+	int	boxline=0;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
@@ -135,58 +111,25 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
-	MOVETO(this->sx,this->sy);
+//	MOVETO(this->sx,this->sy);
 	for(int j=0;j<this->hite;j++)
 		{
 			MOVETO(this->sx,this->sy+j);
 			printf("%s",this->blank.c_str());
 		}
 
-int startchr=0;
-int linenum=0;
-int chrsused=0;
-int boxline=0;
 	while(boxline<this->hite)
 		{
-			chrsused=0;
-			startchr=0;
-			
-			while(this->txtstrings[linenum+this->startLine].length()-chrsused>this->wid)
+			MOVETO(this->sx,this->sy+boxline);
+			printf( "%s" ,this->txtstrings[boxline+this->startLine].c_str());
+			if(this->currentY==boxline+this->startLine)
 				{
-					MOVETO(this->sx,this->sy+boxline);
-					fprintf(stderr,"%s\n" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
-					printf( "%s" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
-					startchr+=this->wid;
-					chrsused+=this->wid;
-					boxline++;
-					if(boxline>=this->hite)
-						return;
+					MOVETO(this->sx+this->currentX,this->sy+boxline);
+					printf( INVERSEON "%c" INVERSEOFF ,this->txtstrings[boxline+this->startLine].c_str()[this->currentX]);
 				}
-			
-			if(chrsused<this->txtstrings[linenum+this->startLine].length())
-				{
-					MOVETO(this->sx,this->sy+boxline);
-					printf( "%s" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
-					fprintf(stderr,">>%s<<\n" ,this->txtstrings[linenum+this->startLine].substr(startchr,this->wid).c_str());
-					boxline++;
-					if(boxline>=this->hite)
-						return;
-				}
-			linenum++;
-					//printf( "%s" ,this->txtstrings[j+this->startLine].c_str());
-		}		
-return;
-	while(j<this->hite)
-		{
-			if(j<this->txtstrings.size())
-				{
-					MOVETO(this->sx,this->sy+j);
-					printf( "%s" ,this->txtstrings[j+this->startLine].c_str());
-					j++;
-				}
-			else
-				return;
-		}		
+			boxline++;
+		}
+	MOVETO(this->sx,this->sy+boxline);
 }
 
 void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
@@ -198,12 +141,13 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 	char			buffer[32];
 
 	this->CTK_drawBox(false);
-	SETSHOWCURS;
 	fflush(NULL);
+
 	while(loop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
 			termkey_strfkey(this->tk,buffer,32,&key,format);
+
 			switch(key.type)
 				{
 					case TERMKEY_TYPE_KEYSYM:
@@ -215,17 +159,41 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										continue;
 										break;
 									case TERMKEY_SYM_UP:
-										this->scrollLine(true);
+										this->currentY--;
+										if(currentY<this->startLine)
+											this->startLine--;
+										if(this->currentY<0)
+											{
+												this->currentY=0;
+												this->startLine=0;
+											}
+										if(this->currentX>=this->txtstrings[this->currentY].length())
+											this->currentX=this->txtstrings[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_DOWN:
-										this->scrollLine(false);
+										this->currentY++;
+										if(this->currentY>=this->txtstrings.size())
+											this->currentY=this->txtstrings.size()-1;
+										if((this->currentY-this->startLine)>=this->hite)
+											this->startLine++;
+										if(this->currentX>=this->txtstrings[this->currentY].length())
+											this->currentX=this->txtstrings[this->currentY].length()-1;
+										break;
+									case TERMKEY_SYM_LEFT:
+										this->currentX--;
+										if(this->currentX<0)
+											this->currentX=0;
+										break;
+									case TERMKEY_SYM_RIGHT:
+										this->currentX++;
+										if(this->currentX>=this->txtstrings[currentY].length())
+											this->currentX=this->txtstrings[currentY].length()-1;
 										break;
 								}
 						}
 				}
 			this->CTK_drawBox(false);
 		}
-	SETHIDECURS;
 }
 
 void CTK_cursesEditBoxClass::scrollLine(bool scrollup)

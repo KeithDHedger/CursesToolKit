@@ -23,6 +23,7 @@
 #include <vector>
 #include <termkey.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "cursesLib.h"
 #include "cursesGraphics.h"
@@ -41,6 +42,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_updateText(const char *txt);
 		void						CTK_drawBox(bool hilite=false);
 		void						CTK_doEditEvent(void);
+
 	private:
 		int							sx;
 		int							sy;
@@ -51,11 +53,15 @@ class CTK_cursesEditBoxClass
 		int							startLine=0;
 		std::string					text;
 		std::string					blank;
+		std::string					hold;
 		std::vector<std::string>	txtstrings;
 
 		TermKey						*tk;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
+
+		int							currentX;
+		int							currentY;
 
 		void						scrollLine(bool scrollup);
 		void						scrollPage(bool scrollup);

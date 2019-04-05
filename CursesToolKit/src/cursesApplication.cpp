@@ -386,6 +386,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 												this->editBoxes[this->hiliteEditBoxNum]->CTK_doEditEvent();
 												this->hiliteEditBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);
+												continue;
 											}
 											
 										if(this->hiliteBtnNum!=-1)
