@@ -97,10 +97,10 @@ void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *labe
 	this->checkBoxes.push_back(cb);
 }
 
-void CTK_mainAppClass::CTK_addNewEditBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+void CTK_mainAppClass::CTK_addNewEditBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesEditBoxClass	*edbox=new CTK_cursesEditBoxClass();
-	edbox->CTK_newBox(x,y,width,hite,txt,selectable);
+	edbox->CTK_newBox(x,y,width,hite,isfilename,txt,selectable);
 	edbox->CTK_setColours(this->colours);
 	this->editBoxes.push_back(edbox);
 }

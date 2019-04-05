@@ -45,7 +45,7 @@ void CTK_cursesEditBoxClass::CTK_setColours(coloursStruct cs)
 	this->gc->CTK_setColours(this->colours);
 }
 
-void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	this->sx=x;
 	this->sy=y;
@@ -54,9 +54,81 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->canSelect=selectable;
 
 	this->blank.insert(this->blank.begin(),width,' ');
-	this->CTK_updateText(txt);
+	this->CTK_updateText(txt,isfilename);
 }
 
+#if 1
+void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
+{
+	char	*ptr=NULL;
+	char	*txtcpy=NULL;
+	char	*buffer=NULL;
+	int		startchr=0;
+	char	*cpybuf=(char*)alloca(this->wid+1);
+
+	this->txtstrings.clear();
+	if(isfilename==false)
+		txtcpy=strdup(txt);
+	else
+		{
+			FILE *f=fopen(txt,"rb");
+			fseek(f,0,SEEK_END);
+			long fsize=ftell(f);
+			fseek(f,0,SEEK_SET);
+			txtcpy=(char*)malloc(fsize+1);
+			fread(txtcpy,1,fsize,f);
+			fclose(f);
+			txtcpy[fsize]=0;
+		}
+
+	ptr=strtok(txtcpy,"\n");
+	while(ptr!=NULL)
+		{
+			int numchars=0;
+			int cnt=0;
+			startchr=0;
+			asprintf(&buffer,"%s",ptr);
+			while(cnt<strlen(buffer))
+			{
+			while(numchars<this->wid)
+				{
+					cpybuf[startchr]=buffer[cnt++];
+					if(cpybuf[startchr]=='\t')
+						numchars+=8;
+					else
+						numchars++;
+					startchr++;
+				}
+				cpybuf[startchr]=0;
+				this->txtstrings.push_back(cpybuf);
+				startchr=0;
+				numchars=0;
+				fprintf(stderr,"%s\n",cpybuf);
+			}
+			free(buffer);
+			ptr=strtok(NULL,"\n");
+		}
+//		return;
+//			while(strlen(buffer)-startchr>this->wid)
+//				{
+//					buffer[startchr+this->wid]=0;
+//					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+//					this->txtstrings.push_back(&buffer[startchr]);
+//					startchr+=this->wid;
+//					sprintf(buffer,"%s",ptr);
+//				}
+//
+//			if(startchr<strlen(buffer))
+//				{
+//					this->txtstrings.push_back(&buffer[startchr]);
+//					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+//				}
+//
+//			free(buffer);
+//			ptr=strtok(NULL,"\n");
+//		}
+}
+#else
 void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 {
 	char	*ptr=NULL;
@@ -69,16 +141,14 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 		txtcpy=strdup(txt);
 	else
 		{
-FILE *f = fopen("textfile.txt", "rb");
-fseek(f, 0, SEEK_END);
-long fsize = ftell(f);
-fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
-
-char *string = malloc(fsize + 1);
-fread(string, 1, fsize, f);
-fclose(f);
-
-string[fsize] = 0;			
+			FILE *f=fopen(txt,"rb");
+			fseek(f,0,SEEK_END);
+			long fsize=ftell(f);
+			fseek(f,0,SEEK_SET);
+			txtcpy=(char*)malloc(fsize+1);
+			fread(txtcpy,1,fsize,f);
+			fclose(f);
+			txtcpy[fsize]=0;
 		}
 
 	ptr=strtok(txtcpy,"\n");
@@ -89,7 +159,7 @@ string[fsize] = 0;
 			while(strlen(buffer)-startchr>this->wid)
 				{
 					buffer[startchr+this->wid]=0;
-					fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
 					this->txtstrings.push_back(&buffer[startchr]);
 					startchr+=this->wid;
 					sprintf(buffer,"%s",ptr);
@@ -98,17 +168,19 @@ string[fsize] = 0;
 			if(startchr<strlen(buffer))
 				{
 					this->txtstrings.push_back(&buffer[startchr]);
-					fprintf(stderr,">>%s<<\n",&buffer[startchr]);
+					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
 				}
 
 			free(buffer);
 			ptr=strtok(NULL,"\n");
 		}
 }
+#endif
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 {
 	int	startchr=0;
+	int j;
 	int	linenum=0;
 	int	boxline=0;
 
@@ -138,8 +210,16 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 			printf( "%s" ,this->txtstrings[boxline+this->startLine].c_str());
 			if((this->currentY==boxline+this->startLine) && (showcursor==true))
 				{
-					MOVETO(this->sx+this->currentX,this->sy+boxline);
-					printf( INVERSEON "%c" INVERSEOFF ,this->txtstrings[boxline+this->startLine].c_str()[this->currentX]);
+					MOVETO(this->sx,this->sy+boxline);
+					for(j=0;j<this->currentX;j++)
+						{
+							printf("%c",this->txtstrings[boxline+this->startLine].c_str()[j]);
+						}
+					if(this->txtstrings[boxline+this->startLine].c_str()[j]!='\t')
+						printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
+					else
+						//printf( INVERSEON "\t\e[D " INVERSEOFF);
+						printf( INVERSEON TABSPACE INVERSEOFF);
 				}
 			boxline++;
 		}
@@ -206,6 +286,9 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 											this->currentX=0;
 										break;
 									case TERMKEY_SYM_RIGHT:
+										//if(this->txtstrings[currentY][this->currentX+1]=='\t')
+										//	this->currentX+=8;
+										//else
 										this->currentX++;
 										if(this->currentX>=this->txtstrings[currentY].length())
 											this->currentX=this->txtstrings[currentY].length()-1;
