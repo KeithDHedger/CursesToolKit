@@ -57,14 +57,29 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
-void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
+void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 {
 	char	*ptr=NULL;
-	char	*txtcpy=strdup(txt);
+	char	*txtcpy=NULL;
 	char	*buffer=NULL;
 	int		startchr=0;
 
 	this->txtstrings.clear();
+	if(isfilename==false)
+		txtcpy=strdup(txt);
+	else
+		{
+FILE *f = fopen("textfile.txt", "rb");
+fseek(f, 0, SEEK_END);
+long fsize = ftell(f);
+fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
+
+char *string = malloc(fsize + 1);
+fread(string, 1, fsize, f);
+fclose(f);
+
+string[fsize] = 0;			
+		}
 
 	ptr=strtok(txtcpy,"\n");
 	while(ptr!=NULL)
@@ -91,7 +106,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt)
 		}
 }
 
-void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
+void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 {
 	int	startchr=0;
 	int	linenum=0;
@@ -111,7 +126,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
-//	MOVETO(this->sx,this->sy);
 	for(int j=0;j<this->hite;j++)
 		{
 			MOVETO(this->sx,this->sy+j);
@@ -122,7 +136,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite)
 		{
 			MOVETO(this->sx,this->sy+boxline);
 			printf( "%s" ,this->txtstrings[boxline+this->startLine].c_str());
-			if(this->currentY==boxline+this->startLine)
+			if((this->currentY==boxline+this->startLine) && (showcursor==true))
 				{
 					MOVETO(this->sx+this->currentX,this->sy+boxline);
 					printf( INVERSEON "%c" INVERSEOFF ,this->txtstrings[boxline+this->startLine].c_str()[this->currentX]);
@@ -140,7 +154,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
 	char			buffer[32];
 
-	this->CTK_drawBox(false);
+	this->CTK_drawBox(false,true);
 	fflush(NULL);
 
 	while(loop==true)
@@ -158,6 +172,13 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										loop=false;
 										continue;
 										break;
+								case TERMKEY_SYM_HOME:
+									this->currentX=0;
+									break;
+								case TERMKEY_SYM_END:
+									this->currentX=this->txtstrings[this->currentY].length()-1;
+									break;
+
 									case TERMKEY_SYM_UP:
 										this->currentY--;
 										if(currentY<this->startLine)
@@ -192,7 +213,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 								}
 						}
 				}
-			this->CTK_drawBox(false);
+			this->CTK_drawBox(false,true);
 		}
 }
 

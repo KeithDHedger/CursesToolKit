@@ -39,8 +39,8 @@ class CTK_cursesEditBoxClass
 
 		void						CTK_newBox(int x,int y,int width,int hite,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
-		void						CTK_updateText(const char *txt);
-		void						CTK_drawBox(bool hilite=false);
+		void						CTK_updateText(const char *txt,bool isfilename=false);
+		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		void						CTK_doEditEvent(void);
 
 	private:
