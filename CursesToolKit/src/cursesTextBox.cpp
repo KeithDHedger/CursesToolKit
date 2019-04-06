@@ -43,8 +43,86 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
+std::vector<std::string> CTK_cursesTextBoxClass::explode(const std::string s,const char c)
+{
+	std::string buff;
+	std::vector<std::string> v;
+
+	for(unsigned int j=0;j<s.length();j++)
+		{
+			if(s.c_str()[j]!=c)
+				buff+=s.c_str()[j];
+			else
+				{
+					v.push_back(buff);
+					buff="";
+				}
+		}
+
+	if(buff!="")
+		v.push_back(buff);
+
+	return(v);
+}
+
 void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 {
+#if 1
+	const char					*ptr=NULL;
+	char						*buffer=NULL;
+	int							startchr=0;
+	char						*cpybuf=(char*)alloca(this->wid+1);
+	std::vector<std::string>	array;
+	std::string					str;
+
+	this->txtstrings.clear();
+	this->text.clear();
+	//freeAndNull(&this->text);
+
+//	if(isfilename==false)
+		this->text=txt;
+//	else
+//		{
+//			FILE *f=fopen(txt,"rb");
+//			fseek(f,0,SEEK_END);
+//			long fsize=ftell(f);
+//			fseek(f,0,SEEK_SET);
+//			this->txtBuffer=(char*)malloc(fsize+1);
+//			fread(this->txtBuffer,1,fsize,f);
+//			fclose(f);
+//			this->txtBuffer[fsize]=0;
+//		}
+
+	str=this->text;
+	array=this->explode(str,'\n');
+
+	for(int j=0;j<array.size();j++)
+		{
+			ptr=array[j].c_str();
+			int numchars=0;
+			int cnt=0;
+			startchr=0;
+			asprintf(&buffer,"%s\n",ptr);
+			while(cnt<strlen(buffer))
+				{
+					while(numchars<this->wid)
+						{
+							cpybuf[startchr]=buffer[cnt++];
+							if(cpybuf[startchr]=='\t')
+								numchars+=8;
+							else
+								numchars++;
+							startchr++;
+						}
+					cpybuf[startchr]=0;
+					this->txtstrings.push_back(cpybuf);
+					startchr=0;
+					numchars=0;
+				}
+			free(buffer);
+		}
+
+#else
 	char		*line=(char*)alloca(this->wid+1);
 	int			xcnt=0;
 	int			ycnt=0;
@@ -82,6 +160,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	str=line;
 	if(xcnt>0)
 		this->txtstrings.push_back(str);
+#endif
 }
 
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)

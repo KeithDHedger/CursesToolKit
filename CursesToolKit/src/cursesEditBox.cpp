@@ -80,7 +80,6 @@ std::vector<std::string> CTK_cursesEditBoxClass::explode(const std::string s,con
 	return(v);
 }
 
-
 void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 {
 	const char					*ptr=NULL;

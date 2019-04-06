@@ -23,6 +23,7 @@
 
 #include <string>
 #include <vector>
+#include <string.h>
 
 #include "cursesLib.h"
 #include "cursesGraphics.h"
@@ -56,6 +57,7 @@ class CTK_cursesTextBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 
+		std::vector<std::string>	explode(const std::string s,const char c);
 		void						scroll(bool scrollup,int numlines);
 };
 
