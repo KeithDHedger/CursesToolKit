@@ -53,9 +53,10 @@ class CTK_cursesEditBoxClass
 		bool						canSelect=true;
 
 		int							startLine=0;
-		std::string					text;
+		//std::string					text;
 		std::string					blank;
-		std::string					hold;
+		//std::string					hold;
+		char						*txtBuffer=NULL;
 
 		TermKey						*tk;
 		coloursStruct				colours;
@@ -67,7 +68,8 @@ class CTK_cursesEditBoxClass
 		void						scrollLine(bool scrollup);
 		void						scrollPage(bool scrollup);
 		void						scroll(bool scrollup,int numlines);
-
+		void						updateBuffer(void);
+		std::vector<std::string>			explode(const std::string s,const char c);
 };
 
 #endif

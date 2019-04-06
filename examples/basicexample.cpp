@@ -145,7 +145,7 @@ Pasting is done via middle click of mouse as usual.\
 	cs.backCol=BACK_YELLOW;
 	cs.foreCol=FORE_BLACK;
 	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/etc/fstab");
+	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/IGNORE/fstab");
 	mainApp->editBoxes[0]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_WHITE;

@@ -22,6 +22,7 @@
 
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {
+	free(this->txtBuffer);
 	delete this->gc;
 	termkey_destroy(this->tk);
 }
@@ -57,33 +58,61 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 	this->CTK_updateText(txt,isfilename);
 }
 
-#if 1
+std::vector<std::string> CTK_cursesEditBoxClass::explode(const std::string s,const char c)
+{
+	std::string buff;
+	std::vector<std::string> v;
+
+	for(unsigned int j=0;j<s.length();j++)
+		{
+			if(s.c_str()[j]!=c)
+				buff+=s.c_str()[j];
+			else
+				{
+					v.push_back(buff);
+					buff="";
+				}
+		}
+
+	if(buff!="")
+		v.push_back(buff);
+
+	return(v);
+}
+
+
 void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 {
-	char	*ptr=NULL;
-	char	*txtcpy=NULL;
-	char	*buffer=NULL;
-	int		startchr=0;
-	char	*cpybuf=(char*)alloca(this->wid+1);
+	const char					*ptr=NULL;
+	char						*buffer=NULL;
+	int							startchr=0;
+	char						*cpybuf=(char*)alloca(this->wid+1);
+	std::vector<std::string>	array;
+	std::string					str;
 
 	this->txtstrings.clear();
+	freeAndNull(&this->txtBuffer);
+
 	if(isfilename==false)
-		txtcpy=strdup(txt);
+		this->txtBuffer=strdup(txt);
 	else
 		{
 			FILE *f=fopen(txt,"rb");
 			fseek(f,0,SEEK_END);
 			long fsize=ftell(f);
 			fseek(f,0,SEEK_SET);
-			txtcpy=(char*)malloc(fsize+1);
-			fread(txtcpy,1,fsize,f);
+			this->txtBuffer=(char*)malloc(fsize+1);
+			fread(this->txtBuffer,1,fsize,f);
 			fclose(f);
-			txtcpy[fsize]=0;
+			this->txtBuffer[fsize]=0;
 		}
 
-	ptr=strtok(txtcpy,"\n");
-	while(ptr!=NULL)
+	str=this->txtBuffer;
+	array=this->explode(str,'\n');
+
+	for(int j=0;j<array.size();j++)
 		{
+			ptr=array[j].c_str();
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
@@ -103,79 +132,10 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 					this->txtstrings.push_back(cpybuf);
 					startchr=0;
 					numchars=0;
-					fprintf(stderr,"%s\n",cpybuf);
 				}
 			free(buffer);
-			ptr=strtok(NULL,"\n");
-		}
-//		return;
-//			while(strlen(buffer)-startchr>this->wid)
-//				{
-//					buffer[startchr+this->wid]=0;
-//					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
-//					this->txtstrings.push_back(&buffer[startchr]);
-//					startchr+=this->wid;
-//					sprintf(buffer,"%s",ptr);
-//				}
-//
-//			if(startchr<strlen(buffer))
-//				{
-//					this->txtstrings.push_back(&buffer[startchr]);
-//					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
-//				}
-//
-//			free(buffer);
-//			ptr=strtok(NULL,"\n");
-//		}
-}
-#else
-void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
-{
-	char	*ptr=NULL;
-	char	*txtcpy=NULL;
-	char	*buffer=NULL;
-	int		startchr=0;
-
-	this->txtstrings.clear();
-	if(isfilename==false)
-		txtcpy=strdup(txt);
-	else
-		{
-			FILE *f=fopen(txt,"rb");
-			fseek(f,0,SEEK_END);
-			long fsize=ftell(f);
-			fseek(f,0,SEEK_SET);
-			txtcpy=(char*)malloc(fsize+1);
-			fread(txtcpy,1,fsize,f);
-			fclose(f);
-			txtcpy[fsize]=0;
-		}
-
-	ptr=strtok(txtcpy,"\n");
-	while(ptr!=NULL)
-		{
-			startchr=0;
-			asprintf(&buffer,"%s",ptr);
-			while(strlen(buffer)-startchr>this->wid)
-				{
-					buffer[startchr+this->wid]=0;
-					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
-					this->txtstrings.push_back(&buffer[startchr]);
-					startchr+=this->wid;
-					sprintf(buffer,"%s",ptr);
-				}
-
-			if(startchr<strlen(buffer))
-				{
-					this->txtstrings.push_back(&buffer[startchr]);
-					//fprintf(stderr,">>%s<<\n",&buffer[startchr]);
-				}
-
-			free(buffer);
-			ptr=strtok(NULL,"\n");
 		}
 }
-#endif
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 {
@@ -215,6 +175,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 						{
 							printf("%c",this->txtstrings[boxline+this->startLine].c_str()[j]);
 						}
+
 					switch(this->txtstrings[boxline+this->startLine].c_str()[j])
 						{
 							case '\t':
@@ -227,13 +188,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 								printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
 								break;
 						}
-//					if(!='\t')
-//						printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
-//					else
-//						if(this->txtstrings[boxline+this->startLine].c_str()[j]!='\t')
-//							printf( INVERSEON SPACETAB INVERSEOFF);
-//						else
-//							printf( INVERSEON SPACENL INVERSEOFF);
 				}
 			boxline++;
 		}
@@ -266,6 +220,19 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 						{
 							switch(key.code.sym)
 								{
+									case TERMKEY_SYM_ENTER:
+										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
+										fprintf(stderr,"enter\n>>>>%s<<<<\n",this->txtstrings[this->currentY].c_str());
+										this->currentX=0;
+										this->currentY++;
+										this->updateBuffer();
+										this->CTK_drawBox(false,true);
+										continue;
+										break;
+									case TERMKEY_SYM_TAB:
+										this->txtstrings[this->currentY].insert(this->currentX,1,'\t');
+										this->currentX++;
+										break;
 									case TERMKEY_SYM_ESCAPE:
 										loop=false;
 										continue;
@@ -304,9 +271,6 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 											this->currentX=0;
 										break;
 									case TERMKEY_SYM_RIGHT:
-										//if(this->txtstrings[currentY][this->currentX+1]=='\t')
-										//	this->currentX+=8;
-										//else
 										this->currentX++;
 										if(this->currentX>=this->txtstrings[currentY].length())
 											this->currentX=this->txtstrings[currentY].length()-1;
@@ -343,3 +307,28 @@ void CTK_cursesEditBoxClass::scroll(bool scrollup,int numlines)
 				this->startLine=this->txtstrings.size()-this->hite;
 		}
 }
+
+void CTK_cursesEditBoxClass::updateBuffer(void)
+{
+	std::string buff;
+
+	buff.clear();
+
+	for(int j=0;j<this->txtstrings.size();j++)
+		{
+			fprintf(stderr,"%s",this->txtstrings[j].c_str());
+			buff.append(this->txtstrings[j]);
+		}
+	//free(this->txtBuffer);
+	//this->txtBuffer=strdup(buff.c_str());
+	this->CTK_updateText(buff.c_str(),false);
+	fprintf(stderr,"\n\n***************\n");
+	fprintf(stderr,"%s",buff.c_str());
+	fprintf(stderr,"\n***************\n");
+
+}
+
+
+
+
+
