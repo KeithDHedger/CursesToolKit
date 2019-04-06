@@ -215,10 +215,25 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 						{
 							printf("%c",this->txtstrings[boxline+this->startLine].c_str()[j]);
 						}
-					if(this->txtstrings[boxline+this->startLine].c_str()[j]!='\t')
-						printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
-					else
-						printf( INVERSEON " \t" INVERSEOFF);
+					switch(this->txtstrings[boxline+this->startLine].c_str()[j])
+						{
+							case '\t':
+								printf( INVERSEON SPACETAB INVERSEOFF);
+								break;
+							case '\n':
+								printf( INVERSEON SPACENL INVERSEOFF);
+								break;
+							default:
+								printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
+								break;
+						}
+//					if(!='\t')
+//						printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
+//					else
+//						if(this->txtstrings[boxline+this->startLine].c_str()[j]!='\t')
+//							printf( INVERSEON SPACETAB INVERSEOFF);
+//						else
+//							printf( INVERSEON SPACENL INVERSEOFF);
 				}
 			boxline++;
 		}
