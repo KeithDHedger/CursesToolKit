@@ -31,6 +31,7 @@ void menuselctCB(void *inst)
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
 		mainApp->runEventLoop=false;
+
 }
 
 void mainloopCB(void *mainc,void *data)
@@ -192,5 +193,10 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
+
+
+	for(int j=0;j<mainApp->editBoxes[0]->txtstrings.size();j++)
+		fprintf(stderr,"%s",mainApp->editBoxes[0]->txtstrings[j].c_str());
+
 	return 0;
 }

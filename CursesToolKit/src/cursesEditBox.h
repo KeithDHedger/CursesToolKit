@@ -37,6 +37,8 @@ class CTK_cursesEditBoxClass
 		CTK_cursesEditBoxClass();
 		~CTK_cursesEditBoxClass();
 
+		std::vector<std::string>	txtstrings;
+
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
 		void						CTK_updateText(const char *txt,bool isfilename=false);
@@ -54,7 +56,6 @@ class CTK_cursesEditBoxClass
 		std::string					text;
 		std::string					blank;
 		std::string					hold;
-		std::vector<std::string>	txtstrings;
 
 		TermKey						*tk;
 		coloursStruct				colours;

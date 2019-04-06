@@ -26,7 +26,7 @@
 #define ESCCHAR 0x1b
 #define CURSFORWARD "\e[1C"
 #define TABCHAR		"\t"
-#define TABSPACE	"\t\e[D "
+#define SPACETAB	" \t"
 #define NEXTSCRLINE "\n\e[8C"
 
 #define	SETNORMAL printf("\e[0m")

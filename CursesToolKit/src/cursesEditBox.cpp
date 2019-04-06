@@ -87,24 +87,24 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
-			asprintf(&buffer,"%s",ptr);
+			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
-			{
-			while(numchars<this->wid)
 				{
-					cpybuf[startchr]=buffer[cnt++];
-					if(cpybuf[startchr]=='\t')
-						numchars+=8;
-					else
-						numchars++;
-					startchr++;
+					while(numchars<this->wid)
+						{
+							cpybuf[startchr]=buffer[cnt++];
+							if(cpybuf[startchr]=='\t')
+								numchars+=8;
+							else
+								numchars++;
+							startchr++;
+						}
+					cpybuf[startchr]=0;
+					this->txtstrings.push_back(cpybuf);
+					startchr=0;
+					numchars=0;
+					fprintf(stderr,"%s\n",cpybuf);
 				}
-				cpybuf[startchr]=0;
-				this->txtstrings.push_back(cpybuf);
-				startchr=0;
-				numchars=0;
-				fprintf(stderr,"%s\n",cpybuf);
-			}
 			free(buffer);
 			ptr=strtok(NULL,"\n");
 		}
@@ -218,8 +218,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 					if(this->txtstrings[boxline+this->startLine].c_str()[j]!='\t')
 						printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
 					else
-						//printf( INVERSEON "\t\e[D " INVERSEOFF);
-						printf( INVERSEON TABSPACE INVERSEOFF);
+						printf( INVERSEON " \t" INVERSEOFF);
 				}
 			boxline++;
 		}
@@ -244,6 +243,10 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 
 			switch(key.type)
 				{
+					case TERMKEY_TYPE_UNICODE:
+						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						this->currentX++;
+						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
 							switch(key.code.sym)
