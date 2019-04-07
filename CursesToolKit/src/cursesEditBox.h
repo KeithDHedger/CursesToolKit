@@ -67,7 +67,7 @@ class CTK_cursesEditBoxClass
 		int							currentY;
 
 		void						updateBuffer(void);
-		void						checkPositions(void);
+//		void						checkPositions(void);
 };
 
 #endif

@@ -174,18 +174,18 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	MOVETO(this->sx,this->sy+boxline);
 }
 
-void CTK_cursesEditBoxClass::checkPositions(void)
-{
-	if(this->currentY<0)
-		this->currentY=0;
-	if(this->currentY>=this->txtstrings.size())
-		this->currentY=this->txtstrings.size()-1;
-
-	if(this->currentX<0)
-		this->currentX=0;
-	if(this->currentX>this->txtstrings[this->currentY].length())
-		this->currentX=this->txtstrings[this->currentY].length()-1;
-}
+//void CTK_cursesEditBoxClass::checkPositions(void)
+//{
+//	if(this->currentY<0)
+//		this->currentY=0;
+//	if(this->currentY>=this->txtstrings.size())
+//		this->currentY=this->txtstrings.size()-1;
+//
+//	if(this->currentX<0)
+//		this->currentX=0;
+//	if(this->currentX>this->txtstrings[this->currentY].length())
+//		this->currentX=this->txtstrings[this->currentY].length()-1;
+//}
 
 void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 {
@@ -248,14 +248,12 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case  TERMKEY_SYM_DELETE:
 										this->txtstrings[this->currentY].erase(this->currentX,1);
-										//this->checkPositions();
 										this->updateBuffer();
 										break;
 									case TERMKEY_SYM_ENTER:
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
 										this->currentX=0;
 										this->currentY++;
-										//this->checkPositions();
 										this->updateBuffer();
 										break;
 									case TERMKEY_SYM_TAB:
@@ -276,10 +274,8 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
-										//this->currentY--;
 										this->currentY-=lineadd;
 										if(currentY<this->startLine)
-											//this->startLine--;
 											this->startLine-=lineadd;
 										if((this->currentY<0) || (this->startLine<0))
 											{
@@ -292,12 +288,10 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
-										//this->currentY++;
 										this->currentY+=lineadd;
 										if(this->currentY>=this->txtstrings.size())
 											this->currentY=this->txtstrings.size()-1;
 										if((this->currentY-this->startLine)>=this->hite)
-										//	this->startLine++;
 											this->startLine+=lineadd;
 										if(this->currentX>=this->txtstrings[this->currentY].length())
 											this->currentX=this->txtstrings[this->currentY].length()-1;
