@@ -1,1 +1,1 @@
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp

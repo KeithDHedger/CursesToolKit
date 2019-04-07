@@ -27,6 +27,7 @@
 
 #include "cursesLib.h"
 #include "cursesGraphics.h"
+#include "cursesUtils.h"
 
 #ifndef _CURSESEDITBOX_
 #define _CURSESEDITBOX_
@@ -65,11 +66,8 @@ class CTK_cursesEditBoxClass
 		int							currentX;
 		int							currentY;
 
-		void						scrollLine(bool scrollup);
-		void						scrollPage(bool scrollup);
-		void						scroll(bool scrollup,int numlines);
 		void						updateBuffer(void);
-		std::vector<std::string>			explode(const std::string s,const char c);
+		void						checkPositions(void);
 };
 
 #endif

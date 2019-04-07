@@ -43,28 +43,6 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
-std::vector<std::string> CTK_cursesTextBoxClass::explode(const std::string s,const char c)
-{
-	std::string buff;
-	std::vector<std::string> v;
-
-	for(unsigned int j=0;j<s.length();j++)
-		{
-			if(s.c_str()[j]!=c)
-				buff+=s.c_str()[j];
-			else
-				{
-					v.push_back(buff);
-					buff="";
-				}
-		}
-
-	if(buff!="")
-		v.push_back(buff);
-
-	return(v);
-}
-
 void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 {
 #if 1
@@ -74,6 +52,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	char						*cpybuf=(char*)alloca(this->wid+1);
 	std::vector<std::string>	array;
 	std::string					str;
+	CTK_cursesUtilsClass		cu;
 
 	this->txtstrings.clear();
 	this->text.clear();
@@ -94,7 +73,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 //		}
 
 	str=this->text;
-	array=this->explode(str,'\n');
+	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
 
 	for(int j=0;j<array.size();j++)
 		{
