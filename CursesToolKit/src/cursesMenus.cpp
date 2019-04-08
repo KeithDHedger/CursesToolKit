@@ -48,6 +48,11 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	CTK_setColours(this->colours);
 }
 
+//void CTK_cursesMenuClass::CTK_menusHaveShortcuts(bool haveshortcuts)
+//{
+//	this->menusHaveShortcuts=haveshortcuts;
+//}
+
 void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 {
 	int	x=1;
@@ -55,9 +60,13 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
-			this->menuWidth=strlen(this->menuNames[j]->menuName);
-			this->drawMenuStyle(j,-1,x,y,FLATNORM,true,false);
-			x+=strlen(this->menuNames[j]->menuName);
+			setBackColour(this->colours.backCol);
+			setForeColour(this->colours.foreCol);
+			MOVETO(x,y);
+			printf("%s",this->menuNames[j]->menuName);
+			setBackColour(this->colours.windowBackCol);
+			printf(" ");
+			x+=strlen(this->menuNames[j]->menuName)+1;
 		}
 	SETNORMAL;
 }
@@ -92,8 +101,8 @@ void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
 
 	menu->menuName=strdup(name);
 	menu->key=0;
-	menu->startCol=this->menuNamesStartX+1;
-	this->menuNamesStartX+=strlen(name);
+	menu->startCol=this->menuNamesStartX;
+	this->menuNamesStartX+=strlen(name)+1;
 	menu->menuItem.clear();
 
 	this->menuNames[this->menuCnt++]=menu;

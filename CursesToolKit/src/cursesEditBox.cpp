@@ -58,7 +58,7 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 	this->CTK_updateText(txt,isfilename);
 }
 
-void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
+void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
 {
 	const char					*ptr=NULL;
 	char						*buffer=NULL;
@@ -70,7 +70,12 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 
 	this->txtstrings.clear();
 	freeAndNull(&this->txtBuffer);
-
+	if(reset==true)
+		{
+			this->currentX=0;
+			this->currentY=0;
+			this->startLine=0;
+		}
 	if(isfilename==false)
 		this->txtBuffer=strdup(txt);
 	else
@@ -90,6 +95,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 	for(int j=0;j<array.size();j++)
 		{
 			ptr=array[j].c_str();
+			fprintf(stderr,">>%s<<\n",ptr);
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
@@ -112,6 +118,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename)
 				}
 			free(buffer);
 		}
+	fprintf(stderr,"**********************************\n");
 }
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
@@ -144,10 +151,16 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	if((this->txtstrings.size()-1)-this->startLine<this->hite)
 		this->startLine=this->txtstrings.size()-this->hite;
 
-	while(boxline<this->hite)
+	if(this->startLine<0)
+		this->startLine=0;
+
+	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
+//fprintf(stderr,"000000000000000000000000\n");
+//fprintf(stderr,"boxline=%i startLine=%i\n",boxline,this->startLine);
 			MOVETO(this->sx,this->sy+boxline);
-			printf( "%s" ,this->txtstrings[boxline+this->startLine].c_str());
+			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
+//fprintf(stderr,"999999999999999999999\n");
 			if((this->currentY==boxline+this->startLine) && (showcursor==true))
 				{
 					MOVETO(this->sx,this->sy+boxline);
@@ -228,7 +241,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										if(this->currentY>0)
 											{
 												bool adjx=true;
-												if(this->txtstrings[this->currentY-1][this->txtstrings[this->currentY-1].length()-1]=='\n')
+												//if(this->txtstrings[this->currentY-1][this->txtstrings[this->currentY-1].length()-1]=='\n')
 													{
 														this->txtstrings[this->currentY-1].erase(this->txtstrings[this->currentY-1].length()-1,1);
 														if(this->txtstrings[this->currentY-1].length()>0)
@@ -254,6 +267,10 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
 										this->currentX=0;
 										this->currentY++;
+
+										if((this->currentY-this->startLine)>=this->hite)
+											this->startLine++;
+
 										this->updateBuffer();
 										break;
 									case TERMKEY_SYM_TAB:
@@ -321,7 +338,7 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 	for(int j=0;j<this->txtstrings.size();j++)
 		buff.append(this->txtstrings[j]);
 
-	this->CTK_updateText(buff.c_str(),false);
+	this->CTK_updateText(buff.c_str(),false,false);
 }
 
 

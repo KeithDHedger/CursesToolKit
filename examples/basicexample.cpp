@@ -70,24 +70,30 @@ void checkselctCB(void *inst)
 int main(int argc, char **argv)
 {
 
-	const char	*menuNames[]={"_File","_Edit","_Tabs","_Navigation","F_unctions","_Bookmarks","T_ools","_Help",NULL};
+	const char	*menuNames[]={"File","Edit","Tabs","Navigation","Functions","Bookmarks","Tools","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 	const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
 	const char	*navMenuNames[]={" Goto _Define"," _Open Include"," _Goto Line"," Open _Manpage"," _Find"," Find _Next",NULL};
-	const char	*helpMenuNames[]={"_Help","A_bout",NULL};
+	const char	*helpMenuNames[]={" _Help"," A_bout",NULL};
 	
 	const char	*sampletxt="Press 'ESC' to activate/deactivate menus.\nUse 'LEFT/RIGHT/IP/DOWN' arrow keys to navigate menus.\n\
 'HOME/END/PAGEUP/PAGEDOWN' can also be used.\n\
 'RETURN' selects a menu item, 'ESC closes menus without selecting.\n\
 Shortcut keys can be used ( without the CTRL key when menus are open )\n\
 \n\
-'TAB' Moves between gadgets.\n\
 'UP/DOWN' etc when a text box is highlighted will scroll the text.\n\
+\n\
+'TAB' Moves between gadgets.\n\
+'SHIFT+TAB' Moves between gadgets backwards.\n\
 \n\
 'RETURN' when a button is highlighted will 'click' that button.\n\
 \n\
 'RETURN' when an input box is highlighted will show the cursor and start getting input.\n\
-'RETURN' will stop, 'LEFT/RIGHT/HOME/END/BACKSPACE/DELETE' are used for editing.\n\
+'RETURN' will stop, 'LEFT/RIGHT/HOME/END/BACKSPACE/DELETE' are used for editing.\
+\n\
+'RETURN' when an edit box is highlighted will begin editing.\n\
+'ESC' will exit edit mode.\n\
+\n\
 Pasting is done via middle click of mouse as usual.\
 ";
 
@@ -142,10 +148,12 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->textBoxes[1]->CTK_setColours(cs);
 //cs.fancyGadgets=false;
 
-	cs.backCol=BACK_YELLOW;
-	cs.foreCol=FORE_BLACK;
+	//cs.backCol=BACK_YELLOW;
+	//cs.foreCol=FORE_BLACK;
 	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/IGNORE/fstab");
+	mainApp->CTK_addNewEditBox(101,3,64,8,true,"../ChangeLog");
+//	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/IGNORE/fstab");
+
 	mainApp->editBoxes[0]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_WHITE;

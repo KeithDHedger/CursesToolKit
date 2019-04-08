@@ -42,7 +42,7 @@ class CTK_cursesEditBoxClass
 
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
-		void						CTK_updateText(const char *txt,bool isfilename=false);
+		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		void						CTK_doEditEvent(void);
 
@@ -52,8 +52,10 @@ class CTK_cursesEditBoxClass
 		int							wid;
 		int							hite;
 		bool						canSelect=true;
-
 		int							startLine=0;
+		int							currentX;
+		int							currentY;
+
 		//std::string					text;
 		std::string					blank;
 		//std::string					hold;
@@ -63,8 +65,6 @@ class CTK_cursesEditBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 
-		int							currentX;
-		int							currentY;
 
 		void						updateBuffer(void);
 //		void						checkPositions(void);

@@ -60,6 +60,7 @@ class CTK_cursesMenuClass
 		void						CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp);
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);
+//		void						CTK_menusHaveShortcuts(bool haveshortcuts);
 
 		std::map<int,menuStruct*>	menuNames;
 
@@ -72,10 +73,11 @@ class CTK_cursesMenuClass
 		void						CTK_setColours(coloursStruct cs);
 
 	private:
+		//bool						menusHaveShortcuts=true;
 		void						(*updateCB)(void *,void*);
 		void						*mainApp=NULL;
 		unsigned					menuWidth=0;
-		int							menuNamesStartX=0;
+		int							menuNamesStartX=1;
 		int							pad=1;
 
 		void						drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad);

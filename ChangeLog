@@ -1,4 +1,9 @@
+0.0.9
+Fixed various edit box bugs.
+
 0.0.8
+Fixed not deleting tab at end of line.
+Removed shortcuts from main menus.
 Done page up/down.
 Added utils class.
 Fixed loading in file with multipe nl's.
