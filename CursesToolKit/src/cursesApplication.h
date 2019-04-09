@@ -32,6 +32,17 @@
 #include "cursesEditBox.h"
 #include "cursesGraphics.h"
 
+struct pageStruct
+{
+	std::vector<CTK_cursesButtonClass*>		buttons;
+	std::vector<CTK_cursesTextBoxClass*>	textBoxes;
+	std::vector<CTK_cursesInputClass*>		inputs;
+	std::vector<CTK_cursesListBoxClass*>	lists;
+	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
+	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	bool									menusActive=true;
+};
+
 enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS,EDITBOXES,NOMORE};
 enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLNOMORE};
 //enum {NOHILITE=-1,HILITEBTN,HILITETXT,
@@ -43,16 +54,23 @@ class CTK_mainAppClass
 
 		int										maxCols;
 		int										maxRows;
-		std::vector<CTK_cursesButtonClass*>		buttons;
-		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
-		std::vector<CTK_cursesInputClass*>		inputs;
-		std::vector<CTK_cursesListBoxClass*>	lists;
-		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
-		std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+		int										pageNumber=0;
+		std::vector<pageStruct>					pages;
+
+//		std::vector<CTK_cursesButtonClass*>		buttons;
+//		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
+//		std::vector<CTK_cursesInputClass*>		inputs;
+//		std::vector<CTK_cursesListBoxClass*>	lists;
+//		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
+//		std::vector<CTK_cursesEditBoxClass*>	editBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
 		void									CTK_clearScreen(void);
 		coloursStruct							colours;
 		void									CTK_setColours(coloursStruct cs);
+		int										CTK_addPage(void);
+		void									CTK_setPage(int pagenum);
+		int										CTK_previousPage(void);
+		int										CTK_nextPage(void);
 
 		bool									runEventLoop=false;
 		void									(*eventLoopCB)(void*,void*);

@@ -42,6 +42,7 @@ struct	menuStruct
 	int								menuItemCnt=0;
 	int								startCol=0;
 	int								maxWidth=0;
+	bool							itemsHaveKey=false;
 	std::map<int,menuStruct*>		menuItem;
 };
 
@@ -68,7 +69,7 @@ class CTK_cursesMenuClass
 		void						CTK_addMenuToBar(const char *name);
 		void						CTK_addMenuItem(int menunum,const char *name);
 		void						CTK_clearMenu(int menunum);
-		int							CTK_doMenuEvent(int sx,int sy,bool doshortcut);//togo private
+		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//togo private
 		bool						CTK_doShortCutKey(char key,int menunum);
 		void						CTK_setColours(coloursStruct cs);
 

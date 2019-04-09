@@ -89,10 +89,19 @@ void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name)
 	menu->key=setShortCut(name);
 	menu->maxWidth=strlen(name);
 	if(menu->key!=0)
-		if(this->menuNames[menunum]->maxWidth<strlen(name)+strlen("Ctrl+X"))
-			this->menuNames[menunum]->maxWidth=strlen(name)+strlen("Ctrl+X");
+		{
+			this->menuNames[menunum]->itemsHaveKey=true;
+			if(this->menuNames[menunum]->maxWidth<strlen(name)+strlen("Ctrl+X"))
+				this->menuNames[menunum]->maxWidth=strlen(name)+strlen("Ctrl+X");
+		}
+	else
+		{
+			if(this->menuNames[menunum]->maxWidth<menu->maxWidth)
+				this->menuNames[menunum]->maxWidth=menu->maxWidth;
+		}
 	menu->menuItem.clear();
 	this->menuNames[menunum]->menuItem[this->menuNames[menunum]->menuItemCnt++]=menu;
+		fprintf(stderr,">>>>>>>>>menu->maxWidth=%i name=>>%s<<\n",menu->maxWidth,menu->menuName);
 }
 
 void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
@@ -166,7 +175,10 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 		}
 
 	if(gotus==false)
-		printf("  ");
+		if(doshortcut==true)
+			printf("  ");
+		else
+			printf(" ");
 	fflush(NULL);
 }
 
@@ -182,6 +194,9 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	this->menuWidth=this->menuNames[menunum]->maxWidth;
 	if(doshortcut==true)
 		this->menuWidth--;
+
+fprintf(stderr,">>doshortcut=%i this->menuWidth=%i menunum=%i\n",doshortcut,this->menuWidth,menunum);
+
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
 		{
@@ -201,7 +216,7 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	return(maxitems);
 }
 
-int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
+int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 {
 	bool			loop=true;
 	bool			mainloop=true;
@@ -218,11 +233,14 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool doshortcut)
 	if(this->menuNumber<0)
 		return(CONT);
 
+	bool doshortcut=false;
+
 	while(mainloop==true)
 		{
+doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
+fprintf(stderr,"menuNames=>>%s<< doshortcut=%i\n",this->menuNames[this->menuNumber]->menuName,this->menuNames[this->menuNumber]->itemsHaveKey);
 			if(this->menuNames[this->menuStart]!=NULL)
 				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
-
 			this->CTK_drawMenuBar();
 			SETHIDECURS;
 			fflush(NULL);

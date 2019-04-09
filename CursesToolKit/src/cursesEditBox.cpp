@@ -95,13 +95,13 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	for(int j=0;j<array.size();j++)
 		{
 			ptr=array[j].c_str();
-			fprintf(stderr,">>%s<<\n",ptr);
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
 			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
 				{
+//					while(numchars<this->wid+1)
 					while(numchars<this->wid)
 						{
 							cpybuf[startchr]=buffer[cnt++];
@@ -118,7 +118,6 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 				}
 			free(buffer);
 		}
-	fprintf(stderr,"**********************************\n");
 }
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
@@ -156,11 +155,8 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
-//fprintf(stderr,"000000000000000000000000\n");
-//fprintf(stderr,"boxline=%i startLine=%i\n",boxline,this->startLine);
 			MOVETO(this->sx,this->sy+boxline);
 			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
-//fprintf(stderr,"999999999999999999999\n");
 			if((this->currentY==boxline+this->startLine) && (showcursor==true))
 				{
 					MOVETO(this->sx,this->sy+boxline);
@@ -172,10 +168,10 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 					switch(this->txtstrings[boxline+this->startLine].c_str()[j])
 						{
 							case '\t':
-								printf( INVERSEON SPACETAB INVERSEOFF);
+								printf(INVERSEON SPACETAB INVERSEOFF);
 								break;
 							case '\n':
-								printf( INVERSEON SPACENL INVERSEOFF);
+								printf(INVERSEON SPACENL INVERSEOFF);
 								break;
 							default:
 								printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
@@ -319,6 +315,9 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 											this->currentX=0;
 										break;
 									case TERMKEY_SYM_RIGHT:
+//										if(this->currentX<=this->txtstrings[currentY].length())
+//											this->currentX++;
+
 										this->currentX++;
 										if(this->currentX>=this->txtstrings[currentY].length())
 											this->currentX=this->txtstrings[currentY].length()-1;

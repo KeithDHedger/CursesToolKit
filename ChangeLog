@@ -1,4 +1,8 @@
 0.0.9
+Fixed switching pages.
+Added pages.
+Started new example "texteditor".
+Fixed menus having mixed items with/without sortcuts.
 Fixed various edit box bugs.
 
 0.0.8

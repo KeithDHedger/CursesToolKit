@@ -74,7 +74,7 @@ void listselctCB(void *inst)
 			asprintf(&lastSelectedItem,"%s",ls->listItems[ls->listItemNumber]->label.c_str());
 			asprintf(&lastSelectedPath,"%s",files->data[ls->listItemNumber].path.c_str());
 			sprintf(buffer,"File: %s",lastSelectedPath);
-			mainApp->textBoxes[0]->CTK_updateText(buffer);
+			mainApp->pages[0].textBoxes[0]->CTK_updateText(buffer);
 		}
 }
 
@@ -140,13 +140,13 @@ int main(int argc, char **argv)
 	mainApp->CTK_addNewTextBox(2,18,mainApp->maxCols-2,1,"File:",false);
 
 	mainApp->CTK_addNewButton(2,19,1,1,"  OK  ");
-	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
 	mainApp->CTK_addNewButton(mainApp->maxCols-2-4,19,11,1,"CANCEL");
-	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
 
 	mainApp->CTK_addNewCheckBox((mainApp->maxCols/2)-8,19,14,"Show Hidden");
-	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
-	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 		{
 			//printf("\nFile '%s' selected.\n",lb->listItems[lb->listItemNumber]->label.c_str());
 			printf("\nFile '%s' selected.\n",lastSelectedItem);
-			//printf("\nFile '%s' selected.\n",mainApp->textBoxes[0]->CTK_getText().c_str());
+			//printf("\nFile '%s' selected.\n",mainApp->pages[0].textBoxes[0]->CTK_getText().c_str());
 //			printf("Fullpath: %s\n",files->data[lb->listItemNumber].path.c_str());
 			printf("Fullpath: %s\n",lastSelectedPath);
 			freeAndNull(&lastSelectedItem);

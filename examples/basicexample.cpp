@@ -27,7 +27,7 @@ void menuselctCB(void *inst)
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 	
 	sprintf(buffer,"Menu item (%i) '%s' of menu (%i) '%s' selected.",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
-	mainApp->textBoxes[1]->CTK_updateText(buffer);
+	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
 		mainApp->runEventLoop=false;
@@ -45,7 +45,7 @@ void buttonselctCB(void *inst)
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 
 	sprintf(buffer,"Button '%s' clicked.",bc->label);
-	mainApp->textBoxes[1]->CTK_updateText(buffer);
+	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
 void listselctCB(void *inst)
@@ -54,7 +54,7 @@ void listselctCB(void *inst)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 
 	sprintf(buffer,"List item '%s' clicked, user data=%p.",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
-	mainApp->textBoxes[1]->CTK_updateText(buffer);
+	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
 void checkselctCB(void *inst)
@@ -64,7 +64,7 @@ void checkselctCB(void *inst)
 
 	cb->CTK_setValue(!cb->CTK_getValue());
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
-	mainApp->textBoxes[1]->CTK_updateText(buffer);
+	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
 int main(int argc, char **argv)
@@ -142,34 +142,34 @@ Pasting is done via middle click of mouse as usual.\
 //	cs.boxType=OUTBOX;
 //cs.fancyGadgets=true;
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
-//	mainApp->textBoxes[0]->CTK_setColours(cs);
+//	mainApp->pages[0].textBoxes[0]->CTK_setColours(cs);
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 	cs.textBoxType=INBOX;
-	mainApp->textBoxes[1]->CTK_setColours(cs);
+	mainApp->pages[0].textBoxes[1]->CTK_setColours(cs);
 //cs.fancyGadgets=false;
 
 	//cs.backCol=BACK_YELLOW;
 	//cs.foreCol=FORE_BLACK;
 	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-	mainApp->CTK_addNewEditBox(101,3,64,8,true,"../ChangeLog");
-//	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/IGNORE/fstab");
+//	mainApp->CTK_addNewEditBox(101,3,64,8,true,"../ChangeLog");
+	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesEditBox.cpp");
 
-	mainApp->editBoxes[0]->CTK_setColours(cs);
+	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 
 	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
-	mainApp->buttons[0]->CTK_setColours(cs);
-	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[0]->CTK_setColours(cs);
+	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
 	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
-	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
-	mainApp->buttons[1]->CTK_setColours(cs);
+	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[1]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
-	mainApp->inputs[0]->CTK_setColours(cs);
+	mainApp->pages[0].inputs[0]->CTK_setColours(cs);
 
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
@@ -190,21 +190,35 @@ Pasting is done via middle click of mouse as usual.\
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
-	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
-	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
-	mainApp->checkBoxes[1]->CTK_setSelectCB(checkselctCB);
-	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
-	mainApp->checkBoxes[0]->CTK_setColours(cs);
-	mainApp->checkBoxes[1]->CTK_setColours(cs);
+	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
+	mainApp->pages[0].checkBoxes[0]->CTK_setColours(cs);
+	mainApp->pages[0].checkBoxes[1]->CTK_setColours(cs);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
 
 
-	for(int j=0;j<mainApp->editBoxes[0]->txtstrings.size();j++)
-		fprintf(stderr,"%s",mainApp->editBoxes[0]->txtstrings[j].c_str());
+	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
+		{
+//			int sx=0;
+//			if(mainApp->pages[0].editBoxes[0]->txtstrings[j].length()<64)
+//				fprintf(stderr,"%s\n",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
+//			else
+//			while(mainApp->pages[0].editBoxes[0]->txtstrings[j].length()>64)
+//				{
+//					fprintf(stderr,"%s\n",mainApp->pages[0].editBoxes[0]->txtstrings[j].substr(sx,64).c_str());
+//					sx+=64;
+//				}
+//			if(mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str()[mainApp->pages[0].editBoxes[0]->txtstrings[j].length()-1]=='\n')
+//				fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
+//			else
+				fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
+		}
 
 	return 0;
 }
