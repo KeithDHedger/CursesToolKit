@@ -68,6 +68,7 @@ class CTK_mainAppClass
 		coloursStruct							colours;
 		void									CTK_setColours(coloursStruct cs);
 		int										CTK_addPage(void);
+		int										CTK_removePage(int pagenum);
 		void									CTK_setPage(int pagenum);
 		int										CTK_previousPage(void);
 		int										CTK_nextPage(void);

@@ -64,6 +64,7 @@ void menuSelectCB(void *inst)
 						case SAVEASITEM:
 							break;
 						case CLOSEITEM:
+							mainApp->CTK_removePage(mainApp->pageNumber);
 							break;
 						case QUITITEM:
 							mainApp->runEventLoop=false;

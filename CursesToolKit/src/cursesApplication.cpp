@@ -483,6 +483,28 @@ int CTK_mainAppClass::CTK_nextPage(void)
 	return(this->pageNumber);
 }
 
+int CTK_mainAppClass::CTK_removePage(int pagenum)
+{
+	if((pagenum>=0) && (pagenum<this->pages.size()))
+		{
+			for(int j=0;j<this->pages[pagenum].textBoxes.size();j++)
+				delete this->pages[pagenum].textBoxes[j];
+			for(int j=0;j<this->pages[pagenum].buttons.size();j++)
+				delete this->pages[pagenum].buttons[j];
+			for(int j=0;j<this->pages[j].inputs.size();j++)
+				delete this->pages[pagenum].inputs[j];
+			for(int j=0;j<this->pages[j].lists.size();j++)
+				delete this->pages[pagenum].lists[j];
+			for(int j=0;j<this->pages[j].checkBoxes.size();j++)
+				delete this->pages[pagenum].checkBoxes[j];
+			this->pages.erase(this->pages.begin()+pagenum);
+			this->pageNumber=pagenum;
+			if(this->pageNumber>=this->pages.size())
+				this->pageNumber=this->pages.size()-1;
+		}
+	return(this->pageNumber);
+}
+
 
 
 
