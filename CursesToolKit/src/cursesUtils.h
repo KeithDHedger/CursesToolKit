@@ -45,7 +45,8 @@ class CTK_cursesUtilsClass
 		std::string					CTK_openFile(CTK_mainAppClass *app);
 
 	private:
-		std::string					infolder="./";
+		void						runOpenFile(CTK_mainAppClass *app);
+		std::string					inFolder="./";
 };
 
 #endif

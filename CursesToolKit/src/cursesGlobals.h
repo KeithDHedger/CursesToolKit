@@ -23,6 +23,7 @@
 #ifndef _CURSESGLOBALS_
 #define _CURSESGLOBALS_
 
+class LFSTK_findClass;
 class CTK_mainAppClass;
 class CTK_cursesButtonClass;
 class CTK_cursesTextBoxClass;
@@ -32,6 +33,8 @@ class CTK_cursesInputClass;
 class CTK_cursesEditBoxClass;
 class CTK_cursesMenuClass;
 class CTK_cursesListBoxClass;
+
+#include <linux/limits.h>
 
 #include <string>
 #include <vector>
@@ -44,6 +47,7 @@ class CTK_cursesListBoxClass;
 #include <unistd.h>
 #include <sys/ioctl.h>
 
+#include "LFSTKFindClass.h"
 #include "cursesLib.h"
 #include "cursesGraphics.h"
 

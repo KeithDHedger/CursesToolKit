@@ -55,7 +55,7 @@ class CTK_cursesListBoxClass
 		void						CTK_setColours(coloursStruct cs);
 		
 		void						CTK_setSelectCB(void (*select)(void *));
-		void						(*selectCB)(void *);
+		void						(*selectCB)(void *)=NULL;
 
 		std::vector<listItemStruct*>	listItems;
 

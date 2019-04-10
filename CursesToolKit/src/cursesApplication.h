@@ -75,7 +75,7 @@ class CTK_mainAppClass
 		int										CTK_nextPage(void);
 
 		bool									runEventLoop=false;
-		void									(*eventLoopCB)(void*,void*);
+		void									(*eventLoopCB)(void*,void*)=NULL;
 
 //build new gadgets
 		void									CTK_addNewMenuBar(void);
