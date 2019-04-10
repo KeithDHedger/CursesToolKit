@@ -21,9 +21,10 @@
 #ifndef _CURSESGRAPHICS_
 #define _CURSESGRAPHICS_
 
-#include <stdio.h>
-
-#include "cursesLib.h"
+//#include <stdio.h>
+//
+//#include "cursesLib.h"
+#include "cursesGlobals.h"
 
 class CTK_cursesGraphicsClass
 {

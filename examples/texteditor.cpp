@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit LFSTKFindClass.cpp "$0" -o texteditor ||exit 1
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o texteditor ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./texteditor "$@"
 retval=$?
 rm texteditor
@@ -15,9 +15,10 @@ exit $retval
 #include <string.h>
 #include <stdlib.h>
 
-#include "LFSTKFindClass.h"
-
-#include <cursesApplication.h>
+//#include "LFSTKFindClass.h"
+//
+//#include <cursesApplication.h>
+#include <cursesGlobals.h>
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 
@@ -58,6 +59,13 @@ void menuSelectCB(void *inst)
 							}
 							break;
 						case OPENITEM:
+							{
+								std::string str;
+								CTK_cursesUtilsClass	cu;
+								str=cu.CTK_openFile(mainApp);
+								//delete cu;
+								//fprintf(stderr,">>%p<<<<%s<<\n",mainApp,str.c_str());
+							}
 							break;
 						case SAVEITEM:
 							break;

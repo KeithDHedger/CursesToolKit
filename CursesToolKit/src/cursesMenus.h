@@ -21,19 +21,20 @@
 #ifndef _CURSESMENUS_
 #define _CURSESMENUS_
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <map>
-
-#include <termkey.h>
-#include <termios.h>
-#include <termcap.h>
-#include <sys/ioctl.h>
-
-
-#include "cursesLib.h"
+//#include <stdarg.h>
+//#include <stdio.h>
+//#include <unistd.h>
+//#include <string.h>
+//#include <map>
+//
+//#include <termkey.h>
+//#include <termios.h>
+//#include <termcap.h>
+//#include <sys/ioctl.h>
+//
+//
+//#include "cursesLib.h"
+#include "cursesGlobals.h"
 
 struct	menuStruct
 {
@@ -61,7 +62,6 @@ class CTK_cursesMenuClass
 		void						CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp);
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);
-//		void						CTK_menusHaveShortcuts(bool haveshortcuts);
 
 		std::map<int,menuStruct*>	menuNames;
 
@@ -74,7 +74,6 @@ class CTK_cursesMenuClass
 		void						CTK_setColours(coloursStruct cs);
 
 	private:
-		//bool						menusHaveShortcuts=true;
 		void						(*updateCB)(void *,void*);
 		void						*mainApp=NULL;
 		unsigned					menuWidth=0;

@@ -21,20 +21,22 @@
 #ifndef _CURSESLISTBOX_
 #define _CURSESLISTBOX_
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <unistd.h>
+//#include <stdarg.h>
+//#include <stdio.h>
+//#include <unistd.h>
+//
+//#include <termkey.h>
+//#include <termios.h>
+//#include <termcap.h>
+//#include <sys/ioctl.h>
+//
+//#include <string>
+//#include <vector>
 
-#include <termkey.h>
-#include <termios.h>
-#include <termcap.h>
-#include <sys/ioctl.h>
+//#include "cursesLib.h"
+//#include "cursesGraphics.h"
 
-#include <string>
-#include <vector>
-
-#include "cursesLib.h"
-#include "cursesGraphics.h"
+#include "cursesGlobals.h"
 
 struct listItemStruct
 {

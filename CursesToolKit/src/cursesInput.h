@@ -21,11 +21,12 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
-#include <string>
-#include <termkey.h>
-
-#include "cursesLib.h"
-#include "cursesGraphics.h"
+//#include <string>
+//#include <termkey.h>
+//
+//#include "cursesLib.h"
+//#include "cursesGraphics.h"
+#include "cursesGlobals.h"
 
 class CTK_cursesInputClass
 {

@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit LFSTKFindClass.cpp "$0"  -o fileselect ||exit 1
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o fileselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./fileselect "$@"
 retval=$?
 rm fileselect
@@ -19,7 +19,7 @@ exit $retval
 
 #include "LFSTKFindClass.h"
 
-#include <cursesApplication.h>
+#include "cursesApplication.h"
 
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 LFSTK_findClass			*files=new LFSTK_findClass();
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
 
 	infolder=get_current_dir_name();
 
-	lb->CTK_newListBox(2,2,mainApp->maxCols-2,16);
+	lb->CTK_newListBox(2,2,mainApp->maxCols-2,mainApp->maxRows-6);
 
 	files->LFSTK_setFindType(ANYTYPE);
 	files->LFSTK_setFullPath(true);
@@ -137,14 +137,14 @@ int main(int argc, char **argv)
 	lb->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addListBox(lb);
-	mainApp->CTK_addNewTextBox(2,18,mainApp->maxCols-2,1,"File:",false);
+	mainApp->CTK_addNewTextBox(2,mainApp->maxRows-3,mainApp->maxCols-2,1,"File:",false);
 
-	mainApp->CTK_addNewButton(2,19,1,1,"  OK  ");
+	mainApp->CTK_addNewButton(2,mainApp->maxRows-1,1,1,"  OK  ");
 	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addNewButton(mainApp->maxCols-2-4,19,11,1,"CANCEL");
+	mainApp->CTK_addNewButton(mainApp->maxCols-2-4,mainApp->maxRows-1,11,1,"CANCEL");
 	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
 
-	mainApp->CTK_addNewCheckBox((mainApp->maxCols/2)-8,19,14,"Show Hidden");
+	mainApp->CTK_addNewCheckBox((mainApp->maxCols/2)-8,mainApp->maxRows-1,14,"Show Hidden");
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 

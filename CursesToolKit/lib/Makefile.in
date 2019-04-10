@@ -136,7 +136,8 @@ am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
 	../src/cursesCheckBox.lo ../src/cursesEditBox.lo \
 	../src/cursesGraphics.lo ../src/cursesInput.lo \
 	../src/cursesListBox.lo ../src/cursesMenus.lo \
-	../src/cursesTextBox.lo ../src/cursesUtils.lo
+	../src/cursesTextBox.lo ../src/cursesUtils.lo \
+	../src/LFSTKFindClass.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -342,7 +343,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			-DLIBDIR=\""${libdir}/${PACKAGE}"\" \
 			$(TERMKEY_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -446,6 +447,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesUtils.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/LFSTKFindClass.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 
 libcursestoolkit.la: $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_DEPENDENCIES) $(EXTRA_libcursestoolkit_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_LIBADD) $(LIBS)
@@ -458,6 +461,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/LFSTKFindClass.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesApplication.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesButton.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesCheckBox.Plo@am__quote@

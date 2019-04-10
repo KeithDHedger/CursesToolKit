@@ -21,10 +21,10 @@
 #ifndef _CURSESBUTTON_
 #define _CURSESBUTTON_
 
-#include <stdio.h>
+//#include <stdio.h>
 
-#include "cursesLib.h"
-
+//#include "cursesLib.h"
+#include "cursesGlobals.h"
 class CTK_cursesButtonClass
 {
 	public:

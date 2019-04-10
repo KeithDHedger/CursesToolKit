@@ -19,6 +19,7 @@
  */
  
 #include "cursesUtils.h"
+//#include "cursesGlobals.h"
 
 CTK_cursesUtilsClass::~CTK_cursesUtilsClass()
 {
@@ -49,3 +50,10 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 
 	return(v);
 }
+
+std::string CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app)
+{
+	app->CTK_clearScreen();	
+	return(infolder);
+}
+

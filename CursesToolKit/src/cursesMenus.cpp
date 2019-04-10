@@ -48,11 +48,6 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	CTK_setColours(this->colours);
 }
 
-//void CTK_cursesMenuClass::CTK_menusHaveShortcuts(bool haveshortcuts)
-//{
-//	this->menusHaveShortcuts=haveshortcuts;
-//}
-
 void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 {
 	int	x=1;

@@ -21,16 +21,17 @@
 #ifndef _CURSESAPPLICATION_
 #define _CURSESAPPLICATION_
 
-#include <termkey.h>
+//#include <termkey.h>
+#include "cursesGlobals.h"
 
-#include "cursesTextBox.h"
-#include "cursesMenus.h"
-#include "cursesButton.h"
-#include "cursesInput.h"
-#include "cursesListBox.h"
-#include "cursesCheckBox.h"
-#include "cursesEditBox.h"
-#include "cursesGraphics.h"
+//#include "cursesTextBox.h"
+//#include "cursesMenus.h"
+//#include "cursesButton.h"
+//#include "cursesInput.h"
+//#include "cursesListBox.h"
+//#include "cursesCheckBox.h"
+//#include "cursesEditBox.h"
+//#include "cursesGraphics.h"
 
 struct pageStruct
 {

@@ -24,11 +24,16 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "cursesLib.h"
-#include "cursesGraphics.h"
+//#include "cursesLib.h"
+//#include "cursesGraphics.h"
+//class CTK_mainAppClass;
+
+#include "cursesGlobals.h"
 
 #ifndef _CURSESUTILS_
 #define _CURSESUTILS_
+
+//#include "cursesApplication.h"
 
 class CTK_cursesUtilsClass
 {
@@ -37,8 +42,10 @@ class CTK_cursesUtilsClass
 		~CTK_cursesUtilsClass();
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
+		std::string					CTK_openFile(CTK_mainAppClass *app);
 
 	private:
+		std::string					infolder="./";
 };
 
 #endif

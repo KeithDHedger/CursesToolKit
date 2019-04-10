@@ -1,4 +1,6 @@
 0.0.9
+Includes cleaning.
+Fixed checking for menu shortcuts with no menu.
 Fixed closing last page.
 Fixed switching pages.
 Added pages.

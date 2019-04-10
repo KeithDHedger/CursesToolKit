@@ -18,19 +18,21 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#include <string>
-#include <termkey.h>
-#include <vector>
-#include <termkey.h>
-#include <string.h>
-#include <unistd.h>
-
-#include "cursesLib.h"
-#include "cursesGraphics.h"
-#include "cursesUtils.h"
+//#include <string>
+//#include <termkey.h>
+//#include <vector>
+//#include <termkey.h>
+//#include <string.h>
+//#include <unistd.h>
+//
+//#include "cursesLib.h"
+//#include "cursesGraphics.h"
+//#include "cursesUtils.h"
 
 #ifndef _CURSESEDITBOX_
 #define _CURSESEDITBOX_
+
+#include "cursesGlobals.h"
 
 class CTK_cursesEditBoxClass
 {
