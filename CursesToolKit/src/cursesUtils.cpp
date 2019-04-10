@@ -19,7 +19,6 @@
  */
  
 #include "cursesUtils.h"
-//#include "cursesGlobals.h"
 
 CTK_cursesUtilsClass::~CTK_cursesUtilsClass()
 {
@@ -51,23 +50,89 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
-static void listselctCB(void *inst)
+static void listSelectCB(void *inst,void *ud)
 {
 	char						*buffer=(char*)alloca(PATH_MAX);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
+	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
 	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
+	if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
+		{
+			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
+			chdir(buffer);
+			fud->inst->inFolder=get_current_dir_name();
+			fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
+			fud->find->LFSTK_setSort(false);
+			fud->find->LFSTK_sortByTypeAndName();
 
+			ls->CTK_clearList();
+			for(int j=0;j<fud->find->data.size();j++)
+				{
+					if(fud->find->data[j].fileType==FOLDERTYPE)
+						sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
+					else
+						sprintf(buffer,"%s",fud->find->data[j].name.c_str());
+					ls->CTK_addListItem(buffer,NULL);
+				}
+		}
+	else
+		{
+			sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
+			fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+		}
 }
 
-void CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
+static void buttonSelectCB(void *inst,void *ud)
+{
+	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
+	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
+
+	if(strcmp(bc->label,"  OK  ")==0)
+		fud->isValid=true;
+
+	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
+	fud->app->runEventLoop=false;
+}
+
+void checkSelectCB(void *inst,void *ud)
+{
+	char					*buffer=(char*)alloca(256);
+	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
+	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
+
+	cb->CTK_setValue(!cb->CTK_getValue());
+
+	fud->find->LFSTK_setIncludeHidden(cb->CTK_getValue());
+	fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
+	fud->find->LFSTK_setSort(false);
+	fud->find->LFSTK_sortByTypeAndName();
+
+	fud->list->CTK_clearList();
+	for(int j=0;j<fud->find->data.size();j++)
+		{
+			if(fud->find->data[j].fileType==FOLDERTYPE)
+				sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
+			else
+				sprintf(buffer,"%s",fud->find->data[j].name.c_str());
+			fud->list->CTK_addListItem(buffer,NULL);
+		}
+}
+
+bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 {
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	CTK_cursesCheckBoxClass	*hidden=new CTK_cursesCheckBoxClass();
 	LFSTK_findClass			*files=new LFSTK_findClass();
-//	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
 	char					*buffer=(char*)alloca(256);
+	fileUDStruct			*fud=new fileUDStruct;
+	bool					retval=false;
+
+	fud->find=files;
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->list=lb;
+	fud->isValid=false;
 
 	this->inFolder=get_current_dir_name();
 
@@ -92,29 +157,39 @@ void CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 				}
 		}
 
-	lb->CTK_setSelectCB(listselctCB);
+	lb->CTK_setSelectCB(listSelectCB,fud);
 	lb->CTK_setEnterDeselects(false);
 
 	selectapp->CTK_addListBox(lb);
 	selectapp->CTK_addNewTextBox(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"File:",false);
 
 	selectapp->CTK_addNewButton(2,selectapp->maxRows-1,1,1,"  OK  ");
-//	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
+	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
 	selectapp->CTK_addNewButton(selectapp->maxCols-2-4,selectapp->maxRows-1,11,1,"CANCEL");
-//	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
+	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 
 	selectapp->CTK_addNewCheckBox((selectapp->maxCols/2)-8,selectapp->maxRows-1,14,"Show Hidden");
-//	selectapp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	selectapp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkSelectCB,fud);
 	selectapp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
-	//selectapp->eventLoopCB=mainloopCB;
 	selectapp->CTK_mainEventLoop();
+	if(fud->isValid==true)
+		{
+			retval=true;
+			this->selectedFile=files->data[lb->listItemNumber].path;
+			fprintf(stderr,"%s\n",files->data[lb->listItemNumber].path.c_str());
+		}
+	delete fud;
+	delete files;
+	delete selectapp;
+	
+	return(retval);
 }
 
-std::string CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app)
+void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app)
 {
 	app->CTK_clearScreen();
-	this->runOpenFile(app);
-	return(this->inFolder);
+	this->isValidFile=this->runOpenFile(app);
+	app->CTK_clearScreen();
 }
 

@@ -32,6 +32,7 @@ class CTK_cursesCheckBoxClass
 		CTK_cursesCheckBoxClass();
 		~CTK_cursesCheckBoxClass();
 		char	*label;
+		void	*selectCBUserData=NULL;
 
 		void	CTK_newCheckBox(int x,int y,int width,const char *label="");
 		void	CTK_drawCheckBox(bool hilite=false);
@@ -41,8 +42,8 @@ class CTK_cursesCheckBoxClass
 		bool	CTK_getEnterDeselects(void);
 		void	CTK_setColours(coloursStruct cs);
 
-		void	CTK_setSelectCB(void (*select)(void *));
-		void	(*selectCB)(void *)=NULL;
+		void	CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
+		void	(*selectCB)(void *,void *)=NULL;
 	private:
 		int		sx;
 		int		sy;

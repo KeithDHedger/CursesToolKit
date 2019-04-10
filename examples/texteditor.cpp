@@ -62,9 +62,14 @@ void menuSelectCB(void *inst)
 							{
 								std::string str;
 								CTK_cursesUtilsClass	cu;
-								str=cu.CTK_openFile(mainApp);
+								cu.CTK_openFile(mainApp);
+								if(cu.isValidFile==true)
+									{
 								//delete cu;
-								//fprintf(stderr,">>%p<<<<%s<<\n",mainApp,str.c_str());
+										fprintf(stderr,"file=%s\n",cu.selectedFile.c_str());
+										mainApp->CTK_addPage();
+										mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,16,true,cu.selectedFile.c_str());
+									}
 							}
 							break;
 						case SAVEITEM:

@@ -57,16 +57,11 @@ class CTK_mainAppClass
 		int										maxRows;
 		int										pageNumber=0;
 		std::vector<pageStruct>					pages;
-
-//		std::vector<CTK_cursesButtonClass*>		buttons;
-//		std::vector<CTK_cursesTextBoxClass*>	textBoxes;
-//		std::vector<CTK_cursesInputClass*>		inputs;
-//		std::vector<CTK_cursesListBoxClass*>	lists;
-//		std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
-//		std::vector<CTK_cursesEditBoxClass*>	editBoxes;
 		CTK_cursesMenuClass						*menuBar=NULL;
-		void									CTK_clearScreen(void);
 		coloursStruct							colours;
+		bool									runEventLoop=false;
+
+		void									CTK_clearScreen(void);
 		void									CTK_setColours(coloursStruct cs);
 		int										CTK_addPage(void);
 		int										CTK_removePage(int pagenum);
@@ -74,7 +69,6 @@ class CTK_mainAppClass
 		int										CTK_previousPage(void);
 		int										CTK_nextPage(void);
 
-		bool									runEventLoop=false;
 		void									(*eventLoopCB)(void*,void*)=NULL;
 
 //build new gadgets
@@ -107,7 +101,6 @@ class CTK_mainAppClass
 		int										hiliteEditBoxNum=-1;
 		HILITING								hiliting=NONE;
 		int										hlhiliting=HLNONE;
-
 };
 
 #endif

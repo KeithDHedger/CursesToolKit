@@ -54,12 +54,13 @@ class CTK_cursesListBoxClass
 		void						CTK_newListBox(int x,int y,int width,int hite);
 		void						CTK_setColours(coloursStruct cs);
 		
-		void						CTK_setSelectCB(void (*select)(void *));
-		void						(*selectCB)(void *)=NULL;
+		void						CTK_setSelectCB(void (*select)(void *,void *),void *);
+		void						(*selectCB)(void *,void *)=NULL;
+		void						*selectCBUserData=NULL;
 
 		std::vector<listItemStruct*>	listItems;
 
-		void						CTK_addListItem(const char *label,void *ud=NULL);
+		void						CTK_addListItem(const char *label,void *userdata=NULL);
 		void						CTK_clearList(void);
 		void						CTK_drawListWindow(bool hilite);
 		void						CTK_keyUpDown(bool doup,bool page=false);

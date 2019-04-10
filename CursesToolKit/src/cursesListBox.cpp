@@ -83,9 +83,10 @@ void CTK_cursesListBoxClass::CTK_clearList(void)
 	this->listItemNumber=0;
 }
 
-void CTK_cursesListBoxClass::CTK_setSelectCB(void (*select)(void *))
+void CTK_cursesListBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
+	this->selectCBUserData=userdata;
 }
 
 void CTK_cursesListBoxClass::CTK_newListBox(int x,int y,int width,int hite)

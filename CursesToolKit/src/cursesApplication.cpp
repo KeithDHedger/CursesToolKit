@@ -19,23 +19,22 @@
  */
 
 #include "cursesApplication.h"
-//#include "cursesGlobals.h"
 
 CTK_mainAppClass::~CTK_mainAppClass()
 {
 	delete this->menuBar;
-	for(int j=0;j<this->pages.size();j++)
+	for(int k=0;k<this->pages.size();k++)
 		{
-			for(int j=0;j<this->pages[j].textBoxes.size();j++)
-				delete this->pages[j].textBoxes[j];
-			for(int j=0;j<this->pages[j].buttons.size();j++)
-				delete this->pages[j].buttons[j];
-			for(int j=0;j<this->pages[j].inputs.size();j++)
-				delete this->pages[j].inputs[j];
-			for(int j=0;j<this->pages[j].lists.size();j++)
-				delete this->pages[j].lists[j];
-			for(int j=0;j<this->pages[j].checkBoxes.size();j++)
-				delete this->pages[j].checkBoxes[j];
+			for(int j=0;j<this->pages[k].textBoxes.size();j++)
+				delete this->pages[k].textBoxes[j];
+			for(int j=0;j<this->pages[k].buttons.size();j++)
+				delete this->pages[k].buttons[j];
+			for(int j=0;j<this->pages[k].inputs.size();j++)
+				delete this->pages[k].inputs[j];
+			for(int j=0;j<this->pages[k].lists.size();j++)
+				delete this->pages[k].lists[j];
+			for(int j=0;j<this->pages[k].checkBoxes.size();j++)
+				delete this->pages[k].checkBoxes[j];
 		}
 }
 
@@ -90,9 +89,6 @@ void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char
 
 void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
 {
-//	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
-//	inp->CTK_newInput(x,y,width,hite,label);
-//	this->pages[this->pageNumber].inputs.push_back(inp);
 }
 
 void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *label)
@@ -408,7 +404,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteBtnNum!=-1)
 											{
 												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]);
+													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
 													this->hiliteBtnNum=-1;
 												this->CTK_updateScreen(this,NULL);
@@ -422,7 +418,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteListNum!=-1)
 											{
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB((void*)this->pages[this->pageNumber].lists[this->hiliteListNum]);
+													this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB((void*)this->pages[this->pageNumber].lists[this->hiliteListNum],this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)
 													this->hiliteListNum=-1;
 												this->CTK_updateScreen(this,NULL);
@@ -430,7 +426,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteCheckBoxNum!=-1)
 											{
 												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]);
+													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
 													this->hiliteCheckBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);

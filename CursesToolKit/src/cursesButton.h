@@ -21,33 +21,33 @@
 #ifndef _CURSESBUTTON_
 #define _CURSESBUTTON_
 
-//#include <stdio.h>
-
-//#include "cursesLib.h"
 #include "cursesGlobals.h"
+
 class CTK_cursesButtonClass
 {
 	public:
 		CTK_cursesButtonClass();
 		~CTK_cursesButtonClass();
-		char	*label;
 
-		void	CTK_newButton(int x,int y,int width,int hite,const char *label="");
-		void	CTK_drawButton(bool hilite=false);
-		void	CTK_setEnterDeselects(bool deselect);
-		bool	CTK_getEnterDeselects(void);
-		void	CTK_setColours(coloursStruct cs);
+		char			*label;
+		void			*selectCBUserData=NULL;
 
-		void	CTK_setSelectCB(void (*select)(void *));
-		void	(*selectCB)(void *)=NULL;
+		void			CTK_newButton(int x,int y,int width,int hite,const char *label="");
+		void			CTK_drawButton(bool hilite=false);
+		void			CTK_setEnterDeselects(bool deselect);
+		bool			CTK_getEnterDeselects(void);
+		void			CTK_setColours(coloursStruct cs);
+
+		void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
+		void			(*selectCB)(void *,void *)=NULL;
 
 	private:
-		int		sx;
-		int		sy;
-		int		wid;
-		int		hite;
+		int				sx;
+		int				sy;
+		int				wid;
+		int				hite;
 		coloursStruct	colours;
-		bool	enterDeselects=true;
+		bool			enterDeselects=true;
 };
 
 #endif

@@ -61,9 +61,10 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 	asprintf(&(this->label),"%s",label);
 }
 
-void CTK_cursesCheckBoxClass::CTK_setSelectCB(void (*select)(void *))
+void CTK_cursesCheckBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
+	this->selectCBUserData=userdata;
 }
 
 void CTK_cursesCheckBoxClass::CTK_setValue(bool val)

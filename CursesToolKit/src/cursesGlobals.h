@@ -18,11 +18,10 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-//#include "cursesApplication.h"
 #ifndef _CURSESGLOBALS_
 #define _CURSESGLOBALS_
 
+class CTK_cursesUtilsClass;
 class LFSTK_findClass;
 class CTK_mainAppClass;
 class CTK_cursesButtonClass;
@@ -61,6 +60,5 @@ class CTK_cursesListBoxClass;
 
 #include "cursesApplication.h"
 #include "cursesUtils.h"
-
 
 #endif

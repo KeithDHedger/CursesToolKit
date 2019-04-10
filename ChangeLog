@@ -1,4 +1,5 @@
 0.0.10
+Fixed exit crash in file dialog.
 Started file select in utils class.
 
 0.0.9

@@ -57,9 +57,10 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 	asprintf(&(this->label),"%s",label);
 }
 
-void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *))
+void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
+	this->selectCBUserData=userdata;
 }
 
 void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)

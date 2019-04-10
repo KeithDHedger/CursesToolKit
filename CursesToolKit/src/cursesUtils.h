@@ -17,23 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include <string>
-#include <termkey.h>
-#include <vector>
-#include <string.h>
-#include <unistd.h>
-
-//#include "cursesLib.h"
-//#include "cursesGraphics.h"
-//class CTK_mainAppClass;
 
 #include "cursesGlobals.h"
 
 #ifndef _CURSESUTILS_
 #define _CURSESUTILS_
 
-//#include "cursesApplication.h"
+struct fileUDStruct
+{
+	CTK_cursesUtilsClass	*inst=NULL;
+	LFSTK_findClass			*find=NULL;
+	CTK_mainAppClass		*app=NULL;
+	CTK_cursesListBoxClass	*list=NULL;
+	bool					isValid=false;
+};
 
 class CTK_cursesUtilsClass
 {
@@ -41,12 +38,15 @@ class CTK_cursesUtilsClass
 		CTK_cursesUtilsClass();
 		~CTK_cursesUtilsClass();
 
+		std::string					selectedFile="";
+		bool						isValidFile=false;
+		std::string					inFolder="./";
+
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
-		std::string					CTK_openFile(CTK_mainAppClass *app);
+		void						CTK_openFile(CTK_mainAppClass *app);
 
 	private:
-		void						runOpenFile(CTK_mainAppClass *app);
-		std::string					inFolder="./";
+		bool						runOpenFile(CTK_mainAppClass *app);
 };
 
 #endif

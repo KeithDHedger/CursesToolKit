@@ -18,7 +18,6 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <stdlib.h>
 #include "cursesGlobals.h"
 
 #ifndef _CURSESLIB_
