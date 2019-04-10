@@ -65,6 +65,8 @@ void menuSelectCB(void *inst)
 							break;
 						case CLOSEITEM:
 							mainApp->CTK_removePage(mainApp->pageNumber);
+							if(mainApp->pageNumber==-1)
+								mainApp->runEventLoop=false;
 							break;
 						case QUITITEM:
 							mainApp->runEventLoop=false;

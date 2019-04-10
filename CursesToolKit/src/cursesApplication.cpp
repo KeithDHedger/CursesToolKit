@@ -155,7 +155,15 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	if(app->menuBar!=NULL)
 		app->menuBar->CTK_drawMenuBar();
 
-//	printf("\e[2J\e[H");
+	if(app->pageNumber<0)
+		{
+			app->CTK_clearScreen();
+			if(app->menuBar!=NULL)
+				app->menuBar->CTK_drawMenuBar();
+			fflush(NULL);
+			SETNORMAL;
+			return;
+		}
 
 	for(int j=0;j<app->pages[app->pageNumber].textBoxes.size();j++)
 		{

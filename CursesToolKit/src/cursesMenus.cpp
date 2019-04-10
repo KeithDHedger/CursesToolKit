@@ -101,7 +101,6 @@ void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name)
 		}
 	menu->menuItem.clear();
 	this->menuNames[menunum]->menuItem[this->menuNames[menunum]->menuItemCnt++]=menu;
-		fprintf(stderr,">>>>>>>>>menu->maxWidth=%i name=>>%s<<\n",menu->maxWidth,menu->menuName);
 }
 
 void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
@@ -195,9 +194,6 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	if(doshortcut==true)
 		this->menuWidth--;
 
-fprintf(stderr,">>doshortcut=%i this->menuWidth=%i menunum=%i\n",doshortcut,this->menuWidth,menunum);
-
-
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
 		{
 			if(prelight==-10000)
@@ -237,8 +233,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 	while(mainloop==true)
 		{
-doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
-fprintf(stderr,"menuNames=>>%s<< doshortcut=%i\n",this->menuNames[this->menuNumber]->menuName,this->menuNames[this->menuNumber]->itemsHaveKey);
+			doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
 			if(this->menuNames[this->menuStart]!=NULL)
 				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
 			this->CTK_drawMenuBar();
