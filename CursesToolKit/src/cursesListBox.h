@@ -21,21 +21,6 @@
 #ifndef _CURSESLISTBOX_
 #define _CURSESLISTBOX_
 
-//#include <stdarg.h>
-//#include <stdio.h>
-//#include <unistd.h>
-//
-//#include <termkey.h>
-//#include <termios.h>
-//#include <termcap.h>
-//#include <sys/ioctl.h>
-//
-//#include <string>
-//#include <vector>
-
-//#include "cursesLib.h"
-//#include "cursesGraphics.h"
-
 #include "cursesGlobals.h"
 
 struct listItemStruct
@@ -49,31 +34,33 @@ class CTK_cursesListBoxClass
 	public:
 		CTK_cursesListBoxClass();
 		~CTK_cursesListBoxClass();
-		int							listStart=0;
-		int							listItemNumber=0;
-		void						CTK_newListBox(int x,int y,int width,int hite);
-		void						CTK_setColours(coloursStruct cs);
-		
-		void						CTK_setSelectCB(void (*select)(void *,void *),void *);
-		void						(*selectCB)(void *,void *)=NULL;
-		void						*selectCBUserData=NULL;
 
+		int								listStart=0;
+		int								listItemNumber=0;
 		std::vector<listItemStruct*>	listItems;
+		void							*selectCBUserData=NULL;
 
-		void						CTK_addListItem(const char *label,void *userdata=NULL);
-		void						CTK_clearList(void);
-		void						CTK_drawListWindow(bool hilite);
-		void						CTK_keyUpDown(bool doup,bool page=false);
-		void						CTK_setEnterDeselects(bool deselect);
-		bool						CTK_getEnterDeselects(void);
+		void							CTK_newListBox(int x,int y,int width,int hite);
+		void							CTK_setColours(coloursStruct cs);
+		
+		void							CTK_setSelectCB(void (*select)(void *,void *),void *);
+		void							(*selectCB)(void *,void *)=NULL;
+
+
+		void							CTK_addListItem(const char *label,void *userdata=NULL);
+		void							CTK_clearList(void);
+		void							CTK_drawListWindow(bool hilite);
+		void							CTK_keyUpDown(bool doup,bool page=false);
+		void							CTK_setEnterDeselects(bool deselect);
+		bool							CTK_getEnterDeselects(void);
 
 	private:
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
-		bool						enterDeselects=true;
-		std::string					blank;
+		int								sx;
+		int								sy;
+		int								wid;
+		int								hite;
+		bool							enterDeselects=true;
+		std::string						blank;
 
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass	*gc;
