@@ -62,8 +62,8 @@ class CTK_cursesListBoxClass
 		bool							enterDeselects=true;
 		std::string						blank;
 
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass	*gc;
+		coloursStruct					colours;
+		CTK_cursesGraphicsClass			*gc;
 };
 
 #endif

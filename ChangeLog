@@ -1,4 +1,5 @@
 0.0.10
+Fixed file select ui.
 Updated callbacks to include user data.
 Code clean.
 Fixed exit crash in file dialog.

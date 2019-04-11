@@ -56,6 +56,7 @@ static void listSelectCB(void *inst,void *ud)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
+	fud->isValid=false;
 //	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 	if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
 		{
@@ -80,6 +81,7 @@ static void listSelectCB(void *inst,void *ud)
 		{
 			sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
 			fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+			fud->isValid=true;
 		}
 }
 
@@ -88,8 +90,8 @@ static void buttonSelectCB(void *inst,void *ud)
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 
-	if(strcmp(bc->label,"  OK  ")==0)
-		fud->isValid=true;
+	if(strcmp(bc->label,"CANCEL")==0)
+		fud->isValid=false;
 
 //	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	fud->app->runEventLoop=false;
@@ -127,6 +129,18 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	char					*buffer=(char*)alloca(256);
 	fileUDStruct			*fud=new fileUDStruct;
 	bool					retval=false;
+	coloursStruct			cs;
+
+	cs.fancyGadgets=true;
+	cs.hiliteBackCol=BACK_CYAN;
+	cs.hiliteForeCol=FORE_BLACK;
+	cs.foreCol=FORE_BLACK;
+	cs.backCol=BACK_WHITE;
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=INBOX;
+	selectapp->CTK_setColours(cs);
+	selectapp->CTK_clearScreen();
+	lb->CTK_setColours(cs);
 
 	fud->find=files;
 	fud->app=selectapp;
@@ -136,7 +150,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 
 	this->inFolder=get_current_dir_name();
 
-	lb->CTK_newListBox(2,2,app->maxCols-2,selectapp->maxRows-6);
+	lb->CTK_newListBox(2,2,app->maxCols-2,selectapp->maxRows-7);
 
 	files->LFSTK_setFindType(ANYTYPE);
 	files->LFSTK_setFullPath(true);
@@ -163,9 +177,13 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	selectapp->CTK_addListBox(lb);
 	selectapp->CTK_addNewTextBox(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"File:",false);
 
+	cs.foreCol=FORE_WHITE;
+	cs.backCol=BACK_BLUE;
+	selectapp->CTK_setColours(cs);
+
 	selectapp->CTK_addNewButton(2,selectapp->maxRows-1,1,1,"  OK  ");
 	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
-	selectapp->CTK_addNewButton(selectapp->maxCols-2-4,selectapp->maxRows-1,11,1,"CANCEL");
+	selectapp->CTK_addNewButton(selectapp->maxCols-6-4,selectapp->maxRows-1,11,1,"CANCEL");
 	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 
 	selectapp->CTK_addNewCheckBox((selectapp->maxCols/2)-8,selectapp->maxRows-1,14,"Show Hidden");
