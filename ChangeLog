@@ -1,4 +1,6 @@
 0.0.10
+Header files install folder renamed.
+Pkg-config files renamed.
 Fixed file select ui.
 Updated callbacks to include user data.
 Code clean.

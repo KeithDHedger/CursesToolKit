@@ -15924,7 +15924,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files ctk.pc"
+ac_config_files="$ac_config_files cursestoolkit.pc"
 
 ac_config_files="$ac_config_files Makefile CursesToolKit/lib/Makefile"
 
@@ -17041,7 +17041,7 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
-    "ctk.pc") CONFIG_FILES="$CONFIG_FILES ctk.pc" ;;
+    "cursestoolkit.pc") CONFIG_FILES="$CONFIG_FILES cursestoolkit.pc" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "CursesToolKit/lib/Makefile") CONFIG_FILES="$CONFIG_FILES CursesToolKit/lib/Makefile" ;;
 

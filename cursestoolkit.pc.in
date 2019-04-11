@@ -9,4 +9,4 @@ URL: https://github.com/KeithDHedger/LFSDesktopProject
 Version: @VERSION@
 Requires: termkey
 Libs: -L${libdir} -lcursestoolkit
-Cflags: -I${includedir}/ctk
+Cflags: -I${includedir}/cursestoolkit
