@@ -21,19 +21,6 @@
 #ifndef _CURSESMENUS_
 #define _CURSESMENUS_
 
-//#include <stdarg.h>
-//#include <stdio.h>
-//#include <unistd.h>
-//#include <string.h>
-//#include <map>
-//
-//#include <termkey.h>
-//#include <termios.h>
-//#include <termcap.h>
-//#include <sys/ioctl.h>
-//
-//
-//#include "cursesLib.h"
 #include "cursesGlobals.h"
 
 struct	menuStruct

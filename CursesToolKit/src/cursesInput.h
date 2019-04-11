@@ -21,11 +21,6 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
-//#include <string>
-//#include <termkey.h>
-//
-//#include "cursesLib.h"
-//#include "cursesGraphics.h"
 #include "cursesGlobals.h"
 
 class CTK_cursesInputClass
@@ -34,23 +29,23 @@ class CTK_cursesInputClass
 		CTK_cursesInputClass();
 		~CTK_cursesInputClass();
 
-		void		CTK_newInput(int x,int y, int w,int h,const char *txt="");
-		void		CTK_drawInput(bool hilite);
-		void		CTK_doInput(void);
-		void		CTK_setColours(coloursStruct cs);
+		void					CTK_newInput(int x,int y, int w,int h,const char *txt="");
+		void					CTK_drawInput(bool hilite);
+		void					CTK_doInput(void);
+		void					CTK_setColours(coloursStruct cs);
 
 	private:
-		int			sx;
-		int			sy;
-		int			wid;
-		int			hite;
-		int			curs=0;
-		int			startChar=0;
+		int						sx;
+		int						sy;
+		int						wid;
+		int						hite;
+		int						curs=0;
+		int						startChar=0;
 
-		std::string	text;
-		std::string	blank;
-		TermKey		*tk;
-		coloursStruct	colours;
+		std::string				text;
+		std::string				blank;
+		TermKey					*tk;
+		coloursStruct			colours;
 		CTK_cursesGraphicsClass	*gc;
 };
 

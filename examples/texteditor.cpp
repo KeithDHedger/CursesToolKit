@@ -45,7 +45,7 @@ void menuSelectCB(void *inst)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 	
-	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
+//	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
 
 	switch(mc->menuNumber)
 		{
@@ -60,13 +60,11 @@ void menuSelectCB(void *inst)
 							break;
 						case OPENITEM:
 							{
-								std::string str;
+								std::string				str;
 								CTK_cursesUtilsClass	cu;
 								cu.CTK_openFile(mainApp);
 								if(cu.isValidFile==true)
 									{
-								//delete cu;
-										fprintf(stderr,"file=%s\n",cu.selectedFile.c_str());
 										mainApp->CTK_addPage();
 										mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,16,true,cu.selectedFile.c_str());
 									}
@@ -104,7 +102,7 @@ void menuSelectCB(void *inst)
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 					}
-				fprintf(stderr,"pagenum=%i\n",pagenum);
+				//fprintf(stderr,"pagenum=%i\n",pagenum);
 				}
 				break;
 			case HELPMENU:

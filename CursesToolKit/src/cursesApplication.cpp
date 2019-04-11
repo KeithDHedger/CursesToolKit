@@ -219,13 +219,13 @@ void CTK_mainAppClass::setHilite(bool forward)
 	if(forward==false)
 		addit=-1;
 
-	switch(this->hlhiliting)
+	switch(this->hiliting)
 		{
 			case HLNONE:
-				this->hlhiliting+=addit;
-				if(this->hlhiliting==-2)
+				this->hiliting+=addit;
+				if(this->hiliting==-2)
 					{
-						this->hlhiliting=HLNOMORE-1;
+						this->hiliting=HLNOMORE-1;
 						this->hiliteEditBoxNum=this->pages[this->pageNumber].editBoxes.size();
 					}
 				this->setHilite(forward);
@@ -235,9 +235,9 @@ void CTK_mainAppClass::setHilite(bool forward)
 				if((this->hiliteBtnNum<0) || (this->hiliteBtnNum>=this->pages[this->pageNumber].buttons.size()))
 					{
 						this->hiliteBtnNum=-1;
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						if(addit==-1)
-							this->hlhiliting=HLNONE;
+							this->hiliting=HLNONE;
 						else
 							this->setHilite(forward);
 					}
@@ -250,7 +250,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->hiliteTxtBoxNum=-1;
 						if(addit==-1)
 							this->hiliteBtnNum=this->pages[this->pageNumber].buttons.size();
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						this->setHilite(forward);
 					}
 				else
@@ -264,7 +264,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->hiliteInputNum=-1;
 						if(addit==-1)
 							this->hiliteTxtBoxNum=this->pages[this->pageNumber].textBoxes.size();
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						this->setHilite(forward);
 					}
 				break;
@@ -275,7 +275,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->hiliteListNum=-1;
 						if(addit==-1)
 							this->hiliteInputNum=this->pages[this->pageNumber].inputs.size();
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						this->setHilite(forward);
 					}
 				break;
@@ -286,7 +286,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->hiliteCheckBoxNum=-1;
 						if(addit==-1)
 							this->hiliteListNum=this->pages[this->pageNumber].lists.size();
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						this->setHilite(forward);
 					}
 				break;
@@ -297,12 +297,12 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->hiliteEditBoxNum=-1;
 						if(addit==-1)
 							this->hiliteCheckBoxNum=this->pages[this->pageNumber].checkBoxes.size();
-						this->hlhiliting+=addit;
+						this->hiliting+=addit;
 						this->setHilite(forward);
 					}
 				break;
 			case HLNOMORE:
-				this->hlhiliting=NONE;
+				this->hiliting=HLNONE;
 				break;
 		}
 }
@@ -352,7 +352,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteInputNum=-1;
 										this->hiliteListNum=-1;
 										this->hiliteCheckBoxNum=-1;
-										this->hiliting=NONE;
+										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
 										if(this->menuBar!=NULL)
 											selection=this->menuBar->CTK_doMenuEvent(0,1,true);

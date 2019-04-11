@@ -21,13 +21,6 @@
 #ifndef _CURSESTEXTBOX_
 #define _CURSESTEXTBOX_
 
-//#include <string>
-//#include <vector>
-//#include <string.h>
-//
-//#include "cursesLib.h"
-//#include "cursesGraphics.h"
-//#include "cursesUtils.h"
 #include "cursesGlobals.h"
 
 class CTK_cursesTextBoxClass

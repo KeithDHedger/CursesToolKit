@@ -45,7 +45,6 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 
 void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 {
-#if 1
 	const char					*ptr=NULL;
 	char						*buffer=NULL;
 	int							startchr=0;
@@ -55,22 +54,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	CTK_cursesUtilsClass		cu;
 
 	this->txtstrings.clear();
-	this->text.clear();
-	//freeAndNull(&this->text);
-
-//	if(isfilename==false)
-		this->text=txt;
-//	else
-//		{
-//			FILE *f=fopen(txt,"rb");
-//			fseek(f,0,SEEK_END);
-//			long fsize=ftell(f);
-//			fseek(f,0,SEEK_SET);
-//			this->txtBuffer=(char*)malloc(fsize+1);
-//			fread(this->txtBuffer,1,fsize,f);
-//			fclose(f);
-//			this->txtBuffer[fsize]=0;
-//		}
+	this->text=txt;
 
 	str=this->text;
 	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
@@ -100,46 +84,6 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 				}
 			free(buffer);
 		}
-
-#else
-	char		*line=(char*)alloca(this->wid+1);
-	int			xcnt=0;
-	int			ycnt=0;
-	std::string	str;
-
-	line[0]=0;
-	this->text=txt;
-	this->txtstrings.clear();
-
-	for(int j=0;j<this->text.length();j++)
-		{
-			if(this->text.c_str()[j]=='\n')
-				{
-					ycnt++;
-					sprintf(&line[xcnt],"%c",0);
-					str=line;
-					this->txtstrings.push_back(str);
-					xcnt=0;
-					continue;
-				}
-
-			sprintf(&line[xcnt],"%c",this->text.c_str()[j]);
-			xcnt++;
-
-			if(xcnt>=this->wid)
-				{
-					ycnt++;
-					sprintf(&line[xcnt],"%c",0);
-					str=line;
-					this->txtstrings.push_back(str);
-					xcnt=0;
-				}
-		}
-
-	str=line;
-	if(xcnt>0)
-		this->txtstrings.push_back(str);
-#endif
 }
 
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
@@ -228,8 +172,5 @@ void CTK_cursesTextBoxClass::CTK_setColours(coloursStruct cs)
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
-
-
-
 
 

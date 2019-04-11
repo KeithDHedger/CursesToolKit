@@ -101,7 +101,6 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
 				{
-//					while(numchars<this->wid+1)
 					while(numchars<this->wid)
 						{
 							cpybuf[startchr]=buffer[cnt++];
@@ -183,19 +182,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	MOVETO(this->sx,this->sy+boxline);
 }
 
-//void CTK_cursesEditBoxClass::checkPositions(void)
-//{
-//	if(this->currentY<0)
-//		this->currentY=0;
-//	if(this->currentY>=this->txtstrings.size())
-//		this->currentY=this->txtstrings.size()-1;
-//
-//	if(this->currentX<0)
-//		this->currentX=0;
-//	if(this->currentX>this->txtstrings[this->currentY].length())
-//		this->currentX=this->txtstrings[this->currentY].length()-1;
-//}
-
 void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 {
 	bool			loop=true;
@@ -236,16 +222,10 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 
 										if(this->currentY>0)
 											{
-												bool adjx=true;
-												//if(this->txtstrings[this->currentY-1][this->txtstrings[this->currentY-1].length()-1]=='\n')
-													{
-														this->txtstrings[this->currentY-1].erase(this->txtstrings[this->currentY-1].length()-1,1);
-														if(this->txtstrings[this->currentY-1].length()>0)
-														{	
-															this->currentX=this->txtstrings[this->currentY-1].length();
-															adjx=false;
-														}
-													}
+												this->txtstrings[this->currentY-1].erase(this->txtstrings[this->currentY-1].length()-1,1);
+												if(this->txtstrings[this->currentY-1].length()>0)
+													this->currentX=this->txtstrings[this->currentY-1].length();
+
 												this->txtstrings[this->currentY-1].append(this->txtstrings[this->currentY]);
 												this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
 												this->currentY--;
@@ -315,9 +295,6 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 											this->currentX=0;
 										break;
 									case TERMKEY_SYM_RIGHT:
-//										if(this->currentX<=this->txtstrings[currentY].length())
-//											this->currentX++;
-
 										this->currentX++;
 										if(this->currentX>=this->txtstrings[currentY].length())
 											this->currentX=this->txtstrings[currentY].length()-1;

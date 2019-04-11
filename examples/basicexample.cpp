@@ -39,7 +39,7 @@ void mainloopCB(void *mainc,void *data)
 	//fprintf(stderr,">>%p %p<<\n",mainc,data);
 }
 
-void buttonselctCB(void *inst)
+void buttonselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
@@ -48,7 +48,7 @@ void buttonselctCB(void *inst)
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
-void listselctCB(void *inst)
+void listselctCB(void *inst,void *userdata)
 {
 	char						*buffer=(char*)alloca(256);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
@@ -57,7 +57,7 @@ void listselctCB(void *inst)
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
-void checkselctCB(void *inst)
+void checkselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
@@ -161,9 +161,9 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
 	mainApp->pages[0].buttons[0]->CTK_setColours(cs);
-	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
 	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
-	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
 	mainApp->pages[0].buttons[1]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_BLACK;
@@ -181,7 +181,7 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_addListItem("Item 5");
 	lb->CTK_addListItem("Item 6");
 	lb->CTK_addListItem("Item 7",(void*)7);
-	lb->CTK_setSelectCB(listselctCB);
+	lb->CTK_setSelectCB(listselctCB,NULL);
 	//cs.backCol=BACK_GREEN;
 	lb->CTK_setColours(cs);
 
@@ -190,10 +190,10 @@ Pasting is done via middle click of mouse as usual.\
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
-	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
-	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
 	mainApp->pages[0].checkBoxes[0]->CTK_setColours(cs);
 	mainApp->pages[0].checkBoxes[1]->CTK_setColours(cs);
@@ -204,21 +204,7 @@ Pasting is done via middle click of mouse as usual.\
 
 
 	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
-		{
-//			int sx=0;
-//			if(mainApp->pages[0].editBoxes[0]->txtstrings[j].length()<64)
-//				fprintf(stderr,"%s\n",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
-//			else
-//			while(mainApp->pages[0].editBoxes[0]->txtstrings[j].length()>64)
-//				{
-//					fprintf(stderr,"%s\n",mainApp->pages[0].editBoxes[0]->txtstrings[j].substr(sx,64).c_str());
-//					sx+=64;
-//				}
-//			if(mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str()[mainApp->pages[0].editBoxes[0]->txtstrings[j].length()-1]=='\n')
-//				fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
-//			else
-				fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
-		}
+		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
 
 	return 0;
 }

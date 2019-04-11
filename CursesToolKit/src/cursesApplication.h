@@ -21,17 +21,7 @@
 #ifndef _CURSESAPPLICATION_
 #define _CURSESAPPLICATION_
 
-//#include <termkey.h>
 #include "cursesGlobals.h"
-
-//#include "cursesTextBox.h"
-//#include "cursesMenus.h"
-//#include "cursesButton.h"
-//#include "cursesInput.h"
-//#include "cursesListBox.h"
-//#include "cursesCheckBox.h"
-//#include "cursesEditBox.h"
-//#include "cursesGraphics.h"
 
 struct pageStruct
 {
@@ -44,9 +34,8 @@ struct pageStruct
 	bool									menusActive=true;
 };
 
-enum HILITING {NONE=-1,BUTTONS,TEXT,INPUTS,LISTS,CHKBOXS,EDITBOXES,NOMORE};
 enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLNOMORE};
-//enum {NOHILITE=-1,HILITEBTN,HILITETXT,
+
 class CTK_mainAppClass
 {
 	public:
@@ -99,8 +88,7 @@ class CTK_mainAppClass
 		int										hiliteListNum=-1;
 		int										hiliteCheckBoxNum=-1;
 		int										hiliteEditBoxNum=-1;
-		HILITING								hiliting=NONE;
-		int										hlhiliting=HLNONE;
+		int										hiliting=HLNONE;
 };
 
 #endif

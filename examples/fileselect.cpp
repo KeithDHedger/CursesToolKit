@@ -30,7 +30,7 @@ bool					isValid=false;
 char					*lastSelectedItem=NULL;
 char					*lastSelectedPath=NULL;
 
-void buttonselctCB(void *inst)
+void buttonselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
@@ -42,7 +42,7 @@ void buttonselctCB(void *inst)
 	mainApp->runEventLoop=false;
 }
 
-void listselctCB(void *inst)
+void listselctCB(void *inst,void *userdata)
 {
 	char						*buffer=(char*)alloca(PATH_MAX);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
@@ -78,7 +78,7 @@ void listselctCB(void *inst)
 		}
 }
 
-void checkselctCB(void *inst)
+void checkselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
@@ -133,19 +133,19 @@ int main(int argc, char **argv)
 				}
 		}
 
-	lb->CTK_setSelectCB(listselctCB);
+	lb->CTK_setSelectCB(listselctCB,NULL);
 	lb->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addListBox(lb);
 	mainApp->CTK_addNewTextBox(2,mainApp->maxRows-3,mainApp->maxCols-2,1,"File:",false);
 
 	mainApp->CTK_addNewButton(2,mainApp->maxRows-1,1,1,"  OK  ");
-	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
 	mainApp->CTK_addNewButton(mainApp->maxCols-2-4,mainApp->maxRows-1,11,1,"CANCEL");
-	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB);
+	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
 
 	mainApp->CTK_addNewCheckBox((mainApp->maxCols/2)-8,mainApp->maxRows-1,14,"Show Hidden");
-	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB);
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
 	mainApp->eventLoopCB=mainloopCB;

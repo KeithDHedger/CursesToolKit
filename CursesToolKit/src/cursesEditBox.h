@@ -17,17 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-//#include <string>
-//#include <termkey.h>
-//#include <vector>
-//#include <termkey.h>
-//#include <string.h>
-//#include <unistd.h>
-//
-//#include "cursesLib.h"
-//#include "cursesGraphics.h"
-//#include "cursesUtils.h"
 
 #ifndef _CURSESEDITBOX_
 #define _CURSESEDITBOX_
@@ -58,9 +47,7 @@ class CTK_cursesEditBoxClass
 		int							currentX;
 		int							currentY;
 
-		//std::string					text;
 		std::string					blank;
-		//std::string					hold;
 		char						*txtBuffer=NULL;
 
 		TermKey						*tk;
@@ -69,7 +56,6 @@ class CTK_cursesEditBoxClass
 
 
 		void						updateBuffer(void);
-//		void						checkPositions(void);
 };
 
 #endif

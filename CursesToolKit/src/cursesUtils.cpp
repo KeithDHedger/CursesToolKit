@@ -56,7 +56,7 @@ static void listSelectCB(void *inst,void *ud)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
-	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
+//	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 	if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
 		{
 			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
@@ -91,7 +91,7 @@ static void buttonSelectCB(void *inst,void *ud)
 	if(strcmp(bc->label,"  OK  ")==0)
 		fud->isValid=true;
 
-	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
+//	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	fud->app->runEventLoop=false;
 }
 
@@ -177,7 +177,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 		{
 			retval=true;
 			this->selectedFile=files->data[lb->listItemNumber].path;
-			fprintf(stderr,"%s\n",files->data[lb->listItemNumber].path.c_str());
+//			fprintf(stderr,"%s\n",files->data[lb->listItemNumber].path.c_str());
 		}
 	delete fud;
 	delete files;
