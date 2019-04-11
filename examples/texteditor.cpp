@@ -96,6 +96,8 @@ void menuSelectCB(void *inst)
 							mainApp->CTK_removePage(mainApp->pageNumber);
 							if(mainApp->pageNumber==-1)
 								mainApp->runEventLoop=false;
+							else
+								rebuildTabMenu();
 							break;
 						case QUITITEM:
 							mainApp->runEventLoop=false;
@@ -108,7 +110,7 @@ void menuSelectCB(void *inst)
 				break;
 			case TABMENU:
 			{
-			int pagenum=-1;
+				int pagenum=-1;
 				switch(mc->menuItemNumber)
 					{
 						case NEXTTAB:
@@ -117,6 +119,10 @@ void menuSelectCB(void *inst)
 							break;
 						case PREVTAB:
 							pagenum=mainApp->CTK_previousPage();
+							mainApp->CTK_updateScreen(mainApp,NULL);
+							break;
+						default:
+							mainApp->CTK_setPage(mc->menuItemNumber-2);
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 					}

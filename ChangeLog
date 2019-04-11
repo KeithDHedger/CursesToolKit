@@ -1,4 +1,5 @@
 0.0.10
+Fixed switching to page 0.
 Fixed loading zero length file into edit box.
 Fixed minor errors in autotools files.
 Header files install folder renamed.

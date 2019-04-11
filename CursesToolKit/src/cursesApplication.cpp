@@ -476,7 +476,7 @@ int CTK_mainAppClass::CTK_addPage(void)
 
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
-	if((pagenum>0) && (pagenum<this->pages.size()))
+	if((pagenum>=0) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
 }
 
