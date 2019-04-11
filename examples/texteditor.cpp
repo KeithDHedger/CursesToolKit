@@ -88,6 +88,14 @@ void menuSelectCB(void *inst)
 							}
 							break;
 						case SAVEITEM:
+							{
+							//mainApp->pages[mainApp->pageNumber].editBoxes[0]->updateBuffer
+								FILE *f=fopen((char*)mainApp->pages[mainApp->pageNumber].userData,"w+");
+								
+							fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
+							fclose(f);
+							//mainApp->pages[mainApp->pageNumber]->CTK_updateText(buff.c_str(),false,false);
+							}
 							break;
 						case SAVEASITEM:
 							break;

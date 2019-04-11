@@ -36,6 +36,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		void						CTK_doEditEvent(void);
+		const char					*CTK_getBuffer(void);
 
 	private:
 		int							sx;
@@ -47,13 +48,12 @@ class CTK_cursesEditBoxClass
 		int							currentX;
 		int							currentY;
 
-		std::string					blank;
 		char						*txtBuffer=NULL;
+		std::string					blank;
 
 		TermKey						*tk;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
-
 
 		void						updateBuffer(void);
 };

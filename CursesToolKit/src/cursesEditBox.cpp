@@ -78,6 +78,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			this->currentY=0;
 			this->startLine=0;
 		}
+
 	if(isfilename==false)
 		this->txtBuffer=strdup(txt);
 	else
@@ -327,7 +328,11 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 	this->CTK_updateText(buff.c_str(),false,false);
 }
 
-
+const char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
+{
+	this->updateBuffer();
+	return(this->txtBuffer);
+}
 
 
 
