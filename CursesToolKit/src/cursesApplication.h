@@ -31,6 +31,7 @@ struct pageStruct
 	std::vector<CTK_cursesListBoxClass*>	lists;
 	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	void									*userData=NULL;
 	bool									menusActive=true;
 };
 
@@ -57,6 +58,7 @@ class CTK_mainAppClass
 		void									CTK_setPage(int pagenum);
 		int										CTK_previousPage(void);
 		int										CTK_nextPage(void);
+		void									CTK_setPageUserData(int pagenum,void *userdata);
 
 		void									(*eventLoopCB)(void*,void*)=NULL;
 

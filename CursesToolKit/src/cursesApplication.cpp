@@ -516,6 +516,9 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)
 	return(this->pageNumber);
 }
 
-
+void CTK_mainAppClass::CTK_setPageUserData(int pagenum,void *userdata)
+{
+	this->pages[pagenum].userData=userdata;
+}
 
 

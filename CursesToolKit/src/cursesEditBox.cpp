@@ -67,6 +67,8 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	std::vector<std::string>	array;
 	std::string					str;
 	CTK_cursesUtilsClass		cu;
+	long						fsize;
+	FILE						*f;
 
 	this->txtstrings.clear();
 	freeAndNull(&this->txtBuffer);
@@ -80,14 +82,22 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		this->txtBuffer=strdup(txt);
 	else
 		{
-			FILE *f=fopen(txt,"rb");
+			f=fopen(txt,"rb");
 			fseek(f,0,SEEK_END);
-			long fsize=ftell(f);
-			fseek(f,0,SEEK_SET);
-			this->txtBuffer=(char*)malloc(fsize+1);
-			fread(this->txtBuffer,1,fsize,f);
+			fsize=ftell(f);
+			if(fsize==0)
+				{
+					this->txtBuffer=(char*)malloc(2);
+					sprintf(this->txtBuffer,"\n");
+				}
+			else
+				{
+					fseek(f,0,SEEK_SET);
+					this->txtBuffer=(char*)malloc(fsize+1);
+					fread(this->txtBuffer,1,fsize,f);
+					this->txtBuffer[fsize]=0;
+				}
 			fclose(f);
-			this->txtBuffer[fsize]=0;
 		}
 
 	str=this->txtBuffer;

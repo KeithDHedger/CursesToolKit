@@ -21,6 +21,7 @@ exit $retval
 #include <cursesGlobals.h>
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
+int					windowRows=mainApp->maxRows-3;
 
 #define FILEMENU 0
 #define EDITMENU 1
@@ -41,6 +42,18 @@ const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
 const char	*helpMenuNames[]={" _Help"," About",NULL};
 
+void rebuildTabMenu(void)
+{
+	int	cnt=0;
+
+	mainApp->menuBar->CTK_clearMenu(TABMENU);
+	while(tabMenuNames[cnt]!=NULL)
+		mainApp->menuBar->CTK_addMenuItem(TABMENU,tabMenuNames[cnt++]);
+
+	for(int j=0;j<mainApp->pages.size();j++)
+		mainApp->menuBar->CTK_addMenuItem(TABMENU,(const char*)mainApp->pages[j].userData);
+}
+
 void menuSelectCB(void *inst)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
@@ -55,7 +68,9 @@ void menuSelectCB(void *inst)
 						case NEWITEM:
 							{
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,16,false,"new page\n");
+								mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,false,"new page\n");
+								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)"../ChangeLog");
+								rebuildTabMenu();
 							}
 							break;
 						case OPENITEM:
@@ -66,7 +81,9 @@ void menuSelectCB(void *inst)
 								if(cu.isValidFile==true)
 									{
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,16,true,cu.selectedFile.c_str());
+										mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,true,cu.selectedFile.c_str());
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.selectedFile.c_str()));
+										rebuildTabMenu();
 									}
 							}
 							break;
@@ -75,6 +92,7 @@ void menuSelectCB(void *inst)
 						case SAVEASITEM:
 							break;
 						case CLOSEITEM:
+							freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
 							mainApp->CTK_removePage(mainApp->pageNumber);
 							if(mainApp->pageNumber==-1)
 								mainApp->runEventLoop=false;
@@ -161,7 +179,9 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
-	mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,16,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/IGNORE/fstab-copy2");
+	mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,true,"../ChangeLog");
+	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
+	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 	//mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 #if 0
 //	cs.boxType=OUTBOX;
