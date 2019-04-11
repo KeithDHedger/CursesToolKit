@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: CursesToolKit
 Description: Toolkit library for building curses apps.
-URL: https://github.com/KeithDHedger/LFSDesktopProject
+URL: https://github.com/KeithDHedger/CursesToolKit
 Version: @VERSION@
 Requires: termkey
 Libs: -L${libdir} -lcursestoolkit

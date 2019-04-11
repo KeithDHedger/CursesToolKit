@@ -1,4 +1,5 @@
 0.0.10
+Fixed minor errors in autotools files.
 Header files install folder renamed.
 Pkg-config files renamed.
 Fixed file select ui.

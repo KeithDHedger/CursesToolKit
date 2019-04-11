@@ -8,7 +8,7 @@ m4_define([CURSESTOOLKIT_REV_N],[10])
 m4_define([ctk_api_version], [1.0])
 m4_define([ctk_version],[CURSESTOOLKIT_MAJ_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
 
-AC_INIT([CursesToolKit],[0.0],[PROJ],[CursesToolKit])
+AC_INIT([CursesToolKit],[ctk_version],[PROJ],[CursesToolKit])
 
 AC_CONFIG_HEADER([config.h])
 AC_PROG_CXX
