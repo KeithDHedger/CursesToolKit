@@ -33,6 +33,8 @@ class CTK_cursesInputClass
 		void					CTK_drawInput(bool hilite);
 		void					CTK_doInput(void);
 		void					CTK_setColours(coloursStruct cs);
+		void					CTK_setText(const char *txt);
+		const char				*CTK_getText(void);
 
 	private:
 		int						sx;
@@ -47,6 +49,8 @@ class CTK_cursesInputClass
 		TermKey					*tk;
 		coloursStruct			colours;
 		CTK_cursesGraphicsClass	*gc;
+
+		void					updateText(const char *txt);
 };
 
 #endif

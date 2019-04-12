@@ -98,6 +98,24 @@ void menuSelectCB(void *inst)
 							}
 							break;
 						case SAVEASITEM:
+							{
+								char					*buffer=(char*)alloca(PATH_MAX);
+								CTK_cursesUtilsClass	cu;
+								cu.CTK_openFile(mainApp,false);
+								if(cu.isValidFile==true)
+									{
+										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.selectedFile.c_str());
+										FILE *f=fopen(cu.selectedFile.c_str(),"w+");
+										if(f!=NULL)
+											{
+												fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
+												freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
+												mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(buffer));
+												fclose(f);
+												rebuildTabMenu();
+											}
+									}
+							}
 							break;
 						case CLOSEITEM:
 							freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));

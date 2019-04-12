@@ -30,6 +30,7 @@ struct fileUDStruct
 	CTK_mainAppClass		*app=NULL;
 	CTK_cursesListBoxClass	*list=NULL;
 	bool					isValid=false;
+	bool					isOpen=true;
 };
 
 class CTK_cursesUtilsClass
@@ -43,10 +44,10 @@ class CTK_cursesUtilsClass
 		std::string					inFolder="./";
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
-		void						CTK_openFile(CTK_mainAppClass *app);
+		void						CTK_openFile(CTK_mainAppClass *app,bool open=true);
 
 	private:
-		bool						runOpenFile(CTK_mainAppClass *app);
+		bool						runOpenFile(CTK_mainAppClass *app,bool open);
 };
 
 #endif

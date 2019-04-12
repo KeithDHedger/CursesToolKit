@@ -39,12 +39,8 @@ CTK_cursesInputClass::CTK_cursesInputClass()
 	gc->CTK_setColours(this->colours);
 }
 
-void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt)
+void CTK_cursesInputClass::updateText(const char *txt)
 {
-	this->sx=x;
-	this->sy=y;
-	this->wid=w;
-	this->hite=h;
 	this->text=txt;
 	if(this->text.length()>this->wid)
 		{
@@ -56,7 +52,30 @@ void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt
 			this->startChar=0;
 			this->curs=this->text.length();
 		}
-	this->blank.insert(this->blank.begin(),w,' ');
+	this->blank.clear();
+	this->blank.insert(this->blank.begin(),this->wid,' ');
+}
+
+void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt)
+{
+	this->sx=x;
+	this->sy=y;
+	this->wid=w;
+	this->hite=h;
+
+	this->updateText(txt);
+//	this->text=txt;
+//	if(this->text.length()>this->wid)
+//		{
+//			this->startChar=this->text.length()-this->wid;
+//			this->curs=this->wid;
+//		}
+//	else
+//		{
+//			this->startChar=0;
+//			this->curs=this->text.length();
+//		}
+//	this->blank.insert(this->blank.begin(),w,' ');
 }
 
 void CTK_cursesInputClass::CTK_drawInput(bool hilite)
@@ -175,6 +194,16 @@ void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
+}
+
+void CTK_cursesInputClass::CTK_setText(const char *txt)
+{
+	this->updateText(txt);
+}
+
+const char *CTK_cursesInputClass::CTK_getText(void)
+{
+	return(this->text.c_str());
 }
 
 

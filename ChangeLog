@@ -1,4 +1,6 @@
 0.0.11
+Added save/open options to utils file dialog.
+Added get/set text to input box.
 Added get buffer to edit box class.
 
 0.0.10

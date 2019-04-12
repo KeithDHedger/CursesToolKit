@@ -79,8 +79,15 @@ static void listSelectCB(void *inst,void *ud)
 		}
 	else
 		{
-			sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
-			fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+			if(fud->isOpen==true)
+				{
+					sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
+					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+				}
+			else
+				{
+					fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
+				}
 			fud->isValid=true;
 		}
 }
@@ -92,7 +99,8 @@ static void buttonSelectCB(void *inst,void *ud)
 
 	if(strcmp(bc->label,"CANCEL")==0)
 		fud->isValid=false;
-
+	if((strcmp(bc->label,"  OK  ")==0) && (fud->isOpen==false))
+		fud->isValid=true;
 //	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	fud->app->runEventLoop=false;
 }
@@ -121,7 +129,7 @@ void checkSelectCB(void *inst,void *ud)
 		}
 }
 
-bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
+bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 {
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	LFSTK_findClass			*files=new LFSTK_findClass();
@@ -147,6 +155,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	fud->inst=this;
 	fud->list=lb;
 	fud->isValid=false;
+	fud->isOpen=open;
 
 	this->inFolder=get_current_dir_name();
 
@@ -175,7 +184,10 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	lb->CTK_setEnterDeselects(false);
 
 	selectapp->CTK_addListBox(lb);
-	selectapp->CTK_addNewTextBox(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"File:",false);
+	if(open==true)
+		selectapp->CTK_addNewTextBox(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"File:",false);
+	else
+		selectapp->CTK_addNewInput(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"");
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
@@ -194,8 +206,10 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	if(fud->isValid==true)
 		{
 			retval=true;
-			this->selectedFile=files->data[lb->listItemNumber].path;
-//			fprintf(stderr,"%s\n",files->data[lb->listItemNumber].path.c_str());
+			if(fud->isOpen==true)
+				this->selectedFile=files->data[lb->listItemNumber].path;
+			else
+				this->selectedFile=selectapp->pages[0].inputs[0]->CTK_getText();
 		}
 	delete fud;
 	delete files;
@@ -204,10 +218,10 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app)
 	return(retval);
 }
 
-void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app)
+void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,bool open)
 {
 	app->CTK_clearScreen();
-	this->isValidFile=this->runOpenFile(app);
+	this->isValidFile=this->runOpenFile(app,open);
 	app->CTK_clearScreen();
 }
 
