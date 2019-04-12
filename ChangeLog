@@ -1,4 +1,5 @@
 0.0.11
+ESC/TAB or ENTER nor exits edit mode in input box.
 Added save/open options to utils file dialog.
 Added get/set text to input box.
 Added get buffer to edit box class.

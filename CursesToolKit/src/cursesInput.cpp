@@ -122,8 +122,13 @@ void CTK_cursesInputClass::CTK_doInput(void)
 						switch(key.code.sym)
 							{
 								case TERMKEY_SYM_ENTER:
-									loop=false;
-									continue;
+								case TERMKEY_SYM_TAB:
+								case TERMKEY_SYM_ESCAPE:
+									SETHIDECURS;
+									fflush(NULL);
+									return;
+									//loop=false;
+									//continue;
 									break;
 								case TERMKEY_SYM_LEFT:
 									this->curs--;
