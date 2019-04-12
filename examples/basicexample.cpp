@@ -151,7 +151,6 @@ Pasting is done via middle click of mouse as usual.\
 	//cs.backCol=BACK_YELLOW;
 	//cs.foreCol=FORE_BLACK;
 	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-//	mainApp->CTK_addNewEditBox(101,3,mainApp->maxCols-3,8,true,"../ChangeLog");
 //	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesEditBox.cpp");
 	mainApp->CTK_addNewEditBox(101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
 

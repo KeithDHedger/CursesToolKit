@@ -15,9 +15,6 @@ exit $retval
 #include <string.h>
 #include <stdlib.h>
 
-//#include "LFSTKFindClass.h"
-//
-//#include <cursesApplication.h>
 #include <cursesGlobals.h>
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
@@ -50,7 +47,7 @@ void rebuildTabMenu(void)
 	while(tabMenuNames[cnt]!=NULL)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,tabMenuNames[cnt++]);
 
-	for(int j=0;j<mainApp->pages.size();j++)
+	for(unsigned j=0;j<mainApp->pages.size();j++)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,(const char*)mainApp->pages[j].userData);
 }
 
@@ -136,15 +133,14 @@ void menuSelectCB(void *inst)
 				break;
 			case TABMENU:
 			{
-				int pagenum=-1;
 				switch(mc->menuItemNumber)
 					{
 						case NEXTTAB:
-							pagenum=mainApp->CTK_nextPage();
+							mainApp->CTK_nextPage();
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 						case PREVTAB:
-							pagenum=mainApp->CTK_previousPage();
+							mainApp->CTK_previousPage();
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 						default:
@@ -152,7 +148,6 @@ void menuSelectCB(void *inst)
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 					}
-				//fprintf(stderr,"pagenum=%i\n",pagenum);
 				}
 				break;
 			case HELPMENU:
@@ -162,7 +157,6 @@ void menuSelectCB(void *inst)
 
 void mainloopCB(void *mainc,void *data)
 {
-	//fprintf(stderr,">>%p %p<<\n",mainc,data);
 }
 
 int main(int argc, char **argv)
@@ -214,73 +208,10 @@ int main(int argc, char **argv)
 	mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,true,"../ChangeLog");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
-	//mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
-#if 0
-//	cs.boxType=OUTBOX;
-//cs.fancyGadgets=true;
-	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
-//	mainApp->textBoxes[0]->CTK_setColours(cs);
-	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
-	cs.textBoxType=INBOX;
-	mainApp->textBoxes[1]->CTK_setColours(cs);
-//cs.fancyGadgets=false;
 
-	//cs.backCol=BACK_YELLOW;
-	//cs.foreCol=FORE_BLACK;
-	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-	mainApp->CTK_addNewEditBox(101,3,64,8,true,"../ChangeLog");
-	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
-
-	cs.foreCol=FORE_WHITE;
-	cs.backCol=BACK_BLUE;
-
-	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
-	mainApp->buttons[0]->CTK_setColours(cs);
-	mainApp->buttons[0]->CTK_setSelectCB(buttonselctCB);
-	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
-	mainApp->buttons[1]->CTK_setSelectCB(buttonselctCB);
-	mainApp->buttons[1]->CTK_setColours(cs);
-
-	cs.foreCol=FORE_BLACK;
-	cs.backCol=BACK_WHITE;
-	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
-	mainApp->inputs[0]->CTK_setColours(cs);
-
-
-	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	lb->CTK_newListBox(86,3,10,4);
-	lb->CTK_addListItem("Item 1");
-	lb->CTK_addListItem("Item 2");
-	lb->CTK_addListItem("Item 3",(void*)0xdeadbeef);
-	lb->CTK_addListItem("Item 4");
-	lb->CTK_addListItem("Item 5");
-	lb->CTK_addListItem("Item 6");
-	lb->CTK_addListItem("Item 7",(void*)7);
-	lb->CTK_setSelectCB(listselctCB);
-	//cs.backCol=BACK_GREEN;
-	lb->CTK_setColours(cs);
-
-	mainApp->CTK_addListBox(lb);
-
-	cs.foreCol=FORE_WHITE;
-	cs.backCol=BACK_BLUE;
-	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
-	mainApp->checkBoxes[0]->CTK_setSelectCB(checkselctCB);
-	mainApp->checkBoxes[0]->CTK_setEnterDeselects(false);
-	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
-	mainApp->checkBoxes[1]->CTK_setSelectCB(checkselctCB);
-	mainApp->checkBoxes[1]->CTK_setEnterDeselects(false);
-	mainApp->checkBoxes[0]->CTK_setColours(cs);
-	mainApp->checkBoxes[1]->CTK_setColours(cs);
-#endif
-	//mainApp->pages[0].menusActive=false;
-	mainApp->eventLoopCB=mainloopCB;
+	//mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
-
-
-//	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
-//		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
 
 	return 0;
 }
