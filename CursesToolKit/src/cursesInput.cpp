@@ -127,8 +127,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 									SETHIDECURS;
 									fflush(NULL);
 									return;
-									//loop=false;
-									//continue;
 									break;
 								case TERMKEY_SYM_LEFT:
 									this->curs--;

@@ -101,7 +101,6 @@ static void buttonSelectCB(void *inst,void *ud)
 		fud->isValid=false;
 	if((strcmp(bc->label,"  OK  ")==0) && (fud->isOpen==false))
 		fud->isValid=true;
-//	fprintf(stderr,"Button '%s' clicked.\n",bc->label);
 	fud->app->runEventLoop=false;
 }
 

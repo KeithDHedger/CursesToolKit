@@ -303,12 +303,28 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_LEFT:
 										this->currentX--;
 										if(this->currentX<0)
-											this->currentX=0;
+											{
+												if(this->currentY>0)
+													{
+														this->currentY--;
+														this->currentX=this->txtstrings[this->currentY].size()-1;
+													}
+												else
+													this->currentX=0;
+											}
 										break;
 									case TERMKEY_SYM_RIGHT:
 										this->currentX++;
 										if(this->currentX>=this->txtstrings[currentY].length())
-											this->currentX=this->txtstrings[currentY].length()-1;
+											{
+												if(this->currentY<this->txtstrings.size()-1)
+													{
+														this->currentY++;
+														this->currentX=0;
+													}
+												else
+													this->currentX=this->txtstrings[currentY].length()-1;
+											}
 										break;
 								}
 						}
