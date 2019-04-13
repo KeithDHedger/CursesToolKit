@@ -57,8 +57,8 @@ static void listSelectCB(void *inst,void *ud)
 	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
 	fud->isValid=false;
-//	fprintf(stderr,"List item '%s' clicked, user data=%p.\n",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
-	if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
+	//if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
+	if((fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE) || (fud->find->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
 		{
 			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
 			chdir(buffer);
@@ -70,7 +70,8 @@ static void listSelectCB(void *inst,void *ud)
 			ls->CTK_clearList();
 			for(int j=0;j<fud->find->data.size();j++)
 				{
-					if(fud->find->data[j].fileType==FOLDERTYPE)
+					//if(fud->find->data[j].fileType==FOLDERTYPE)
+					if((fud->find->data[j].fileType==FOLDERTYPE) || (fud->find->data[j].fileType==FOLDERLINKTYPE))
 						sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
 					else
 						sprintf(buffer,"%s",fud->find->data[j].name.c_str());
@@ -156,10 +157,9 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	fud->isValid=false;
 	fud->isOpen=open;
 
-	this->inFolder=get_current_dir_name();
+	lb->CTK_newListBox(3,2,app->maxCols-4,selectapp->maxRows-7);
 
-	lb->CTK_newListBox(2,2,app->maxCols-2,selectapp->maxRows-7);
-
+	files->LFSTK_setFollowLinks(true);
 	files->LFSTK_setFindType(ANYTYPE);
 	files->LFSTK_setFullPath(true);
 	files->LFSTK_findFiles(this->inFolder.c_str());
@@ -168,9 +168,9 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 
 	for(int j=0;j<files->data.size();j++)
 		{
-			if(files->data[lb->listItemNumber].fileType==FOLDERTYPE)
+			if((files->data[lb->listItemNumber].fileType==FOLDERTYPE) || (files->data[j].fileType==FOLDERLINKTYPE))
 				{
-					if(files->data[j].fileType==FOLDERTYPE)
+					if((files->data[j].fileType==FOLDERTYPE) || (files->data[j].fileType==FOLDERLINKTYPE))
 						sprintf(buffer,"%s/",files->data[j].name.c_str());
 					else
 						sprintf(buffer,"%s",files->data[j].name.c_str());
@@ -184,20 +184,20 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 
 	selectapp->CTK_addListBox(lb);
 	if(open==true)
-		selectapp->CTK_addNewTextBox(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"File:",false);
+		selectapp->CTK_addNewTextBox(3,selectapp->maxRows-3,selectapp->maxCols-4,1,"File:",false);
 	else
-		selectapp->CTK_addNewInput(2,selectapp->maxRows-3,selectapp->maxCols-2,1,"");
+		selectapp->CTK_addNewInput(3,selectapp->maxRows-3,selectapp->maxCols-4,1,"");
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_addNewButton(2,selectapp->maxRows-1,1,1,"  OK  ");
+	selectapp->CTK_addNewButton(3,selectapp->maxRows-1,1,1,"  OK  ");
 	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
-	selectapp->CTK_addNewButton(selectapp->maxCols-6-4,selectapp->maxRows-1,11,1,"CANCEL");
+	selectapp->CTK_addNewButton(selectapp->maxCols-6-5,selectapp->maxRows-1,11,1,"CANCEL");
 	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 
-	selectapp->CTK_addNewCheckBox((selectapp->maxCols/2)-8,selectapp->maxRows-1,14,"Show Hidden");
+	selectapp->CTK_addNewCheckBox((selectapp->maxCols/2)-10,selectapp->maxRows-1,14,"Show Hidden");
 	selectapp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkSelectCB,fud);
 	selectapp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
@@ -217,10 +217,20 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	return(retval);
 }
 
-void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,bool open)
+void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *startdir,bool open)
 {
+	char	*folder=NULL;
+
 	app->CTK_clearScreen();
+	if(startdir==NULL)
+		{
+			folder=get_current_dir_name();
+			this->inFolder=folder;
+		}
+	else
+		this->inFolder=startdir;	
 	this->isValidFile=this->runOpenFile(app,open);
 	app->CTK_clearScreen();
+	freeAndNull(&folder);
 }
 

@@ -41,10 +41,10 @@ class CTK_cursesUtilsClass
 
 		std::string					selectedFile="";
 		bool						isValidFile=false;
-		std::string					inFolder="./";
+		std::string					inFolder=".";
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
-		void						CTK_openFile(CTK_mainAppClass *app,bool open=true);
+		void						CTK_openFile(CTK_mainAppClass *app,const char *startdir,bool open=true);
 
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,bool open);

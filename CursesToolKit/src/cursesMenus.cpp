@@ -33,8 +33,8 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 CTK_cursesMenuClass::CTK_cursesMenuClass()
 {
 	winsize	w;
-	tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!tk)
+	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
+	if(!this->tk)
 		{
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
@@ -237,8 +237,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 			loop=true;
 			while(loop==true)
 				{
-					ret=termkey_waitkey(tk,&key);
-					termkey_strfkey(tk,buffer,32,&key,format);
+					ret=termkey_waitkey(this->tk,&key);
+					termkey_strfkey(this->tk,buffer,32,&key,format);
 
 					switch(key.type)
 						{

@@ -36,6 +36,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 			for(int j=0;j<this->pages[k].checkBoxes.size();j++)
 				delete this->pages[k].checkBoxes[j];
 		}
+	termkey_destroy(this->tk);
+	fflush(NULL);
 }
 
 CTK_mainAppClass::CTK_mainAppClass()
@@ -47,6 +49,13 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->pages.clear();
 	this->CTK_addPage();
 	this->pageNumber=0;
+
+	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
+	if(!this->tk)
+		{
+			fprintf(stderr, "Cannot allocate termkey instance\n");
+			exit(1);
+		}
 }
 
 void CTK_mainAppClass::CTK_clearScreen(void)
@@ -310,19 +319,19 @@ void CTK_mainAppClass::setHilite(bool forward)
 void CTK_mainAppClass::CTK_mainEventLoop(void)
 {
 	int				selection=CONT;
-	TermKey			*tk;
+//	TermKey			*tk;
 	TermKeyResult	ret;
 	TermKeyKey		key;
 	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
 	char			tstr[3]={'_',0,0};
 	int				tab=1;
 
-	tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
+//	tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
+//	if(!tk)
+//		{
+//			fprintf(stderr, "Cannot allocate termkey instance\n");
+//			exit(1);
+//		}
 
 	this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);
@@ -331,7 +340,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 	this->runEventLoop=true;
 	while(this->runEventLoop==true)
 		{
-			ret=termkey_waitkey(tk,&key);
+			ret=termkey_waitkey(this->tk,&key);
 //fprintf(stderr,"key.code.sym=%i<<\n",key.code.sym);
 //fprintf(stderr,"key.code.codepoint=%i<<\n",key.code.codepoint);
 //fprintf(stderr,"key.modifiers=%i<<\n",key.modifiers);
@@ -470,7 +479,7 @@ int CTK_mainAppClass::CTK_addPage(void)
 	pageStruct	ps;
 
 	this->pages.push_back(ps);
-	this->pageNumber++;
+	this->pageNumber=this->pages.size()-1;
 	return(this->pageNumber);
 }
 

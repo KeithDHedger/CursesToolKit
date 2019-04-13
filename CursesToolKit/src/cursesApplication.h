@@ -83,7 +83,7 @@ class CTK_mainAppClass
 		void									CTK_mainEventLoop(void);
 
 	private:
-		void									setHilite(bool forward);
+		TermKey									*tk;
 		int										hiliteBtnNum=-1;
 		int										hiliteTxtBoxNum=-1;
 		int										hiliteInputNum=-1;
@@ -91,6 +91,8 @@ class CTK_mainAppClass
 		int										hiliteCheckBoxNum=-1;
 		int										hiliteEditBoxNum=-1;
 		int										hiliting=HLNONE;
+
+		void									setHilite(bool forward);
 };
 
 #endif

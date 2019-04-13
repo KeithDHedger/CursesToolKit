@@ -74,7 +74,8 @@ void menuSelectCB(void *inst)
 							{
 								std::string				str;
 								CTK_cursesUtilsClass	cu;
-								cu.CTK_openFile(mainApp);
+								char					*buffer=get_current_dir_name();
+								cu.CTK_openFile(mainApp,buffer);
 								if(cu.isValidFile==true)
 									{
 										mainApp->CTK_addPage();
@@ -82,6 +83,7 @@ void menuSelectCB(void *inst)
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.selectedFile.c_str()));
 										rebuildTabMenu();
 									}
+								free(buffer);
 							}
 							break;
 						case SAVEITEM:
@@ -98,7 +100,7 @@ void menuSelectCB(void *inst)
 							{
 								char					*buffer=(char*)alloca(PATH_MAX);
 								CTK_cursesUtilsClass	cu;
-								cu.CTK_openFile(mainApp,false);
+								cu.CTK_openFile(mainApp,"./",false);
 								if(cu.isValidFile==true)
 									{
 										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.selectedFile.c_str());
@@ -161,6 +163,27 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
+//
+//	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
+//	std::string				str;
+//	CTK_cursesUtilsClass	cu;
+//	char					*folder=NULL;//get_current_dir_name();
+//
+//	if(argc>1)
+//		folder=argv[1];
+//
+//	cu.CTK_openFile(mainApp,folder);
+//	if(cu.isValidFile==true)
+//		fprintf(stderr,"%s",cu.selectedFile.c_str());
+//	SETSHOWCURS;
+//	delete mainApp;
+//	//free(folder);
+//	return(0);
+//
+//
+//
+//
+//
 	coloursStruct cs;
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=false;
@@ -211,6 +234,7 @@ int main(int argc, char **argv)
 
 	//mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
+	delete mainApp;
 	SETSHOWCURS;
 
 	return 0;
