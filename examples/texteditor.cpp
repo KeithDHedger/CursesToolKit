@@ -147,7 +147,6 @@ void menuSelectCB(void *inst)
 						case COPYLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
 							fprintf(stderr,">>>%s<<<\n",clip.c_str());
-							//fprintf(stderr,"\n%s\n",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine().c_str());
 							break;
 					}
 				break;
