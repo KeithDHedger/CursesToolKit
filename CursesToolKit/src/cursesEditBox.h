@@ -42,6 +42,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_deleteCurrentWord(void);
 		void						CTK_deleteCurrentLine(void);
 		void						CTK_insertText(const char *txt);
+		void						CTK_gotoXY(int x,int y);
 
 	private:
 		int							sx;

@@ -406,4 +406,13 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 	this->updateBuffer();
 }
 
+void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
+{
+	this->currentX=x;
+	this->currentY=y;
+	this->startLine=y;
+}
+
+
+
 

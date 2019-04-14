@@ -1,4 +1,5 @@
 0.0.11
+Added goto x/y to edit class.
 Added insert text to edit box class.
 Added delete word/line to edit box class.
 Added get current line/word to edit box class.

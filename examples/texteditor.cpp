@@ -158,6 +158,17 @@ void menuSelectCB(void *inst)
 					}
 				break;
 			case NAVMENU:
+				switch(mc->menuItemNumber)
+					{
+						case GOTOLINE:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,10);
+							mainApp->CTK_updateScreen(mainApp,NULL);
+							break;
+						case FIND:
+							break;
+						case FINDNEXT:
+							break;
+					}
 				break;
 			case TABMENU:
 			{
