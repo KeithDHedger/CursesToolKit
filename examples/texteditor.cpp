@@ -161,7 +161,7 @@ void menuSelectCB(void *inst)
 				switch(mc->menuItemNumber)
 					{
 						case GOTOLINE:
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,10);
+							//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,10);
 							mainApp->CTK_updateScreen(mainApp,NULL);
 							break;
 						case FIND:
@@ -190,6 +190,13 @@ void menuSelectCB(void *inst)
 				}
 				break;
 			case HELPMENU:
+				switch(mc->menuItemNumber)
+					{
+					 case HELP:
+					 	break;
+					 case ABOUT:
+					 	break;
+					}
 				break;
 		}
 }

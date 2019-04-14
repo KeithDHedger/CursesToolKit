@@ -234,3 +234,11 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *startd
 	freeAndNull(&folder);
 }
 
+bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,bool hascancel)
+{
+
+}
+
+
+
+
