@@ -37,6 +37,8 @@ class CTK_cursesEditBoxClass
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		void						CTK_doEditEvent(void);
 		const char					*CTK_getBuffer(void);
+		const std::string			CTK_getCurrentLine(void);
+		const std::string			CTK_getCurrentWord(void);
 
 	private:
 		int							sx;

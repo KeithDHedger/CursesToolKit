@@ -350,5 +350,35 @@ const char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
 	return(this->txtBuffer);
 }
 
+const std::string CTK_cursesEditBoxClass::CTK_getCurrentLine(void)
+{
+	return(this->txtstrings[this->currentY]);
+}
+
+const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
+{
+	int startchr=this->currentX;
+	int endchr=startchr;
+
+	for(int j=this->currentX;j>=0;j--)
+		if(isalnum(this->txtstrings[this->currentY][j]))
+			startchr=j;
+		else
+			break;
+
+	for(int j=this->currentX;j<this->txtstrings[this->currentY].length();j++)
+		if(isalnum(this->txtstrings[this->currentY][j]))
+			endchr=j;
+		else
+			break;
+			
+	return(this->txtstrings[this->currentY].substr(startchr,endchr-startchr+1));
+}
+
+
+
+
+
+
 
 

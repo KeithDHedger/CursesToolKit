@@ -1,4 +1,5 @@
 0.0.11
+Added get current line/word to edit box class.
 Curser left/right in edit box now wraps.
 ESC/TAB or ENTER nor exits edit mode in input box.
 Added save/open options to utils file dialog.

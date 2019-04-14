@@ -39,6 +39,9 @@ const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
 const char	*helpMenuNames[]={" _Help"," About",NULL};
 
+int			newCnt=0;
+std::string	clip="";
+
 void rebuildTabMenu(void)
 {
 	int	cnt=0;
@@ -64,12 +67,15 @@ void menuSelectCB(void *inst)
 					{
 						case NEWITEM:
 							{
+								char	*uddata;
+								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,false,"new page\n");
-								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)"../ChangeLog");
+								mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,false,"\n");
+								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 							}
 							break;
+
 						case OPENITEM:
 							{
 								std::string				str;
@@ -130,6 +136,20 @@ void menuSelectCB(void *inst)
 					}
 				break;
 			case EDITMENU:
+				switch(mc->menuItemNumber)
+					{
+						case COPYWORD:
+							{
+								clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
+								fprintf(stderr,">>>%s<<<\n",clip.c_str());
+							}
+							break;
+						case COPYLINE:
+							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
+							fprintf(stderr,">>>%s<<<\n",clip.c_str());
+							//fprintf(stderr,"\n%s\n",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine().c_str());
+							break;
+					}
 				break;
 			case NAVMENU:
 				break;
