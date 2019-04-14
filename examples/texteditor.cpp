@@ -139,14 +139,21 @@ void menuSelectCB(void *inst)
 				switch(mc->menuItemNumber)
 					{
 						case COPYWORD:
-							{
-								clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
-								fprintf(stderr,">>>%s<<<\n",clip.c_str());
-							}
+							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
 							break;
 						case COPYLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
-							fprintf(stderr,">>>%s<<<\n",clip.c_str());
+							break;
+						case CUTWORD:
+							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentWord();
+							break;
+						case CUTLINE:
+							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentLine();
+							break;
+						case PASTE:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_insertText(clip.c_str());
 							break;
 					}
 				break;

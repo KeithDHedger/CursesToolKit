@@ -39,6 +39,9 @@ class CTK_cursesEditBoxClass
 		const char					*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
+		void						CTK_deleteCurrentWord(void);
+		void						CTK_deleteCurrentLine(void);
+		void						CTK_insertText(const char *txt);
 
 	private:
 		int							sx;

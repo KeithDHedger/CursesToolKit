@@ -375,10 +375,35 @@ const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 	return(this->txtstrings[this->currentY].substr(startchr,endchr-startchr+1));
 }
 
+void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
+{
+	int startchr=this->currentX;
+	int endchr=startchr;
+
+	for(int j=this->currentX;j>=0;j--)
+		if(isalnum(this->txtstrings[this->currentY][j])==false)
+			break;
+		else
+			startchr=j;
+
+	for(int j=this->currentX;j<this->txtstrings[this->currentY].length();j++)
+		if(isalnum(this->txtstrings[this->currentY][j])==false)
+			break;
+		else
+			endchr=j;
+	this->txtstrings[this->currentY].erase(startchr,endchr-startchr+1);
+}
+
+void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
+{
+	this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
+}
 
 
-
-
-
+void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
+{
+	this->txtstrings[this->currentY].insert(this->currentX,txt);
+	this->updateBuffer();
+}
 
 

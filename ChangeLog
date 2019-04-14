@@ -1,4 +1,6 @@
 0.0.11
+Added insert text to edit box class.
+Added delete word/line to edit box class.
 Added get current line/word to edit box class.
 Curser left/right in edit box now wraps.
 ESC/TAB or ENTER nor exits edit mode in input box.
