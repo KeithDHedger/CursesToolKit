@@ -1,4 +1,6 @@
 0.0.11
+Updated examples.
+Added status line to edit box.
 Edit box class bug fixes.
 Added main class  instance to edit box to use menu shortcuts.
 Added goto x/y to edit class.

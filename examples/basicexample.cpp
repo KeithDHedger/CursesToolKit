@@ -25,13 +25,13 @@ void menuselctCB(void *inst)
 {
 	char				*buffer=(char*)alloca(256);
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
-	
+
+	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 	sprintf(buffer,"Menu item (%i) '%s' of menu (%i) '%s' selected.",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
 		mainApp->runEventLoop=false;
-
 }
 
 void mainloopCB(void *mainc,void *data)
@@ -152,7 +152,7 @@ Pasting is done via middle click of mouse as usual.\
 	//cs.foreCol=FORE_BLACK;
 	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
 //	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesEditBox.cpp");
-	mainApp->CTK_addNewEditBox(101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
+	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
 
 	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 

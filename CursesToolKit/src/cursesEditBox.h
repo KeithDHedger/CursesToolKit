@@ -60,7 +60,8 @@ class CTK_cursesEditBoxClass
 
 		char						*txtBuffer=NULL;
 		std::string					blank;
-
+		std::string					status;
+		const char					*editStatus="Normal";
 		TermKey						*tk;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;

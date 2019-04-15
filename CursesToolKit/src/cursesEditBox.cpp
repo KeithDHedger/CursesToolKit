@@ -51,7 +51,7 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 	this->sx=x;
 	this->sy=y;
 	this->wid=width;
-	this->hite=hite;
+	this->hite=hite-1;
 	this->canSelect=selectable;
 
 	this->blank.insert(this->blank.begin(),width,' ');
@@ -140,6 +140,13 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
 
+	setBackColour(this->colours.backCol,this->colours.use256Colours);
+	setForeColour(this->colours.foreCol,this->colours.use256Colours);
+	MOVETO(this->sx,this->sy+hite+1);
+	printf("%s",this->blank.c_str());
+	MOVETO(this->sx,this->sy+hite+1);
+	printf("COL %i, LINE %i, MODE %s",this->currentX+1,this->currentY+1,this->editStatus);
+
 	if(hilite==true)
 		{
 			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -162,6 +169,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	if(this->startLine<0)
 		this->startLine=0;
+
 
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
@@ -204,6 +212,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 
 	char			tstr[3]={'_',0,0};
 
+	this->editStatus="Edit Mode";
 	this->CTK_drawBox(false,true);
 	fflush(NULL);
 	this->runLoop=true;
@@ -349,6 +358,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 				}
 			this->CTK_drawBox(false,true);
 		}
+	this->editStatus="Normal";
 }
 
 void CTK_cursesEditBoxClass::updateBuffer(void)
