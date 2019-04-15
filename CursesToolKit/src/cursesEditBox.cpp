@@ -195,17 +195,20 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 {
-	bool			loop=true;
+//	bool			loop=true;
 	TermKeyResult	ret;
 	TermKeyKey		key;
 	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
 	char			buffer[32];
 	int				lineadd=1;
 
+	char			tstr[3]={'_',0,0};
+
 	this->CTK_drawBox(false,true);
 	fflush(NULL);
+	this->runLoop=true;
 
-	while(loop==true)
+	while(this->runLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
 			termkey_strfkey(this->tk,buffer,32,&key,format);
@@ -213,6 +216,21 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 			switch(key.type)
 				{
 					case TERMKEY_TYPE_UNICODE:
+						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
+							{
+								tstr[1]=toupper(key.code.codepoint);
+								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
+									{
+										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
+											{
+												this->mc->menuBar->menuNumber=j;
+												this->mc->menuBar->selectCB(this->mc->menuBar);
+												break;
+											}
+									}
+								break;
+							}
+
 						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
 						this->currentX++;
 						break;
@@ -265,7 +283,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										this->currentX++;
 										break;
 									case TERMKEY_SYM_ESCAPE:
-										loop=false;
+										this->runLoop=false;
 										continue;
 										break;
 								case TERMKEY_SYM_HOME:
@@ -403,6 +421,7 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
 	this->txtstrings[this->currentY].insert(this->currentX,txt);
+	this->currentX+=strlen(txt);
 	this->updateBuffer();
 }
 
@@ -413,6 +432,10 @@ void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 	this->startLine=y;
 }
 
+void CTK_cursesEditBoxClass::CTK_setRunLoop(bool loop)
+{
+	this->runLoop=loop;
+}
 
 
 

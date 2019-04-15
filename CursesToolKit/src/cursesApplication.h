@@ -69,7 +69,7 @@ class CTK_mainAppClass
 		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewListBox(int x,int y,int width,int hite);
 		void									CTK_addNewCheckBox(int x,int y,int width,const char *label);
-		void									CTK_addNewEditBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		void									CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);

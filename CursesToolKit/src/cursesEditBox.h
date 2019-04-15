@@ -29,7 +29,9 @@ class CTK_cursesEditBoxClass
 		CTK_cursesEditBoxClass();
 		~CTK_cursesEditBoxClass();
 
+		CTK_mainAppClass			*mc=NULL;
 		std::vector<std::string>	txtstrings;
+
 
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
@@ -43,6 +45,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_deleteCurrentLine(void);
 		void						CTK_insertText(const char *txt);
 		void						CTK_gotoXY(int x,int y);
+		void						CTK_setRunLoop(bool loop);
 
 	private:
 		int							sx;
@@ -53,6 +56,7 @@ class CTK_cursesEditBoxClass
 		int							startLine=0;
 		int							currentX;
 		int							currentY;
+		bool						runLoop=false;
 
 		char						*txtBuffer=NULL;
 		std::string					blank;

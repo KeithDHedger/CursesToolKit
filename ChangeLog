@@ -1,4 +1,5 @@
 0.0.11
+Added main class  instance to edit box to use menu shortcuts.
 Added goto x/y to edit class.
 Added insert text to edit box class.
 Added delete word/line to edit box class.

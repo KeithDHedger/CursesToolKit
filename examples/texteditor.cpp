@@ -33,7 +33,7 @@ enum {NEXTTAB=0,PREVTAB};
 enum {HELP=0,ABOUT};
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
-const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
+const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
 const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
@@ -69,8 +69,9 @@ void menuSelectCB(void *inst)
 							{
 								char	*uddata;
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
+								mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,false,"\n");
+								mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,false,"\n");
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 							}
@@ -84,8 +85,9 @@ void menuSelectCB(void *inst)
 								cu.CTK_openFile(mainApp,buffer);
 								if(cu.isValidFile==true)
 									{
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,true,cu.selectedFile.c_str());
+										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.selectedFile.c_str());
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.selectedFile.c_str()));
 										rebuildTabMenu();
 									}
@@ -106,6 +108,7 @@ void menuSelectCB(void *inst)
 							{
 								char					*buffer=(char*)alloca(PATH_MAX);
 								CTK_cursesUtilsClass	cu;
+
 								cu.CTK_openFile(mainApp,"./",false);
 								if(cu.isValidFile==true)
 									{
@@ -123,6 +126,7 @@ void menuSelectCB(void *inst)
 							}
 							break;
 						case CLOSEITEM:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 							freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
 							mainApp->CTK_removePage(mainApp->pageNumber);
 							if(mainApp->pageNumber==-1)
@@ -131,6 +135,7 @@ void menuSelectCB(void *inst)
 								rebuildTabMenu();
 							break;
 						case QUITITEM:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 							mainApp->runEventLoop=false;
 							break;
 					}
@@ -140,6 +145,7 @@ void menuSelectCB(void *inst)
 					{
 						case COPYWORD:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
+							//fprintf(stderr,">>>%s<<<\n",clip.c_str());
 							break;
 						case COPYLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
@@ -153,6 +159,7 @@ void menuSelectCB(void *inst)
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentLine();
 							break;
 						case PASTE:
+						//fprintf(stderr,">>>%s<<<\n",clip.c_str());
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_insertText(clip.c_str());
 							break;
 					}
@@ -272,7 +279,7 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
-	mainApp->CTK_addNewEditBox(1,3,mainApp->maxCols,windowRows,true,"../ChangeLog");
+	mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,"../ChangeLog");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 
