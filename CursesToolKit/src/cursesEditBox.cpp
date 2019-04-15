@@ -421,8 +421,10 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
 	this->txtstrings[this->currentY].insert(this->currentX,txt);
-	this->currentX+=strlen(txt);
 	this->updateBuffer();
+	this->currentX+=strlen(txt);
+	if(this->currentX>=this->txtstrings[this->currentY].length())
+		this->currentX=this->txtstrings[this->currentY].length()-1;
 }
 
 void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)

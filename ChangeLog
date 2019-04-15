@@ -1,4 +1,5 @@
 0.0.11
+Edit box class bug fixes.
 Added main class  instance to edit box to use menu shortcuts.
 Added goto x/y to edit class.
 Added insert text to edit box class.
