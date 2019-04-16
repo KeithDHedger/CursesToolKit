@@ -30,7 +30,7 @@ struct fileUDStruct
 	CTK_mainAppClass		*app=NULL;
 	CTK_cursesListBoxClass	*list=NULL;
 	bool					isValid=false;
-	bool					isOpen=true;
+	bool					boolVal1=true;
 };
 
 class CTK_cursesUtilsClass
@@ -39,7 +39,7 @@ class CTK_cursesUtilsClass
 		CTK_cursesUtilsClass();
 		~CTK_cursesUtilsClass();
 
-		std::string					selectedFile="";
+		std::string					results="";
 		bool						isValidFile=false;
 		std::string					inFolder=".";
 

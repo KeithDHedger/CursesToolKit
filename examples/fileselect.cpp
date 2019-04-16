@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 
 	cu.CTK_openFile(mainApp,folder);
 	if(cu.isValidFile==true)
-		fprintf(stderr,"%s",cu.selectedFile.c_str());
+		fprintf(stderr,"%s",cu.results.c_str());
 
 	SETSHOWCURS;
 	delete mainApp;

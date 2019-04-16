@@ -1,4 +1,7 @@
 0.0.11
+Added input box example.
+Added show/noshow CANCEL button to input box.
+Added input box to utils class.
 Updated examples.
 Added status line to edit box.
 Edit box class bug fixes.

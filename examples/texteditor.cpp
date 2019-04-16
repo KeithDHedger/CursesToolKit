@@ -87,8 +87,8 @@ void menuSelectCB(void *inst)
 									{
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.selectedFile.c_str());
-										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.selectedFile.c_str()));
+										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.results.c_str());
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.results.c_str()));
 										rebuildTabMenu();
 									}
 								free(buffer);
@@ -112,8 +112,8 @@ void menuSelectCB(void *inst)
 								cu.CTK_openFile(mainApp,"./",false);
 								if(cu.isValidFile==true)
 									{
-										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.selectedFile.c_str());
-										FILE *f=fopen(cu.selectedFile.c_str(),"w+");
+										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.results.c_str());
+										FILE *f=fopen(cu.results.c_str(),"w+");
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
@@ -225,7 +225,7 @@ int main(int argc, char **argv)
 //
 //	cu.CTK_openFile(mainApp,folder);
 //	if(cu.isValidFile==true)
-//		fprintf(stderr,"%s",cu.selectedFile.c_str());
+//		fprintf(stderr,"%s",cu.results.c_str());
 //	SETSHOWCURS;
 //	delete mainApp;
 //	//free(folder);
@@ -283,7 +283,6 @@ int main(int argc, char **argv)
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 
-	//mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	delete mainApp;
 	SETSHOWCURS;

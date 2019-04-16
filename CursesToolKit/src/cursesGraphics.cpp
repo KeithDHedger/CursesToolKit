@@ -52,7 +52,10 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 			case INBOX:
 				topcol=FORE_BLACK;
 				botcol=FORE_BOLD_WHITE;
-				break; 
+				break;
+			case NOBOX:
+				return;
+				break;
 		}
 
 	setBackColour(this->colours.backCol,this->colours.use256Colours);

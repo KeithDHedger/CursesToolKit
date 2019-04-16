@@ -57,7 +57,6 @@ static void listSelectCB(void *inst,void *ud)
 	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
 	fud->isValid=false;
-	//if(fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE)
 	if((fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE) || (fud->find->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
 		{
 			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
@@ -70,7 +69,6 @@ static void listSelectCB(void *inst,void *ud)
 			ls->CTK_clearList();
 			for(int j=0;j<fud->find->data.size();j++)
 				{
-					//if(fud->find->data[j].fileType==FOLDERTYPE)
 					if((fud->find->data[j].fileType==FOLDERTYPE) || (fud->find->data[j].fileType==FOLDERLINKTYPE))
 						sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
 					else
@@ -80,7 +78,7 @@ static void listSelectCB(void *inst,void *ud)
 		}
 	else
 		{
-			if(fud->isOpen==true)
+			if(fud->boolVal1==true)
 				{
 					sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
 					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
@@ -100,7 +98,7 @@ static void buttonSelectCB(void *inst,void *ud)
 
 	if(strcmp(bc->label,"CANCEL")==0)
 		fud->isValid=false;
-	if((strcmp(bc->label,"  OK  ")==0) && (fud->isOpen==false))
+	if((strcmp(bc->label,"  OK  ")==0) && (fud->boolVal1==false))
 		fud->isValid=true;
 	fud->app->runEventLoop=false;
 }
@@ -155,7 +153,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	fud->inst=this;
 	fud->list=lb;
 	fud->isValid=false;
-	fud->isOpen=open;
+	fud->boolVal1=open;
 
 	lb->CTK_newListBox(3,2,app->maxCols-4,selectapp->maxRows-7);
 
@@ -205,10 +203,10 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	if(fud->isValid==true)
 		{
 			retval=true;
-			if(fud->isOpen==true)
-				this->selectedFile=files->data[lb->listItemNumber].path;
+			if(fud->boolVal1==true)
+				this->results=files->data[lb->listItemNumber].path;
 			else
-				this->selectedFile=selectapp->pages[0].inputs[0]->CTK_getText();
+				this->results=selectapp->pages[0].inputs[0]->CTK_getText();
 		}
 	delete fud;
 	delete files;
@@ -236,8 +234,46 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *startd
 
 bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,bool hascancel)
 {
+	fileUDStruct		*fud=new fileUDStruct;
+	coloursStruct		cs;
+	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
 
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->isValid=false;
+	fud->boolVal1=false;
+
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=OUTBOX;
+	cs.fancyGadgets=true;
+	selectapp->CTK_setColours(cs);
+
+	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
+
+	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-6,40,5,bodytxt,false);
+	cs.textBoxType=NOBOX;
+	selectapp->pages[0].textBoxes[1]->CTK_setColours(cs);
+	selectapp->CTK_addNewInput((selectapp->maxCols/2)-20,(selectapp->maxRows/2),40,1,defaulttxt);
+
+	cs.foreCol=FORE_WHITE;
+	cs.backCol=BACK_BLUE;
+	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"  OK  ");
+	selectapp->pages[0].buttons[0]->CTK_setColours(cs);
+	if(hascancel==true)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-11,(selectapp->maxRows/2)+2,6,1,"CANCEL");
+			selectapp->pages[0].buttons[1]->CTK_setColours(cs);
+			selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
+		}
+	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
+
+	selectapp->CTK_mainEventLoop();
+	app->CTK_clearScreen();
+	if(fud->isValid==true)
+		this->results=selectapp->pages[0].inputs[0]->CTK_getText();
+	return(fud->isValid);
 }
+
 
 
 
