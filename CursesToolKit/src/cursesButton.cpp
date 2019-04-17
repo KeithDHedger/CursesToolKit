@@ -41,10 +41,13 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 			setBackColour(this->colours.backCol,this->colours.use256Colours);
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
+
 	if(this->colours.fancyGadgets==true)
 		printf("< %s >",this->label);
 	else
 		printf("%s",this->label);
+
+	fflush(NULL);
 }
 
 void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const char *label)

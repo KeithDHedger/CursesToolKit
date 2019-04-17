@@ -116,6 +116,7 @@ static inline void setForeColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[38;5;%im",fc);
+	fflush(NULL);
 }
 
 static inline void setBackColour(int fc,bool use256=false)
@@ -124,6 +125,7 @@ static inline void setBackColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[48;5;%im",fc);
+	fflush(NULL);
 }
 
 static inline void freeAndNull(char **data)

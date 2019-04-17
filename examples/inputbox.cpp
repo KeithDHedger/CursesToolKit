@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 		}
 
 	if(cu.CTK_entryDialog(mainApp,argv[1],argv[2],atoi(argv[3]))==true)
-		fprintf(stderr,"%s",cu.results.c_str());
+		fprintf(stderr,"Input box=%s, Button pressed=%i",cu.stringResult.c_str(),cu.intResult);
 
 	SETSHOWCURS;
 	delete mainApp;

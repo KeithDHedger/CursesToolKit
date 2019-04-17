@@ -254,7 +254,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 				break;
 			case HLTEXT:
 				this->hiliteTxtBoxNum+=addit;
-					
+				fprintf(stderr,"hiliteTxtBoxNum=%i\n",this->hiliteTxtBoxNum);
 				if((this->hiliteTxtBoxNum<0) || (this->hiliteTxtBoxNum>=this->pages[this->pageNumber].textBoxes.size()))
 					{
 						this->hiliteTxtBoxNum=-1;
@@ -262,10 +262,14 @@ void CTK_mainAppClass::setHilite(bool forward)
 							this->hiliteBtnNum=this->pages[this->pageNumber].buttons.size();
 						this->hiliting+=addit;
 						this->setHilite(forward);
+						break;
 					}
 				else
-					if(this->pages[this->pageNumber].textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==false)
-						this->setHilite(forward);
+					{
+						if(this->pages[this->pageNumber].textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==false)
+							this->setHilite(forward);
+						break;
+					}
 				break;
 			case HLINPUTS:
 				this->hiliteInputNum+=addit;

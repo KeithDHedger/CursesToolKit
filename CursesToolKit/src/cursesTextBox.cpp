@@ -95,6 +95,9 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
 
+	if(this->txtstrings.size()==0)
+		return;
+
 	if(hilite==true)
 		{
 			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -111,6 +114,7 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 		{
 			MOVETO(this->sx,this->sy+j);
 			printf("%s",this->blank.c_str());
+			//printf("%s","XXXXXXXX");
 		}
 
 	while(j<this->hite)
@@ -118,12 +122,14 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 			if(j<this->txtstrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf( "%s" ,this->txtstrings[j+this->startLine].c_str());
+					printf("%s",this->txtstrings[j+this->startLine].c_str());
 					j++;
 				}
 			else
 				return;
 		}		
+	MOVETO(this->sx,this->sy+100);
+	fflush(NULL);
 }
 
 void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)

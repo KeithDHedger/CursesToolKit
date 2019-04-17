@@ -82,10 +82,12 @@ static void listSelectCB(void *inst,void *ud)
 				{
 					sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
 					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+					fud->inst->isValidFile=true;
 				}
 			else
 				{
 					fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
+					//fud->inst->isValidFile=true;
 				}
 			fud->isValid=true;
 		}
@@ -97,9 +99,20 @@ static void buttonSelectCB(void *inst,void *ud)
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 
 	if(strcmp(bc->label,"CANCEL")==0)
-		fud->isValid=false;
-	if((strcmp(bc->label,"  OK  ")==0) && (fud->boolVal1==false))
-		fud->isValid=true;
+		{
+			fud->isValid=true;
+			fud->buttonPressed=CANCELBUTTON;
+		}
+	if(strcmp(bc->label,"  OK  ")==0)
+		{
+			fud->isValid=true;
+			fud->buttonPressed=YESBUTTON;
+		}
+	if(strcmp(bc->label,"  NO  ")==0)
+		{
+			fud->isValid=true;
+			fud->buttonPressed=NOBUTTON;
+		}
 	fud->app->runEventLoop=false;
 }
 
@@ -200,14 +213,21 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	selectapp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
 	selectapp->CTK_mainEventLoop();
-	if(fud->isValid==true)
+	if(fud->buttonPressed==CANCELBUTTON)
+		retval=false;
+
+	if((fud->buttonPressed==YESBUTTON) && (this->isValidFile==true) && (open==true))
 		{
+			this->stringResult=files->data[lb->listItemNumber].path;
 			retval=true;
-			if(fud->boolVal1==true)
-				this->results=files->data[lb->listItemNumber].path;
-			else
-				this->results=selectapp->pages[0].inputs[0]->CTK_getText();
 		}
+
+	if( (open==false) && (fud->buttonPressed==YESBUTTON) && (strlen(selectapp->pages[0].inputs[0]->CTK_getText())>0))
+		{
+			this->stringResult=selectapp->pages[0].inputs[0]->CTK_getText();
+			retval=true;
+		}
+
 	delete fud;
 	delete files;
 	delete selectapp;
@@ -269,8 +289,65 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
-	if(fud->isValid==true)
-		this->results=selectapp->pages[0].inputs[0]->CTK_getText();
+	this->intResult=fud->buttonPressed;
+	this->stringResult=selectapp->pages[0].inputs[0]->CTK_getText();
+
+	if(fud->buttonPressed==CANCELBUTTON)
+		return(false);
+	else
+		return(true);
+}
+
+int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,int buttons)
+{
+	fileUDStruct		*fud=new fileUDStruct;
+	coloursStruct		cs;
+	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+	int					btnnum=0;
+
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->isValid=false;
+	fud->boolVal1=false;
+	fud->buttonsToShow=buttons;
+
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=OUTBOX;
+	cs.fancyGadgets=true;
+	selectapp->CTK_setColours(cs);
+
+	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
+	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-6,40,5,bodytxt,false);
+	cs.textBoxType=NOBOX;
+	selectapp->pages[0].textBoxes[1]->CTK_setColours(cs);
+
+	cs.foreCol=FORE_WHITE;
+	cs.backCol=BACK_BLUE;
+
+	if((buttons&YESBUTTON)==YESBUTTON)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"  OK  ");
+			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
+			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
+		}
+
+	if((buttons&CANCELBUTTON)==CANCELBUTTON)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-11,(selectapp->maxRows/2)+2,6,1,"CANCEL");
+			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
+			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
+		}
+
+	if((buttons&NOBUTTON)==NOBUTTON)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-5,(selectapp->maxRows/2)+2,6,1,"  NO  ");
+			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
+			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,fud);
+		}
+
+	selectapp->CTK_mainEventLoop();
+	app->CTK_clearScreen();
+	this->intResult=fud->buttonPressed;
 	return(fud->isValid);
 }
 

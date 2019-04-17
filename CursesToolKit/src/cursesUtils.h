@@ -23,6 +23,11 @@
 #ifndef _CURSESUTILS_
 #define _CURSESUTILS_
 
+#define NOBUTTONPRESSED 0
+#define YESBUTTON 1<<0
+#define NOBUTTON 1<<1
+#define CANCELBUTTON 1<<2
+
 struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;
@@ -31,6 +36,8 @@ struct fileUDStruct
 	CTK_cursesListBoxClass	*list=NULL;
 	bool					isValid=false;
 	bool					boolVal1=true;
+	int						buttonsToShow=YESBUTTON|NOBUTTON;
+	int						buttonPressed=NOBUTTONPRESSED;
 };
 
 class CTK_cursesUtilsClass
@@ -39,14 +46,15 @@ class CTK_cursesUtilsClass
 		CTK_cursesUtilsClass();
 		~CTK_cursesUtilsClass();
 
-		std::string					results="";
+		std::string					stringResult="";
+		int							intResult=0;
 		bool						isValidFile=false;
 		std::string					inFolder=".";
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 		void						CTK_openFile(CTK_mainAppClass *app,const char *startdir,bool open=true);
 		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,bool hascancel=false);
-
+		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,int buttons);
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,bool open);
 };

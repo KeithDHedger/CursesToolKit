@@ -1,4 +1,8 @@
 0.0.11
+Code clean.
+Various bug fixes.
+Added examples.
+Added query box to utils class.
 Added input box example.
 Added show/noshow CANCEL button to input box.
 Added input box to utils class.
