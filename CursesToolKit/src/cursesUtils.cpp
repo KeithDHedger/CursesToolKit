@@ -99,17 +99,14 @@ static void buttonSelectCB(void *inst,void *ud)
 
 	if(strcmp(bc->label,"CANCEL")==0)
 		{
-			//fud->isValid=true;
 			fud->buttonPressed=CANCELBUTTON;
 		}
 	if(strcmp(bc->label,"  OK  ")==0)
 		{
-			//fud->isValid=true;
 			fud->buttonPressed=YESBUTTON;
 		}
 	if(strcmp(bc->label,"  NO  ")==0)
 		{
-			//fud->isValid=true;
 			fud->buttonPressed=NOBUTTON;
 		}
 	fud->app->runEventLoop=false;
