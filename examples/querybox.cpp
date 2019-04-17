@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
 	if(argc<3)
 		{
-			printf("USAGE:\ninputbox \"Body String\" \"Show buttons (1='YES', 2='NO', 4='CANCEL')\"\n");
+			printf("USAGE:\ninputbox \"Body String\" \"Show buttons (1='YES', 2='NO', 4='CANCEL')\", or values together for combinations.\n");
 			exit(1);
 		}
 

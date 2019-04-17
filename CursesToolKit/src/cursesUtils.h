@@ -35,7 +35,7 @@ struct fileUDStruct
 	CTK_mainAppClass		*app=NULL;
 	CTK_cursesListBoxClass	*list=NULL;
 	bool					isValid=false;
-	bool					boolVal1=true;
+	bool					isOpenDialog=false;
 	int						buttonsToShow=YESBUTTON|NOBUTTON;
 	int						buttonPressed=NOBUTTONPRESSED;
 };

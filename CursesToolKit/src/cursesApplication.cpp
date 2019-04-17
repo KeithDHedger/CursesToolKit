@@ -254,7 +254,6 @@ void CTK_mainAppClass::setHilite(bool forward)
 				break;
 			case HLTEXT:
 				this->hiliteTxtBoxNum+=addit;
-				fprintf(stderr,"hiliteTxtBoxNum=%i\n",this->hiliteTxtBoxNum);
 				if((this->hiliteTxtBoxNum<0) || (this->hiliteTxtBoxNum>=this->pages[this->pageNumber].textBoxes.size()))
 					{
 						this->hiliteTxtBoxNum=-1;

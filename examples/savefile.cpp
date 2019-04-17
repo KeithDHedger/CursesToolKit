@@ -2,10 +2,10 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o openfile ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./openfile "$@"
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o savefile ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./savefile "$@"
 retval=$?
-rm openfile
+rm savefile
 reset
 exit $retval
 

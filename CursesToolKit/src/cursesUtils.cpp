@@ -78,7 +78,7 @@ static void listSelectCB(void *inst,void *ud)
 		}
 	else
 		{
-			if(fud->boolVal1==true)
+			if(fud->isOpenDialog==true)
 				{
 					sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
 					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
@@ -87,7 +87,6 @@ static void listSelectCB(void *inst,void *ud)
 			else
 				{
 					fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
-					//fud->inst->isValidFile=true;
 				}
 			fud->isValid=true;
 		}
@@ -100,17 +99,17 @@ static void buttonSelectCB(void *inst,void *ud)
 
 	if(strcmp(bc->label,"CANCEL")==0)
 		{
-			fud->isValid=true;
+			//fud->isValid=true;
 			fud->buttonPressed=CANCELBUTTON;
 		}
 	if(strcmp(bc->label,"  OK  ")==0)
 		{
-			fud->isValid=true;
+			//fud->isValid=true;
 			fud->buttonPressed=YESBUTTON;
 		}
 	if(strcmp(bc->label,"  NO  ")==0)
 		{
-			fud->isValid=true;
+			//fud->isValid=true;
 			fud->buttonPressed=NOBUTTON;
 		}
 	fud->app->runEventLoop=false;
@@ -166,7 +165,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 	fud->inst=this;
 	fud->list=lb;
 	fud->isValid=false;
-	fud->boolVal1=open;
+	fud->isOpenDialog=open;
 
 	lb->CTK_newListBox(3,2,app->maxCols-4,selectapp->maxRows-7);
 
@@ -222,7 +221,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,bool open)
 			retval=true;
 		}
 
-	if( (open==false) && (fud->buttonPressed==YESBUTTON) && (strlen(selectapp->pages[0].inputs[0]->CTK_getText())>0))
+	if((open==false) && (fud->buttonPressed==YESBUTTON) && (strlen(selectapp->pages[0].inputs[0]->CTK_getText())>0))
 		{
 			this->stringResult=selectapp->pages[0].inputs[0]->CTK_getText();
 			retval=true;
@@ -261,7 +260,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	fud->app=selectapp;
 	fud->inst=this;
 	fud->isValid=false;
-	fud->boolVal1=false;
+	fud->isOpenDialog=false;
 
 	cs.windowBackCol=BACK_WHITE;
 	cs.textBoxType=OUTBOX;
@@ -308,7 +307,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	fud->app=selectapp;
 	fud->inst=this;
 	fud->isValid=false;
-	fud->boolVal1=false;
+	fud->isOpenDialog=false;
 	fud->buttonsToShow=buttons;
 
 	cs.windowBackCol=BACK_WHITE;
