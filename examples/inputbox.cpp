@@ -15,10 +15,9 @@ exit $retval
 
 int main(int argc, char **argv)
 {
-
-	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
+	CTK_mainAppClass		*mainApp;
 	std::string				str;
-	CTK_cursesUtilsClass	cu;
+	CTK_cursesUtilsClass	*cu;
 
 	if(argc<4)
 		{
@@ -26,10 +25,16 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 
-	if(cu.CTK_entryDialog(mainApp,argv[1],argv[2],atoi(argv[3]))==true)
-		fprintf(stderr,"Input box=%s, Button pressed=%i",cu.stringResult.c_str(),cu.intResult);
+	mainApp=new CTK_mainAppClass;
+	cu=new CTK_cursesUtilsClass;
+
+	if(cu->CTK_entryDialog(mainApp,argv[1],argv[2],atoi(argv[3]))==true)
+		fprintf(stderr,"Input box=%s, Button pressed=%i\n",cu->stringResult.c_str(),cu->intResult);
+	else
+		fprintf(stderr,"Canceled ... Button pressed=%i\n",cu->intResult);
 
 	SETSHOWCURS;
 	delete mainApp;
+	delete cu;
 	return(0);
 }

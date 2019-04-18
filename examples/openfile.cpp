@@ -15,7 +15,6 @@ exit $retval
 
 int main(int argc, char **argv)
 {
-
 	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 	std::string				str;
 	CTK_cursesUtilsClass	cu;

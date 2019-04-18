@@ -15,13 +15,9 @@ exit $retval
 
 int main(int argc, char **argv)
 {
-//
-//printf("y=%i n=%i c=%i\n",YESBUTTON,NOBUTTON,CANCELBUTTON);
-//return 0;
-
-	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
+	CTK_mainAppClass		*mainApp;
 	std::string				str;
-	CTK_cursesUtilsClass	cu;
+	CTK_cursesUtilsClass	*cu;
 
 	if(argc<3)
 		{
@@ -29,10 +25,14 @@ int main(int argc, char **argv)
 			exit(1);
 		}
 
-	cu.CTK_queryDialog(mainApp,argv[1],atoi(argv[2]));
-	fprintf(stderr,"button pressed=%i",cu.intResult);
+	mainApp=new CTK_mainAppClass();
+	cu=new CTK_cursesUtilsClass();
+
+	cu->CTK_queryDialog(mainApp,argv[1],atoi(argv[2]));
+	fprintf(stderr,"Button pressed=%i\n",cu->intResult);
 
 	SETSHOWCURS;
 	delete mainApp;
+	delete cu;
 	return(0);
 }
