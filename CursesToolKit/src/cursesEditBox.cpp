@@ -442,6 +442,7 @@ void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 	this->currentX=x;
 	this->currentY=y;
 	this->startLine=y;
+	this->adjustXY();
 }
 
 void CTK_cursesEditBoxClass::CTK_setRunLoop(bool loop)
@@ -449,5 +450,19 @@ void CTK_cursesEditBoxClass::CTK_setRunLoop(bool loop)
 	this->runLoop=loop;
 }
 
+void CTK_cursesEditBoxClass::adjustXY(void)
+{
+	if(this->currentY<0)
+		this->currentY=0;
+	if(this->currentY>this->txtstrings.size()-2)
+		{
+			this->currentY=this->txtstrings.size()-1;
+			this->startLine=this->txtstrings.size()-this->hite;
+		}
+	if(this->currentX<0)
+		this->currentX=0;
+	if(this->currentX>this->txtstrings[this->currentY].length()-1)
+		this->currentX=this->txtstrings[this->currentY].length()-1;
+}
 
 

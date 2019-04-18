@@ -87,8 +87,8 @@ void menuSelectCB(void *inst)
 									{
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.results.c_str());
-										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.results.c_str()));
+										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
 									}
 								free(buffer);
@@ -112,8 +112,8 @@ void menuSelectCB(void *inst)
 								cu.CTK_openFile(mainApp,"./",false);
 								if(cu.isValidFile==true)
 									{
-										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.results.c_str());
-										FILE *f=fopen(cu.results.c_str(),"w+");
+										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.stringResult.c_str());
+										FILE *f=fopen(cu.stringResult.c_str(),"w+");
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
@@ -145,7 +145,6 @@ void menuSelectCB(void *inst)
 					{
 						case COPYWORD:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
-							//fprintf(stderr,">>>%s<<<\n",clip.c_str());
 							break;
 						case COPYLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
@@ -159,7 +158,6 @@ void menuSelectCB(void *inst)
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentLine();
 							break;
 						case PASTE:
-						//fprintf(stderr,">>>%s<<<\n",clip.c_str());
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_insertText(clip.c_str());
 							break;
 					}
@@ -168,8 +166,18 @@ void menuSelectCB(void *inst)
 				switch(mc->menuItemNumber)
 					{
 						case GOTOLINE:
-							//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,10);
-							mainApp->CTK_updateScreen(mainApp,NULL);
+							{
+								CTK_cursesUtilsClass	cu;
+
+								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","",true))
+									{
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
+										mainApp->CTK_updateScreen(mainApp,NULL);
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_doEditEvent();
+										break;
+									}
+								mainApp->CTK_updateScreen(mainApp,NULL);
+							}
 							break;
 						case FIND:
 							break;

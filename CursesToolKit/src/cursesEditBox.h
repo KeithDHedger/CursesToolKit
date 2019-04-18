@@ -67,6 +67,7 @@ class CTK_cursesEditBoxClass
 		CTK_cursesGraphicsClass		*gc;
 
 		void						updateBuffer(void);
+		void						adjustXY(void);
 };
 
 #endif

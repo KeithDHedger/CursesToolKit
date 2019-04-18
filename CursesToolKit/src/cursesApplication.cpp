@@ -534,4 +534,3 @@ void CTK_mainAppClass::CTK_setPageUserData(int pagenum,void *userdata)
 	this->pages[pagenum].userData=userdata;
 }
 
-

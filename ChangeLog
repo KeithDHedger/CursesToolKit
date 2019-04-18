@@ -1,4 +1,6 @@
 0.1.0
+Fixed edit box gotoXY being out of range.
+Added 'Goto line' to text editor example.
 Code clean.
 Various bug fixes.
 Updated examples.
