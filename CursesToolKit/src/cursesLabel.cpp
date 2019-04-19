@@ -91,6 +91,9 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 	int ycnt=0;
 	int j=0;
 
+	if(this->colours.fancyGadgets==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.labelBoxType,true);
+
 	if(this->txtstrings.size()==0)
 		return;
 

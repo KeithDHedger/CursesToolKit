@@ -265,7 +265,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	selectapp->CTK_setColours(cs);
 
 	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-6,40,5,bodytxt);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-5,40,3,bodytxt);
 
 	selectapp->CTK_addNewInput((selectapp->maxCols/2)-20,(selectapp->maxRows/2),40,1,defaulttxt);
 
@@ -310,8 +310,10 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
+//	CTK_cursesGraphicsClass		gc;
 	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-6,40,5,bodytxt);
+//gc.CTK_drawBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,OUTBOX,true);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-5,40,5,bodytxt);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;

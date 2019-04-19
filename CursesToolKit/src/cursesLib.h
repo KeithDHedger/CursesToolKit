@@ -105,6 +105,7 @@ struct coloursStruct
 	int		boxType=PLAINBOX;
 	int		textBoxType=OUTBOX;
 	int		inputBoxType=INBOX;
+	int		labelBoxType=PLAINBOX;
 	int		listBoxType=INBOX;
 	bool	use256Colours=false;
 	bool	fancyGadgets=false;
