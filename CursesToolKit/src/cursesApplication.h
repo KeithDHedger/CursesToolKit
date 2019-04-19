@@ -31,6 +31,7 @@ struct pageStruct
 	std::vector<CTK_cursesListBoxClass*>	lists;
 	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	std::vector<CTK_cursesLabelClass*>		labels;
 	void									*userData=NULL;
 	bool									menusActive=true;
 };
@@ -70,6 +71,7 @@ class CTK_mainAppClass
 		void									CTK_addNewListBox(int x,int y,int width,int hite);
 		void									CTK_addNewCheckBox(int x,int y,int width,const char *label);
 		void									CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		void									CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
@@ -78,6 +80,7 @@ class CTK_mainAppClass
 		void									CTK_addListBox(CTK_cursesListBoxClass *lb);
 		void									CTK_addCheckBox(CTK_cursesCheckBoxClass *cb);
 		void									CTK_addEditBox(CTK_cursesEditBoxClass *edbox);
+		void									CTK_addLabel(CTK_cursesLabelClass *label);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);

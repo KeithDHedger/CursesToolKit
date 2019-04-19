@@ -1,8 +1,8 @@
 /*
  *
- * ©K. D. Hedger. Sat 30 Mar 16:50:24 GMT 2019 keithdhedger@gmail.com
+ * ©K. D. Hedger. Fri 19 Apr 16:09:52 BST 2019 keithdhedger@gmail.com
 
- * This file (cursesTextBox.cpp) is part of CursesToolKit.
+ * This file (cursesLabel.cpp) is part of CursesToolKit.
 
  * CursesToolKit is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,32 +18,31 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesTextBox.h"
+#include "cursesLabel.h"
 
-CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
+CTK_cursesLabelClass::~CTK_cursesLabelClass()
 {
 	delete this->gc;
 }
 
-CTK_cursesTextBoxClass::CTK_cursesTextBoxClass()
+CTK_cursesLabelClass::CTK_cursesLabelClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 }
 
-void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+void CTK_cursesLabelClass::CTK_newLabel(int x,int y,int width,int hite,const char *txt)
 {
 	this->sx=x;
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
-	this->canSelect=selectable;
 
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
 }
 
-void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
+void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 {
 	const char					*ptr=NULL;
 	char						*buffer=NULL;
@@ -86,28 +85,17 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 		}
 }
 
-void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
+void CTK_cursesLabelClass::CTK_drawLabel(void)
 {
 	int xcnt=0;
 	int ycnt=0;
 	int j=0;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
-
 	if(this->txtstrings.size()==0)
 		return;
 
-	if(hilite==true)
-		{
-			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-		}
-	else
-		{
-			setBackColour(this->colours.backCol,this->colours.use256Colours);
-			setForeColour(this->colours.foreCol,this->colours.use256Colours);
-		}
+	setBackColour(this->colours.backCol,this->colours.use256Colours);
+	setForeColour(this->colours.foreCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy);
 	for(int j=0;j<this->hite;j++)
@@ -116,63 +104,22 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 			printf("%s",this->blank.c_str());
 		}
 
-	while(j<this->hite)
+	for(int j=0;j<this->hite;j++)
 		{
 			if(j<this->txtstrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf("%s",this->txtstrings[j+this->startLine].c_str());
-					j++;
+					printf("%s",this->txtstrings[j].c_str());
 				}
 			else
 				return;
-		}		
+		}
+
 	MOVETO(this->sx,this->sy+100);
 	fflush(NULL);
 }
 
-void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)
-{
-	this->scroll(scrollup,1);
-}
-
-void CTK_cursesTextBoxClass::CTK_scrollPage(bool scrollup)
-{
-	this->scroll(scrollup,this->hite);
-}
-
-void CTK_cursesTextBoxClass::scroll(bool scrollup,int numlines)
-{
-	if(scrollup==true)
-		{
-			this->startLine-=numlines;
-			if(this->startLine<0)
-				this->startLine=0;
-		}
-	else
-		{
-			this->startLine+=numlines;
-			if(this->txtstrings.size()-this->startLine<this->hite)
-				this->startLine=this->txtstrings.size()-this->hite;
-		}
-}
-
-void CTK_cursesTextBoxClass::CTK_setSelectable(bool canselect)
-{
-	this->canSelect=canselect;
-}
-
-bool CTK_cursesTextBoxClass::CTK_getSelectable(void)
-{
-	return(this->canSelect);
-}
-
-const std::string CTK_cursesTextBoxClass::CTK_getText(void)
-{
-	return(this->text);
-}
-
-void CTK_cursesTextBoxClass::CTK_setColours(coloursStruct cs)
+void CTK_cursesLabelClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);

@@ -198,6 +198,8 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->pages[0].checkBoxes[0]->CTK_setColours(cs);
 	mainApp->pages[0].checkBoxes[1]->CTK_setColours(cs);
 
+	mainApp->CTK_addNewLabel(85,13,40,4,"Non selectable label.\nLine 2 of label.");
+
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;

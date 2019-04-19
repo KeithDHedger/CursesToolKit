@@ -117,6 +117,14 @@ void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int wi
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
 }
 
+void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
+{
+	CTK_cursesLabelClass	*label=new CTK_cursesLabelClass();
+	label->CTK_newLabel(x,y,width,hite,txt);
+	label->CTK_setColours(this->colours);
+	this->pages[this->pageNumber].labels.push_back(label);
+}
+
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
 {
 	this->menuBar=mb;
@@ -152,6 +160,11 @@ void CTK_mainAppClass::CTK_addEditBox(CTK_cursesEditBoxClass *edbox)
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
 }
 
+void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
+{
+	this->pages[this->pageNumber].labels.push_back(label);
+}
+
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
 	CTK_mainAppClass	*app=static_cast<CTK_mainAppClass*>(object);
@@ -171,6 +184,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			SETNORMAL;
 			return;
 		}
+
+	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)
+		app->pages[app->pageNumber].labels[j]->CTK_drawLabel();
 
 	for(int j=0;j<app->pages[app->pageNumber].textBoxes.size();j++)
 		{
@@ -511,6 +527,8 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)
 {
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		{
+			for(int j=0;j<this->pages[pagenum].labels.size();j++)
+				delete this->pages[pagenum].labels[j];
 			for(int j=0;j<this->pages[pagenum].textBoxes.size();j++)
 				delete this->pages[pagenum].textBoxes[j];
 			for(int j=0;j<this->pages[pagenum].buttons.size();j++)
