@@ -25,6 +25,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	delete this->menuBar;
 	for(int k=0;k<this->pages.size();k++)
 		{
+			for(int j=0;j<this->pages[k].labels.size();j++)
+				delete this->pages[k].labels[j];
 			for(int j=0;j<this->pages[k].textBoxes.size();j++)
 				delete this->pages[k].textBoxes[j];
 			for(int j=0;j<this->pages[k].buttons.size();j++)
