@@ -52,11 +52,11 @@ class CTK_cursesUtilsClass
 		std::string					inFolder=".";
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
-		void						CTK_openFile(CTK_mainAppClass *app,const char *startdir,bool open=true);
+		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="");
 		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel=false);
 		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons);
 	private:
-		bool						runOpenFile(CTK_mainAppClass *app,bool open);
+		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename);
 };
 
 #endif

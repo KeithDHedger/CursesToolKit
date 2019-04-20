@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
-	cu.CTK_openFile(mainApp,folder);
+	cu.CTK_openFile(mainApp,"Open File Example",folder);
 	if(cu.isValidFile==true)
 		fprintf(stderr,"%s",cu.stringResult.c_str());
 
