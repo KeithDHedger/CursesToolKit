@@ -1,4 +1,6 @@
 0.1.0
+UI tweaks.
+Done fancy dialog for file select util.
 Added window name/dialog title to entry/query dialogs
 Added drop shadows to entry/query dialogs.
 Added CTK_appWindow to main class to draw fancy dialog box.
