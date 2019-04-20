@@ -33,9 +33,8 @@ void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct cs)
 	this->colours=cs;
 }
 
-void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool fill)
+void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow)
 {
-
 	int	topcol;
 	int	botcol;
 
@@ -60,6 +59,15 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 
 	setBackColour(this->colours.backCol,this->colours.use256Colours);
 	setForeColour(topcol,this->colours.use256Colours);
+	if(fill==true)
+		{
+			for(int j=0;j<h;j++)
+				{
+					MOVETO(x,j+y);
+					printf("%*s",w);
+				}
+		}
+
 	SETALTCHARSET;
 	MOVETO(x,y);
 	printf("%s",TOPLEFT);
@@ -85,7 +93,21 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
 	printf("%s",BOTTOMRITE);
+
+	if(shadow==true)
+		{
+			setBackColour(BACK_BLACK,false);
+			for(int j=1;j<h+2;j++)
+				{
+					MOVETO(x+w+1,y+j);
+					printf("  ");
+				}
+			MOVETO(x+1,y+h+1);
+			printf("%*s",w);
+		}
+
 	SETNORMCHARSET;
+	fflush(NULL);
 }
 
 

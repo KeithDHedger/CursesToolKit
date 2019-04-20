@@ -248,7 +248,7 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *startd
 	freeAndNull(&folder);
 }
 
-bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,bool hascancel)
+bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel)
 {
 	fileUDStruct		*fud=new fileUDStruct;
 	coloursStruct		cs;
@@ -264,18 +264,21 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-5,40,3,bodytxt);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,name,title);
 
-	selectapp->CTK_addNewInput((selectapp->maxCols/2)-20,(selectapp->maxRows/2),40,1,defaulttxt);
+	cs.labelBoxType=NOBOX;	
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-4,41,3,bodytxt);
+	selectapp->pages[0].labels[0]->CTK_setColours(cs);
+
+	selectapp->CTK_addNewInput((selectapp->maxCols/2)-20,(selectapp->maxRows/2)+1,41,1,defaulttxt);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
-	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"  OK  ");
+	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+3,6,1,"  OK  ");
 	selectapp->pages[0].buttons[0]->CTK_setColours(cs);
 	if(hascancel==true)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-11,(selectapp->maxRows/2)+2,6,1,"CANCEL");
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-11,(selectapp->maxRows/2)+3,6,1,"CANCEL");
 			selectapp->pages[0].buttons[1]->CTK_setColours(cs);
 			selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 		}
@@ -292,7 +295,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		return(true);
 }
 
-int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,int buttons)
+int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons)
 {
 	fileUDStruct		*fud=new fileUDStruct;
 	coloursStruct		cs;
@@ -310,10 +313,10 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-//	CTK_cursesGraphicsClass		gc;
-	selectapp->CTK_addNewTextBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,"",false);
-//gc.CTK_drawBox((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,OUTBOX,true);
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-5,40,5,bodytxt);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,44,10,name,title);
+	cs.labelBoxType=NOBOX;	
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-4,41,5,bodytxt);
+	selectapp->pages[0].labels[0]->CTK_setColours(cs);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;

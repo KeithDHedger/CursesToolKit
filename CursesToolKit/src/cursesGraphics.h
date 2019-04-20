@@ -30,7 +30,7 @@ class CTK_cursesGraphicsClass
 		~CTK_cursesGraphicsClass();
 
 		void	CTK_setColours(coloursStruct cs);
-		void	CTK_drawBox(int x,int y,int w,int h,int type,bool fill);
+		void	CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
 
 	private:
 		coloursStruct	colours;

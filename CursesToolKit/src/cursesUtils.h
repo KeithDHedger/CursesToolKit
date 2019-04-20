@@ -53,8 +53,8 @@ class CTK_cursesUtilsClass
 
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 		void						CTK_openFile(CTK_mainAppClass *app,const char *startdir,bool open=true);
-		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,bool hascancel=false);
-		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,int buttons);
+		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel=false);
+		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons);
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,bool open);
 };

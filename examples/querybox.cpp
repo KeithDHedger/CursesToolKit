@@ -19,16 +19,16 @@ int main(int argc, char **argv)
 	std::string				str;
 	CTK_cursesUtilsClass	*cu;
 
-	if(argc<3)
+	if(argc<5)
 		{
-			printf("USAGE:\ninputbox \"Body String\" \"Show buttons (1='YES', 2='NO', 4='CANCEL')\", or values together for combinations.\n");
+			printf("USAGE:\ninputbox \"Body String\" \"Window name\" \"Dialog title\" \"Show buttons (1='YES', 2='NO', 4='CANCEL')\", or values together for combinations.\n");
 			exit(1);
 		}
 
 	mainApp=new CTK_mainAppClass();
 	cu=new CTK_cursesUtilsClass();
 
-	cu->CTK_queryDialog(mainApp,argv[1],atoi(argv[2]));
+	cu->CTK_queryDialog(mainApp,argv[1],argv[2],argv[3],atoi(argv[4]));
 	fprintf(stderr,"Button pressed=%i\n",cu->intResult);
 
 	SETSHOWCURS;

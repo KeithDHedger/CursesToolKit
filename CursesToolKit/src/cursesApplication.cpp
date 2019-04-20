@@ -169,7 +169,8 @@ void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
 
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
-	CTK_mainAppClass	*app=static_cast<CTK_mainAppClass*>(object);
+	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
+	CTK_cursesGraphicsClass	cu;
 
 	setBackColour(app->colours.windowBackCol,app->colours.use256Colours);
 	setForeColour(app->colours.windowForeCol,app->colours.use256Colours);
@@ -185,6 +186,28 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			fflush(NULL);
 			SETNORMAL;
 			return;
+		}
+
+	if(app->useAppWindow==true)
+		{
+			int	yadj=0;
+			if(app->menuBar!=NULL)
+				yadj=1;
+			setBackColour(BACK_BLUE,false);
+			printf("\e[2J\e[H");
+			cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
+			MOVETO(1,1+yadj);
+			setBackColour(BACK_BLUE,false);
+			setForeColour(FORE_CYAN,false);
+			printf("%s\n",app->windowName);
+			SETALTCHARSET;
+			for(int j=0;j<app->maxCols;j++)
+				printf(HBAR);
+			SETNORMCHARSET;
+			MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
+			setBackColour(app->colours.backCol,false);
+			setForeColour(FORE_BLUE,false);
+			printf("%s",app->title);
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)
@@ -499,6 +522,14 @@ void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
+//
+//	ps.buttons.clear();
+//	ps.textBoxes.clear();
+//	ps.inputs.clear();
+//	ps.lists.clear();
+//	ps.checkBoxes.clear();
+//	ps.editBoxes.clear();
+//	ps.labels.clear();
 
 	this->pages.push_back(ps);
 	this->pageNumber=this->pages.size()-1;
@@ -552,5 +583,16 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)
 void CTK_mainAppClass::CTK_setPageUserData(int pagenum,void *userdata)
 {
 	this->pages[pagenum].userData=userdata;
+}
+
+void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title)
+{
+	this->x=x;
+	this->y=y;
+	this->wid=w;
+	this->hite=h;
+	this->windowName=windowname;
+	this->title=title;
+	this->useAppWindow=true;
 }
 

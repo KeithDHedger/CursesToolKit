@@ -60,6 +60,7 @@ class CTK_mainAppClass
 		int										CTK_previousPage(void);
 		int										CTK_nextPage(void);
 		void									CTK_setPageUserData(int pagenum,void *userdata);
+		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
 
 		void									(*eventLoopCB)(void*,void*)=NULL;
 
@@ -85,6 +86,15 @@ class CTK_mainAppClass
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
 
+		int										x;
+		int										y;
+		int										wid;
+		int										hite;
+		const char								*windowName;
+		const char								*title;
+		bool									useAppWindow=false;
+
+
 	private:
 		TermKey									*tk;
 		int										hiliteBtnNum=-1;
@@ -96,6 +106,7 @@ class CTK_mainAppClass
 		int										hiliting=HLNONE;
 
 		void									setHilite(bool forward);
+
 };
 
 #endif

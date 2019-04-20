@@ -1,4 +1,7 @@
 0.1.0
+Added window name/dialog title to entry/query dialogs
+Added drop shadows to entry/query dialogs.
+Added CTK_appWindow to main class to draw fancy dialog box.
 Updated utils dialogs to use label class.
 Added non selectable label class.
 Fixed edit box gotoXY being out of range.
