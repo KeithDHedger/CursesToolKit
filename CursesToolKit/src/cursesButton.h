@@ -29,7 +29,7 @@ class CTK_cursesButtonClass
 		CTK_cursesButtonClass();
 		~CTK_cursesButtonClass();
 
-		char			*label;
+		char			*label=NULL;
 		void			*selectCBUserData=NULL;
 
 		void			CTK_newButton(int x,int y,int width,int hite,const char *label="");

@@ -25,8 +25,10 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 	for(int j=0;j<menuNames.size();j++)
 		{
 			this->CTK_clearMenu(j);
+			delete this->menuNames[j];
 		}
 	this->menuNames.clear();
+	//delete this->menuNames;
 	termkey_destroy(this->tk);
 }
 
@@ -377,8 +379,10 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum)
 	for(int j=0;j<this->menuNames[menunum]->menuItem.size();j++)
 		{
 			free(this->menuNames[menunum]->menuItem[j]->menuName);
-			this->menuNames[menunum]->menuItem.clear();
+			delete this->menuNames[menunum]->menuItem[j];
 		}
+	this->menuNames[menunum]->menuItem.clear();
+	freeAndNull(&this->menuNames[menunum]->menuName);
 	this->menuNames[menunum]->menuItemCnt=0;
 }
 

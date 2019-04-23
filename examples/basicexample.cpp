@@ -2,8 +2,10 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o basicexample ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./basicexample "$@"
+#USEVALGRIND="valgrind --leak-check=full"
+
+g++ -Wall -ggdb -O0 -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o basicexample ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./basicexample "$@"
 retval=$?
 rm basicexample
 reset
@@ -205,8 +207,8 @@ Pasting is done via middle click of mouse as usual.\
 	SETSHOWCURS;
 
 
-	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
-		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
+//	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
+//		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
 
 	delete mainApp;
 	return 0;

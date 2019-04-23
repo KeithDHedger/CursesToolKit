@@ -67,7 +67,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
 				{
-					while(numchars<this->wid)
+					while((numchars<this->wid) && (cnt<strlen(buffer)))
 						{
 							cpybuf[startchr]=buffer[cnt++];
 							if(cpybuf[startchr]=='\t')

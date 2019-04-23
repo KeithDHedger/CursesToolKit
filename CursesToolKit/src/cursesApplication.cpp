@@ -37,7 +37,11 @@ CTK_mainAppClass::~CTK_mainAppClass()
 				delete this->pages[k].lists[j];
 			for(int j=0;j<this->pages[k].checkBoxes.size();j++)
 				delete this->pages[k].checkBoxes[j];
+			for(int j=0;j<this->pages[k].editBoxes.size();j++)
+				delete this->pages[k].editBoxes[j];
 		}
+
+	this->pages.clear();
 	termkey_destroy(this->tk);
 	fflush(NULL);
 }
@@ -195,15 +199,21 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				yadj=1;
 			setBackColour(BACK_BLUE,false);
 			printf("\e[2J\e[H");
-			cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
+			if(app->windowName!=NULL)
+				cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
+			else
+				cu.CTK_drawBox(app->x,app->y-1,app->wid,app->hite+1,OUTBOX,true,true);
 			MOVETO(1,1+yadj);
 			setBackColour(BACK_BLUE,false);
 			setForeColour(FORE_CYAN,false);
+			if(app->windowName!=NULL)
+			{
 			printf("%s\n",app->windowName);
 			SETALTCHARSET;
 			for(int j=0;j<app->maxCols;j++)
 				printf(HBAR);
 			SETNORMCHARSET;
+			}
 			MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
 			setBackColour(app->colours.backCol,false);
 			setForeColour(FORE_BLUE,false);
@@ -364,19 +374,10 @@ void CTK_mainAppClass::setHilite(bool forward)
 void CTK_mainAppClass::CTK_mainEventLoop(void)
 {
 	int				selection=CONT;
-//	TermKey			*tk;
 	TermKeyResult	ret;
 	TermKeyKey		key;
-	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
 	char			tstr[3]={'_',0,0};
 	int				tab=1;
-
-//	tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
-//	if(!tk)
-//		{
-//			fprintf(stderr, "Cannot allocate termkey instance\n");
-//			exit(1);
-//		}
 
 	this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);

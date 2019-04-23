@@ -1,4 +1,8 @@
 0.1.0
+Fixed segfault on NULL window name.
+Code clean.
+Updated examples.
+Fixed mem leaks in buttons,lists and check boxes
 UI tweaks.
 Done fancy dialog for file select util.
 Added window name/dialog title to entry/query dialogs

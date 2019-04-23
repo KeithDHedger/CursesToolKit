@@ -78,6 +78,11 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 
 void CTK_cursesListBoxClass::CTK_clearList(void)
 {
+	for(int j=0;j<this->listItems.size();j++)
+		{
+			this->listItems[j]->label.clear();//TODO//
+			delete this->listItems[j];
+		}
 	this->listItems.clear();
 	this->listStart=0;
 	this->listItemNumber=0;

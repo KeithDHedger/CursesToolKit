@@ -112,7 +112,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
 				{
-					while(numchars<this->wid)
+					while((numchars<this->wid) && (cnt<strlen(buffer)))
 						{
 							cpybuf[startchr]=buffer[cnt++];
 							if(cpybuf[startchr]=='\t')
@@ -203,11 +203,8 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 {
-//	bool			loop=true;
 	TermKeyResult	ret;
 	TermKeyKey		key;
-	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
-	char			buffer[32];
 	int				lineadd=1;
 
 	char			tstr[3]={'_',0,0};
@@ -220,7 +217,6 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 	while(this->runLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
-			termkey_strfkey(this->tk,buffer,32,&key,format);
 			lineadd=1;
 			switch(key.type)
 				{

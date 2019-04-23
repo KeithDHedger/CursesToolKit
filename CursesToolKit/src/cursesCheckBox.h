@@ -28,7 +28,7 @@ class CTK_cursesCheckBoxClass
 	public:
 		CTK_cursesCheckBoxClass();
 		~CTK_cursesCheckBoxClass();
-		char	*label;
+		char	*label=NULL;
 		void	*selectCBUserData=NULL;
 
 		void	CTK_newCheckBox(int x,int y,int width,const char *label="");

@@ -28,7 +28,7 @@ CTK_cursesInputClass::~CTK_cursesInputClass()
 
 CTK_cursesInputClass::CTK_cursesInputClass()
 {
-	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
+	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
 	if(!this->tk)
 		{
 			fprintf(stderr, "Cannot allocate termkey instance\n");
@@ -106,8 +106,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 	bool			loop=true;
 	TermKeyResult	ret;
 	TermKeyKey		key;
-	TermKeyFormat	format=TERMKEY_FORMAT_VIM;
-	char			buffer[32];
 
 	this->CTK_drawInput(true);
 	SETSHOWCURS;
@@ -115,7 +113,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 	while(loop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
-			termkey_strfkey(this->tk,buffer,32,&key,format);
 			switch(key.type)
 				{
 					case TERMKEY_TYPE_KEYSYM:

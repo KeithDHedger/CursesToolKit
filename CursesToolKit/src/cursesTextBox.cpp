@@ -56,9 +56,9 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	this->txtstrings.clear();
 	this->text=txt;
 
+	cpybuf[0]=0;
 	str=this->text;
 	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-
 	for(int j=0;j<array.size();j++)
 		{
 			ptr=array[j].c_str();
@@ -68,7 +68,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 			asprintf(&buffer,"%s\n",ptr);
 			while(cnt<strlen(buffer))
 				{
-					while(numchars<this->wid)
+					while((numchars<this->wid) && (cnt<strlen(buffer)))
 						{
 							cpybuf[startchr]=buffer[cnt++];
 							if(cpybuf[startchr]=='\t')
