@@ -24,7 +24,7 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 {
 	for(int j=0;j<menuNames.size();j++)
 		{
-			this->CTK_clearMenu(j);
+			this->CTK_clearMenu(j,true);
 			delete this->menuNames[j];
 		}
 	this->menuNames.clear();
@@ -374,7 +374,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	return(selection);
 }
 
-void CTK_cursesMenuClass::CTK_clearMenu(int menunum)
+void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 {
 	for(int j=0;j<this->menuNames[menunum]->menuItem.size();j++)
 		{
@@ -382,7 +382,8 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum)
 			delete this->menuNames[menunum]->menuItem[j];
 		}
 	this->menuNames[menunum]->menuItem.clear();
-	freeAndNull(&this->menuNames[menunum]->menuName);
+	if(full==true)
+		freeAndNull(&this->menuNames[menunum]->menuName);
 	this->menuNames[menunum]->menuItemCnt=0;
 }
 

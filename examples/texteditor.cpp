@@ -14,6 +14,7 @@ exit $retval
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <libgen.h>
 
 #include <cursesGlobals.h>
 
@@ -82,7 +83,7 @@ void menuSelectCB(void *inst)
 								std::string				str;
 								CTK_cursesUtilsClass	cu;
 								char					*buffer=get_current_dir_name();
-								cu.CTK_openFile(mainApp,buffer);
+								cu.CTK_openFile(mainApp,"Open File",buffer);
 								if(cu.isValidFile==true)
 									{
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
@@ -108,8 +109,9 @@ void menuSelectCB(void *inst)
 							{
 								char					*buffer=(char*)alloca(PATH_MAX);
 								CTK_cursesUtilsClass	cu;
+								char					*holdstr=strdup((char*)mainApp->pages[mainApp->pageNumber].userData);
 
-								cu.CTK_openFile(mainApp,"./",false);
+								cu.CTK_openFile(mainApp,"Save As ...",dirname(holdstr),false,basename(holdstr));
 								if(cu.isValidFile==true)
 									{
 										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.stringResult.c_str());
@@ -123,6 +125,7 @@ void menuSelectCB(void *inst)
 												rebuildTabMenu();
 											}
 									}
+								free(holdstr);
 							}
 							break;
 						case CLOSEITEM:
@@ -168,8 +171,7 @@ void menuSelectCB(void *inst)
 						case GOTOLINE:
 							{
 								CTK_cursesUtilsClass	cu;
-
-								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","",true))
+								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
 										mainApp->CTK_updateScreen(mainApp,NULL);

@@ -207,17 +207,20 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			setBackColour(BACK_BLUE,false);
 			setForeColour(FORE_CYAN,false);
 			if(app->windowName!=NULL)
-			{
-			printf("%s\n",app->windowName);
-			SETALTCHARSET;
-			for(int j=0;j<app->maxCols;j++)
-				printf(HBAR);
-			SETNORMCHARSET;
-			}
-			MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
-			setBackColour(app->colours.backCol,false);
-			setForeColour(FORE_BLUE,false);
-			printf("%s",app->title);
+				{
+					printf("%s\n",app->windowName);
+					SETALTCHARSET;
+					for(int j=0;j<app->maxCols;j++)
+						printf(HBAR);
+					SETNORMCHARSET;
+					}
+				if(app->title!=NULL)
+					{
+						MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
+						setBackColour(app->colours.backCol,false);
+						setForeColour(FORE_BLUE,false);
+						printf("%s",app->title);
+					}
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)

@@ -1,3 +1,7 @@
+0.1.1
+Updated texteditor example.
+Fixed mem leak on delete menubar.
+
 0.1.0
 Fixed segfault on NULL window name.
 Code clean.

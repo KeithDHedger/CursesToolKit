@@ -1,7 +1,7 @@
 #if 0
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
-#Rgun eg:
+#Run eg:
 #(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1
 
 g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o inputbox ||exit 1
