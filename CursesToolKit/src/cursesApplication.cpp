@@ -39,6 +39,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 				delete this->pages[k].checkBoxes[j];
 			for(int j=0;j<this->pages[k].editBoxes.size();j++)
 				delete this->pages[k].editBoxes[j];
+			for(int j=0;j<this->pages[k].srcEditBoxes.size();j++)
+				delete this->pages[k].srcEditBoxes[j];
 		}
 
 	this->pages.clear();
@@ -123,6 +125,15 @@ void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int wi
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
 }
 
+void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+{
+	CTK_cursesSourceEditBoxClass	*edbox=new CTK_cursesSourceEditBoxClass();
+	edbox->CTK_newBox(x,y,width,hite,isfilename,txt,selectable);
+	edbox->mc=mc;
+	edbox->CTK_setColours(this->colours);
+	this->pages[this->pageNumber].srcEditBoxes.push_back(edbox);
+}
+
 void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
 {
 	CTK_cursesLabelClass	*label=new CTK_cursesLabelClass();
@@ -164,6 +175,11 @@ void CTK_mainAppClass::CTK_addCheckBox(CTK_cursesCheckBoxClass *cb)
 void CTK_mainAppClass::CTK_addEditBox(CTK_cursesEditBoxClass *edbox)
 {
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
+}
+
+void CTK_mainAppClass::CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox)
+{
+	this->pages[this->pageNumber].srcEditBoxes.push_back(edbox);
 }
 
 void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
@@ -264,6 +280,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(true);
 			else
 				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(false);
+		}
+
+	for(int j=0;j<app->pages[app->pageNumber].srcEditBoxes.size();j++)
+		{
+			if(app->hiliteSourceEditBoxNum==j)
+				app->pages[app->pageNumber].srcEditBoxes[j]->CTK_drawBox(true);
+			else
+				app->pages[app->pageNumber].srcEditBoxes[j]->CTK_drawBox(false);
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].lists.size();j++)
@@ -368,6 +392,17 @@ void CTK_mainAppClass::setHilite(bool forward)
 						this->setHilite(forward);
 					}
 				break;
+			case HLSRCEDITBOXES:
+				this->hiliteSourceEditBoxNum+=addit;
+				if((this->hiliteSourceEditBoxNum<0) || (this->hiliteSourceEditBoxNum>=this->pages[this->pageNumber].srcEditBoxes.size()))
+					{
+						this->hiliteSourceEditBoxNum=-1;
+						if(addit==-1)
+							this->hiliteEditBoxNum=this->pages[this->pageNumber].editBoxes.size();
+						this->hiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
 			case HLNOMORE:
 				this->hiliting=HLNONE;
 				break;
@@ -451,6 +486,14 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										break;
 
 									case TERMKEY_SYM_ENTER:
+										if(this->hiliteSourceEditBoxNum!=-1)
+											{
+												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEditEvent();
+												this->hiliteSourceEditBoxNum=-1;
+												this->CTK_updateScreen(this,NULL);
+												continue;
+											}
+
 										if(this->hiliteEditBoxNum!=-1)
 											{
 												this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_doEditEvent();

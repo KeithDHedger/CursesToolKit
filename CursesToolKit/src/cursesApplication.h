@@ -31,12 +31,13 @@ struct pageStruct
 	std::vector<CTK_cursesListBoxClass*>	lists;
 	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
 	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
 	std::vector<CTK_cursesLabelClass*>		labels;
 	void									*userData=NULL;
 	bool									menusActive=true;
 };
 
-enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLNOMORE};
+enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
 class CTK_mainAppClass
 {
@@ -73,6 +74,7 @@ class CTK_mainAppClass
 		void									CTK_addNewCheckBox(int x,int y,int width,const char *label);
 		void									CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		void									CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
+		void									CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
@@ -82,6 +84,7 @@ class CTK_mainAppClass
 		void									CTK_addCheckBox(CTK_cursesCheckBoxClass *cb);
 		void									CTK_addEditBox(CTK_cursesEditBoxClass *edbox);
 		void									CTK_addLabel(CTK_cursesLabelClass *label);
+		void									CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
@@ -103,6 +106,7 @@ class CTK_mainAppClass
 		int										hiliteListNum=-1;
 		int										hiliteCheckBoxNum=-1;
 		int										hiliteEditBoxNum=-1;
+		int										hiliteSourceEditBoxNum=-1;
 		int										hiliting=HLNONE;
 
 		void									setHilite(bool forward);

@@ -33,6 +33,7 @@ class CTK_cursesEditBoxClass;
 class CTK_cursesMenuClass;
 class CTK_cursesListBoxClass;
 class CTK_cursesLabelClass;
+class CTK_cursesSourceEditBoxClass;
 
 #include <linux/limits.h>
 
@@ -59,6 +60,7 @@ class CTK_cursesLabelClass;
 #include "cursesCheckBox.h"
 #include "cursesEditBox.h"
 #include "cursesLabel.h"
+#include "cursesSourceEditBox.h"
 
 #include "cursesApplication.h"
 #include "cursesUtils.h"

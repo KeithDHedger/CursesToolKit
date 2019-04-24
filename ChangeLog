@@ -1,4 +1,6 @@
 0.1.1
+Added code editor example.
+Started source code edit box.
 Updated texteditor example.
 Fixed mem leak on delete menubar.
 
