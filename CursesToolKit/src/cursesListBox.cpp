@@ -43,7 +43,7 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 {
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,false);
 
 	for(int j=0;j<this->hite;j++)
 		{
@@ -65,13 +65,16 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 				}
 
 			MOVETO(this->sx,this->sy+j);
-			printf("%s",this->blank.c_str());
+			//printf("%s",this->blank.c_str());
 
 			if(j<this->listItems.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf("%s",this->listItems[j+this->listStart]->label.c_str());
+					printf("%s%s",this->listItems[j+this->listStart]->label.c_str(),this->blank.substr(0,wid-this->listItems[j+this->listStart]->label.length()).c_str());
+					//printf("%s",this->blank.c_str());
 				}
+			else
+				printf("%s",this->blank.c_str());
 		}
 	MOVETO(this->sx,this->sy+this->hite);
 }

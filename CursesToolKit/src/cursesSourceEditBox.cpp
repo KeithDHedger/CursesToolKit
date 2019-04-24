@@ -151,7 +151,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int	boxline=0;
 
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
 	setBackColour(this->colours.backCol,this->colours.use256Colours);
 	setForeColour(this->colours.foreCol,this->colours.use256Colours);
@@ -193,32 +193,17 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 					MOVETO(this->sx,this->sy+boxline);
 					for(j=0;j<this->currentX;j++)
 						{
-							//if(this->txtstrings[boxline+this->startLine].c_str()[j]==0x1b)
-							//	{
-							//		while(this->txtstrings[boxline+this->startLine].c_str()[j]!='m')
-							//			{
-							//				j++;
-							//			}
-							//			j++;
-									//cpybuf[startchr]=buffer[cnt++];
-									//continue;
-							//	}
-							//else
-
-								printf("%c",this->txtstrings[boxline+this->startLine].c_str()[j]);
+							printf("%c",this->txtstrings[boxline+this->startLine].c_str()[j]);
 						}
 
 					switch(this->txtstrings[boxline+this->startLine].c_str()[j])
 						{
 							case 0x1b:
 								while(this->txtstrings[boxline+this->startLine].c_str()[j]==0x1b)
-								{
-								while(this->txtstrings[boxline+this->startLine].c_str()[j]!='m')
 									{
+										while(this->txtstrings[boxline+this->startLine].c_str()[j++]!='m');
 										j++;
 									}
-								j++;
-								}
 								printf( INVERSEON "%c" INVERSEOFF,this->txtstrings[boxline+this->startLine].c_str()[j]);
 								break;
 							case '\t':
@@ -500,7 +485,7 @@ void CTK_cursesSourceEditBoxClass::CTK_setRunLoop(bool loop)
 
 void CTK_cursesSourceEditBoxClass::skipAnsi(void)
 {
-
+//this->adjustXY();
 if((this->txtstrings[this->currentY].c_str()[this->currentX]=='m') && (this->txtstrings[this->currentY].c_str()[this->currentX-2]==ESCCHAR))
 	{
 		this->currentX-=3;
@@ -516,14 +501,14 @@ if((this->txtstrings[this->currentY].c_str()[this->currentX]=='m') && (this->txt
 	//if(this->txtstrings[this->currentY].c_str()[this->currentX]==0x1b)
 	while(this->txtstrings[this->currentY].c_str()[this->currentX]==0x1b)
 		{
-			fprintf(stderr,"currentx=%i\n%c",this->txtstrings[this->currentY].c_str()[this->currentX]);
+			//fprintf(stderr,"currentx=%i\n%c",this->txtstrings[this->currentY].c_str()[this->currentX]);
 			while(this->txtstrings[this->currentY].c_str()[this->currentX]!='m')
 				{
 					this->currentX++;
-					fprintf(stderr,"%c",this->txtstrings[this->currentY].c_str()[this->currentX]);
+					//fprintf(stderr,"%c",this->txtstrings[this->currentY].c_str()[this->currentX]);
 				}
 			this->currentX++;
-			fprintf(stderr,"%c\n",this->txtstrings[this->currentY].c_str()[this->currentX]);
+			//fprintf(stderr,"%c\n",this->txtstrings[this->currentY].c_str()[this->currentX]);
 		}
 
 //	this->skipAnsi();

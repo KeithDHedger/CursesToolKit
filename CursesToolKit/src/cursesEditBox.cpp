@@ -138,7 +138,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int	boxline=0;
 
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
 	setBackColour(this->colours.backCol,this->colours.use256Colours);
 	setForeColour(this->colours.foreCol,this->colours.use256Colours);

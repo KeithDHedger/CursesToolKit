@@ -93,7 +93,7 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 	int j=0;
 
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
 	if(this->txtstrings.size()==0)
 		return;

@@ -214,7 +214,10 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			if(app->menuBar!=NULL)
 				yadj=1;
 			setBackColour(BACK_BLUE,false);
+//FLICKER//
 			printf("\e[2J\e[H");
+//printf("\e[1;1H\e[0J");
+//printf("\e[1;1H");
 			if(app->windowName!=NULL)
 				cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
 			else
@@ -418,7 +421,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 	int				tab=1;
 
 	this->CTK_clearScreen();
+//	setBackColour(this->colours.windowBackCol,this->colours.use256Colours);
+//	setForeColour(this->colours.windowForeCol,this->colours.use256Colours);
+
+//printf("\e[2J\e[H");
 	this->CTK_updateScreen(this,NULL);
+	this->useAppWindow=false;
 	SETHIDECURS;
 	fflush(NULL);
 	this->runEventLoop=true;
