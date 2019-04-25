@@ -1,4 +1,5 @@
 0.1.1
+Fixed major flickering when scrolling in console.
 Added code editor example.
 Started source code edit box.
 Updated texteditor example.

@@ -158,11 +158,11 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
-	for(int j=0;j<this->hite;j++)
-		{
-			MOVETO(this->sx,this->sy+j);
-			printf("%s",this->blank.c_str());
-		}
+//	for(int j=0;j<this->hite;j++)
+//		{
+//			MOVETO(this->sx,this->sy+j);
+//			printf("%s",this->blank.c_str());
+//		}
 
 	if((this->txtstrings.size()-1)-this->startLine<this->hite)
 		this->startLine=this->txtstrings.size()-this->hite;
@@ -170,11 +170,18 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	if(this->startLine<0)
 		this->startLine=0;
 
-
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
 			MOVETO(this->sx,this->sy+boxline);
-			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
+//			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
+//			printf("%s%s",this->txtstrings[boxline+this->startLine].c_str(),"12");
+
+			if(this->txtstrings[boxline+this->startLine].c_str()[this->txtstrings[boxline+this->startLine].length()-1]=='\n')
+				printf("%s%s",this->txtstrings[boxline+this->startLine].substr(0,this->txtstrings[boxline+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtstrings[boxline+this->startLine].length()+1).c_str());
+			else
+				printf("%s%s",this->txtstrings[boxline+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[boxline+this->startLine].length()).c_str());
+
+
 			if((this->currentY==boxline+this->startLine) && (showcursor==true))
 				{
 					MOVETO(this->sx,this->sy+boxline);
@@ -196,6 +203,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 								break;
 						}
 				}
+			
 			boxline++;
 		}
 	MOVETO(this->sx,this->sy+boxline);

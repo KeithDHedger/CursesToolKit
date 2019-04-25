@@ -110,18 +110,23 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 		}
 
 	MOVETO(this->sx,this->sy);
-	for(int j=0;j<this->hite;j++)
-		{
-			MOVETO(this->sx,this->sy+j);
-			printf("%s",this->blank.c_str());
-		}
+//	for(int j=0;j<this->hite;j++)
+//		{
+//			MOVETO(this->sx,this->sy+j);
+//			printf("%s",this->blank.c_str());
+//		}
 
 	while(j<this->hite)
 		{
 			if(j<this->txtstrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf("%s",this->txtstrings[j+this->startLine].c_str());
+//printf("%s%s",this->listItems[j+this->listStart]->label.c_str(),this->blank.substr(0,wid-this->listItems[j+this->listStart]->label.length()).c_str());
+				//	printf("%s%s",this->txtstrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()-4).c_str());
+					if(this->txtstrings[j+this->startLine].c_str()[this->txtstrings[j+this->startLine].length()-1]=='\n')
+						printf("%s%s",this->txtstrings[j+this->startLine].substr(0,this->txtstrings[j+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()+1).c_str());
+					else
+						printf("%s%s",this->txtstrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()).c_str());
 					j++;
 				}
 			else

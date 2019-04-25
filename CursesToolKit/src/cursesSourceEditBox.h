@@ -56,6 +56,7 @@ class CTK_cursesSourceEditBoxClass
 		int							startLine=0;
 		int							currentX;
 		int							currentY;
+		int							virtualX;
 		bool						runLoop=false;
 
 		char						*txtBuffer=NULL;
