@@ -306,7 +306,6 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										if(this->currentX>0)
 											{
 												this->txtstrings[this->currentY].erase(this->currentX-1,1);
-												//this->srcStrings[this->currentY].erase(this->sourceX-1,1);
 												this->currentX--;
 												this->updateBuffer();
 												break;
@@ -478,13 +477,16 @@ void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentWord(void)
 		else
 			endchr=j;
 	this->txtstrings[this->currentY].erase(startchr,endchr-startchr+1);
+	this->updateBuffer();
+	
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentLine(void)
 {
 	this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
+	this->updateBuffer();
+	fprintf(stderr,">>>>>>>>>>>>>>\n");
 }
-
 
 void CTK_cursesSourceEditBoxClass::CTK_insertText(const char *txt)
 {

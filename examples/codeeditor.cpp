@@ -37,7 +37,7 @@ enum {HELP=0,ABOUT};
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
-const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
+const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
 const char	*helpMenuNames[]={" _Help"," About",NULL};
