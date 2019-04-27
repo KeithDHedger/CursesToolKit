@@ -28,6 +28,7 @@
 #define TABCHAR		"\t"
 #define SPACETAB	" \t"
 #define SPACENL	" "
+#define INVSPACE 	INVERSEON " " INVERSEOFF
 #define NEXTSCRLINE "\n\e[8C"
 
 #define	SETNORMAL printf("\e[0m")

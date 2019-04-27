@@ -1,4 +1,7 @@
 0.1.1
+Source edit class needs source highlight app.
+Set temp folder in /dev/shm for src edit.
+Re-worked source edit class.
 Fixed major flickering when scrolling in console.
 Added code editor example.
 Started source code edit box.

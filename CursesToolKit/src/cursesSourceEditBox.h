@@ -56,9 +56,14 @@ class CTK_cursesSourceEditBoxClass
 		int							startLine=0;
 		int							currentX;
 		int							currentY;
+		int							sourceX;
 		int							virtualX;
 		bool						runLoop=false;
 
+		char						*tmpFolderFemplate=NULL;
+		char						*tmpEdDir=NULL;
+		char						*tmpSrc=NULL;
+		char						*srcBuffer=NULL;
 		char						*txtBuffer=NULL;
 		std::string					blank;
 		std::string					status;
@@ -67,9 +72,11 @@ class CTK_cursesSourceEditBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 
+		std::vector<std::string>	srcStrings;
 		void						updateBuffer(void);
 		void						adjustXY(void);
-		void						skipAnsi(void);
+		void						setScreenX(void);
+
 };
 
 #endif
