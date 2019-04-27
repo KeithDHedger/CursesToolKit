@@ -15,6 +15,7 @@ exit $retval
 #include <string.h>
 #include <stdlib.h>
 #include <libgen.h>
+#include <fstream>
 
 #include <cursesGlobals.h>
 
@@ -70,12 +71,14 @@ void menuSelectCB(void *inst)
 						case NEWITEM:
 							{
 								char	*uddata;
+								std::ofstream output(uddata);
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,false,"\n");
+								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,false,"\n");
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
+								mainApp->CTK_clearScreen();
 							}
 							break;
 

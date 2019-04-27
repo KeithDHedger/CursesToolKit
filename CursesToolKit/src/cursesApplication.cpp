@@ -595,6 +595,7 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
+	this->CTK_clearScreen();
 }
 
 int CTK_mainAppClass::CTK_previousPage(void)
