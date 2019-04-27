@@ -252,6 +252,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 							switch(key.code.sym)
 								{
 									case TERMKEY_SYM_BACKSPACE:
+									case TERMKEY_SYM_DEL:
 										if((this->currentY==0) && (this->currentX==0))
 											break;
 										if(this->currentX>0)

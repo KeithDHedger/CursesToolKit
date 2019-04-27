@@ -1,4 +1,5 @@
 0.1.1
+Fixed backspace over ssh.
 Update source highlighting on enter/pageup/pagedown/delete/bs/esc.
 Clear screen on switch page.
 Source edit class needs source highlight app.

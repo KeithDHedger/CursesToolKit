@@ -158,7 +158,8 @@ void CTK_cursesInputClass::CTK_doInput(void)
 									else
 										this->curs=this->text.length();
 									break;
-								case  TERMKEY_SYM_BACKSPACE:
+								case TERMKEY_SYM_BACKSPACE:
+								case TERMKEY_SYM_DEL:
 									this->curs--;
 									if(this->curs<0)
 										this->curs=0;
