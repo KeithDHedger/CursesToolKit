@@ -1,4 +1,5 @@
 0.1.1
+Update source highlighting on enter/pageup/pagedown/delete/bs/esc.
 Clear screen on switch page.
 Source edit class needs source highlight app.
 Set temp folder in /dev/shm for src edit.

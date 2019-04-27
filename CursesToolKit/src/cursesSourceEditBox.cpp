@@ -292,6 +292,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 							}
 
 						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						this->srcStrings[this->currentY].insert(this->sourceX,1,key.code.codepoint);
 						this->currentX++;
 						break;
 					case TERMKEY_TYPE_KEYSYM:
@@ -304,6 +305,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										if(this->currentX>0)
 											{
 												this->txtstrings[this->currentY].erase(this->currentX-1,1);
+												//this->srcStrings[this->currentY].erase(this->sourceX-1,1);
 												this->currentX--;
 												this->updateBuffer();
 												break;
@@ -341,9 +343,11 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_TAB:
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\t');
 										this->currentX++;
+										this->updateBuffer();
 										break;
 									case TERMKEY_SYM_ESCAPE:
 										this->runLoop=false;
+										this->updateBuffer();
 										continue;
 										break;
 								case TERMKEY_SYM_HOME:
@@ -355,6 +359,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
+										this->updateBuffer();
 									case TERMKEY_SYM_UP:
 										this->currentY-=lineadd;
 										if(currentY<this->startLine)
@@ -369,6 +374,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
+										this->updateBuffer();
 									case TERMKEY_SYM_DOWN:
 										this->currentY+=lineadd;
 										if(this->currentY>=this->txtstrings.size())
