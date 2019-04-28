@@ -21,7 +21,17 @@
 #ifndef _CURSESSOURCEEDITBOX_
 #define _CURSESSOURCEEDITBOX_
 
+#define SRCDATADIR "/usr/share/source-highlight"
+
 #include "cursesGlobals.h"
+#include <srchilite/sourcehighlight.h>
+#include <srchilite/langmap.h>
+#include <srchilite/lineranges.h>
+#include <srchilite/sourcehighlight.h>
+#include <srchilite/languageinfer.h>
+#include <iostream>     // std::ios, std::istream, std::cout
+#include <fstream>      // std::filebuf
+#include <sstream>      // std::stringstream
 
 class CTK_cursesSourceEditBoxClass
 {
@@ -46,6 +56,7 @@ class CTK_cursesSourceEditBoxClass
 		void						CTK_insertText(const char *txt);
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
+		void						CTK_setTabWidth(int width);
 
 	private:
 		int							sx;
@@ -59,11 +70,8 @@ class CTK_cursesSourceEditBoxClass
 		int							sourceX;
 		int							virtualX;
 		bool						runLoop=false;
+		int							tabWidth=8;
 
-		char						*tmpFolderFemplate=NULL;
-		char						*tmpEdDir=NULL;
-		char						*tmpSrc=NULL;
-		char						*srcBuffer=NULL;
 		char						*txtBuffer=NULL;
 		std::string					blank;
 		std::string					status;
@@ -72,6 +80,7 @@ class CTK_cursesSourceEditBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 
+		std::string					filePath;
 		std::vector<std::string>	srcStrings;
 		void						updateBuffer(void);
 		void						adjustXY(void);

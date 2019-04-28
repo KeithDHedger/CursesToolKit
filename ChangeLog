@@ -1,4 +1,8 @@
+0.1.2
+Moved to source-hghlight library.
+
 0.1.1
+Clear screen when switching page prev/next.
 Fixed backspace over ssh.
 Update source highlighting on enter/pageup/pagedown/delete/bs/esc.
 Clear screen on switch page.

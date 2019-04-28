@@ -275,6 +275,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+	mainApp->pages[0].srcEditBoxes[0]->CTK_setTabWidth(4);
 
 	mainApp->CTK_mainEventLoop();
 	delete mainApp;

@@ -25,10 +25,6 @@ CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 	free(this->txtBuffer);
 	delete this->gc;
 	termkey_destroy(this->tk);
-	unlink(this->tmpSrc);
-	rmdir(this->tmpEdDir);
-	free(this->tmpSrc);
-	free(this->tmpFolderFemplate);
 }
 
 CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
@@ -42,10 +38,6 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
-
-	asprintf(&this->tmpFolderFemplate,"/dev/shm/CTKSrcEdit-XXXXXX");
-	this->tmpEdDir=mkdtemp(this->tmpFolderFemplate);
-	asprintf(&this->tmpSrc,"%s/src.cpp",this->tmpEdDir);
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_setColours(coloursStruct cs)
@@ -77,7 +69,12 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	CTK_cursesUtilsClass		cu;
 	long						fsize;
 	FILE						*f;
-	char						*command;
+	std::stringstream			inpstream;
+	std::ostringstream			oputstream;
+	srchilite::LanguageInfer	inf;
+	srchilite::SourceHighlight	sourceHighlight("esc.outlang");
+	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
+	std::string					inputLang="nohilite.lang";
 
 	this->txtstrings.clear();
 	freeAndNull(&this->txtBuffer);
@@ -92,6 +89,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 		this->txtBuffer=strdup(txt);
 	else
 		{
+			this->filePath=txt;
 			f=fopen(txt,"rb");
 			fseek(f,0,SEEK_END);
 			fsize=ftell(f);
@@ -126,7 +124,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 						{
 							cpybuf[startchr]=buffer[cnt++];
 							if(cpybuf[startchr]=='\t')
-								numchars+=8;
+								numchars+=this->tabWidth;
 							else
 								numchars++;
 							startchr++;
@@ -139,36 +137,36 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			free(buffer);
 		}
 
-	f=fopen("/dev/shm/fmt.cpp","w+");
-	if(f!=NULL)
+	for(int j=0;j<this->txtstrings.size();j++)
 		{
-			for(int k=0;k<this->txtstrings.size();k++)
+			if(this->txtstrings[j].c_str()[this->txtstrings[j].length()-1]=='\n')
+				inpstream << this->txtstrings[j];
+			else
+				inpstream << this->txtstrings[j] << '\n';
+		}
+	inpstream << std::endl; 
+
+	sourceHighlight.setDataDir(SRCDATADIR);
+	std::string lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
+
+	if(lang != "")
+		inputLang=lang;
+	else
+		{
+			lang=inf.infer(this->filePath.c_str());
+			if(lang != "")
 				{
-					if(this->txtstrings[k].c_str()[this->txtstrings[k].length()-1]=='\n')
-						fprintf(f,"%s",this->txtstrings[k].c_str());
-					else
-						fprintf(f,"%s\n",this->txtstrings[k].c_str());
+					langMap.open();
+					inputLang=langMap.getFileName(lang);
 				}
-			fclose(f);
 		}
 
-//system("highlight --out-format=ansi /tmp/fmt.cpp --output=/tmp/src.cpp");
+	if(inputLang=="")
+		inputLang="nohilite.lang";
+	sourceHighlight.setStyleFile("esc.style");
 
-	asprintf(&command,"source-highlight -i /dev/shm/fmt.cpp -o %s --out-format=esc",this->tmpSrc);
-	system(command);
-	f=fopen(this->tmpSrc,"rb");
-	fseek(f,0,SEEK_END);
-	fsize=ftell(f);
-	fseek(f,0,SEEK_SET);
-	this->srcBuffer=(char*)malloc(fsize+1);
-	fread(this->srcBuffer,1,fsize,f);
-	this->srcBuffer[fsize]=0;
-	fclose(f);
-
-	str=this->srcBuffer;
-	srcStrings=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-	free(command);
-	unlink("/dev/shm/fmt.cpp");
+	sourceHighlight.highlight(inpstream,oputstream,inputLang,"");
+	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
 }
 
 void CTK_cursesSourceEditBoxClass::setScreenX(void)
@@ -477,15 +475,13 @@ void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentWord(void)
 		else
 			endchr=j;
 	this->txtstrings[this->currentY].erase(startchr,endchr-startchr+1);
-	this->updateBuffer();
-	
+	this->updateBuffer();	
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentLine(void)
 {
 	this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
 	this->updateBuffer();
-	fprintf(stderr,">>>>>>>>>>>>>>\n");
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_insertText(const char *txt)
@@ -536,4 +532,11 @@ void CTK_cursesSourceEditBoxClass::adjustXY(void)
 		}
 }
 
+void CTK_cursesSourceEditBoxClass::CTK_setTabWidth(int width)
+{
+	char	buffer[256];
+	this->tabWidth=width;
+	sprintf(buffer,"tabs -%i",width);
+	system(buffer);
+}
 

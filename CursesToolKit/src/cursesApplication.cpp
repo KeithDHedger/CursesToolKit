@@ -602,6 +602,7 @@ int CTK_mainAppClass::CTK_previousPage(void)
 {
 	if(this->pageNumber>0)
 		this->pageNumber--;
+	this->CTK_clearScreen();
 	return(this->pageNumber);
 }
 
@@ -609,6 +610,7 @@ int CTK_mainAppClass::CTK_nextPage(void)
 {
 	if(this->pageNumber<this->pages.size()-1)
 		this->pageNumber++;
+	this->CTK_clearScreen();
 	return(this->pageNumber);
 }
 
