@@ -19,10 +19,7 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
-int					windowRows=mainApp->maxRows-3;
-int					windowCols=mainApp->maxCols;
-
+#define TABWIDTH 4
 #define FILEMENU 0
 #define EDITMENU 1
 #define NAVMENU 2
@@ -34,6 +31,10 @@ enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE};
 enum {GOTOLINE=0,FIND,FINDNEXT};
 enum {NEXTTAB=0,PREVTAB};
 enum {HELP=0,ABOUT};
+
+CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
+int					windowRows=mainApp->maxRows-3;
+int					windowCols=mainApp->maxCols;
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
@@ -71,11 +72,12 @@ void menuSelectCB(void *inst)
 						case NEWITEM:
 							{
 								char	*uddata;
-								std::ofstream output(uddata);
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
+								std::ofstream output(uddata);
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,false,"\n");
+								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,uddata);
+								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 								mainApp->CTK_clearScreen();
@@ -93,6 +95,7 @@ void menuSelectCB(void *inst)
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
 										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
+										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
 									}
@@ -107,6 +110,7 @@ void menuSelectCB(void *inst)
 										fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer());
 										fclose(f);
 									}
+								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_updateText((char*)mainApp->pages[mainApp->pageNumber].userData,true);
 							}
 							break;
 						case SAVEASITEM:
@@ -119,13 +123,14 @@ void menuSelectCB(void *inst)
 								if(cu.isValidFile==true)
 									{
 										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.stringResult.c_str());
-										FILE *f=fopen(cu.stringResult.c_str(),"w+");
+										FILE *f=fopen(buffer,"w+");
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer());
 												freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
 												mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(buffer));
 												fclose(f);
+												mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_updateText(buffer,true);
 												rebuildTabMenu();
 											}
 									}
@@ -275,7 +280,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
-	mainApp->pages[0].srcEditBoxes[0]->CTK_setTabWidth(4);
+	mainApp->pages[0].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 
 	mainApp->CTK_mainEventLoop();
 	delete mainApp;

@@ -1,4 +1,5 @@
 0.1.2
+Fixed minor ui bugs in codeeditor.cpp example.
 Moved to source-hghlight library.
 
 0.1.1
