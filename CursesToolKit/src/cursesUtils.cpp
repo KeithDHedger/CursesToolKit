@@ -156,7 +156,16 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	int						ty=y+h-3;
 	int						by=y+h-1;
 	const char				*title="Open File ...";
-	
+
+w=40;
+h=20;
+							lx=x+2;
+							ly=y+2;
+							lw=w-3;
+							lh=h-7;
+							ty=y+h-3;
+							by=y+h-1;
+
 	cs.fancyGadgets=true;
 	cs.textBoxType=INBOX;
 	selectapp->CTK_setColours(cs);
