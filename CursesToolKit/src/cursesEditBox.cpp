@@ -152,9 +152,11 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
 			MOVETO(this->sx,this->sy+boxline);
-			printf("%s",this->blank.c_str());
-			MOVETO(this->sx,this->sy+boxline);
-			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
+			this->gc->CTK_printLine(this->txtstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->wid);
+//			MOVETO(this->sx,this->sy+boxline);
+//			printf("%s",this->blank.c_str());
+//			MOVETO(this->sx,this->sy+boxline);
+//			printf("%s",this->txtstrings[boxline+this->startLine].c_str());
 			boxline++;
 		}
 

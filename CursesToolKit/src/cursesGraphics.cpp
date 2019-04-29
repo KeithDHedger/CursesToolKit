@@ -111,6 +111,17 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	fflush(NULL);
 }
 
+void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blank,int width)
+{
+	if(line[strlen(line)-1]=='\n')
+		{
+			printf("%.*s%.*s",strlen(line)-1,line,width-strlen(line),blank);
+		}
+	else
+		{
+			printf("%s%.*s",line,width-strlen(line),blank);
+		}
+}
 
 
 
