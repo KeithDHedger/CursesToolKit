@@ -1,4 +1,8 @@
 0.1.2
+Various UI fixes.
+Set cursor colour in coloursStruct.
+Fixed cursor under console.
+User defined tab width.
 Fixed minor ui bugs in codeeditor.cpp example.
 Moved to source-hghlight library.
 

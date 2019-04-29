@@ -31,7 +31,7 @@ class CTK_cursesEditBoxClass
 
 		CTK_mainAppClass			*mc=NULL;
 		std::vector<std::string>	txtstrings;
-
+		int							tabWidth=8;
 
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
@@ -46,6 +46,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_insertText(const char *txt);
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
+		void						CTK_setTabWidth(int width);
 
 	private:
 		int							sx;

@@ -119,6 +119,7 @@ void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *labe
 void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesEditBoxClass	*edbox=new CTK_cursesEditBoxClass();
+	edbox->tabWidth=this->tabWidth;
 	edbox->CTK_newBox(x,y,width,hite,isfilename,txt,selectable);
 	edbox->mc=mc;
 	edbox->CTK_setColours(this->colours);
@@ -233,14 +234,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 					for(int j=0;j<app->maxCols;j++)
 						printf(HBAR);
 					SETNORMCHARSET;
-					}
-				if(app->title!=NULL)
-					{
-						MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
-						setBackColour(app->colours.backCol,false);
-						setForeColour(FORE_BLUE,false);
-						printf("%s",app->title);
-					}
+				}
+			if(app->title!=NULL)
+				{
+					MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
+					setBackColour(app->colours.backCol,false);
+					setForeColour(FORE_BLUE,false);
+					printf("%s",app->title);
+				}
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)

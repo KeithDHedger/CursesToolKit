@@ -21,6 +21,8 @@ exit $retval
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
 
+#define TABWIDTH 4
+
 #define FILEMENU 0
 #define EDITMENU 1
 #define NAVMENU 2
@@ -224,27 +226,6 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
-//
-//	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-//	std::string				str;
-//	CTK_cursesUtilsClass	cu;
-//	char					*folder=NULL;//get_current_dir_name();
-//
-//	if(argc>1)
-//		folder=argv[1];
-//
-//	cu.CTK_openFile(mainApp,folder);
-//	if(cu.isValidFile==true)
-//		fprintf(stderr,"%s",cu.results.c_str());
-//	SETSHOWCURS;
-//	delete mainApp;
-//	//free(folder);
-//	return(0);
-//
-//
-//
-//
-//
 	coloursStruct cs;
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=false;
@@ -254,6 +235,7 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_GREEN;
 
+	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 

@@ -64,8 +64,8 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 		{
 			for(int j=0;j<h;j++)
 				{
-					MOVETO(x,j+y);
-					printf("%*s",w);
+					MOVETO(x,y+j);
+					printf("%*s",w," ");
 				}
 		}
 

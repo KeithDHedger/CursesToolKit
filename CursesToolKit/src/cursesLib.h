@@ -38,6 +38,8 @@
 #define UNDERSCOREOFF "\e[24m"
 #define INVERSEON "\e[7m"
 #define INVERSEOFF "\e[27m"
+#define BRIGHTON "\e[1m"
+#define BRIGHTOFF "\e[21m"
 
 #define SETHIDECURS printf("\e[?25l")
 #define SETSHOWCURS printf("\e[?25h")
@@ -99,8 +101,10 @@ struct coloursStruct
 	int		backCol=BACK_WHITE;
 	int		hiliteForeCol=FORE_BLACK;
 	int		hiliteBackCol=BACK_CYAN;
-	int		indicForeCol=FORE_BLACK;
-	int		indicBackCol=BACK_WHITE;
+	int		cursBackCol=BACK_GREEN;
+	int		cursForeCol=FORE_BLACK;
+	int		menuBackCol=BACK_GREEN;
+	int		menuForeCol=FORE_BLACK;
 	int		windowBackCol=BACK_BLACK;
 	int		windowForeCol=FORE_WHITE;
 	int		boxType=PLAINBOX;

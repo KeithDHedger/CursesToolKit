@@ -57,8 +57,8 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
-			setBackColour(this->colours.backCol);
-			setForeColour(this->colours.foreCol);
+			setBackColour(this->colours.menuBackCol);
+			setForeColour(this->colours.menuForeCol);
 			MOVETO(x,y);
 			printf("%s",this->menuNames[j]->menuName);
 			setBackColour(this->colours.windowBackCol);
@@ -126,8 +126,8 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 				setForeColour(this->colours.hiliteForeCol);
 				break;
 			case FLATNORM:
-				setBackColour(this->colours.backCol);
-				setForeColour(this->colours.foreCol);
+				setBackColour(this->colours.menuBackCol);
+				setForeColour(this->colours.menuForeCol);
 				break;
 			case BLANK:
 				setBackColour(this->colours.windowBackCol);

@@ -205,10 +205,10 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 		{
 			case '\t':
 			case '\n':
-				printf(INVSPACE);
+				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
 				break;
 			default:
-				printf(NORMAL INVERSEON "%c" INVERSEOFF,this->txtstrings[this->currentY].c_str()[this->currentX]);
+				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY].c_str()[this->currentX]);
 				break;
 			}
 }
