@@ -104,7 +104,7 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 					printf("  ");
 				}
 			MOVETO(x+1,y+h+1);
-			printf("%*s",w);
+			printf("%*s",w," ");
 		}
 
 	SETNORMCHARSET;
