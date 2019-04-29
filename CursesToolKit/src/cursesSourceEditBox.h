@@ -41,6 +41,7 @@ class CTK_cursesSourceEditBoxClass
 
 		CTK_mainAppClass			*mc=NULL;
 		std::vector<std::string>	txtstrings;
+		int							tabWidth=8;
 
 
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
@@ -70,7 +71,6 @@ class CTK_cursesSourceEditBoxClass
 		int							sourceX;
 		int							virtualX;
 		bool						runLoop=false;
-		int							tabWidth=8;
 
 		char						*txtBuffer=NULL;
 		std::string					blank;

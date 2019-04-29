@@ -128,6 +128,7 @@ void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int wi
 void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesSourceEditBoxClass	*edbox=new CTK_cursesSourceEditBoxClass();
+	edbox->tabWidth=this->tabWidth;
 	edbox->CTK_newBox(x,y,width,hite,isfilename,txt,selectable);
 	edbox->mc=mc;
 	edbox->CTK_setColours(this->colours);
@@ -654,3 +655,10 @@ void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windown
 	this->useAppWindow=true;
 }
 
+void CTK_mainAppClass::CTK_setTabWidth(int width)
+{
+	char	buffer[256];
+	this->tabWidth=width;
+	sprintf(buffer,"tabs -%i",width);
+	system(buffer);
+}

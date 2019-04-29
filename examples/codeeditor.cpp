@@ -77,7 +77,7 @@ void menuSelectCB(void *inst)
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
 								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,uddata);
-								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
+								//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 								mainApp->CTK_clearScreen();
@@ -95,7 +95,7 @@ void menuSelectCB(void *inst)
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
 										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
-										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
+									//	mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
 									}
@@ -242,6 +242,7 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_GREEN;
 
+	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
@@ -280,7 +281,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
-	mainApp->pages[0].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
+	//mainApp->pages[0].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 
 	mainApp->CTK_mainEventLoop();
 	delete mainApp;

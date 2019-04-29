@@ -47,6 +47,7 @@ class CTK_mainAppClass
 
 		int										maxCols;
 		int										maxRows;
+		int										tabWidth=8;
 		int										pageNumber=0;
 		std::vector<pageStruct>					pages;
 		CTK_cursesMenuClass						*menuBar=NULL;
@@ -62,6 +63,7 @@ class CTK_mainAppClass
 		int										CTK_nextPage(void);
 		void									CTK_setPageUserData(int pagenum,void *userdata);
 		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
+		void									CTK_setTabWidth(int width);
 
 		void									(*eventLoopCB)(void*,void*)=NULL;
 
