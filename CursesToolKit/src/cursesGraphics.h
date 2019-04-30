@@ -32,6 +32,8 @@ class CTK_cursesGraphicsClass
 		void	CTK_setColours(coloursStruct cs);
 		void	CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
 		void	CTK_printLine(const char *line,const char *blank,int width);
+		void	CTK_printLine(const char *line,int linelen,int boxwidth);
+
 	private:
 		coloursStruct	colours;
 };

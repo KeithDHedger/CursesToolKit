@@ -236,7 +236,8 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 		{
 			MOVETO(this->sx,this->sy+boxline);
 //			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->wid);
-			printf("%s\r%s",this->blank.c_str(),this->srcStrings[boxline+this->startLine].c_str());
+		//	printf("%s\r%s",this->blank.c_str(),this->srcStrings[boxline+this->startLine].c_str());
+			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->txtstrings[boxline+this->startLine].length(),this->wid);
 			boxline++;
 		}
 
@@ -300,6 +301,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 								{
 									case TERMKEY_SYM_BACKSPACE:
 									case TERMKEY_SYM_DEL:
+									//TODO//speed
 										if((this->currentY==0) && (this->currentX==0))
 											break;
 										if(this->currentX>0)
