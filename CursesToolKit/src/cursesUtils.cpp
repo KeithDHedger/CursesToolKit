@@ -51,7 +51,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
-std::vector<std::string> CTK_cursesUtilsClass::CTK_explode2(const std::string s,const char c,int width,int tw)
+std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw)
 {
 	std::string buff;
 	std::vector<std::string> v;
