@@ -109,12 +109,15 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
-			asprintf(&buffer,"%s\n",ptr);
-			while(cnt<strlen(buffer))
+		//	asprintf(&buffer,"%s\n",ptr);
+			//while(cnt<strlen(buffer))
+			while(cnt<strlen(ptr))
 				{
-					while((numchars<this->wid) && (cnt<strlen(buffer)))
+				//	while((numchars<this->wid) && (cnt<strlen(buffer)))
+					while((numchars<this->wid) && (cnt<strlen(ptr)))
 						{
-							cpybuf[startchr]=buffer[cnt++];
+						//	cpybuf[startchr]=buffer[cnt++];
+							cpybuf[startchr]=ptr[cnt++];
 							if(cpybuf[startchr]=='\t')
 								numchars+=this->tabWidth;
 							else
@@ -126,7 +129,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 					startchr=0;
 					numchars=0;
 				}
-			free(buffer);
+		//	free(buffer);
 		}
 }
 

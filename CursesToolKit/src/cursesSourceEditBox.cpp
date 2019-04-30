@@ -115,16 +115,22 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
 	for(int j=0;j<array.size();j++)
 		{
+			//array[j].push_back('\n');
+			//array[j]+='\n';
 			ptr=array[j].c_str();
 			int numchars=0;
 			int cnt=0;
 			startchr=0;
-			asprintf(&buffer,"%s\n",ptr);
-			while(cnt<strlen(buffer))
+//			asprintf(&buffer,"%s\n",ptr);
+//			asprintf(&buffer,"%s",ptr);
+//			while(cnt<strlen(buffer))
+			while(cnt<strlen(ptr))
 				{
-					while((numchars<this->wid) && (cnt<strlen(buffer)))
+				//	while((numchars<this->wid) && (cnt<strlen(buffer)))
+					while((numchars<this->wid) && (cnt<strlen(ptr)))
 						{
-							cpybuf[startchr]=buffer[cnt++];
+						//	cpybuf[startchr]=buffer[cnt++];
+							cpybuf[startchr]=ptr[cnt++];
 							if(cpybuf[startchr]=='\t')
 								numchars+=this->tabWidth;
 							else
@@ -136,7 +142,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 					startchr=0;
 					numchars=0;
 				}
-			free(buffer);
+			//free(buffer);
 		}
 
 	for(int j=0;j<this->txtstrings.size();j++)

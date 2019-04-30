@@ -39,6 +39,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 				buff+=s.c_str()[j];
 			else
 				{
+					buff+=c;
 					v.push_back(buff);
 					buff="";
 				}
