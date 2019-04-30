@@ -123,22 +123,9 @@ void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blank,i
 		}
 }
 
-void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int linelen,int boxwidth)
+void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int boxwidth)
 {
-//fprintf(stderr,"len=%i >>%s<<",strlen(line),line);
-//fprintf(stderr,"lastchr=%x\n",line[strlen(line)-5]);
-
 	printf("\e[s%*s\e[u%s",boxwidth," ",line);
-//	printf("%*s",boxwidth," ");
-	
-//	if(line[strlen(line)-2]=='\n')
-//		{
-//			printf("%s%*s",line,boxwidth-linelen,"X");
-//		}
-//	else
-//		{
-//			printf("%s%*s",line,40,"Y");
-//		}
 }
 
 
