@@ -51,6 +51,7 @@ class CTK_cursesUtilsClass
 		bool						isValidFile=false;
 		std::string					inFolder=".";
 
+		std::vector<std::string>	CTK_explode2(const std::string s,const char c,int width,int tw);
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="");
 		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel=false);

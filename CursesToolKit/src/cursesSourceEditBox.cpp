@@ -112,6 +112,9 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 //code
 	str=this->txtBuffer;
+#if 1
+	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explode2(str,'\n',this->wid-1,this->tabWidth);
+#else
 	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
 	for(int j=0;j<array.size();j++)
 		{
@@ -144,7 +147,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 				}
 			//free(buffer);
 		}
-
+#endif
 	for(int j=0;j<this->txtstrings.size();j++)
 		{
 			if(this->txtstrings[j].c_str()[this->txtstrings[j].length()-1]=='\n')

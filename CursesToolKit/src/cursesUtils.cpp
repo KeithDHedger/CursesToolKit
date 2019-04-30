@@ -51,6 +51,45 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
+std::vector<std::string> CTK_cursesUtilsClass::CTK_explode2(const std::string s,const char c,int width,int tw)
+{
+	std::string buff;
+	std::vector<std::string> v;
+	int	numchars=0;
+	for(unsigned int j=0;j<s.length();j++)
+		{
+			if(s.c_str()[j]=='\t')
+				numchars+=tw;
+			else
+				numchars++;
+
+			if(numchars>width)
+				{
+					numchars=0;
+					v.push_back(buff);
+					buff="";
+				}
+
+			if(s.c_str()[j]!=c)
+				{
+					buff+=s.c_str()[j];
+				}
+			else
+				{
+					buff+=c;
+					v.push_back(buff);
+					numchars=0;
+					buff="";
+				}
+		}
+
+	if(buff!="")
+		v.push_back(buff);
+
+	return(v);
+}
+
+
 static void listSelectCB(void *inst,void *ud)
 {
 	char						*buffer=(char*)alloca(PATH_MAX);
