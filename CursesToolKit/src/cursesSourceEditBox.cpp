@@ -19,6 +19,8 @@
  */
  
 #include "cursesSourceEditBox.h"
+#include <termios.h>
+#include <unistd.h>
 
 CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 {
@@ -414,6 +416,11 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 						}
 				}
 			this->CTK_drawBox(false,true);
+			int stdin_copy = dup(STDIN_FILENO);
+        /* remove garbage from stdin */
+        tcdrain(stdin_copy);
+        tcflush(stdin_copy, TCIFLUSH);
+        close(stdin_copy);
 		}
 	this->editStatus="Normal";
 }
