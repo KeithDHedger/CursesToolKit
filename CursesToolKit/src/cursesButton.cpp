@@ -39,8 +39,6 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 		}
 	else
 		{
-//			setBackColour(this->colours.backCol,this->colours.use256Colours);
-//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 			setBackColour(BACK_BLUE,this->colours.use256Colours);
 			setForeColour(FORE_WHITE,this->colours.use256Colours);
 		}

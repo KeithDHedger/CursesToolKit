@@ -58,32 +58,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 
 	cpybuf[0]=0;
 	str=this->text;
-	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-	for(int j=0;j<array.size();j++)
-		{
-			ptr=array[j].c_str();
-			int numchars=0;
-			int cnt=0;
-			startchr=0;
-			asprintf(&buffer,"%s\n",ptr);
-			while(cnt<strlen(buffer))
-				{
-					while((numchars<this->wid) && (cnt<strlen(buffer)))
-						{
-							cpybuf[startchr]=buffer[cnt++];
-							if(cpybuf[startchr]=='\t')
-								numchars+=8;
-							else
-								numchars++;
-							startchr++;
-						}
-					cpybuf[startchr]=0;
-					this->txtstrings.push_back(cpybuf);
-					startchr=0;
-					numchars=0;
-				}
-			free(buffer);
-		}
+	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
@@ -109,21 +84,12 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
-	MOVETO(this->sx,this->sy);
-//	for(int j=0;j<this->hite;j++)
-//		{
-//			MOVETO(this->sx,this->sy+j);
-//			printf("%s",this->blank.c_str());
-//		}
-
 	while(j<this->hite)
 		{
 			if(j<this->txtstrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-//printf("%s%s",this->listItems[j+this->listStart]->label.c_str(),this->blank.substr(0,wid-this->listItems[j+this->listStart]->label.length()).c_str());
-				//	printf("%s%s",this->txtstrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()-4).c_str());
-					if(this->txtstrings[j+this->startLine].c_str()[this->txtstrings[j+this->startLine].length()-1]=='\n')
+					if(this->txtstrings[j+this->startLine].back()=='\n')
 						printf("%s%s",this->txtstrings[j+this->startLine].substr(0,this->txtstrings[j+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()+1).c_str());
 					else
 						printf("%s%s",this->txtstrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()).c_str());

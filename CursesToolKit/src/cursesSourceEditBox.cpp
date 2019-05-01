@@ -112,45 +112,11 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 //code
 	str=this->txtBuffer;
-#if 1
 	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
-#else
-	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-	for(int j=0;j<array.size();j++)
-		{
-			//array[j].push_back('\n');
-			//array[j]+='\n';
-			ptr=array[j].c_str();
-			int numchars=0;
-			int cnt=0;
-			startchr=0;
-//			asprintf(&buffer,"%s\n",ptr);
-//			asprintf(&buffer,"%s",ptr);
-//			while(cnt<strlen(buffer))
-			while(cnt<strlen(ptr))
-				{
-				//	while((numchars<this->wid) && (cnt<strlen(buffer)))
-					while((numchars<this->wid) && (cnt<strlen(ptr)))
-						{
-						//	cpybuf[startchr]=buffer[cnt++];
-							cpybuf[startchr]=ptr[cnt++];
-							if(cpybuf[startchr]=='\t')
-								numchars+=this->tabWidth;
-							else
-								numchars++;
-							startchr++;
-						}
-					cpybuf[startchr]=0;
-					this->txtstrings.push_back(cpybuf);
-					startchr=0;
-					numchars=0;
-				}
-			//free(buffer);
-		}
-#endif
+
 	for(int j=0;j<this->txtstrings.size();j++)
 		{
-			if(this->txtstrings[j].c_str()[this->txtstrings[j].length()-1]=='\n')
+			if(this->txtstrings[j].back()=='\n')
 				inpstream << this->txtstrings[j];
 			else
 				inpstream << this->txtstrings[j] << '\n';
@@ -184,15 +150,15 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 {
 	this->sourceX=0;
 
-	while(this->srcStrings[this->currentY].c_str()[this->sourceX]==0x1b)
-		while(this->srcStrings[this->currentY].c_str()[this->sourceX++]!='m');
+	while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
+		while(this->srcStrings[this->currentY][this->sourceX++]!='m');
 
 	for(int j=0;j<this->currentX;j++)
 		{
-			while(this->srcStrings[this->currentY].c_str()[this->sourceX]==0x1b)
-				while(this->srcStrings[this->currentY].c_str()[this->sourceX++]!='m');
+			while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
+				while(this->srcStrings[this->currentY][this->sourceX++]!='m');
 
-			switch(this->txtstrings[this->currentY].c_str()[j])
+			switch(this->txtstrings[this->currentY][j])
 				{
 					case '\t':
 						this->sourceX++;
@@ -203,23 +169,23 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 				}
 		}
 
-	while(this->srcStrings[this->currentY].c_str()[this->sourceX]==0x1b)
+	while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
 		{
-			while(this->srcStrings[this->currentY].c_str()[this->sourceX]!='m')
+			while(this->srcStrings[this->currentY][this->sourceX]!='m')
 				this->sourceX++;
 			this->sourceX++;
 		}
 
 	MOVETO(this->sx,this->sy+this->currentY-this->startLine);
 	printf("%s",this->srcStrings[this->currentY].substr(0,this->sourceX).c_str());
-	switch(this->txtstrings[this->currentY].c_str()[this->currentX])
+	switch(this->txtstrings[this->currentY][this->currentX])
 		{
 			case '\t':
 			case '\n':
 				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
 				break;
 			default:
-				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY].c_str()[this->currentX]);
+				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY][this->currentX]);
 				break;
 			}
 }
@@ -246,7 +212,6 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
 			MOVETO(this->sx,this->sy+boxline);
-		//	printf("%s\r%s",this->blank.c_str(),this->srcStrings[boxline+this->startLine].c_str());
 			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->wid);
 			boxline++;
 		}

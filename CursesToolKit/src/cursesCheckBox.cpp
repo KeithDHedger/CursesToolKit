@@ -41,8 +41,6 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 		}
 	else
 		{
-//			setBackColour(this->colours.backCol,this->colours.use256Colours);
-//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 			setBackColour(BACK_BLUE,this->colours.use256Colours);
 			setForeColour(FORE_WHITE,this->colours.use256Colours);
 		}

@@ -29,6 +29,8 @@ class CTK_cursesTextBoxClass
 		CTK_cursesTextBoxClass();
 		~CTK_cursesTextBoxClass();
 
+		int							tabWidth=8;
+
 		void						CTK_newBox(int x,int y,int width,int hite,const char *txt="",bool selectable=true);
 		void						CTK_updateText(const char *txt);
 		void						CTK_drawBox(bool hilite=false);

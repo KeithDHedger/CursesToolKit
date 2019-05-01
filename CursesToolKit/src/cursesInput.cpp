@@ -64,18 +64,6 @@ void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt
 	this->hite=h;
 
 	this->updateText(txt);
-//	this->text=txt;
-//	if(this->text.length()>this->wid)
-//		{
-//			this->startChar=this->text.length()-this->wid;
-//			this->curs=this->wid;
-//		}
-//	else
-//		{
-//			this->startChar=0;
-//			this->curs=this->text.length();
-//		}
-//	this->blank.insert(this->blank.begin(),w,' ');
 }
 
 void CTK_cursesInputClass::CTK_drawInput(bool hilite)

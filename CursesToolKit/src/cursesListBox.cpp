@@ -65,13 +65,11 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 				}
 
 			MOVETO(this->sx,this->sy+j);
-			//printf("%s",this->blank.c_str());
 
 			if(j<this->listItems.size())
 				{
 					MOVETO(this->sx,this->sy+j);
 					printf("%s%s",this->listItems[j+this->listStart]->label.c_str(),this->blank.substr(0,wid-this->listItems[j+this->listStart]->label.length()).c_str());
-					//printf("%s",this->blank.c_str());
 				}
 			else
 				printf("%s",this->blank.c_str());

@@ -1,4 +1,6 @@
 0.1.2
+Major code clean.
+Speed tweaks.
 Various UI fixes.
 Set cursor colour in coloursStruct.
 Fixed cursor under console.

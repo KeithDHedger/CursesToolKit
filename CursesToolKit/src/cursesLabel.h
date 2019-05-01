@@ -29,6 +29,8 @@ class CTK_cursesLabelClass
 		CTK_cursesLabelClass();
 		~CTK_cursesLabelClass();
 
+		int							tabWidth=8;
+
 		void						CTK_newLabel(int x,int y,int width,int hite,const char *txt="");
 		void						CTK_updateText(const char *txt);
 		void						CTK_drawLabel(void);

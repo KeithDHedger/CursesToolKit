@@ -29,9 +29,9 @@
 #include <srchilite/lineranges.h>
 #include <srchilite/sourcehighlight.h>
 #include <srchilite/languageinfer.h>
-#include <iostream>     // std::ios, std::istream, std::cout
-#include <fstream>      // std::filebuf
-#include <sstream>      // std::stringstream
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 class CTK_cursesSourceEditBoxClass
 {

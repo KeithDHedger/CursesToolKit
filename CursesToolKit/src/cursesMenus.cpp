@@ -28,7 +28,6 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 			delete this->menuNames[j];
 		}
 	this->menuNames.clear();
-	//delete this->menuNames;
 	termkey_destroy(this->tk);
 }
 

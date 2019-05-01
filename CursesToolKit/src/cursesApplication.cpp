@@ -83,6 +83,7 @@ void CTK_mainAppClass::CTK_addNewMenuBar(void)
 void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
+	txtbox->tabWidth=this->tabWidth;
 	txtbox->CTK_newBox(x,y,width,hite,txt,selectable);
 	txtbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
@@ -139,6 +140,7 @@ void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,
 void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
 {
 	CTK_cursesLabelClass	*label=new CTK_cursesLabelClass();
+	label->tabWidth=this->tabWidth;
 	label->CTK_newLabel(x,y,width,hite,txt);
 	label->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].labels.push_back(label);
@@ -216,10 +218,8 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			if(app->menuBar!=NULL)
 				yadj=1;
 			setBackColour(BACK_BLUE,false);
-//FLICKER//
+//TODO//FLICKER//
 			printf("\e[2J\e[H");
-//printf("\e[1;1H\e[0J");
-//printf("\e[1;1H");
 			if(app->windowName!=NULL)
 				cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
 			else
@@ -423,10 +423,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 	int				tab=1;
 
 	this->CTK_clearScreen();
-//	setBackColour(this->colours.windowBackCol,this->colours.use256Colours);
-//	setForeColour(this->colours.windowForeCol,this->colours.use256Colours);
-
-//printf("\e[2J\e[H");
 	this->CTK_updateScreen(this,NULL);
 	this->useAppWindow=false;
 	SETHIDECURS;
@@ -579,14 +575,6 @@ void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
-//
-//	ps.buttons.clear();
-//	ps.textBoxes.clear();
-//	ps.inputs.clear();
-//	ps.lists.clear();
-//	ps.checkBoxes.clear();
-//	ps.editBoxes.clear();
-//	ps.labels.clear();
 
 	this->pages.push_back(ps);
 	this->pageNumber=this->pages.size()-1;

@@ -35,8 +35,8 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 
 	for(unsigned int j=0;j<s.length();j++)
 		{
-			if(s.c_str()[j]!=c)
-				buff+=s.c_str()[j];
+			if(s[j]!=c)
+				buff+=s[j];
 			else
 				{
 					buff+=c;
@@ -58,7 +58,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 	int	numchars=0;
 	for(unsigned int j=0;j<s.length();j++)
 		{
-			if(s.c_str()[j]=='\t')
+			if(s[j]=='\t')
 				numchars+=tw;
 			else
 				numchars++;
@@ -70,9 +70,9 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 					buff="";
 				}
 
-			if(s.c_str()[j]!=c)
+			if(s[j]!=c)
 				{
-					buff+=s.c_str()[j];
+					buff+=s[j];
 				}
 			else
 				{

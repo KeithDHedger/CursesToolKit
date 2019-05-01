@@ -1,6 +1,8 @@
 #if 0
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
+#may need to run this ONCE for some terms.
+#stty columns $(($(tput cols)-2))
 
 g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o codeeditor ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./codeeditor "$@"
@@ -77,7 +79,6 @@ void menuSelectCB(void *inst)
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
 								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,uddata);
-								//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 								mainApp->CTK_clearScreen();
@@ -95,7 +96,6 @@ void menuSelectCB(void *inst)
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
 										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
-									//	mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setTabWidth(TABWIDTH);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
 									}

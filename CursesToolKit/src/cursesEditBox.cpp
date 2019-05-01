@@ -102,35 +102,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		}
 
 	str=this->txtBuffer;
-	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-	for(int j=0;j<array.size();j++)
-		{
-			ptr=array[j].c_str();
-			int numchars=0;
-			int cnt=0;
-			startchr=0;
-		//	asprintf(&buffer,"%s\n",ptr);
-			//while(cnt<strlen(buffer))
-			while(cnt<strlen(ptr))
-				{
-				//	while((numchars<this->wid) && (cnt<strlen(buffer)))
-					while((numchars<this->wid) && (cnt<strlen(ptr)))
-						{
-						//	cpybuf[startchr]=buffer[cnt++];
-							cpybuf[startchr]=ptr[cnt++];
-							if(cpybuf[startchr]=='\t')
-								numchars+=this->tabWidth;
-							else
-								numchars++;
-							startchr++;
-						}
-					cpybuf[startchr]=0;
-					this->txtstrings.push_back(cpybuf);
-					startchr=0;
-					numchars=0;
-				}
-		//	free(buffer);
-		}
+	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
@@ -155,7 +127,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
 			MOVETO(this->sx,this->sy+boxline);
-//			this->gc->CTK_printLine(this->txtstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->wid);
 			this->gc->CTK_printLine(this->txtstrings[boxline+this->startLine].c_str(),this->wid);
 			boxline++;
 		}
@@ -173,14 +144,14 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	MOVETO(this->sx,this->sy+this->currentY-this->startLine);
 	printf("%s",this->txtstrings[this->currentY].substr(0,this->currentX).c_str());
-	switch(this->txtstrings[this->currentY].c_str()[this->currentX])
+	switch(this->txtstrings[this->currentY][this->currentX])
 		{
 			case '\t':
 			case '\n':
 				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
 				break;
 			default:
-				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY].c_str()[this->currentX]);
+				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY][this->currentX]);
 				break;
 			}
 	MOVETO(this->sx,this->sy+boxline);
@@ -458,4 +429,3 @@ void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 	sprintf(buffer,"tabs -%i",width);
 	system(buffer);
 }
-

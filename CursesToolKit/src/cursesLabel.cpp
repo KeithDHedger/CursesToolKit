@@ -56,33 +56,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	this->text=txt;
 
 	str=this->text;
-	array=cu.CTK_cursesUtilsClass::CTK_explode(str,'\n');
-
-	for(int j=0;j<array.size();j++)
-		{
-			ptr=array[j].c_str();
-			int numchars=0;
-			int cnt=0;
-			startchr=0;
-			asprintf(&buffer,"%s\n",ptr);
-			while(cnt<strlen(buffer))
-				{
-					while((numchars<this->wid) && (cnt<strlen(buffer)))
-						{
-							cpybuf[startchr]=buffer[cnt++];
-							if(cpybuf[startchr]=='\t')
-								numchars+=8;
-							else
-								numchars++;
-							startchr++;
-						}
-					cpybuf[startchr]=0;
-					this->txtstrings.push_back(cpybuf);
-					startchr=0;
-					numchars=0;
-				}
-			free(buffer);
-		}
+	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesLabelClass::CTK_drawLabel(void)

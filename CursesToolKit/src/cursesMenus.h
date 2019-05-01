@@ -56,7 +56,7 @@ class CTK_cursesMenuClass
 		void						CTK_addMenuToBar(const char *name);
 		void						CTK_addMenuItem(int menunum,const char *name);
 		void						CTK_clearMenu(int menunum,bool full=false);
-		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//togo private
+		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//TODO// private
 		bool						CTK_doShortCutKey(char key,int menunum);
 		void						CTK_setColours(coloursStruct cs);
 
