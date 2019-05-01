@@ -71,6 +71,7 @@ class CTK_cursesSourceEditBoxClass
 		int							sourceX;
 		int							virtualX;
 		bool						runLoop=false;
+		bool						isDirty=false;
 
 		char						*txtBuffer=NULL;
 		std::string					blank;
