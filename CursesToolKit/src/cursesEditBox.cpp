@@ -314,6 +314,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 						}
 				}
 			this->CTK_drawBox(false,true);
+			this->mc->CTK_emptyIPBuffer();
 		}
 	this->editStatus="Normal";
 }

@@ -651,3 +651,12 @@ void CTK_mainAppClass::CTK_setTabWidth(int width)
 	sprintf(buffer,"tabs -%i",width);
 	system(buffer);
 }
+
+void CTK_mainAppClass::CTK_emptyIPBuffer(void)
+{
+	int stdincopy=dup(STDIN_FILENO);
+	tcdrain(stdincopy);
+	tcflush(stdincopy,TCIFLUSH);
+	close(stdincopy);
+}
+

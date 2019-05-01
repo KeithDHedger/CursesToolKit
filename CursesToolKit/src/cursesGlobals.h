@@ -47,9 +47,11 @@ class CTK_cursesSourceEditBoxClass;
 #include <string.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <termios.h>
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
+#include "cursesUtils.h"
 #include "cursesGraphics.h"
 
 #include "cursesButton.h"
@@ -63,6 +65,5 @@ class CTK_cursesSourceEditBoxClass;
 #include "cursesSourceEditBox.h"
 
 #include "cursesApplication.h"
-#include "cursesUtils.h"
 
 #endif

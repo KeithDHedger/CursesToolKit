@@ -1,4 +1,5 @@
 0.1.2
+Flush input events on slow terminal.
 Major code clean.
 Speed tweaks.
 Various UI fixes.

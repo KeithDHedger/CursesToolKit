@@ -90,6 +90,7 @@ class CTK_mainAppClass
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
+		void									CTK_emptyIPBuffer(void);
 
 		int										x;
 		int										y;
