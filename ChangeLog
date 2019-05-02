@@ -1,4 +1,6 @@
 0.1.2
+Added dirty flag to edit box.
+Added dirty flag to src box.
 Speed tweaks.
 Flush input events on slow terminal.
 Major code clean.

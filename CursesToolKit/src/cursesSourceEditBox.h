@@ -42,7 +42,7 @@ class CTK_cursesSourceEditBoxClass
 		CTK_mainAppClass			*mc=NULL;
 		std::vector<std::string>	txtstrings;
 		int							tabWidth=8;
-
+		bool						isDirty=false;
 
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
@@ -71,7 +71,7 @@ class CTK_cursesSourceEditBoxClass
 		int							sourceX;
 		int							virtualX;
 		bool						runLoop=false;
-		bool						isDirty=false;
+		bool						needsRefresh=false;
 
 		char						*txtBuffer=NULL;
 		std::string					blank;

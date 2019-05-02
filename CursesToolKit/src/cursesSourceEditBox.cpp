@@ -267,25 +267,25 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 
 						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
 						this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
-						//this->srcStrings[this->currentY].insert(this->sourceX,1,key.code.codepoint);
-						this->currentX++;
 						this->isDirty=true;
+						this->currentX++;
+						this->needsRefresh=true;
 						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
 							switch(key.code.sym)
 								{
-									case TERMKEY_SYM_BACKSPACE:
+									case TERMKEY_SYM_BACKSPACE://TODO//speed
 									case TERMKEY_SYM_DEL:
-									//TODO//speed
 										if((this->currentY==0) && (this->currentX==0))
 											break;
+										this->isDirty=true;
 										if(this->currentX>0)
 											{
 												this->txtstrings[this->currentY].erase(this->currentX-1,1);
 												this->currentX--;
 												this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
-												this->isDirty=true;
+												this->needsRefresh=true;
 												break;
 											}				
 
@@ -299,20 +299,22 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 												this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
 												this->currentY--;
 												this->updateBuffer();
-												this->isDirty=true;
+												this->needsRefresh=true;
 											}
 										break;
 									case  TERMKEY_SYM_DELETE:
-									{
-										char	hold=this->txtstrings[this->currentY][this->currentX];
-										this->txtstrings[this->currentY].erase(this->currentX,1);
-										this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
-										this->isDirty=true;
-										if(hold=='\n')
-											this->updateBuffer();
-										}
+										{
+											char	hold=this->txtstrings[this->currentY][this->currentX];
+											this->isDirty=true;
+											this->txtstrings[this->currentY].erase(this->currentX,1);
+											this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
+											this->needsRefresh=true;
+											if(hold=='\n')
+												this->updateBuffer();
+											}
 										break;
 									case TERMKEY_SYM_ENTER:
+										this->isDirty=true;
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
 										this->currentX=0;
 										this->currentY++;
@@ -323,6 +325,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										this->updateBuffer();
 										break;
 									case TERMKEY_SYM_TAB:
+										this->isDirty=true;
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\t');
 										this->currentX++;
 										this->updateBuffer();
@@ -341,9 +344,8 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
-										//this->updateBuffer();
 									case TERMKEY_SYM_UP:
-										if(this->isDirty==true)
+										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY-=lineadd;
 										if(currentY<this->startLine)
@@ -358,9 +360,8 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
-									//	this->updateBuffer();
 									case TERMKEY_SYM_DOWN:
-										if(this->isDirty==true)
+										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY+=lineadd;
 										if(this->currentY>=this->txtstrings.size())
@@ -414,7 +415,7 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 		buff.append(this->txtstrings[j]);
 
 	this->CTK_updateText(buff.c_str(),false,false);
-	this->isDirty=false;
+	this->needsRefresh=false;
 }
 
 const char *CTK_cursesSourceEditBoxClass::CTK_getBuffer(void)

@@ -194,6 +194,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 
 						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
 						this->currentX++;
+						this->isDirty=true;
 						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
@@ -203,6 +204,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_DEL:
 										if((this->currentY==0) && (this->currentX==0))
 											break;
+										this->isDirty=true;
 										if(this->currentX>0)
 											{
 												this->txtstrings[this->currentY].erase(this->currentX-1,1);
@@ -229,6 +231,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 									case  TERMKEY_SYM_DELETE:
 										this->txtstrings[this->currentY].erase(this->currentX,1);
 										this->updateBuffer();
+										this->isDirty=true;
 										break;
 									case TERMKEY_SYM_ENTER:
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
@@ -239,11 +242,13 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 											this->startLine++;
 
 										this->updateBuffer();
+										this->isDirty=true;
 										break;
 									case TERMKEY_SYM_TAB:
 										this->txtstrings[this->currentY].insert(this->currentX,1,'\t');
 										this->currentX++;
 										this->updateBuffer();
+										this->isDirty=true;
 										break;
 									case TERMKEY_SYM_ESCAPE:
 										this->runLoop=false;

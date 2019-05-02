@@ -27,6 +27,7 @@
 #define YESBUTTON 1<<0
 #define NOBUTTON 1<<1
 #define CANCELBUTTON 1<<2
+#define ALLBUTTONS (YESBUTTON) + (NOBUTTON) + (CANCELBUTTON)
 
 struct fileUDStruct
 {

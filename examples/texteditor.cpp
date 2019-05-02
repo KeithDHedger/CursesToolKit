@@ -104,6 +104,7 @@ void menuSelectCB(void *inst)
 									{
 										fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
 										fclose(f);
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=false;
 									}
 							}
 							break;
@@ -124,6 +125,7 @@ void menuSelectCB(void *inst)
 												freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
 												mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(buffer));
 												fclose(f);
+												mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=false;
 												rebuildTabMenu();
 											}
 									}
@@ -131,6 +133,12 @@ void menuSelectCB(void *inst)
 							}
 							break;
 						case CLOSEITEM:
+							if(mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty==true)
+								{
+									CTK_cursesUtilsClass	cu;
+									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
+									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+								}
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 							freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
 							mainApp->CTK_removePage(mainApp->pageNumber);
@@ -140,6 +148,12 @@ void menuSelectCB(void *inst)
 								rebuildTabMenu();
 							break;
 						case QUITITEM:
+							if(mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty==true)
+								{
+									CTK_cursesUtilsClass	cu;
+									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
+									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+								}
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 							mainApp->runEventLoop=false;
 							break;
@@ -157,13 +171,16 @@ void menuSelectCB(void *inst)
 						case CUTWORD:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentWord();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
 							break;
 						case CUTLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentLine();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
 							break;
 						case PASTE:
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_insertText(clip.c_str());
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
 							break;
 					}
 				break;
