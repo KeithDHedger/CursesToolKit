@@ -105,6 +105,8 @@ struct coloursStruct
 	int		cursForeCol=FORE_BLACK;
 	int		menuBackCol=BACK_GREEN;
 	int		menuForeCol=FORE_BLACK;
+	int		lineBackCol=BACK_BLACK;
+	int		lineForeCol=FORE_YELLOW;
 	int		windowBackCol=BACK_BLACK;
 	int		windowForeCol=FORE_WHITE;
 	int		boxType=PLAINBOX;

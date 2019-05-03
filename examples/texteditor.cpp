@@ -20,6 +20,7 @@ exit $retval
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
+int					windowCols=mainApp->maxCols;
 
 #define TABWIDTH 4
 
@@ -74,7 +75,7 @@ void menuSelectCB(void *inst)
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
 								mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,false,"\n");
+								mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows,false,"\n");
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 							}
@@ -90,7 +91,7 @@ void menuSelectCB(void *inst)
 									{
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
+										mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows,true,cu.stringResult.c_str());
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
 									}
@@ -288,7 +289,7 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
-	mainApp->CTK_addNewEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,"../ChangeLog");
+	mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows,true,"../ChangeLog");
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 

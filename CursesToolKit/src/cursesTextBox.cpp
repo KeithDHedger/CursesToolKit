@@ -84,7 +84,7 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 		}
 
-	while(j<this->hite)
+	while(j<this->hite)//TODO//
 		{
 			if(j<this->txtstrings.size())
 				{

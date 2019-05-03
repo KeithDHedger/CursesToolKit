@@ -58,12 +58,15 @@ class CTK_cursesSourceEditBoxClass
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setTabWidth(int width);
+		void						CTK_setShowLineNumbers(bool show);
 
 	private:
 		int							sx;
 		int							sy;
 		int							wid;
 		int							hite;
+		int							lineReserve=0;
+		bool						showLineNumbers=false;
 		bool						canSelect=true;
 		int							startLine=0;
 		int							currentX;
@@ -83,6 +86,9 @@ class CTK_cursesSourceEditBoxClass
 
 		std::string					filePath;
 		std::vector<std::string>	srcStrings;
+		int							startLineNumber=1;
+		std::vector<int>			lineNumbers;
+
 		void						updateBuffer(void);
 		void						adjustXY(void);
 		void						setScreenX(void);

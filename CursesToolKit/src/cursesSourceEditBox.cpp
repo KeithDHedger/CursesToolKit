@@ -113,13 +113,26 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 //code
 	str=this->txtBuffer;
 	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
-
+	bool	flag=true;
+	this->lineNumbers.clear();
+	this->startLineNumber=1;
 	for(int j=0;j<this->txtstrings.size();j++)
 		{
-			if(this->txtstrings[j].back()=='\n')
-				inpstream << this->txtstrings[j];
+			if(flag==true)
+				this->lineNumbers.push_back(this->startLineNumber++);
 			else
-				inpstream << this->txtstrings[j] << '\n';
+				this->lineNumbers.push_back(-1);
+
+			if(this->txtstrings[j].back()=='\n')
+				{
+					inpstream << this->txtstrings[j];
+					flag=true;
+				}
+			else
+				{
+					inpstream << this->txtstrings[j] << '\n';
+					flag=false;
+				}
 		}
 	inpstream << std::endl; 
 
@@ -175,7 +188,7 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 			this->sourceX++;
 		}
 
-	MOVETO(this->sx,this->sy+this->currentY-this->startLine);
+	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 	printf("%s",this->srcStrings[this->currentY].substr(0,this->sourceX).c_str());
 	switch(this->txtstrings[this->currentY][this->currentX])
 		{
@@ -199,9 +212,6 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
-	setBackColour(this->colours.backCol,this->colours.use256Colours);
-	setForeColour(this->colours.foreCol,this->colours.use256Colours);
-
 	if((this->txtstrings.size()-1)-this->startLine<this->hite)
 		this->startLine=this->txtstrings.size()-this->hite;
 
@@ -210,8 +220,20 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
 		{
-			MOVETO(this->sx,this->sy+boxline);
-			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->wid);
+			if(this->showLineNumbers==true)
+				{
+					MOVETO(this->sx,this->sy+boxline);
+					setBackColour(this->colours.lineBackCol,this->colours.use256Colours);
+					setForeColour(this->colours.lineForeCol,this->colours.use256Colours);
+					if(this->lineNumbers[boxline+this->startLine]!=-1)
+						printf("%.*i",4,this->lineNumbers[boxline+this->startLine]);
+					else
+						printf("%*s",4," ");
+				}
+
+			setBackColour(this->colours.backCol,this->colours.use256Colours);
+			setForeColour(this->colours.foreCol,this->colours.use256Colours);
+			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid);
 			boxline++;
 		}
 
@@ -530,4 +552,15 @@ void CTK_cursesSourceEditBoxClass::CTK_setTabWidth(int width)
 	sprintf(buffer,"tabs -%i",width);
 	system(buffer);
 }
+
+void CTK_cursesSourceEditBoxClass::CTK_setShowLineNumbers(bool show)
+{
+	this->showLineNumbers=show;
+	if(show==true)
+		this->lineReserve=5;
+	else
+		this->lineReserve=0;
+}
+
+
 

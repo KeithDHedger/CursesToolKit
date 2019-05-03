@@ -128,6 +128,17 @@ void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int boxwidth)
 	printf("\e[s%*s\e[u%s",boxwidth," ",line);
 }
 
+void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int sx,int sy,int boxwidth)
+{
+//	fflush(NULL);
+//	printf("\e[%i;%iH%*s\e[%i;%iH%s",sx,sy,boxwidth," ",sx,sy,line);
+//	fflush(NULL);
+//return;
+	MOVETO(sx,sy);
+	printf("%*s",boxwidth," ");
 
+	MOVETO(sx,sy);
+	printf("%s",line);
+}
 
 
