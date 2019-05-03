@@ -48,12 +48,15 @@ class CTK_cursesEditBoxClass
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setTabWidth(int width);
+		void						CTK_setShowLineNumbers(bool show);
 
 	private:
 		int							sx;
 		int							sy;
 		int							wid;
 		int							hite;
+		int							lineReserve=0;
+		bool						showLineNumbers=false;
 		bool						canSelect=true;
 		int							startLine=0;
 		int							currentX;
@@ -63,6 +66,8 @@ class CTK_cursesEditBoxClass
 		char						*txtBuffer=NULL;
 		std::string					blank;
 		std::string					status;
+		int							startLineNumber=1;
+		std::vector<int>			lineNumbers;
 		const char					*editStatus="Normal";
 		TermKey						*tk;
 		coloursStruct				colours;
