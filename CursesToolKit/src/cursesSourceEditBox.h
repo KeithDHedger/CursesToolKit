@@ -88,7 +88,7 @@ class CTK_cursesSourceEditBoxClass
 		std::vector<std::string>	srcStrings;
 		int							startLineNumber=1;
 		std::vector<int>			lineNumbers;
-
+		bool						fullUpdate=true;
 		void						updateBuffer(void);
 		void						adjustXY(void);
 		void						setScreenX(void);

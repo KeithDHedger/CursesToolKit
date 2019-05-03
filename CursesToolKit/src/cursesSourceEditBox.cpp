@@ -211,7 +211,8 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
-
+if(this->fullUpdate==true)
+{
 	if((this->txtstrings.size()-1)-this->startLine<this->hite)
 		this->startLine=this->txtstrings.size()-this->hite;
 
@@ -236,7 +237,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid);
 			boxline++;
 		}
-
+}
 	if(hilite==true)
 		{
 			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -257,14 +258,14 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 	TermKeyResult	ret;
 	TermKeyKey		key;
 	int				lineadd=1;
-
+	bool			scrolled=true;
 	char			tstr[3]={'_',0,0};
 
 	this->editStatus="Edit Mode";
 	this->CTK_drawBox(false,true);
 	fflush(NULL);
 	this->runLoop=true;
-
+	int oldstartline=this->startLine;
 	while(this->runLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
@@ -367,6 +368,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
+										oldstartline=this->startLine;
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY-=lineadd;
@@ -379,10 +381,15 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 											}
 										if(this->currentX>=this->txtstrings[this->currentY].length())
 											this->currentX=this->txtstrings[this->currentY].length()-1;
+										if(this->startLine!=oldstartline)
+											scrolled=true;
+										else
+											scrolled=false;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
+										oldstartline=this->startLine;
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY+=lineadd;
@@ -392,6 +399,10 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 											this->startLine+=lineadd;
 										if(this->currentX>=this->txtstrings[this->currentY].length())
 											this->currentX=this->txtstrings[this->currentY].length()-1;
+										if(this->startLine!=oldstartline)
+											scrolled=true;
+										else
+											scrolled=false;
 										break;
 									case TERMKEY_SYM_LEFT:
 										this->currentX--;
@@ -422,7 +433,11 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 								}
 						}
 				}
+			if(scrolled==true)
+				this->fullUpdate=true;
 			this->CTK_drawBox(false,true);
+			//else
+			//	this->setScreenX();
 			this->mc->CTK_emptyIPBuffer();
 		}
 	this->editStatus="Normal";
