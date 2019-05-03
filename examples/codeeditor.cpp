@@ -295,7 +295,7 @@ int main(int argc, char **argv)
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLACK;
 	mainApp->CTK_setColours(cs);
-	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,80,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(true);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");

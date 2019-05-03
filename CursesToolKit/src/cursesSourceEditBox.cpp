@@ -112,7 +112,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 //code
 	str=this->txtBuffer;
-	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1-this->lineReserve,this->tabWidth);
 	bool	flag=true;
 	this->lineNumbers.clear();
 	this->startLineNumber=1;
@@ -232,7 +232,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 			setBackColour(this->colours.backCol,this->colours.use256Colours);
 			setForeColour(this->colours.foreCol,this->colours.use256Colours);
-			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid);
+			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
@@ -569,6 +569,7 @@ void CTK_cursesSourceEditBoxClass::CTK_setShowLineNumbers(bool show)
 		this->lineReserve=5;
 	else
 		this->lineReserve=0;
+	this->updateBuffer();
 }
 
 
