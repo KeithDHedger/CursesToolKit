@@ -435,6 +435,8 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 				}
 			if(scrolled==true)
 				this->fullUpdate=true;
+			else
+				this->fullUpdate=false;
 			this->CTK_drawBox(false,true);
 			//else
 			//	this->setScreenX();
