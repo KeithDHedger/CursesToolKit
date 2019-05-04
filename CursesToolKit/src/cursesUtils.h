@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesGlobals.h"
+//#include "cursesGlobals.h"
 
 #ifndef _CURSESUTILS_
 #define _CURSESUTILS_
@@ -29,17 +29,18 @@
 #define CANCELBUTTON 1<<2
 #define ALLBUTTONS (YESBUTTON) + (NOBUTTON) + (CANCELBUTTON)
 
-struct fileUDStruct
-{
-	CTK_cursesUtilsClass	*inst=NULL;
-	LFSTK_findClass			*find=NULL;
-	CTK_mainAppClass		*app=NULL;
-	CTK_cursesListBoxClass	*list=NULL;
-	bool					isValid=false;
-	bool					isOpenDialog=false;
-	int						buttonsToShow=YESBUTTON|NOBUTTON;
-	int						buttonPressed=NOBUTTONPRESSED;
-};
+class CTK_mainAppClass;
+//struct fileUDStruct
+//{
+//	CTK_cursesUtilsClass	*inst=NULL;
+//	LFSTK_findClass			*find=NULL;
+//	CTK_mainAppClass		*app=NULL;
+//	CTK_cursesListBoxClass	*list=NULL;
+//	bool					isValid=false;
+//	bool					isOpenDialog=false;
+//	int						buttonsToShow=YESBUTTON|NOBUTTON;
+//	int						buttonPressed=NOBUTTONPRESSED;
+//};
 
 class CTK_cursesUtilsClass
 {

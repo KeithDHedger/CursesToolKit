@@ -21,7 +21,8 @@
 #ifndef _CURSESTEXTBOX_
 #define _CURSESTEXTBOX_
 
-#include "cursesGlobals.h"
+//#include "cursesGlobals.h"
+//class CTK_cursesGraphicsClass;
 
 class CTK_cursesTextBoxClass
 {

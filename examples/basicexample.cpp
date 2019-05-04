@@ -17,8 +17,8 @@ exit $retval
 #include <string.h>
 #include <stdlib.h>
 
-#include <cursesApplication.h>
-
+//#include <cursesApplication.h>
+#include <cursesGlobals.h>
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 
 #define FILEMENU 0

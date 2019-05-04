@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#include "cursesEditBox.h"
+#include "cursesGlobals.h"
 
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {

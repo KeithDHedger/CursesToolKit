@@ -21,20 +21,6 @@
 #ifndef _CURSESGLOBALS_
 #define _CURSESGLOBALS_
 
-class CTK_cursesUtilsClass;
-class LFSTK_findClass;
-class CTK_mainAppClass;
-class CTK_cursesButtonClass;
-class CTK_cursesTextBoxClass;
-class CTK_cursesCheckBoxClass;
-class CTK_cursesGraphicsClass;
-class CTK_cursesInputClass;
-class CTK_cursesEditBoxClass;
-class CTK_cursesMenuClass;
-class CTK_cursesListBoxClass;
-class CTK_cursesLabelClass;
-class CTK_cursesSourceEditBoxClass;
-
 #include <linux/limits.h>
 
 #include <string>
@@ -65,5 +51,32 @@ class CTK_cursesSourceEditBoxClass;
 #include "cursesSourceEditBox.h"
 
 #include "cursesApplication.h"
+
+struct fileUDStruct
+{
+	CTK_cursesUtilsClass	*inst=NULL;
+	LFSTK_findClass			*find=NULL;
+	CTK_mainAppClass		*app=NULL;
+	CTK_cursesListBoxClass	*list=NULL;
+	bool					isValid=false;
+	bool					isOpenDialog=false;
+	int						buttonsToShow=YESBUTTON|NOBUTTON;
+	int						buttonPressed=NOBUTTONPRESSED;
+};
+
+struct pageStruct
+{
+	std::vector<CTK_cursesButtonClass*>		buttons;
+	std::vector<CTK_cursesTextBoxClass*>	textBoxes;
+	std::vector<CTK_cursesInputClass*>		inputs;
+	std::vector<CTK_cursesListBoxClass*>	lists;
+	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
+	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
+	std::vector<CTK_cursesLabelClass*>		labels;
+	void									*userData=NULL;
+	bool									menusActive=true;
+};
+
 
 #endif

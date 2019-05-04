@@ -30,15 +30,15 @@ class CTK_cursesEditBoxClass
 		~CTK_cursesEditBoxClass();
 
 		CTK_mainAppClass			*mc=NULL;
-		std::vector<std::string>	txtstrings;
 		int							tabWidth=8;
 		bool						isDirty=false;
 
+		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
+		virtual void				CTK_doEditEvent(void);
+
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
-		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
-		void						CTK_doEditEvent(void);
 		const char					*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
@@ -52,6 +52,13 @@ class CTK_cursesEditBoxClass
 		void						CTK_gotoLine(int line);
 
 	private:
+
+	protected:
+		coloursStruct				colours;
+		CTK_cursesGraphicsClass		*gc;
+		std::vector<std::string>	txtstrings;
+		int							currentX;
+		int							currentY;
 		int							sx;
 		int							sy;
 		int							wid;
@@ -59,23 +66,19 @@ class CTK_cursesEditBoxClass
 		int							lineReserve=0;
 		bool						showLineNumbers=false;
 		bool						canSelect=true;
-		int							startLine=0;
-		int							currentX;
-		int							currentY;
 		bool						runLoop=false;
-
+		std::vector<int>			lineNumbers;
+		int							startLine=0;
+		int							startLineNumber=1;
 		char						*txtBuffer=NULL;
 		std::string					blank;
 		std::string					status;
-		int							startLineNumber=1;
-		std::vector<int>			lineNumbers;
 		const char					*editStatus="Normal";
 		TermKey						*tk;
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass		*gc;
 
 		void						updateBuffer(void);
 		void						adjustXY(void);
+
 };
 
 #endif

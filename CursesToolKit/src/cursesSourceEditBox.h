@@ -21,78 +21,27 @@
 #ifndef _CURSESSOURCEEDITBOX_
 #define _CURSESSOURCEEDITBOX_
 
-#define SRCDATADIR "/usr/share/source-highlight"
-
-#include "cursesGlobals.h"
-#include <srchilite/sourcehighlight.h>
-#include <srchilite/langmap.h>
-#include <srchilite/lineranges.h>
-#include <srchilite/sourcehighlight.h>
-#include <srchilite/languageinfer.h>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
-class CTK_cursesSourceEditBoxClass
+class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 {
 	public:
 		CTK_cursesSourceEditBoxClass();
 		~CTK_cursesSourceEditBoxClass();
 
 		CTK_mainAppClass			*mc=NULL;
-		std::vector<std::string>	txtstrings;
-		int							tabWidth=8;
-		bool						isDirty=false;
-
-		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
-		void						CTK_setColours(coloursStruct cs);
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		void						CTK_doEditEvent(void);
-		const char					*CTK_getBuffer(void);
-		const std::string			CTK_getCurrentLine(void);
-		const std::string			CTK_getCurrentWord(void);
-		void						CTK_deleteCurrentWord(void);
-		void						CTK_deleteCurrentLine(void);
-		void						CTK_insertText(const char *txt);
-		void						CTK_gotoXY(int x,int y);
-		void						CTK_setRunLoop(bool loop);
-		void						CTK_setTabWidth(int width);
-		void						CTK_setShowLineNumbers(bool show);
-		void						CTK_gotoLine(int line);
-
-	private:
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
-		int							lineReserve=0;
-		bool						showLineNumbers=false;
-		bool						canSelect=true;
-		int							startLine=0;
-		int							currentX;
-		int							currentY;
-		int							sourceX;
-		bool						runLoop=false;
 		bool						needsRefresh=false;
 
-		char						*txtBuffer=NULL;
-		std::string					blank;
-		std::string					status;
-		const char					*editStatus="Normal";
-		TermKey						*tk;
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass		*gc;
-
+	private:
+		int							sourceX;
 		std::string					filePath;
 		std::vector<std::string>	srcStrings;
-		int							startLineNumber=1;
-		std::vector<int>			lineNumbers;
 		bool						fullUpdate=true;
-		void						updateBuffer(void);
-		void						adjustXY(void);
 		void						setScreenX(void);
 
+	protected:
+		void						updateBuffer(void);
 };
 
 #endif

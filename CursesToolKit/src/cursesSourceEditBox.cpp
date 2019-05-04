@@ -17,16 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "cursesSourceEditBox.h"
-#include <termios.h>
-#include <unistd.h>
+
+#include <srchilite/sourcehighlight.h>
+#include <srchilite/langmap.h>
+#include <srchilite/lineranges.h>
+#include <srchilite/sourcehighlight.h>
+#include <srchilite/languageinfer.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+#include "cursesGlobals.h"
+
+#define SRCDATADIR "/usr/share/source-highlight"
 
 CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 {
-	free(this->txtBuffer);
-	delete this->gc;
-	termkey_destroy(this->tk);
 }
 
 CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
@@ -40,24 +46,6 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
-{
-	this->sx=x;
-	this->sy=y;
-	this->wid=width;
-	this->hite=hite-1;
-	this->canSelect=selectable;
-
-	this->blank.insert(this->blank.begin(),width,' ');
-	this->CTK_updateText(txt,isfilename);
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
@@ -431,6 +419,9 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 								}
 						}
 				}
+			//if(this->needsRefresh==true)//TODO//
+			//	this->updateBuffer();
+
 			this->CTK_drawBox(false,true);
 			this->mc->CTK_emptyIPBuffer();
 		}
@@ -441,139 +432,11 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
 	buff.clear();
-
 	for(int j=0;j<this->txtstrings.size();j++)
 		buff.append(this->txtstrings[j]);
 
 	this->CTK_updateText(buff.c_str(),false,false);
 	this->needsRefresh=false;
-}
-
-const char *CTK_cursesSourceEditBoxClass::CTK_getBuffer(void)
-{
-	this->updateBuffer();
-	return(this->txtBuffer);
-}
-
-const std::string CTK_cursesSourceEditBoxClass::CTK_getCurrentLine(void)
-{
-	return(this->txtstrings[this->currentY]);
-}
-
-const std::string CTK_cursesSourceEditBoxClass::CTK_getCurrentWord(void)
-{
-	int startchr=this->currentX;
-	int endchr=startchr;
-
-	for(int j=this->currentX;j>=0;j--)
-		if(isalnum(this->txtstrings[this->currentY][j])==false)
-			break;
-		else
-			startchr=j;
-
-	for(int j=this->currentX;j<this->txtstrings[this->currentY].length();j++)
-		if(isalnum(this->txtstrings[this->currentY][j])==false)
-			break;
-		else
-			endchr=j;
-			
-	return(this->txtstrings[this->currentY].substr(startchr,endchr-startchr+1));
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentWord(void)
-{
-	int startchr=this->currentX;
-	int endchr=startchr;
-
-	for(int j=this->currentX;j>=0;j--)
-		if(isalnum(this->txtstrings[this->currentY][j])==false)
-			break;
-		else
-			startchr=j;
-
-	for(int j=this->currentX;j<this->txtstrings[this->currentY].length();j++)
-		if(isalnum(this->txtstrings[this->currentY][j])==false)
-			break;
-		else
-			endchr=j;
-	this->txtstrings[this->currentY].erase(startchr,endchr-startchr+1);
-	this->updateBuffer();	
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_deleteCurrentLine(void)
-{
-	this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
-	this->updateBuffer();
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_insertText(const char *txt)
-{
-	this->txtstrings[this->currentY].insert(this->currentX,txt);
-	this->updateBuffer();
-	this->currentX+=strlen(txt);
-	if(this->currentX>=this->txtstrings[this->currentY].length())
-		this->currentX=this->txtstrings[this->currentY].length()-1;
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_gotoXY(int x,int y)
-{
-	this->currentX=x;
-	this->currentY=y;
-	this->startLine=y;
-	this->adjustXY();
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_setRunLoop(bool loop)
-{
-	this->runLoop=loop;
-}
-
-void CTK_cursesSourceEditBoxClass::adjustXY(void)
-{
-	if(this->currentY<0)
-		this->currentY=0;
-	if(this->currentY>this->txtstrings.size()-2)
-		{
-			this->currentY=this->txtstrings.size()-1;
-			this->startLine=this->txtstrings.size()-this->hite;
-		}
-
-	if(this->currentX<0)
-		this->currentX=0;
-
-	if(this->currentX>this->txtstrings[this->currentY].length()-1)
-		this->currentX=this->txtstrings[this->currentY].length()-1;
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_setTabWidth(int width)
-{
-	char	buffer[256];
-	this->tabWidth=width;
-	sprintf(buffer,"tabs -%i",width);
-	system(buffer);
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_setShowLineNumbers(bool show)
-{
-	this->showLineNumbers=show;
-	if(show==true)
-		this->lineReserve=5;
-	else
-		this->lineReserve=0;
-	this->updateBuffer();
-}
-
-void CTK_cursesSourceEditBoxClass::CTK_gotoLine(int line)
-{
-	int j;
-	for(j=0;j<this->lineNumbers.size();j++)
-		if(this->lineNumbers[j]==line)
-			break;
-	
-	this->currentX=0;
-	this->currentY=j;
-	this->startLine=j;
-	this->adjustXY();
 }
 
 

@@ -18,7 +18,8 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesTextBox.h"
+//#include "cursesTextBox.h"
+#include "cursesGlobals.h"
 
 CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
 {

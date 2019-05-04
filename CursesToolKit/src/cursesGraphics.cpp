@@ -18,7 +18,8 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesGraphics.h"
+//#include "cursesGraphics.h"
+#include "cursesGlobals.h"
 
 CTK_cursesGraphicsClass::~CTK_cursesGraphicsClass()
 {

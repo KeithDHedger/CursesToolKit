@@ -18,7 +18,9 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesApplication.h"
+#include "cursesGlobals.h"
+
+//#include "cursesApplication.h"
 
 CTK_mainAppClass::~CTK_mainAppClass()
 {

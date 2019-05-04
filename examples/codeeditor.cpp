@@ -182,15 +182,18 @@ void menuSelectCB(void *inst)
 							clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentWord();
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteCurrentWord();
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->needsRefresh=true;
 							break;
 						case CUTLINE:
 							clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentLine();
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteCurrentLine();
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->needsRefresh=true;
 							break;
 						case PASTE:
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_insertText(clip.c_str());
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->needsRefresh=true;
 							break;
 					}
 				break;
@@ -306,6 +309,7 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
 	mainApp->CTK_mainEventLoop();
+	//fprintf(stderr,"\n%s\n",mainApp->pages[0].srcEditBoxes[0]->CTK_getBuffer());
 	delete mainApp;
 	SETSHOWCURS;
 

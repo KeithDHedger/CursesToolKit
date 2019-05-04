@@ -21,22 +21,37 @@
 #ifndef _CURSESAPPLICATION_
 #define _CURSESAPPLICATION_
 
-#include "cursesGlobals.h"
+struct pageStruct;
+class CTK_cursesButtonClass;
+class CTK_cursesTextBoxClass;
+class CTK_cursesCheckBoxClass;
+class CTK_cursesGraphicsClass;
+class CTK_cursesInputClass;
+class CTK_cursesEditBoxClass;
+class CTK_cursesMenuClass;
+class CTK_cursesListBoxClass;
+class CTK_cursesLabelClass;
+class CTK_cursesSourceEditBoxClass;
 
-struct pageStruct
-{
-	std::vector<CTK_cursesButtonClass*>		buttons;
-	std::vector<CTK_cursesTextBoxClass*>	textBoxes;
-	std::vector<CTK_cursesInputClass*>		inputs;
-	std::vector<CTK_cursesListBoxClass*>	lists;
-	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
-	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
-	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
-	std::vector<CTK_cursesLabelClass*>		labels;
-	void									*userData=NULL;
-	bool									menusActive=true;
-};
 
+
+
+//#include "cursesGlobals.h"
+
+//struct pageStruct
+//{
+//	std::vector<CTK_cursesButtonClass*>		buttons;
+//	std::vector<CTK_cursesTextBoxClass*>	textBoxes;
+//	std::vector<CTK_cursesInputClass*>		inputs;
+//	std::vector<CTK_cursesListBoxClass*>	lists;
+//	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
+//	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+//	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
+//	std::vector<CTK_cursesLabelClass*>		labels;
+//	void									*userData=NULL;
+//	bool									menusActive=true;
+//};
+//
 enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
 class CTK_mainAppClass
