@@ -332,6 +332,8 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		}
 	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
 
+	selectapp->CTK_updateScreen(selectapp,NULL);
+	selectapp->pages[0].inputs[0]->CTK_doInput();
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
 	this->intResult=fud->buttonPressed;
