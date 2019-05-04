@@ -37,7 +37,7 @@ enum {HELP=0,ABOUT};
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
 int					windowCols=mainApp->maxCols;
-bool				showLineNumbers=false;
+bool				showLineNumbers=true;
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
@@ -79,7 +79,7 @@ void menuSelectCB(void *inst)
 								std::ofstream output(uddata);
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,uddata);
+								mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,uddata);
 								mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
@@ -97,7 +97,7 @@ void menuSelectCB(void *inst)
 									{
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,mainApp->maxCols,windowRows,true,cu.stringResult.c_str());
+										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,cu.stringResult.c_str());
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
@@ -202,7 +202,8 @@ void menuSelectCB(void *inst)
 								CTK_cursesUtilsClass	cu;
 								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
-										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
+										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
+										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_gotoLine(atoi(cu.stringResult.c_str()));
 										mainApp->CTK_updateScreen(mainApp,NULL);
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_doEditEvent();
 										break;
@@ -299,7 +300,7 @@ int main(int argc, char **argv)
 	cs.backCol=BACK_BLACK;
 
 	mainApp->CTK_setColours(cs);
-	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,80,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");

@@ -1,4 +1,6 @@
 0.1.2
+Added goto line to edit box.
+Added goto line to src box.
 Speed tweaks.
 Added line numbers to src box.
 Added dirty flag to edit box.

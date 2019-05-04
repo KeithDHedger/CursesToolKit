@@ -650,6 +650,7 @@ void CTK_mainAppClass::CTK_setTabWidth(int width)
 	this->tabWidth=width;
 	sprintf(buffer,"tabs -%i",width);
 	system(buffer);
+	fflush(NULL);
 }
 
 void CTK_mainAppClass::CTK_emptyIPBuffer(void)

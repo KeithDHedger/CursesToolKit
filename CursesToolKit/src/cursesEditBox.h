@@ -49,6 +49,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setTabWidth(int width);
 		void						CTK_setShowLineNumbers(bool show);
+		void						CTK_gotoLine(int line);
 
 	private:
 		int							sx;

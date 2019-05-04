@@ -59,6 +59,7 @@ class CTK_cursesSourceEditBoxClass
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setTabWidth(int width);
 		void						CTK_setShowLineNumbers(bool show);
+		void						CTK_gotoLine(int line);
 
 	private:
 		int							sx;
@@ -72,7 +73,6 @@ class CTK_cursesSourceEditBoxClass
 		int							currentX;
 		int							currentY;
 		int							sourceX;
-		int							virtualX;
 		bool						runLoop=false;
 		bool						needsRefresh=false;
 

@@ -35,7 +35,6 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
-
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 }
@@ -474,4 +473,17 @@ void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(bool show)
 	else
 		this->lineReserve=0;
 	this->updateBuffer();
+}
+
+void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
+{
+	int j;
+	for(j=0;j<this->lineNumbers.size();j++)
+		if(this->lineNumbers[j]==line)
+			break;
+	
+	this->currentX=0;
+	this->currentY=j;
+	this->startLine=j;
+	this->adjustXY();
 }

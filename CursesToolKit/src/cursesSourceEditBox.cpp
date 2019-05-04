@@ -511,18 +511,13 @@ void CTK_cursesSourceEditBoxClass::CTK_insertText(const char *txt)
 	this->txtstrings[this->currentY].insert(this->currentX,txt);
 	this->updateBuffer();
 	this->currentX+=strlen(txt);
-	this->virtualX+=strlen(txt);
 	if(this->currentX>=this->txtstrings[this->currentY].length())
-		{
-			this->currentX=this->txtstrings[this->currentY].length()-1;
-			this->virtualX=this->txtstrings[this->currentY].length()-1;
-		}
+		this->currentX=this->txtstrings[this->currentY].length()-1;
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_gotoXY(int x,int y)
 {
 	this->currentX=x;
-	this->virtualX=x;
 	this->currentY=y;
 	this->startLine=y;
 	this->adjustXY();
@@ -542,16 +537,12 @@ void CTK_cursesSourceEditBoxClass::adjustXY(void)
 			this->currentY=this->txtstrings.size()-1;
 			this->startLine=this->txtstrings.size()-this->hite;
 		}
+
 	if(this->currentX<0)
-		{
-			this->currentX=0;
-			this->virtualX=0;
-		}
+		this->currentX=0;
+
 	if(this->currentX>this->txtstrings[this->currentY].length()-1)
-		{
-			this->currentX=this->txtstrings[this->currentY].length()-1;
-			this->virtualX=this->txtstrings[this->currentY].length()-1;
-		}
+		this->currentX=this->txtstrings[this->currentY].length()-1;
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_setTabWidth(int width)
@@ -570,6 +561,19 @@ void CTK_cursesSourceEditBoxClass::CTK_setShowLineNumbers(bool show)
 	else
 		this->lineReserve=0;
 	this->updateBuffer();
+}
+
+void CTK_cursesSourceEditBoxClass::CTK_gotoLine(int line)
+{
+	int j;
+	for(j=0;j<this->lineNumbers.size();j++)
+		if(this->lineNumbers[j]==line)
+			break;
+	
+	this->currentX=0;
+	this->currentY=j;
+	this->startLine=j;
+	this->adjustXY();
 }
 
 

@@ -21,7 +21,7 @@ exit $retval
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
 int					windowCols=mainApp->maxCols;
-bool				showLineNumbers=false;
+bool				showLineNumbers=true;
 
 #define TABWIDTH 4
 
@@ -196,7 +196,8 @@ void menuSelectCB(void *inst)
 								CTK_cursesUtilsClass	cu;
 								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
-										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
+//										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoLine(atoi(cu.stringResult.c_str()));
 										mainApp->CTK_updateScreen(mainApp,NULL);
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_doEditEvent();
 										break;
