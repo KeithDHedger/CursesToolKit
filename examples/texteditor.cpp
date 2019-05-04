@@ -176,15 +176,18 @@ void menuSelectCB(void *inst)
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentWord();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer();
 							break;
 						case CUTLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_deleteCurrentLine();
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer();
 							break;
 						case PASTE:
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_insertText(clip.c_str());
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=true;
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer();
 							break;
 					}
 				break;

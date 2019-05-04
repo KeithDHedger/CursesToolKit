@@ -419,8 +419,6 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 								}
 						}
 				}
-			//if(this->needsRefresh==true)//TODO//
-			//	this->updateBuffer();
 
 			this->CTK_drawBox(false,true);
 			this->mc->CTK_emptyIPBuffer();
