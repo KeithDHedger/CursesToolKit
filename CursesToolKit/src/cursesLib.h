@@ -136,6 +136,15 @@ static inline void setBackColour(int fc,bool use256=false)
 	fflush(NULL);
 }
 
+static inline void setBothColours(int fc,int bc,bool use256=false)
+{
+	if(use256==false)
+		printf("\e[%i;%im",fc,bc);
+	else
+		printf("\e[38;5;%i;48;5;%im",fc,bc);
+	fflush(NULL);
+}
+
 static inline void freeAndNull(char **data)
 {
 	if((data!=NULL) && (*data!=NULL))
