@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesMenus.h"
+#include "cursesGlobals.h"
 
 CTK_cursesMenuClass::~CTK_cursesMenuClass()
 {
@@ -56,8 +56,6 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
-//			setBackColour(this->colours.menuBackCol);
-//			setForeColour(this->colours.menuForeCol);
 			setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			MOVETO(x,y);
 			printf("%s",this->menuNames[j]->menuName);
@@ -122,18 +120,12 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	switch(style)
 		{
 			case FLATINVERT:
-//				setBackColour(this->colours.hiliteBackCol);
-//				setForeColour(this->colours.hiliteForeCol);
 				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 				break;
 			case FLATNORM:
-//				setBackColour(this->colours.menuBackCol);
-//				setForeColour(this->colours.menuForeCol);
 				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 				break;
 			case BLANK:
-//				setBackColour(this->colours.windowBackCol);
-//				setForeColour(this->colours.windowBackCol);
 				setBothColours(this->colours.windowBackCol,this->colours.windowBackCol,this->colours.use256Colours);
 				break;
 		}

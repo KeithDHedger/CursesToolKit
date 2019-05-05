@@ -18,7 +18,6 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include "cursesGraphics.h"
 #include "cursesGlobals.h"
 
 CTK_cursesGraphicsClass::~CTK_cursesGraphicsClass()
@@ -58,8 +57,6 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 				break;
 		}
 
-//	setBackColour(this->colours.backCol,this->colours.use256Colours);
-//	setForeColour(topcol,this->colours.use256Colours);
 	setBothColours(topcol,this->colours.backCol,this->colours.use256Colours);
 
 //FLICKER//TODO//

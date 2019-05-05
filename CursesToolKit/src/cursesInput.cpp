@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesInput.h"
+#include "cursesGlobals.h"
 
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
@@ -72,17 +72,9 @@ void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
 
 	if(hilite==true)
-		{
-//			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-//			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
-		{
-	//		setBackColour(this->colours.backCol,this->colours.use256Colours);
-	//		setForeColour(this->colours.foreCol,this->colours.use256Colours);
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy);
 	printf("%s",this->blank.c_str());

@@ -30,17 +30,6 @@
 #define ALLBUTTONS (YESBUTTON) + (NOBUTTON) + (CANCELBUTTON)
 
 class CTK_mainAppClass;
-//struct fileUDStruct
-//{
-//	CTK_cursesUtilsClass	*inst=NULL;
-//	LFSTK_findClass			*find=NULL;
-//	CTK_mainAppClass		*app=NULL;
-//	CTK_cursesListBoxClass	*list=NULL;
-//	bool					isValid=false;
-//	bool					isOpenDialog=false;
-//	int						buttonsToShow=YESBUTTON|NOBUTTON;
-//	int						buttonPressed=NOBUTTONPRESSED;
-//};
 
 class CTK_cursesUtilsClass
 {

@@ -21,8 +21,6 @@
 #ifndef _CURSESCHECKBOX_
 #define _CURSESCHECKBOX_
 
-#include "cursesGlobals.h"
-
 class CTK_cursesCheckBoxClass
 {
 	public:

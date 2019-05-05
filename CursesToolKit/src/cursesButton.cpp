@@ -33,17 +33,9 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 {
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
-		{
-//			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-//			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
-		{
-//			setBackColour(BACK_BLUE,this->colours.use256Colours);
-//			setForeColour(FORE_WHITE,this->colours.use256Colours);
-			setBothColours(FORE_WHITE,BACK_BLUE,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
 
 	if(this->colours.fancyGadgets==true)
 		printf("< %s >",this->label);

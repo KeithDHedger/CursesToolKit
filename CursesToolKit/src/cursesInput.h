@@ -21,8 +21,6 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
-#include "cursesGlobals.h"
-
 class CTK_cursesInputClass
 {
 	public:

@@ -21,8 +21,6 @@
 #ifndef _CURSESMENUS_
 #define _CURSESMENUS_
 
-#include "cursesGlobals.h"
-
 struct	menuStruct
 {
 	char							*menuName=NULL;

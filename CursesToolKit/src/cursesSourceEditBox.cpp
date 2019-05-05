@@ -210,17 +210,13 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 			if(this->showLineNumbers==true)
 				{
 					MOVETO(this->sx,this->sy+boxline);
-//					setBackColour(this->colours.lineBackCol,this->colours.use256Colours);
-//					setForeColour(this->colours.lineForeCol,this->colours.use256Colours);
-					setBothColours(this->colours.lineForeCol,this->colours.lineBackCol,this->colours.use256Colours);
+					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
 						printf("%.*i",4,this->lineNumbers[boxline+this->startLine]);
 					else
 						printf("%*s",4," ");
 				}
 
-//			setBackColour(this->colours.backCol,this->colours.use256Colours);
-//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;

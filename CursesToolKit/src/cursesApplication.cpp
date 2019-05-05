@@ -20,8 +20,6 @@
 
 #include "cursesGlobals.h"
 
-//#include "cursesApplication.h"
-
 CTK_mainAppClass::~CTK_mainAppClass()
 {
 	delete this->menuBar;
@@ -70,8 +68,6 @@ CTK_mainAppClass::CTK_mainAppClass()
 
 void CTK_mainAppClass::CTK_clearScreen(void)
 {
-//	setBackColour(this->colours.windowBackCol,this->colours.use256Colours);
-//	setForeColour(this->colours.windowForeCol,this->colours.use256Colours);
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	printf("\e[2J\e[H");
 }
@@ -199,8 +195,6 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
 	CTK_cursesGraphicsClass	cu;
 
-//	setBackColour(app->colours.windowBackCol,app->colours.use256Colours);
-//	setForeColour(app->colours.windowForeCol,app->colours.use256Colours);
 	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
 
 	if(app->menuBar!=NULL)
@@ -229,9 +223,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			else
 				cu.CTK_drawBox(app->x,app->y-1,app->wid,app->hite+1,OUTBOX,true,true);
 			MOVETO(1,1+yadj);
-//			setBackColour(BACK_BLUE,false);
-//			setForeColour(FORE_CYAN,false);
-			setBothColours(FORE_CYAN,BACK_BLUE,false);
+			setBothColours(FORE_CYAN,BACK_BLUE,false);//TODO//
 			if(app->windowName!=NULL)
 				{
 					printf("%s\n",app->windowName);
@@ -243,9 +235,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			if(app->title!=NULL)
 				{
 					MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
-				//	setBackColour(app->colours.backCol,false);
-				//	setForeColour(FORE_BLUE,false);
-					setBothColours(FORE_BLUE,app->colours.backCol,false);
+					setBothColours(FORE_BLUE,app->colours.backCol,false);//TODO//
 					printf("%s",app->title);
 				}
 		}

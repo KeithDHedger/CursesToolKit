@@ -66,17 +66,16 @@ struct fileUDStruct
 
 struct pageStruct
 {
-	std::vector<CTK_cursesButtonClass*>		buttons;
-	std::vector<CTK_cursesTextBoxClass*>	textBoxes;
-	std::vector<CTK_cursesInputClass*>		inputs;
-	std::vector<CTK_cursesListBoxClass*>	lists;
-	std::vector<CTK_cursesCheckBoxClass*>	checkBoxes;
-	std::vector<CTK_cursesEditBoxClass*>	editBoxes;
+	std::vector<CTK_cursesButtonClass*>			buttons;
+	std::vector<CTK_cursesTextBoxClass*>		textBoxes;
+	std::vector<CTK_cursesInputClass*>			inputs;
+	std::vector<CTK_cursesListBoxClass*>		lists;
+	std::vector<CTK_cursesCheckBoxClass*>		checkBoxes;
+	std::vector<CTK_cursesEditBoxClass*>		editBoxes;
 	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
-	std::vector<CTK_cursesLabelClass*>		labels;
-	void									*userData=NULL;
-	bool									menusActive=true;
+	std::vector<CTK_cursesLabelClass*>			labels;
+	void										*userData=NULL;
+	bool										menusActive=true;
 };
-
 
 #endif

@@ -21,8 +21,6 @@
 #ifndef _CURSESLISTBOX_
 #define _CURSESLISTBOX_
 
-#include "cursesGlobals.h"
-
 struct listItemStruct
 {
 	std::string	label;

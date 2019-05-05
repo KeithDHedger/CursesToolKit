@@ -146,28 +146,20 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 			if(this->showLineNumbers==true)
 				{
 					MOVETO(this->sx,this->sy+boxline);
-//					setBackColour(this->colours.lineBackCol,this->colours.use256Colours);
-//					setForeColour(this->colours.lineForeCol,this->colours.use256Colours);
-					setBothColours(this->colours.lineForeCol,this->colours.lineBackCol,this->colours.use256Colours);
+					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
 						printf("%.*i",4,this->lineNumbers[boxline+this->startLine]);
 					else
 						printf("%*s",4," ");
 				}
 
-//			setBackColour(this->colours.backCol,this->colours.use256Colours);
-//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
 	if(hilite==true)
-		{
-//			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-//			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy+hite+1);
 	printf("%s",this->blank.c_str());

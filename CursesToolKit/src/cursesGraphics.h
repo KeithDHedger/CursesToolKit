@@ -21,8 +21,6 @@
 #ifndef _CURSESGRAPHICS_
 #define _CURSESGRAPHICS_
 
-//#include "cursesGlobals.h"
-
 class CTK_cursesGraphicsClass
 {
 	public:

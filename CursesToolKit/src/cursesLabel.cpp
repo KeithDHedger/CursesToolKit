@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesLabel.h"
+#include "cursesGlobals.h"
 
 CTK_cursesLabelClass::~CTK_cursesLabelClass()
 {
@@ -71,8 +71,6 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 	if(this->txtStrings.size()==0)
 		return;
 
-//	setBackColour(this->colours.backCol,this->colours.use256Colours);
-//	setForeColour(this->colours.foreCol,this->colours.use256Colours);
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy);

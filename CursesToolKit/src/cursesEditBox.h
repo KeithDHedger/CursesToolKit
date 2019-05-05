@@ -21,8 +21,6 @@
 #ifndef _CURSESEDITBOX_
 #define _CURSESEDITBOX_
 
-#include "cursesGlobals.h"
-
 class CTK_cursesEditBoxClass
 {
 	public:

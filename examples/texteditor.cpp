@@ -259,8 +259,8 @@ int main(int argc, char **argv)
 	cs.hiliteForeCol=FORE_GREEN;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_GREEN;
-	cs.lineBackCol=BACK_WHITE;
-	cs.lineForeCol=FORE_BLACK;
+	cs.lineNumBackCol=BACK_WHITE;
+	cs.lineNumForeCol=FORE_BLACK;
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);

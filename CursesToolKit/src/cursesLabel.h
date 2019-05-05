@@ -21,8 +21,6 @@
 #ifndef _CURSESLABEL_
 #define _CURSESLABEL_
 
-#include "cursesGlobals.h"
-
 class CTK_cursesLabelClass
 {
 	public:

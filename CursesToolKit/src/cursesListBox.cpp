@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesListBox.h"
+#include "cursesGlobals.h"
 
 CTK_cursesListBoxClass::~CTK_cursesListBoxClass()
 {
@@ -48,24 +48,12 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 	for(int j=0;j<this->hite;j++)
 		{
 			if(hilite==true)
-				{
-//					setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-//					setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-				}
+				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 			else
-				{
-//					setBackColour(this->colours.backCol,this->colours.use256Colours);
-//					setForeColour(this->colours.foreCol,this->colours.use256Colours);
-					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-				}
+				setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
-				{
-//					setBackColour(BACK_WHITE,false);
-//					setForeColour(FORE_BLACK,false);
-					setBothColours(FORE_BLACK,BACK_WHITE,false);
-				}
+				setBothColours(FORE_BLACK,BACK_WHITE,false);//TODO//
 
 			MOVETO(this->sx,this->sy+j);
 

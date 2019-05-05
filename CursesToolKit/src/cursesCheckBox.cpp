@@ -18,7 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cursesCheckBox.h"
+#include "cursesGlobals.h"
 
 CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 {
@@ -35,17 +35,10 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
-		{
-//			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-//			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-		}
+		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
-		{
-//			setBackColour(BACK_BLUE,this->colours.use256Colours);
-//			setForeColour(FORE_WHITE,this->colours.use256Colours);
-			setBothColours(FORE_WHITE,BACK_BLUE,false);
-		}
+		setBothColours(FORE_WHITE,BACK_BLUE,false);
+
 	if(this->value==true)
 		val='X';
 	if(this->colours.fancyGadgets==false)
