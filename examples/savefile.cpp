@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 
 	cu.CTK_openFile(mainApp,"Save File Example",folder,false,"Untitled");
 	if(cu.isValidFile==true)
-		fprintf(stderr,"Folder=%s\nFile=%s",cu.inFolder.c_str(),cu.stringResult.c_str());
+		fprintf(stderr,"Folder=%s\nFile=%s\n",cu.inFolder.c_str(),cu.stringResult.c_str());
 
 	SETSHOWCURS;
 	delete mainApp;

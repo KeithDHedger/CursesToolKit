@@ -54,12 +54,12 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
 	std::string					str;
 	CTK_cursesUtilsClass		cu;
 
-	this->txtstrings.clear();
+	this->txtStrings.clear();
 	this->text=txt;
 
 	cpybuf[0]=0;
 	str=this->text;
-	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
@@ -71,29 +71,31 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
-	if(this->txtstrings.size()==0)
+	if(this->txtStrings.size()==0)
 		return;
 
 	if(hilite==true)
 		{
-			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
+//			setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
+//			setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
+			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 		}
 	else
 		{
-			setBackColour(this->colours.backCol,this->colours.use256Colours);
-			setForeColour(this->colours.foreCol,this->colours.use256Colours);
+//			setBackColour(this->colours.backCol,this->colours.use256Colours);
+//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 		}
 
 	while(j<this->hite)//TODO//
 		{
-			if(j<this->txtstrings.size())
+			if(j<this->txtStrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					if(this->txtstrings[j+this->startLine].back()=='\n')
-						printf("%s%s",this->txtstrings[j+this->startLine].substr(0,this->txtstrings[j+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()+1).c_str());
+					if(this->txtStrings[j+this->startLine].back()=='\n')
+						printf("%s%s",this->txtStrings[j+this->startLine].substr(0,this->txtStrings[j+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtStrings[j+this->startLine].length()+1).c_str());
 					else
-						printf("%s%s",this->txtstrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtstrings[j+this->startLine].length()).c_str());
+						printf("%s%s",this->txtStrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtStrings[j+this->startLine].length()).c_str());
 					j++;
 				}
 			else
@@ -124,8 +126,8 @@ void CTK_cursesTextBoxClass::scroll(bool scrollup,int numlines)
 	else
 		{
 			this->startLine+=numlines;
-			if(this->txtstrings.size()-this->startLine<this->hite)
-				this->startLine=this->txtstrings.size()-this->hite;
+			if(this->txtStrings.size()-this->startLine<this->hite)
+				this->startLine=this->txtStrings.size()-this->hite;
 		}
 }
 

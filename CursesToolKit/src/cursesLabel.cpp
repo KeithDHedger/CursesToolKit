@@ -52,11 +52,11 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	std::string					str;
 	CTK_cursesUtilsClass		cu;
 
-	this->txtstrings.clear();
+	this->txtStrings.clear();
 	this->text=txt;
 
 	str=this->text;
-	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesLabelClass::CTK_drawLabel(void)
@@ -68,11 +68,12 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.labelBoxType,true);
 
-	if(this->txtstrings.size()==0)
+	if(this->txtStrings.size()==0)
 		return;
 
-	setBackColour(this->colours.backCol,this->colours.use256Colours);
-	setForeColour(this->colours.foreCol,this->colours.use256Colours);
+//	setBackColour(this->colours.backCol,this->colours.use256Colours);
+//	setForeColour(this->colours.foreCol,this->colours.use256Colours);
+	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy);
 	for(int j=0;j<this->hite;j++)
@@ -83,10 +84,10 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 
 	for(int j=0;j<this->hite;j++)
 		{
-			if(j<this->txtstrings.size())
+			if(j<this->txtStrings.size())
 				{
 					MOVETO(this->sx,this->sy+j);
-					printf("%s",this->txtstrings[j].c_str());
+					printf("%s",this->txtStrings[j].c_str());
 				}
 			else
 				return;

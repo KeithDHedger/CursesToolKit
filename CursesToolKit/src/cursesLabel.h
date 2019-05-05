@@ -43,7 +43,7 @@ class CTK_cursesLabelClass
 		int							hite;
 		std::string					text;
 		std::string					blank;
-		std::vector<std::string>	txtstrings;
+		std::vector<std::string>	txtStrings;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 };

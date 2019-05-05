@@ -207,8 +207,8 @@ Pasting is done via middle click of mouse as usual.\
 	SETSHOWCURS;
 
 
-//	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtstrings.size();j++)
-//		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtstrings[j].c_str());
+//	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtStrings.size();j++)
+//		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtStrings[j].c_str());
 
 	delete mainApp;
 	return 0;

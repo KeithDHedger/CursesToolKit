@@ -66,7 +66,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
 	std::string					inputLang="nohilite.lang";
 
-	this->txtstrings.clear();
+	this->txtStrings.clear();
 	freeAndNull(&this->txtBuffer);
 	if(reset==true)
 		{
@@ -100,25 +100,25 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 //code
 	str=this->txtBuffer;
-	this->txtstrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1-this->lineReserve,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1-this->lineReserve,this->tabWidth);
 	bool	flag=true;
 	this->lineNumbers.clear();
 	this->startLineNumber=1;
-	for(int j=0;j<this->txtstrings.size();j++)
+	for(int j=0;j<this->txtStrings.size();j++)
 		{
 			if(flag==true)
 				this->lineNumbers.push_back(this->startLineNumber++);
 			else
 				this->lineNumbers.push_back(-1);
 
-			if(this->txtstrings[j].back()=='\n')
+			if(this->txtStrings[j].back()=='\n')
 				{
-					inpstream << this->txtstrings[j];
+					inpstream << this->txtStrings[j];
 					flag=true;
 				}
 			else
 				{
-					inpstream << this->txtstrings[j] << '\n';
+					inpstream << this->txtStrings[j] << '\n';
 					flag=false;
 				}
 		}
@@ -158,7 +158,7 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 			while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
 				while(this->srcStrings[this->currentY][this->sourceX++]!='m');
 
-			switch(this->txtstrings[this->currentY][j])
+			switch(this->txtStrings[this->currentY][j])
 				{
 					case '\t':
 						this->sourceX++;
@@ -178,14 +178,14 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 
 	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 	printf("%s",this->srcStrings[this->currentY].substr(0,this->sourceX).c_str());
-	switch(this->txtstrings[this->currentY][this->currentX])
+	switch(this->txtStrings[this->currentY][this->currentX])
 		{
 			case '\t':
 			case '\n':
 				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
 				break;
 			default:
-				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtstrings[this->currentY][this->currentX]);
+				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtStrings[this->currentY][this->currentX]);
 				break;
 			}
 }
@@ -199,35 +199,35 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
-	if((this->txtstrings.size()-1)-this->startLine<this->hite)
-		this->startLine=this->txtstrings.size()-this->hite;
+	if((this->txtStrings.size()-1)-this->startLine<this->hite)
+		this->startLine=this->txtStrings.size()-this->hite;
 
 	if(this->startLine<0)
 		this->startLine=0;
 
-	while((boxline<this->hite) && (boxline<this->txtstrings.size()))
+	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
 			if(this->showLineNumbers==true)
 				{
 					MOVETO(this->sx,this->sy+boxline);
-					setBackColour(this->colours.lineBackCol,this->colours.use256Colours);
-					setForeColour(this->colours.lineForeCol,this->colours.use256Colours);
+//					setBackColour(this->colours.lineBackCol,this->colours.use256Colours);
+//					setForeColour(this->colours.lineForeCol,this->colours.use256Colours);
+					setBothColours(this->colours.lineForeCol,this->colours.lineBackCol,this->colours.use256Colours);
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
 						printf("%.*i",4,this->lineNumbers[boxline+this->startLine]);
 					else
 						printf("%*s",4," ");
 				}
 
-			setBackColour(this->colours.backCol,this->colours.use256Colours);
-			setForeColour(this->colours.foreCol,this->colours.use256Colours);
+//			setBackColour(this->colours.backCol,this->colours.use256Colours);
+//			setForeColour(this->colours.foreCol,this->colours.use256Colours);
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
 	if(hilite==true)
 		{
-			//setBackColour(this->colours.hiliteBackCol,this->colours.use256Colours);
-			//setForeColour(this->colours.hiliteForeCol,this->colours.use256Colours);
 			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 		}
 
@@ -252,7 +252,6 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 	this->CTK_drawBox(false,true);
 	fflush(NULL);
 	this->runLoop=true;
-	int oldstartline=this->startLine;
 	while(this->runLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
@@ -275,8 +274,8 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 								break;
 							}
 
-						this->txtstrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
-						this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
+						this->txtStrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
 						this->isDirty=true;
 						this->currentX++;
 						this->needsRefresh=true;
@@ -292,21 +291,21 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										this->isDirty=true;
 										if(this->currentX>0)
 											{
-												this->txtstrings[this->currentY].erase(this->currentX-1,1);
+												this->txtStrings[this->currentY].erase(this->currentX-1,1);
 												this->currentX--;
-												this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
+												this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
 												this->needsRefresh=true;
 												break;
 											}				
 
 										if(this->currentY>0)
 											{
-												this->txtstrings[this->currentY-1].erase(this->txtstrings[this->currentY-1].length()-1,1);
-												if(this->txtstrings[this->currentY-1].length()>0)
-													this->currentX=this->txtstrings[this->currentY-1].length();
+												this->txtStrings[this->currentY-1].erase(this->txtStrings[this->currentY-1].length()-1,1);
+												if(this->txtStrings[this->currentY-1].length()>0)
+													this->currentX=this->txtStrings[this->currentY-1].length();
 
-												this->txtstrings[this->currentY-1].append(this->txtstrings[this->currentY]);
-												this->txtstrings.erase(this->txtstrings.begin()+this->currentY);
+												this->txtStrings[this->currentY-1].append(this->txtStrings[this->currentY]);
+												this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
 												this->currentY--;
 												this->updateBuffer();
 												this->needsRefresh=true;
@@ -314,10 +313,10 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case  TERMKEY_SYM_DELETE:
 										{
-											char	hold=this->txtstrings[this->currentY][this->currentX];
+											char	hold=this->txtStrings[this->currentY][this->currentX];
 											this->isDirty=true;
-											this->txtstrings[this->currentY].erase(this->currentX,1);
-											this->srcStrings[this->currentY]=this->txtstrings[this->currentY];
+											this->txtStrings[this->currentY].erase(this->currentX,1);
+											this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
 											this->needsRefresh=true;
 											if(hold=='\n')
 												this->updateBuffer();
@@ -325,7 +324,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_ENTER:
 										this->isDirty=true;
-										this->txtstrings[this->currentY].insert(this->currentX,1,'\n');
+										this->txtStrings[this->currentY].insert(this->currentX,1,'\n');
 										this->currentX=0;
 										this->currentY++;
 
@@ -336,7 +335,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_TAB:
 										this->isDirty=true;
-										this->txtstrings[this->currentY].insert(this->currentX,1,'\t');
+										this->txtStrings[this->currentY].insert(this->currentX,1,'\t');
 										this->currentX++;
 										this->updateBuffer();
 										break;
@@ -349,13 +348,12 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 									this->currentX=0;
 									break;
 								case TERMKEY_SYM_END:
-									this->currentX=this->txtstrings[this->currentY].length()-1;
+									this->currentX=this->txtStrings[this->currentY].length()-1;
 									break;
 
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
-									//	oldstartline=this->startLine;
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY-=lineadd;
@@ -366,30 +364,21 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 												this->currentY=0;
 												this->startLine=0;
 											}
-										if(this->currentX>=this->txtstrings[this->currentY].length())
-											this->currentX=this->txtstrings[this->currentY].length()-1;
-//										if(this->startLine!=oldstartline)
-//											scrolled=true;
-//										else
-//											scrolled=false;
+										if(this->currentX>=this->txtStrings[this->currentY].length())
+											this->currentX=this->txtStrings[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
-										//oldstartline=this->startLine;
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY+=lineadd;
-										if(this->currentY>=this->txtstrings.size())
-											this->currentY=this->txtstrings.size()-1;
+										if(this->currentY>=this->txtStrings.size())
+											this->currentY=this->txtStrings.size()-1;
 										if((this->currentY-this->startLine)>=this->hite)
 											this->startLine+=lineadd;
-										if(this->currentX>=this->txtstrings[this->currentY].length())
-											this->currentX=this->txtstrings[this->currentY].length()-1;
-//										if(this->startLine!=oldstartline)
-//											scrolled=true;
-//										else
-//											scrolled=false;
+										if(this->currentX>=this->txtStrings[this->currentY].length())
+											this->currentX=this->txtStrings[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_LEFT:
 										this->currentX--;
@@ -398,7 +387,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 												if(this->currentY>0)
 													{
 														this->currentY--;
-														this->currentX=this->txtstrings[this->currentY].size()-1;
+														this->currentX=this->txtStrings[this->currentY].size()-1;
 													}
 												else
 													this->currentX=0;
@@ -406,15 +395,15 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_RIGHT:
 										this->currentX++;
-										if(this->currentX>=this->txtstrings[currentY].length())
+										if(this->currentX>=this->txtStrings[currentY].length())
 											{
-												if(this->currentY<this->txtstrings.size()-1)
+												if(this->currentY<this->txtStrings.size()-1)
 													{
 														this->currentY++;
 														this->currentX=0;
 													}
 												else
-													this->currentX=this->txtstrings[currentY].length()-1;
+													this->currentX=this->txtStrings[currentY].length()-1;
 											}
 										break;
 								}
@@ -431,8 +420,8 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
 	buff.clear();
-	for(int j=0;j<this->txtstrings.size();j++)
-		buff.append(this->txtstrings[j]);
+	for(int j=0;j<this->txtStrings.size();j++)
+		buff.append(this->txtStrings[j]);
 
 	this->CTK_updateText(buff.c_str(),false,false);
 	this->needsRefresh=false;

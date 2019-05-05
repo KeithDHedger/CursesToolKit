@@ -58,8 +58,10 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 				break;
 		}
 
-	setBackColour(this->colours.backCol,this->colours.use256Colours);
-	setForeColour(topcol,this->colours.use256Colours);
+//	setBackColour(this->colours.backCol,this->colours.use256Colours);
+//	setForeColour(topcol,this->colours.use256Colours);
+	setBothColours(topcol,this->colours.backCol,this->colours.use256Colours);
+
 //FLICKER//TODO//
 	if(fill==true)
 		{

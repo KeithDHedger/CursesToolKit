@@ -56,7 +56,7 @@ class CTK_cursesEditBoxClass
 	protected:
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
-		std::vector<std::string>	txtstrings;
+		std::vector<std::string>	txtStrings;
 		int							currentX;
 		int							currentY;
 		int							sx;

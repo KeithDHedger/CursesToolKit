@@ -50,7 +50,7 @@ class CTK_cursesTextBoxClass
 		int							startLine=0;
 		std::string					text;
 		std::string					blank;
-		std::vector<std::string>	txtstrings;
+		std::vector<std::string>	txtStrings;
 		bool						canSelect=true;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
