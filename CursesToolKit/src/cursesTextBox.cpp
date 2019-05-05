@@ -98,15 +98,15 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 
 void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)
 {
-	this->scroll(scrollup,1);
+	this->TBscroll(scrollup,1);
 }
 
 void CTK_cursesTextBoxClass::CTK_scrollPage(bool scrollup)
 {
-	this->scroll(scrollup,this->hite);
+	this->TBscroll(scrollup,this->hite);
 }
 
-void CTK_cursesTextBoxClass::scroll(bool scrollup,int numlines)
+void CTK_cursesTextBoxClass::TBscroll(bool scrollup,int numlines)
 {
 	if(scrollup==true)
 		{

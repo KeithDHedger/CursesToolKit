@@ -52,7 +52,7 @@ class CTK_cursesTextBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 
-		void						scroll(bool scrollup,int numlines);
+		void						TBscroll(bool scrollup,int numlines);
 };
 
 #endif

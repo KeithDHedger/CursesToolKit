@@ -2,8 +2,10 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o texteditor ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./texteditor "$@"
+USEVALGRIND="valgrind --leak-check=full"
+
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ncurses ) -lcursestoolkit "$0" -o texteditor ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./texteditor "$@"
 retval=$?
 rm texteditor
 reset
@@ -15,6 +17,7 @@ exit $retval
 #include <string.h>
 #include <stdlib.h>
 #include <libgen.h>
+#include <curses.h>
 
 #include <cursesGlobals.h>
 
@@ -304,6 +307,10 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 
 	mainApp->CTK_mainEventLoop();
+
+	for(int k=0;k<mainApp->pages.size();k++)
+		free(mainApp->pages[k].userData);
+
 	delete mainApp;
 	SETSHOWCURS;
 
