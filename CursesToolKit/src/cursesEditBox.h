@@ -46,7 +46,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setTabWidth(int width);
-		void						CTK_setShowLineNumbers(bool show);
+		void						CTK_setShowLineNumbers(int show);
 		void						CTK_gotoLine(int line);
 
 	private:
@@ -62,7 +62,7 @@ class CTK_cursesEditBoxClass
 		int							wid;
 		int							hite;
 		int							lineReserve=0;
-		bool						showLineNumbers=false;
+		int							showLineNumbers=0;
 		bool						canSelect=true;
 		bool						runLoop=false;
 		std::vector<int>			lineNumbers;

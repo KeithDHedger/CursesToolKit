@@ -1,4 +1,5 @@
 0.1.3
+Changed show line numbers to take int.
 Updated README.
 Added set back/fore colour at the same time.
 Set input box active in entry dialog.

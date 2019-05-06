@@ -143,14 +143,14 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
-			if(this->showLineNumbers==true)
+			if(this->showLineNumbers>0)
 				{
 					MOVETO(this->sx,this->sy+boxline);
 					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
-						printf("%.*i",4,this->lineNumbers[boxline+this->startLine]);
+						printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
 					else
-						printf("%*s",4," ");
+						printf("%*s",this->showLineNumbers," ");
 				}
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
@@ -456,17 +456,22 @@ void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 {
 	char	buffer[256];
 	this->tabWidth=width;
+//	sprintf(buffer,"tabs -%i",width);
+//	if(this->showLineNumbers==true)
+//		sprintf(buffer,"tabs $(seq 7 %i %i)",width,this->mc->maxCols);
+//	else
 	sprintf(buffer,"tabs -%i",width);
+
 	system(buffer);
 }
 
-void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(bool show)
+void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 {
 	this->showLineNumbers=show;
-	if(show==true)
-		this->lineReserve=5;
-	else
-		this->lineReserve=0;
+//	if(show==true)
+	this->lineReserve=show+2;
+//	else
+//		this->lineReserve=0;
 	this->updateBuffer();
 }
 

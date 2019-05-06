@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-USEVALGRIND="valgrind --leak-check=full"
+#USEVALGRIND="valgrind --leak-check=full"
 
 g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ncurses ) -lcursestoolkit "$0" -o texteditor ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./texteditor "$@"
@@ -24,7 +24,7 @@ exit $retval
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
 int					windowCols=mainApp->maxCols;
-bool				showLineNumbers=true;
+int					showLineNumbers=6;
 
 #define TABWIDTH 4
 

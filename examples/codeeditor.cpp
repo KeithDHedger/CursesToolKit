@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
-USEVALGRIND="valgrind --leak-check=full"
+#USEVALGRIND="valgrind --leak-check=full"
 
 g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey  ncurses ) -lcursestoolkit "$0" -o codeeditor ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./codeeditor "$@"
@@ -38,7 +38,7 @@ enum {HELP=0,ABOUT};
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
 int					windowCols=mainApp->maxCols;
-bool				showLineNumbers=true;
+int					showLineNumbers=4;
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
@@ -306,6 +306,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
+//	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 

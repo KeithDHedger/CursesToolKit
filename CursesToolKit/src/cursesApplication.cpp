@@ -645,6 +645,8 @@ void CTK_mainAppClass::CTK_setTabWidth(int width)
 	char	buffer[256];
 	this->tabWidth=width;
 	sprintf(buffer,"tabs -%i",width);
+//	sprintf(buffer,"tabs $(seq 7 %i %i)",width,this->maxCols);
+//	fprintf(stderr,"%s\n",buffer);
 	system(buffer);
 	fflush(NULL);
 }
