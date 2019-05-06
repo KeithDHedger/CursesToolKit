@@ -47,23 +47,15 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 
 	for(int j=0;j<this->hite;j++)
 		{
-			if(hilite==true)
-				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);//TODO//
 			else
 				setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
-				setBothColours(FORE_BLACK,BACK_WHITE,false);//TODO//
-
-			MOVETO(this->sx,this->sy+j);
-
 			if(j<this->listItems.size())
-				{
-					MOVETO(this->sx,this->sy+j);
-					printf("%s%s",this->listItems[j+this->listStart]->label.c_str(),this->blank.substr(0,wid-this->listItems[j+this->listStart]->label.length()).c_str());
-				}
+				this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid);
 			else
-				printf("%s",this->blank.c_str());
+				this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
 		}
 	MOVETO(this->sx,this->sy+this->hite);
 }
