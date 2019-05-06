@@ -39,8 +39,6 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	int	botcol;
 	int	foreblack=FORE_BLACK;
 	int	forewhite=FORE_BOLD_WHITE;
-//	int	backblack=
-	//int	backwhite=
 
 	if(this->colours.use256Colours==true)
 		{

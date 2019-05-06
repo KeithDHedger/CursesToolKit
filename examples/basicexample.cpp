@@ -100,15 +100,14 @@ Pasting is done via middle click of mouse as usual.\
 ";
 
 	coloursStruct cs;
-	//cs.use256Colours=false;
 	cs.windowBackCol=BACK_WHITE;
-	//cs.hiliteBackCol=69;
-	//cs.hiliteForeCol=53;
 	cs.fancyGadgets=true;
+
+//menu colours
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;
-	cs.foreCol=FORE_BLACK;
-	cs.backCol=BACK_GREEN;
+	cs.menuForeCol=FORE_WHITE;
+	cs.menuBackCol=BACK_RED;
 
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
@@ -136,40 +135,26 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
+//reset colours to defaults
 	cs.hiliteBackCol=BACK_CYAN;
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
-//	cs.boxType=OUTBOX;
-//cs.fancyGadgets=true;
+
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
-//	mainApp->pages[0].textBoxes[0]->CTK_setColours(cs);
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
+
+//just set box type to inbox.
 	cs.textBoxType=INBOX;
-	mainApp->pages[0].textBoxes[1]->CTK_setColours(cs);
-//cs.fancyGadgets=false;
-
-	//cs.backCol=BACK_YELLOW;
-	//cs.foreCol=FORE_BLACK;
-	//mainApp->CTK_addNewEditBox(101,3,64,8,sampletxt);
-//	mainApp->CTK_addNewEditBox(101,3,64,8,true,"/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesEditBox.cpp");
 	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
-
 	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 
-	cs.foreCol=FORE_WHITE;
-	cs.backCol=BACK_BLUE;
-
 	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
-	mainApp->pages[0].buttons[0]->CTK_setColours(cs);
 	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
 	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
 	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
-	mainApp->pages[0].buttons[1]->CTK_setColours(cs);
 
-	cs.foreCol=FORE_BLACK;
-	cs.backCol=BACK_WHITE;
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->pages[0].inputs[0]->CTK_setColours(cs);
 
@@ -184,7 +169,8 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_addListItem("Item 6");
 	lb->CTK_addListItem("Item 7",(void*)7);
 	lb->CTK_setSelectCB(listselctCB,NULL);
-	//cs.backCol=BACK_GREEN;
+
+//use some 256 colours
 	cs.foreCol=0;
 	cs.backCol=7;
 //set hihlite colour to eye watering 256 colour!
@@ -195,29 +181,18 @@ Pasting is done via middle click of mouse as usual.\
 
 	mainApp->CTK_addListBox(lb);
 
-	cs.foreCol=FORE_WHITE;
-	cs.backCol=BACK_BLUE;
-	cs.hiliteForeCol=FORE_BLACK;
-	cs.hiliteBackCol=BACK_CYAN;
-	cs.use256Colours=false;
 	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
 	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
-	mainApp->pages[0].checkBoxes[0]->CTK_setColours(cs);
-	mainApp->pages[0].checkBoxes[1]->CTK_setColours(cs);
 
 	mainApp->CTK_addNewLabel(85,13,40,4,"Non selectable label.\nLine 2 of label.");
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
-
-
-//	for(int j=0;j<mainApp->pages[0].editBoxes[0]->txtStrings.size();j++)
-//		fprintf(stderr,"%s",mainApp->pages[0].editBoxes[0]->txtStrings[j].c_str());
 
 	delete mainApp;
 	return 0;
