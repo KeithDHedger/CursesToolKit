@@ -37,20 +37,30 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 {
 	int	topcol;
 	int	botcol;
+	int	foreblack=FORE_BLACK;
+	int	forewhite=FORE_BOLD_WHITE;
+//	int	backblack=
+	//int	backwhite=
+
+	if(this->colours.use256Colours==true)
+		{
+			foreblack=0;
+			forewhite=15;
+		}
 
 	switch(type)
 		{
 			case PLAINBOX:
-				topcol=FORE_BLACK;
-				botcol=FORE_BLACK;
+				topcol=foreblack;
+				botcol=foreblack;
 				break;
 			case OUTBOX:
-				topcol=FORE_BOLD_WHITE;
-				botcol=FORE_BLACK;
+				topcol=forewhite;
+				botcol=foreblack;
 				break;
 			case INBOX:
-				topcol=FORE_BLACK;
-				botcol=FORE_BOLD_WHITE;
+				topcol=foreblack;
+				botcol=forewhite;
 				break;
 			case NOBOX:
 				return;

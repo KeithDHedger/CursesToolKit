@@ -185,12 +185,21 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_addListItem("Item 7",(void*)7);
 	lb->CTK_setSelectCB(listselctCB,NULL);
 	//cs.backCol=BACK_GREEN;
+	cs.foreCol=0;
+	cs.backCol=7;
+//set hihlite colour to eye watering 256 colour!
+	cs.hiliteForeCol=88;
+	cs.hiliteBackCol=148;
+	cs.use256Colours=true;
 	lb->CTK_setColours(cs);
 
 	mainApp->CTK_addListBox(lb);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
+	cs.hiliteForeCol=FORE_BLACK;
+	cs.hiliteBackCol=BACK_CYAN;
+	cs.use256Colours=false;
 	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);

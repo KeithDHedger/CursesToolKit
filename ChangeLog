@@ -1,4 +1,5 @@
 0.1.3
+Fixed box drawing using 256 colours.
 Set list box highlighting to highlight current list item.
 Changed show line numbers to take int.
 Updated README.
