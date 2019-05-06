@@ -278,7 +278,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
-						fprintf(stderr,"keysym=%i\n",key.code.sym);
+						//fprintf(stderr,"keysym=%i\n",key.code.sym);
 							switch(key.code.sym)
 								{
 									case TERMKEY_SYM_BACKSPACE://TODO//speed
