@@ -278,6 +278,7 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
+						fprintf(stderr,"keysym=%i\n",key.code.sym);
 							switch(key.code.sym)
 								{
 									case TERMKEY_SYM_BACKSPACE://TODO//speed
@@ -341,9 +342,11 @@ void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
 										continue;
 										break;
 								case TERMKEY_SYM_HOME:
+								case TERMKEY_SYM_FIND://console?
 									this->currentX=0;
 									break;
 								case TERMKEY_SYM_END:
+								case TERMKEY_SYM_SELECT://console?
 									this->currentX=this->txtStrings[this->currentY].length()-1;
 									break;
 
