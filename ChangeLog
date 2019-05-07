@@ -1,4 +1,5 @@
 0.1.3
+Added justification to label class.
 Hilight main menu when menus active.
 Hack for console HOME/END keys.
 Added some 256 colours to basic example.

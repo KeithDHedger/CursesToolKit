@@ -56,7 +56,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	this->text=txt;
 
 	str=this->text;
-	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth,false);
 }
 
 void CTK_cursesLabelClass::CTK_drawLabel(void)
@@ -84,7 +84,22 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 		{
 			if(j<this->txtStrings.size())
 				{
-					MOVETO(this->sx,this->sy+j);
+					int offset=0;
+					if(this->txtStrings[j].back()=='\n')
+						offset=1;
+					switch(this->justify)
+						{
+							case LEFT:
+								MOVETO(this->sx,this->sy+j);
+								break;
+							case CENTRE:
+								MOVETO(this->centre-((this->txtStrings[j].length()-offset)/2),this->sy+j);
+								break;
+							case RIGHT:
+								MOVETO(offset+this->sx+this->wid-this->txtStrings[j].length(),this->sy+j);
+								break;
+							
+						}
 					printf("%s",this->txtStrings[j].c_str());
 				}
 			else
@@ -101,4 +116,9 @@ void CTK_cursesLabelClass::CTK_setColours(coloursStruct cs)
 	this->gc->CTK_setColours(this->colours);
 }
 
+void CTK_cursesLabelClass::CTK_setJustify(int just)
+{
+	this->justify=just;
+	this->centre=(this->wid/2)+this->sx;
+}
 

@@ -188,7 +188,11 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,NULL);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
 
-	mainApp->CTK_addNewLabel(85,13,40,4,"Non selectable label.\nLine 2 of label.");
+	mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
+	mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");
+	mainApp->pages[0].labels[1]->CTK_setJustify(CENTRE);
+	mainApp->CTK_addNewLabel(85,21,40,2,"Right justified non selectable label.\nLine 2 of label.");
+	mainApp->pages[0].labels[2]->CTK_setJustify(RIGHT);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

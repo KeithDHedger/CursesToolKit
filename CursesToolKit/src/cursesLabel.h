@@ -21,6 +21,8 @@
 #ifndef _CURSESLABEL_
 #define _CURSESLABEL_
 
+enum {LEFT=0,CENTRE,RIGHT};
+
 class CTK_cursesLabelClass
 {
 	public:
@@ -33,8 +35,11 @@ class CTK_cursesLabelClass
 		void						CTK_updateText(const char *txt);
 		void						CTK_drawLabel(void);
 		void						CTK_setColours(coloursStruct cs);
+		void						CTK_setJustify(int just);
 
 	private:
+		int							justify=LEFT;
+		int							centre=0;
 		int							sx;
 		int							sy;
 		int							wid;

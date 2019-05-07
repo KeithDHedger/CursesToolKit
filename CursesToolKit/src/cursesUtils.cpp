@@ -51,7 +51,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
-std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw)
+std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
 {
 	std::string buff;
 	std::vector<std::string> v;
@@ -62,6 +62,9 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 				numchars+=tw;
 			else
 				numchars++;
+
+			if((numchars==width) && (incdelim==false))
+				numchars--;
 
 			if(numchars>width)
 				{
@@ -76,7 +79,11 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 				}
 			else
 				{
-					buff+=c;
+					if(incdelim==true)
+						buff+=c;
+					else
+						numchars--;
+
 					v.push_back(buff);
 					numchars=0;
 					buff="";
