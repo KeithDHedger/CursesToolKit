@@ -1,4 +1,5 @@
 0.1.3
+Hilight main menu when menus active.
 Hack for console HOME/END keys.
 Added some 256 colours to basic example.
 Fixed box drawing using 256 colours.

@@ -49,7 +49,7 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	CTK_setColours(this->colours);
 }
 
-void CTK_cursesMenuClass::CTK_drawMenuBar(void)
+void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
 {
 	int	x=1;
 	int y=1;
@@ -58,7 +58,13 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(void)
 		{
 			setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			MOVETO(x,y);
-			printf("%s",this->menuNames[j]->menuName);
+			if((this->menuShowing==true) && (this->menuNumber==j))
+				{
+					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+					printf( "%s" ,this->menuNames[j]->menuName);
+				}
+			else
+				printf("%s",this->menuNames[j]->menuName);
 			setBackColour(this->colours.windowBackCol);
 			printf(" ");
 			x+=strlen(this->menuNames[j]->menuName)+1;
@@ -225,6 +231,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 	while(mainloop==true)
 		{
+			this->menuShowing=true;
 			doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
 			if(this->menuNames[this->menuStart]!=NULL)
 				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
@@ -409,6 +416,12 @@ void CTK_cursesMenuClass::CTK_setSelectCB(void (*select)(void *))
 void CTK_cursesMenuClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
+}
+
+void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
+{
+	this->menuShowing=false;
+	this->CTK_drawMenuBar();
 }
 
 

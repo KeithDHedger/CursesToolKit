@@ -103,7 +103,7 @@ Pasting is done via middle click of mouse as usual.\
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=true;
 
-//menu colours
+//custom menu colours
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;
 	cs.menuForeCol=FORE_WHITE;

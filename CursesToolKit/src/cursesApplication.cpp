@@ -450,7 +450,10 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
 										if(this->menuBar!=NULL)
-											selection=this->menuBar->CTK_doMenuEvent(0,1,true);
+											{
+												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
+												this->menuBar->CTK_drawDefaultMenuBar();
+											}
 										break;
 
 //tab select

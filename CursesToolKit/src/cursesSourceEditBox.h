@@ -35,7 +35,7 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 
 	private:
 		int							sourceX;
-		std::string					filePath;
+		std::string					filePath="";
 		std::vector<std::string>	srcStrings;
 		bool						fullUpdate=true;
 		void						setScreenX(void);

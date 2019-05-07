@@ -75,8 +75,11 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			this->startLine=0;
 		}
 
+//	freeAndNull(&this->filePath);
 	if(isfilename==false)
-		this->txtBuffer=strdup(txt);
+		{
+			this->txtBuffer=strdup(txt);
+		}
 	else
 		{
 			this->filePath=txt;
@@ -125,20 +128,22 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	inpstream << std::endl; 
 
 	sourceHighlight.setDataDir(SRCDATADIR);
-	std::string lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
-
-	if(lang != "")
-		inputLang=lang;
-	else
+	if(this->filePath.compare("")!=0)
 		{
-			lang=inf.infer(this->filePath.c_str());
-			if(lang != "")
-				{
-					langMap.open();
-					inputLang=langMap.getFileName(lang);
-				}
-		}
+			std::string lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
 
+		if(lang != "")
+			inputLang=lang;
+		else
+			{
+				lang=inf.infer(this->filePath.c_str());
+				if(lang != "")
+					{
+						langMap.open();
+						inputLang=langMap.getFileName(lang);
+					}
+			}
+		}
 	if(inputLang=="")
 		inputLang="nohilite.lang";
 	sourceHighlight.setStyleFile("esc.style");

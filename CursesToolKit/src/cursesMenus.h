@@ -50,7 +50,8 @@ class CTK_cursesMenuClass
 
 		std::map<int,menuStruct*>	menuNames;
 
-		void						CTK_drawMenuBar(void);
+		void						CTK_drawMenuBar(bool hilite=true);//TODO//
+		void						CTK_drawDefaultMenuBar(void);
 		void						CTK_addMenuToBar(const char *name);
 		void						CTK_addMenuItem(int menunum,const char *name);
 		void						CTK_clearMenu(int menunum,bool full=false);
@@ -64,6 +65,7 @@ class CTK_cursesMenuClass
 		unsigned					menuWidth=0;
 		int							menuNamesStartX=1;
 		int							pad=1;
+		bool						menuShowing=false;
 
 		void						drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad);
 		int							drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut);
