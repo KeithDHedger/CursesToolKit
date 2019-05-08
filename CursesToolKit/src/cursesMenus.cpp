@@ -194,24 +194,20 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 		this->menuWidth--;
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
-//	for(int cnt=0;cnt<static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-3;cnt++)
 		{
-		fprintf(stderr,"cnt=%i maxrow=%i\n",cnt,static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-2);
 			if(cnt<static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-2)
 				{
-					//SETNORMAL;
-					//return(maxitems);
-			if(prelight==-10000)
-				{
-					this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,BLANK,doshortcut,true);
-				}
-			else
-				{
-					if(prelight==cnt)
-						this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+					if(prelight==-10000)
+						{
+							this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,BLANK,doshortcut,true);
+						}
 					else
-						this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
-				}
+						{
+							if(prelight==cnt)
+								this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+							else
+								this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
+						}
 				}
 			else
 				break;
