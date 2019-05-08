@@ -131,8 +131,14 @@ Pasting is done via middle click of mouse as usual.\
 
 	cnt=0;
 	while(helpMenuNames[cnt]!=NULL)
-		mainApp->menuBar->CTK_addMenuItem(3,helpMenuNames[cnt++]);
+		mainApp->menuBar->CTK_addMenuItem(3,helpMenuNames[cnt++],false);
 
+	char	buffer[2048];
+	for(int j=0;j<100;j++)
+		{
+			sprintf(buffer," Really long menu, menu item %i",j);
+			mainApp->menuBar->CTK_addMenuItem(3,buffer,false);
+		}
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
 
 //reset colours to defaults

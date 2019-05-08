@@ -53,7 +53,7 @@ class CTK_cursesMenuClass
 		void						CTK_drawMenuBar(bool hilite=true);//TODO//
 		void						CTK_drawDefaultMenuBar(void);
 		void						CTK_addMenuToBar(const char *name);
-		void						CTK_addMenuItem(int menunum,const char *name);
+		void						CTK_addMenuItem(int menunum,const char *name,bool shortcut=true);
 		void						CTK_clearMenu(int menunum,bool full=false);
 		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//TODO// private
 		bool						CTK_doShortCutKey(char key,int menunum);

@@ -1,4 +1,6 @@
 0.1.3
+Added very long menu to basic example.
+Fixed segfault in menu longer than window height.
 Added justification to label class.
 Hilight main menu when menus active.
 Hack for console HOME/END keys.

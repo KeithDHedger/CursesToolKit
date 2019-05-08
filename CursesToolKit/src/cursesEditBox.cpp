@@ -376,13 +376,13 @@ const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 	int endchr=startchr;
 
 	for(int j=this->currentX;j>=0;j--)
-		if(isalnum(this->txtStrings[this->currentY][j])==false)
+		if((isalnum(this->txtStrings[this->currentY][j])==false) && (this->txtStrings[this->currentY][j]!='_'))
 			break;
 		else
 			startchr=j;
 
 	for(int j=this->currentX;j<this->txtStrings[this->currentY].length();j++)
-		if(isalnum(this->txtStrings[this->currentY][j])==false)
+		if((isalnum(this->txtStrings[this->currentY][j])==false) && (this->txtStrings[this->currentY][j]!='_'))
 			break;
 		else
 			endchr=j;

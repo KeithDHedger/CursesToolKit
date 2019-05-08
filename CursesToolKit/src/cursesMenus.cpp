@@ -82,12 +82,13 @@ char CTK_cursesMenuClass::setShortCut(const char *name)
 	return(0);
 }
 
-void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name)
+void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name,bool shortcut)
 {
 	menuStruct	*menu=new menuStruct;
 
 	menu->menuName=strdup(name);
-	menu->key=setShortCut(name);
+	if(shortcut==true)
+		menu->key=setShortCut(name);
 	menu->maxWidth=strlen(name);
 	if(menu->key!=0)
 		{
@@ -193,7 +194,13 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 		this->menuWidth--;
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
+//	for(int cnt=0;cnt<static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-3;cnt++)
 		{
+		fprintf(stderr,"cnt=%i maxrow=%i\n",cnt,static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-2);
+			if(cnt<static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-2)
+				{
+					//SETNORMAL;
+					//return(maxitems);
 			if(prelight==-10000)
 				{
 					this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,BLANK,doshortcut,true);
@@ -205,6 +212,9 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 					else
 						this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
 				}
+				}
+			else
+				break;
 		}
 	SETNORMAL;
 	return(maxitems);
@@ -233,6 +243,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 		{
 			this->menuShowing=true;
 			doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
+			this->menuStart=0;
 			if(this->menuNames[this->menuStart]!=NULL)
 				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
 			this->CTK_drawMenuBar();

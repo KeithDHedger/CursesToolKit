@@ -201,6 +201,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int j;
 	int	linenum=0;
 	int	boxline=0;
+	std::string tclip;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
@@ -235,7 +236,10 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	MOVETO(this->sx,this->sy+hite+1);
 	printf("%s",this->blank.c_str());
 	MOVETO(this->sx,this->sy+hite+1);
-	printf("COL %i, LINE %i, MODE %s",this->currentX+1,this->currentY+1,this->editStatus);
+	tclip=this->CTK_getCurrentWord();
+	if(tclip.back()=='\n')
+		tclip.pop_back();
+	printf("COL %i, LINE %i, MODE %s SELECTION %s",this->currentX+1,this->currentY+1,this->editStatus,tclip.c_str());
 
 	this->setScreenX();
 	MOVETO(this->sx,this->sy+boxline);
