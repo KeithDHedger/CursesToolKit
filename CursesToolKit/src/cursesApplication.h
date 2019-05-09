@@ -66,6 +66,8 @@ class CTK_mainAppClass
 //build new gadgets
 		void									CTK_addNewMenuBar(void);
 		void									CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
+		void									CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		
 		void									CTK_addNewButton(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
 		void									CTK_addNewListBox(int x,int y,int width,int hite);

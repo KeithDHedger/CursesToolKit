@@ -88,6 +88,16 @@ void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const ch
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 }
 
+void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+{
+	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
+	txtbox->tabWidth=this->tabWidth;
+	txtbox->CTK_newBox(x,y,width,hite,"",selectable);
+	txtbox->CTK_updateText(txt,isfilename);
+	txtbox->CTK_setColours(this->colours);
+	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
+}
+
 void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass();

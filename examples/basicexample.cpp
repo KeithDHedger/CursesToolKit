@@ -152,8 +152,7 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_setColours(cs);
 
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
-	//mainApp->CTK_addNewTextBox(3,3,80,8,true,"/etc/fstab");
-	//mainApp->pages[0].textBoxes [0]->CTK_updateText("/etc/fstab",true);
+//	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/etc/fstab");
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 
 //just set box type to inbox.
