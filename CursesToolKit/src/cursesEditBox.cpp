@@ -487,3 +487,8 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	this->startLine=j;
 	this->adjustXY();
 }
+
+const std::vector<std::string> CTK_getStrings(void)
+{
+	return(this->txtStrings);
+}

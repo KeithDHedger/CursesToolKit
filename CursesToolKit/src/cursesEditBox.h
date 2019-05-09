@@ -48,7 +48,8 @@ class CTK_cursesEditBoxClass
 		void						CTK_setTabWidth(int width);
 		void						CTK_setShowLineNumbers(int show);
 		void						CTK_gotoLine(int line);
-
+		
+		const std::vector<std::string> CTK_getStrings(void);
 	private:
 
 	protected:

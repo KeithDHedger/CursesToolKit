@@ -152,6 +152,8 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_setColours(cs);
 
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
+
+	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/xxx");
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/etc/fstab");
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 
