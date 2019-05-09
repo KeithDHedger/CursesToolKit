@@ -1,4 +1,5 @@
 0.1.3
+Added option to use file for contents of text box.
 Added very long menu to basic example.
 Fixed segfault in menu longer than window height.
 Added justification to label class.

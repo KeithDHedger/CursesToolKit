@@ -43,20 +43,44 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
-void CTK_cursesTextBoxClass::CTK_updateText(const char *txt)
+void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
 {
 	const char					*ptr=NULL;
 	char						*buffer=NULL;
 	int							startchr=0;
-	char						*cpybuf=(char*)alloca(this->wid+1);
 	std::vector<std::string>	array;
 	std::string					str;
 	CTK_cursesUtilsClass		cu;
+	long						fsize;
+	FILE						*f;
+	bool						flag=true;
+	char						*txtbuffer;
 
 	this->txtStrings.clear();
-	this->text=txt;
+	if(isfilename==false)
+		this->text=txt;
+	else
+		{
+			f=fopen(txt,"rb");
+			fseek(f,0,SEEK_END);
+			fsize=ftell(f);
+			if(fsize==0)
+				{
+					txtbuffer=(char*)malloc(2);
+					sprintf(txtbuffer,"\n");
+				}
+			else
+				{
+					fseek(f,0,SEEK_SET);
+					txtbuffer=(char*)malloc(fsize+1);
+					fread(txtbuffer,1,fsize,f);
+					txtbuffer[fsize]=0;
+				}
+			fclose(f);
+			this->text=txtbuffer;
+			free(txtbuffer);
+		}
 
-	cpybuf[0]=0;
 	str=this->text;
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
@@ -78,15 +102,11 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-	while(j<this->hite)//TODO//
+	while(j<this->hite)
 		{
 			if(j<this->txtStrings.size())
 				{
-					MOVETO(this->sx,this->sy+j);
-					if(this->txtStrings[j+this->startLine].back()=='\n')
-						printf("%s%s",this->txtStrings[j+this->startLine].substr(0,this->txtStrings[j+this->startLine].length()-1).c_str(),this->blank.substr(0,this->wid-this->txtStrings[j+this->startLine].length()+1).c_str());
-					else
-						printf("%s%s",this->txtStrings[j+this->startLine].c_str(),this->blank.substr(0,this->wid-this->txtStrings[j+this->startLine].length()).c_str());
+					this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
 					j++;
 				}
 			else

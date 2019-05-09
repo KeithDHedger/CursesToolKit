@@ -23,6 +23,8 @@ CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 
 #define FILEMENU 0
 #define QUITITEM 5
+#define TABWIDTH 4
+
 void menuselctCB(void *inst)
 {
 	char				*buffer=(char*)alloca(256);
@@ -109,6 +111,7 @@ Pasting is done via middle click of mouse as usual.\
 	cs.menuForeCol=FORE_WHITE;
 	cs.menuBackCol=BACK_RED;
 
+	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
@@ -149,6 +152,8 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_setColours(cs);
 
 	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
+	//mainApp->CTK_addNewTextBox(3,3,80,8,true,"/etc/fstab");
+	//mainApp->pages[0].textBoxes [0]->CTK_updateText("/etc/fstab",true);
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
 
 //just set box type to inbox.
