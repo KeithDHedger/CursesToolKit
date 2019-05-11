@@ -177,5 +177,24 @@ static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 	return(false);
 }
 
+static inline int getColForXpos(std::string str,int tabwidth,int cx)
+{
+	int	column=0;
+	int	next_tab_column=1;
+
+	for(int j=0;j<cx;j++)
+		{
+			if(str[j]=='\t')
+				{
+					next_tab_column=column + (tabwidth-column % tabwidth);
+					while(++column<next_tab_column);
+				} 
+			else
+				column++;
+	}
+
+	return(column);
+}
+
 #endif
 

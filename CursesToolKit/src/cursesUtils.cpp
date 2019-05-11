@@ -51,7 +51,6 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
-#if 1
 std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
 {
 	std::string buff;
@@ -103,56 +102,6 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 
 	return(v);
 }
-#else
-std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
-{
-	std::string buff;
-	std::vector<std::string> v;
-	int	numchars=0;
-	for(unsigned int j=0;j<s.length();j++)
-		{
-			if(s[j]=='\t')
-				numchars+=tw;
-			else
-				numchars++;
-
-			if((numchars==width) && (incdelim==false))
-				numchars--;
-
-//			if(numchars>width)
-//static inline bool willFitLine(std::string str,int tabwidth,int linelen)
-			
-			
-			if(willFitLine(buff,tw,width)==false)
-				{
-					numchars=0;
-					v.push_back(buff);
-					buff="";
-				}
-
-			if(s[j]!=c)
-				{
-					buff+=s[j];
-				}
-			else
-				{
-					if(incdelim==true)
-						buff+=c;
-					else
-						numchars--;
-
-					v.push_back(buff);
-					numchars=0;
-					buff="";
-				}
-		}
-
-	if(buff!="")
-		v.push_back(buff);
-
-	return(v);
-}
-#endif
 
 static void listSelectCB(void *inst,void *ud)
 {
