@@ -75,7 +75,6 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			this->startLine=0;
 		}
 
-//	freeAndNull(&this->filePath);
 	if(isfilename==false)
 		{
 			this->txtBuffer=strdup(txt);
@@ -245,185 +244,6 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	MOVETO(this->sx,this->sy+boxline);
 }
 
-void CTK_cursesSourceEditBoxClass::CTK_doEditEvent(void)
-{
-	TermKeyResult	ret;
-	TermKeyKey		key;
-	int				lineadd=1;
-	bool			scrolled=true;
-	char			tstr[3]={'_',0,0};
-
-	this->editStatus="Edit Mode";
-	this->CTK_drawBox(false,true);
-	fflush(NULL);
-	this->runLoop=true;
-	while(this->runLoop==true)
-		{
-			ret=termkey_waitkey(this->tk,&key);
-			lineadd=1;
-			switch(key.type)
-				{
-					case TERMKEY_TYPE_UNICODE:
-						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
-							{
-								tstr[1]=toupper(key.code.codepoint);
-								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
-									{
-										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
-											{
-												this->mc->menuBar->menuNumber=j;
-												this->mc->menuBar->selectCB(this->mc->menuBar);
-												break;
-											}
-									}
-								break;
-							}
-
-						this->txtStrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
-						this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
-						this->isDirty=true;
-						this->currentX++;
-						this->needsRefresh=true;
-						break;
-					case TERMKEY_TYPE_KEYSYM:
-						{
-						//fprintf(stderr,"keysym=%i\n",key.code.sym);
-							switch(key.code.sym)
-								{
-									case TERMKEY_SYM_BACKSPACE://TODO//speed
-									case TERMKEY_SYM_DEL:
-										if((this->currentY==0) && (this->currentX==0))
-											break;
-										this->isDirty=true;
-										if(this->currentX>0)
-											{
-												this->txtStrings[this->currentY].erase(this->currentX-1,1);
-												this->currentX--;
-												this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
-												this->needsRefresh=true;
-												break;
-											}				
-
-										if(this->currentY>0)
-											{
-												this->txtStrings[this->currentY-1].erase(this->txtStrings[this->currentY-1].length()-1,1);
-												if(this->txtStrings[this->currentY-1].length()>0)
-													this->currentX=this->txtStrings[this->currentY-1].length();
-
-												this->txtStrings[this->currentY-1].append(this->txtStrings[this->currentY]);
-												this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
-												this->currentY--;
-												this->updateBuffer();
-												this->needsRefresh=true;
-											}
-										break;
-									case  TERMKEY_SYM_DELETE:
-										{
-											char	hold=this->txtStrings[this->currentY][this->currentX];
-											this->isDirty=true;
-											this->txtStrings[this->currentY].erase(this->currentX,1);
-											this->srcStrings[this->currentY]=this->txtStrings[this->currentY];
-											this->needsRefresh=true;
-											if(hold=='\n')
-												this->updateBuffer();
-											}
-										break;
-									case TERMKEY_SYM_ENTER:
-										this->isDirty=true;
-										this->txtStrings[this->currentY].insert(this->currentX,1,'\n');
-										this->currentX=0;
-										this->currentY++;
-
-										if((this->currentY-this->startLine)>=this->hite)
-											this->startLine++;
-
-										this->updateBuffer();
-										break;
-									case TERMKEY_SYM_TAB:
-										this->isDirty=true;
-										this->txtStrings[this->currentY].insert(this->currentX,1,'\t');
-										this->currentX++;
-										this->updateBuffer();
-										break;
-									case TERMKEY_SYM_ESCAPE:
-										this->runLoop=false;
-										this->updateBuffer();
-										continue;
-										break;
-								case TERMKEY_SYM_HOME:
-								case TERMKEY_SYM_FIND://console?
-									this->currentX=0;
-									break;
-								case TERMKEY_SYM_END:
-								case TERMKEY_SYM_SELECT://console?
-									this->currentX=this->txtStrings[this->currentY].length()-1;
-									break;
-
-									case TERMKEY_SYM_PAGEUP:
-										lineadd=this->hite;
-									case TERMKEY_SYM_UP:
-										if(this->needsRefresh==true)
-											this->updateBuffer();
-										this->currentY-=lineadd;
-										if(currentY<this->startLine)
-											this->startLine-=lineadd;
-										if((this->currentY<0) || (this->startLine<0))
-											{
-												this->currentY=0;
-												this->startLine=0;
-											}
-										if(this->currentX>=this->txtStrings[this->currentY].length())
-											this->currentX=this->txtStrings[this->currentY].length()-1;
-										break;
-									case TERMKEY_SYM_PAGEDOWN:
-										lineadd=this->hite;
-									case TERMKEY_SYM_DOWN:
-										if(this->needsRefresh==true)
-											this->updateBuffer();
-										this->currentY+=lineadd;
-										if(this->currentY>=this->txtStrings.size())
-											this->currentY=this->txtStrings.size()-1;
-										if((this->currentY-this->startLine)>=this->hite)
-											this->startLine+=lineadd;
-										if(this->currentX>=this->txtStrings[this->currentY].length())
-											this->currentX=this->txtStrings[this->currentY].length()-1;
-										break;
-									case TERMKEY_SYM_LEFT:
-										this->currentX--;
-										if(this->currentX<0)
-											{
-												if(this->currentY>0)
-													{
-														this->currentY--;
-														this->currentX=this->txtStrings[this->currentY].size()-1;
-													}
-												else
-													this->currentX=0;
-											}
-										break;
-									case TERMKEY_SYM_RIGHT:
-										this->currentX++;
-										if(this->currentX>=this->txtStrings[currentY].length())
-											{
-												if(this->currentY<this->txtStrings.size()-1)
-													{
-														this->currentY++;
-														this->currentX=0;
-													}
-												else
-													this->currentX=this->txtStrings[currentY].length()-1;
-											}
-										break;
-								}
-						}
-				}
-
-			this->CTK_drawBox(false,true);
-			this->mc->CTK_emptyIPBuffer();
-		}
-	this->editStatus="Normal";
-}
-
 void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
@@ -435,5 +255,9 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 	this->needsRefresh=false;
 }
 
+std::vector<std::string> &CTK_cursesSourceEditBoxClass::CTK_getSrcStrings(void)
+{
+	return((this->srcStrings));
+}
 
 

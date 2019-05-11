@@ -181,7 +181,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	MOVETO(this->sx+this->lineReserve,this->sy+boxline);
 }
 
-void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
+void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
 {
 	TermKeyResult	ret;
 	TermKeyKey		key;
@@ -216,9 +216,12 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 								break;
 							}
 
-						this->txtStrings[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						lines[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						if(usesrc==true)
+							srclines[this->currentY]=lines[this->currentY];
 						this->currentX++;
 						this->isDirty=true;
+						this->needsRefresh=true;
 						break;
 					case TERMKEY_TYPE_KEYSYM:
 						{
@@ -231,34 +234,42 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										this->isDirty=true;
 										if(this->currentX>0)
 											{
-												this->txtStrings[this->currentY].erase(this->currentX-1,1);
+												lines[this->currentY].erase(this->currentX-1,1);
+												if(usesrc==true)
+													srclines[this->currentY]=lines[this->currentY];
 												this->currentX--;
-												this->updateBuffer();
+												this->needsRefresh=true;
 												break;
 											}				
 
 										if(this->currentY>0)
 											{
-												this->txtStrings[this->currentY-1].erase(this->txtStrings[this->currentY-1].length()-1,1);
-												if(this->txtStrings[this->currentY-1].length()>0)
-													this->currentX=this->txtStrings[this->currentY-1].length();
+												lines[this->currentY-1].erase(lines[this->currentY-1].length()-1,1);
+												if(lines[this->currentY-1].length()>0)
+													this->currentX=lines[this->currentY-1].length();
 
-												this->txtStrings[this->currentY-1].append(this->txtStrings[this->currentY]);
-												this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
+												lines[this->currentY-1].append(lines[this->currentY]);
+												lines.erase(lines.begin()+this->currentY);
 												this->currentY--;
 												this->updateBuffer();
+												this->needsRefresh=true;
 												break;
 											}
-										this->updateBuffer();
-										this->CTK_drawBox(false,true);
 										break;
 									case  TERMKEY_SYM_DELETE:
-										this->txtStrings[this->currentY].erase(this->currentX,1);
-										this->updateBuffer();
-										this->isDirty=true;
+										{
+											char	hold=lines[this->currentY][this->currentX];
+											lines[this->currentY].erase(this->currentX,1);
+											if(usesrc==true)
+												srclines[this->currentY]=lines[this->currentY];
+											this->isDirty=true;
+											this->needsRefresh=true;
+											if(hold=='\n')
+												this->updateBuffer();
+										}
 										break;
 									case TERMKEY_SYM_ENTER:
-										this->txtStrings[this->currentY].insert(this->currentX,1,'\n');
+										lines[this->currentY].insert(this->currentX,1,'\n');
 										this->currentX=0;
 										this->currentY++;
 
@@ -269,7 +280,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										this->isDirty=true;
 										break;
 									case TERMKEY_SYM_TAB:
-										this->txtStrings[this->currentY].insert(this->currentX,1,'\t');
+										lines[this->currentY].insert(this->currentX,1,'\t');
 										this->currentX++;
 										this->updateBuffer();
 										this->isDirty=true;
@@ -280,16 +291,19 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										continue;
 										break;
 								case TERMKEY_SYM_HOME:
+								case TERMKEY_SYM_FIND://console?
 									this->currentX=0;
 									break;
 								case TERMKEY_SYM_END:
-									this->currentX=this->txtStrings[this->currentY].length()-1;
+								case TERMKEY_SYM_SELECT://console?
+									this->currentX=lines[this->currentY].length()-1;
 									break;
 
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
-										this->updateBuffer();
 									case TERMKEY_SYM_UP:
+										if(this->needsRefresh==true)
+											this->updateBuffer();
 										this->currentY-=lineadd;
 										if(currentY<this->startLine)
 											this->startLine-=lineadd;
@@ -298,20 +312,21 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 												this->currentY=0;
 												this->startLine=0;
 											}
-										if(this->currentX>=this->txtStrings[this->currentY].length())
-											this->currentX=this->txtStrings[this->currentY].length()-1;
+										if(this->currentX>=lines[this->currentY].length())
+											this->currentX=lines[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
 										lineadd=this->hite;
-										this->updateBuffer();
 									case TERMKEY_SYM_DOWN:
+										if(this->needsRefresh==true)
+											this->updateBuffer();
 										this->currentY+=lineadd;
-										if(this->currentY>=this->txtStrings.size())
-											this->currentY=this->txtStrings.size()-1;
+										if(this->currentY>=lines.size())
+											this->currentY=lines.size()-1;
 										if((this->currentY-this->startLine)>=this->hite)
 											this->startLine+=lineadd;
-										if(this->currentX>=this->txtStrings[this->currentY].length())
-											this->currentX=this->txtStrings[this->currentY].length()-1;
+										if(this->currentX>=lines[this->currentY].length())
+											this->currentX=lines[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_LEFT:
 										this->currentX--;
@@ -320,7 +335,7 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 												if(this->currentY>0)
 													{
 														this->currentY--;
-														this->currentX=this->txtStrings[this->currentY].size()-1;
+														this->currentX=lines[this->currentY].size()-1;
 													}
 												else
 													this->currentX=0;
@@ -328,15 +343,15 @@ void CTK_cursesEditBoxClass::CTK_doEditEvent(void)
 										break;
 									case TERMKEY_SYM_RIGHT:
 										this->currentX++;
-										if(this->currentX>=this->txtStrings[currentY].length())
+										if(this->currentX>=lines[currentY].length())
 											{
-												if(this->currentY<this->txtStrings.size()-1)
+												if(this->currentY<lines.size()-1)
 													{
 														this->currentY++;
 														this->currentX=0;
 													}
 												else
-													this->currentX=this->txtStrings[currentY].length()-1;
+													this->currentX=lines[currentY].length()-1;
 											}
 										break;
 								}
@@ -454,24 +469,13 @@ void CTK_cursesEditBoxClass::adjustXY(void)
 
 void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 {
-	char	buffer[256];
 	this->tabWidth=width;
-//	sprintf(buffer,"tabs -%i",width);
-//	if(this->showLineNumbers==true)
-//		sprintf(buffer,"tabs $(seq 7 %i %i)",width,this->mc->maxCols);
-//	else
-	sprintf(buffer,"tabs -%i",width);
-
-	system(buffer);
 }
 
 void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 {
 	this->showLineNumbers=show;
-//	if(show==true)
 	this->lineReserve=show+2;
-//	else
-//		this->lineReserve=0;
 	this->updateBuffer();
 }
 
@@ -488,7 +492,7 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	this->adjustXY();
 }
 
-const std::vector<std::string> CTK_cursesEditBoxClass::CTK_getStrings(void)
+std::vector<std::string> &CTK_cursesEditBoxClass::CTK_getStrings(void)
 {
-	return(this->txtStrings);
+	return((this->txtStrings));
 }

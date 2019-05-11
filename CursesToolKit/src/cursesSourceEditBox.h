@@ -27,20 +27,19 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		CTK_cursesSourceEditBoxClass();
 		~CTK_cursesSourceEditBoxClass();
 
-		CTK_mainAppClass			*mc=NULL;
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
-		void						CTK_doEditEvent(void);
-		bool						needsRefresh=false;
+		std::vector<std::string>	&CTK_getSrcStrings(void);
+
+		int							sourceX;
 
 	private:
-		int							sourceX;
 		std::string					filePath="";
-		std::vector<std::string>	srcStrings;
 		bool						fullUpdate=true;
 		void						setScreenX(void);
 
 	protected:
+		std::vector<std::string>	srcStrings;
 		void						updateBuffer(void);
 };
 

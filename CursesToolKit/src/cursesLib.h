@@ -156,5 +156,26 @@ static inline void freeAndNull(char **data)
 		}
 }
 
+static inline bool willFitLine(std::string str,int tabwidth,int linelen)
+{
+	int	column=0;
+	int	next_tab_column;
+
+	for(int j=0;j<str.length();j++)
+		{
+			if(str[j]=='\t')
+				{
+					next_tab_column=column + (tabwidth-column % tabwidth);
+					while(++column<next_tab_column);
+				} 
+			else
+				column++;
+	}
+
+	if(column<linelen)
+		return(true);
+	return(false);
+}
+
 #endif
 

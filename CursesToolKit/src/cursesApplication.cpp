@@ -503,7 +503,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 									case TERMKEY_SYM_ENTER:
 										if(this->hiliteSourceEditBoxNum!=-1)
 											{
-												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEditEvent();
+												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEvent(true,this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getSrcStrings());
 												this->hiliteSourceEditBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);
 												continue;
@@ -511,7 +511,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 
 										if(this->hiliteEditBoxNum!=-1)
 											{
-												this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_doEditEvent();
+												this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_doEvent(false,this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings());
 												this->hiliteEditBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);
 												continue;
@@ -656,10 +656,9 @@ void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windown
 void CTK_mainAppClass::CTK_setTabWidth(int width)
 {
 	char	buffer[256];
+
 	this->tabWidth=width;
 	sprintf(buffer,"tabs -%i",width);
-//	sprintf(buffer,"tabs $(seq 7 %i %i)",width,this->maxCols);
-//	fprintf(stderr,"%s\n",buffer);
 	system(buffer);
 	fflush(NULL);
 }

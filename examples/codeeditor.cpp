@@ -206,10 +206,9 @@ void menuSelectCB(void *inst)
 								CTK_cursesUtilsClass	cu;
 								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
-										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_gotoLine(atoi(cu.stringResult.c_str()));
 										mainApp->CTK_updateScreen(mainApp,NULL);
-										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_doEditEvent();
+										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_doEvent(true,mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getStrings(),mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getSrcStrings());
 										break;
 									}
 								mainApp->CTK_updateScreen(mainApp,NULL);
@@ -310,7 +309,6 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
 	mainApp->CTK_mainEventLoop();
-
 	for(int k=0;k<mainApp->pages.size();k++)
 		free(mainApp->pages[k].userData);
 	delete mainApp;

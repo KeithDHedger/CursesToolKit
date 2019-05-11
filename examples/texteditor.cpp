@@ -202,10 +202,9 @@ void menuSelectCB(void *inst)
 								CTK_cursesUtilsClass	cu;
 								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
-//										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoXY(0,atoi(cu.stringResult.c_str())-1);
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoLine(atoi(cu.stringResult.c_str()));
 										mainApp->CTK_updateScreen(mainApp,NULL);
-										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_doEditEvent();
+										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_doEvent(false,mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getStrings(),mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getStrings());
 										break;
 									}
 								mainApp->CTK_updateScreen(mainApp,NULL);

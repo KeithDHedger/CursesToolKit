@@ -30,13 +30,14 @@ class CTK_cursesEditBoxClass
 		CTK_mainAppClass			*mc=NULL;
 		int							tabWidth=8;
 		bool						isDirty=false;
+		bool						needsRefresh=false;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
-		virtual void				CTK_doEditEvent(void);
+		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false);
 
+		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
-		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		const char					*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
@@ -48,8 +49,8 @@ class CTK_cursesEditBoxClass
 		void						CTK_setTabWidth(int width);
 		void						CTK_setShowLineNumbers(int show);
 		void						CTK_gotoLine(int line);
-		
-		const std::vector<std::string> CTK_getStrings(void);
+
+		std::vector<std::string>	&CTK_getStrings(void);
 	private:
 
 	protected:
@@ -75,9 +76,8 @@ class CTK_cursesEditBoxClass
 		const char					*editStatus="Normal";
 		TermKey						*tk;
 
-		void						updateBuffer(void);
+		virtual void				updateBuffer(void);
 		void						adjustXY(void);
-
 };
 
 #endif
