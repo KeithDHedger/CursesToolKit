@@ -23,7 +23,8 @@ exit $retval
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
-int					windowCols=mainApp->maxCols;
+//int					windowCols=mainApp->maxCols;
+int					windowCols=60;
 int					showLineNumbers=4;
 
 #define TABWIDTH 4
@@ -310,6 +311,7 @@ int main(int argc, char **argv)
 
 	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_updateText("../ChangeLog",true);
 
+	//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setEditable(true);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

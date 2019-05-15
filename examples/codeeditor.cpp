@@ -308,6 +308,8 @@ int main(int argc, char **argv)
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
+	//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setEditable(false);
+
 	mainApp->CTK_mainEventLoop();
 	for(int k=0;k<mainApp->pages.size();k++)
 		free(mainApp->pages[k].userData);

@@ -1,4 +1,6 @@
 0.1.3
+Added set edit/src boxes editable.
+Added scrolling edit/src boxes in NORMAL mode, same as text boxes.
 Fixed edit box at different positions on screen.
 Fixed various formating bugs.
 Rewrote edit/src box code.

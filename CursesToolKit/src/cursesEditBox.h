@@ -46,16 +46,21 @@ class CTK_cursesEditBoxClass
 		void						CTK_insertText(const char *txt);
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
+		void						CTK_setEditable(bool edit);
 		void						CTK_setTabWidth(int width);
 		void						CTK_setShowLineNumbers(int show);
 		void						CTK_gotoLine(int line);
-
+		int							CTK_getCursLine(void);
+		int							CTK_getCurrentY(void);
+		int							CTK_getHeight(void);
+	
 		std::vector<std::string>	&CTK_getStrings(void);
 		void						CTK_insertChar(std::string &str,char chr);
 
 	private:
 
 	protected:
+		bool						canEdit=true;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 		std::vector<std::string>	txtStrings;

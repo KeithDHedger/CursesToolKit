@@ -480,20 +480,65 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(true);
 										if(this->hiliteListNum!=-1)
 											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true);
+										if(this->hiliteEditBoxNum!=-1)
+											{
+												if(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCurrentY()==0)
+													break;
+												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()-1);
+											}
+										if(this->hiliteSourceEditBoxNum!=-1)
+											{
+												if(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCurrentY()==0)
+													break;
+												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()-1);
+											}
 										break;
+
 									case TERMKEY_SYM_DOWN:
 										if(this->hiliteTxtBoxNum!=-1)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(false);
 										if(this->hiliteListNum!=-1)
 											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false);
+										if(this->hiliteEditBoxNum!=-1)
+											this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()+1);
+										if(this->hiliteSourceEditBoxNum!=-1)
+											this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()+1);
 										break;
+
 									case TERMKEY_SYM_PAGEUP:
+										if(this->hiliteEditBoxNum!=-1)
+											{
+												if(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCurrentY()-this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight()<=0)
+													{
+														this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(1);
+														break;
+													}
+												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()-this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight());
+											}
+										if(this->hiliteSourceEditBoxNum!=-1)
+											{
+												if(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCurrentY()-this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight()<=0)
+													{
+														this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(1);
+														break;
+													}
+												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()-this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
+											}
+
 										if(this->hiliteTxtBoxNum!=-1)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
 										if(this->hiliteListNum!=-1)
 											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true,true);
 										break;
+
 									case TERMKEY_SYM_PAGEDOWN:
+
+											if(this->hiliteEditBoxNum!=-1)
+												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight());
+											
+											if(this->hiliteSourceEditBoxNum!=-1)
+												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
+
 										if(this->hiliteTxtBoxNum!=-1)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
 										if(this->hiliteListNum!=-1)

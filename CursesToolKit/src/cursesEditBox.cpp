@@ -221,6 +221,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 	char			tstr[3]={'_',0,0};
 
+	if(this->canEdit==false)
+		return;
 	this->editStatus="Edit Mode";
 	this->CTK_drawBox(false,true);
 	fflush(NULL);
@@ -537,6 +539,15 @@ void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 {
 	int j;
+
+	if(line==-100)
+		{
+			this->currentX=0;
+			this->currentY=0;
+			this->startLine=0;
+			this->adjustXY();
+			return;
+		}
 	for(j=0;j<this->lineNumbers.size();j++)
 		if(this->lineNumbers[j]==line)
 			break;
@@ -551,3 +562,35 @@ std::vector<std::string> &CTK_cursesEditBoxClass::CTK_getStrings(void)
 {
 	return((this->txtStrings));
 }
+
+int CTK_cursesEditBoxClass::CTK_getCursLine(void)
+{
+	int	y=this->lineNumbers[this->currentY];
+	int	cnt=0;
+	while(y==-1)
+		{
+			y=this->lineNumbers[this->currentY-cnt++];
+		}
+	return(y);
+}
+
+int CTK_cursesEditBoxClass::CTK_getCurrentY(void)
+{
+	return(this->currentY);
+}
+
+int CTK_cursesEditBoxClass::CTK_getHeight(void)
+{
+	return(this->hite);
+}
+
+void CTK_cursesEditBoxClass::CTK_setEditable(bool edit)
+{
+	this->canEdit=edit;
+}
+
+
+
+
+
+
