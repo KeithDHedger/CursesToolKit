@@ -51,6 +51,8 @@ class CTK_cursesEditBoxClass
 		void						CTK_gotoLine(int line);
 
 		std::vector<std::string>	&CTK_getStrings(void);
+		void						CTK_insertChar(std::string &str,char chr);
+
 	private:
 
 	protected:

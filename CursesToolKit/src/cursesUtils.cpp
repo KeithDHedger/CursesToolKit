@@ -51,12 +51,57 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
-std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
+std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string str,const char termchar,int width,int tabwidth,int offset,bool incdelim)
 {
 	std::string buff;
 	std::vector<std::string> v;
-	int	column=0;
-	int	next_tab_column=1;
+	int	column=offset;
+	int maxcol=offset+width;
+
+	for(unsigned int j=0;j<str.length();j++)
+		{
+			if(str[j]=='\t')
+				column=((column-1+tabwidth)/tabwidth)*tabwidth;
+			column++;			
+
+			if(column>maxcol)
+				{
+					column=offset+1;
+					v.push_back(buff);
+					buff="";
+				}
+
+			if(str[j]!=termchar)
+				{
+					buff+=str[j];
+				}
+			else
+				{
+					if(incdelim==true)
+						buff+=termchar;
+					else
+						column--;
+
+					v.push_back(buff);
+					column=offset;
+					buff="";
+				}
+		}
+	if(buff!="")
+		v.push_back(buff);
+
+	return(v);
+}
+
+
+
+std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
+{
+	std::string buff;
+	int offset=2;
+	std::vector<std::string> v;
+	int	column=0+offset;
+	int	next_tab_column;
 
 	for(unsigned int j=0;j<s.length();j++)
 		{
@@ -65,15 +110,15 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 					next_tab_column=column + (tw-column % tw);
 					while(++column<next_tab_column);
 				}
-			else
-				column++;
+			//else
+			column++;
 
 			if((column==width) && (incdelim==false))
 				column--;
 
 			if(column==width)
 				{
-					column=0;
+					column=0+offset;
 					next_tab_column=0;
 					v.push_back(buff);
 					buff="";
@@ -91,7 +136,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 						column--;
 
 					v.push_back(buff);
-					column=0;
+					column=0+offset;
 					next_tab_column=0;
 					buff="";
 				}

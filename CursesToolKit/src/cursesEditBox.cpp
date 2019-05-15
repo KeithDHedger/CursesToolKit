@@ -53,7 +53,7 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 	this->hite=hite-1;
 	this->canSelect=selectable;
 
-	this->blank.insert(this->blank.begin(),width,' ');
+	this->blank.insert(0,width,' ');
 	this->CTK_updateText(txt,isfilename);
 }
 
@@ -102,7 +102,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		}
 
 	str=this->txtBuffer;
-	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1-this->lineReserve,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-this->lineReserve,this->tabWidth,this->sx+this->lineReserve,true);
 
 	this->lineNumbers.clear();
 	this->startLineNumber=1;
@@ -130,10 +130,10 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int j;
 	int	linenum=0;
 	int	boxline=0;
+	std::string tclip;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
-
 
 	if((this->txtStrings.size()-1)-this->startLine<this->hite)
 		this->startLine=this->txtStrings.size()-this->hite;
@@ -154,17 +154,21 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 				}
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
+
 	MOVETO(this->sx,this->sy+hite+1);
 	printf("%s",this->blank.c_str());
 	MOVETO(this->sx,this->sy+hite+1);
-	printf("COL %i, LINE %i, MODE %s",this->currentX+1,this->currentY+1,this->editStatus);
+	tclip=this->CTK_getCurrentWord();
+	if(tclip.back()=='\n')
+		tclip.pop_back();
+	printf("COL %i, LINE %i, MODE %s SELECTION %s",this->currentX+1,this->currentY+1,this->editStatus,tclip.c_str());
 
 	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 	printf("%s",this->txtStrings[this->currentY].substr(0,this->currentX).c_str());
@@ -179,6 +183,34 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 				break;
 			}
 	MOVETO(this->sx+this->lineReserve,this->sy+boxline);
+}
+
+void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
+{
+//TODO//Last line
+	int col;
+	str.insert(this->currentX,1,chr);
+
+	col=getColForXpos(str,this->tabWidth,str.length(),this->lineReserve+this->sx);
+	this->currentX++;
+	if(col>this->wid+this->sx)
+		{
+			col=getColForXpos(str,this->tabWidth,this->currentX,this->lineReserve+this->sx);
+			if(col>=this->wid+this->sx)
+				{
+					this->updateBuffer();
+					if(chr!='\t')
+						this->currentX=0;
+					else
+						this->currentX=1;
+					this->currentY++;
+					//this->CTK_drawBox(false,true);
+					return;
+				}
+			this->updateBuffer();
+			return;
+		}
+	return;
 }
 
 void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
@@ -196,6 +228,24 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 	while(this->runLoop==true)
 		{
+#if 0
+			if(this->currentX>=lines[currentY].length())//TODO//?edge conditions
+				{
+					if(this->currentY<lines.size()-1)
+						{
+							this->currentY++;
+							}
+
+					if(this->currentY==lines.size()-1)
+						this->startLine++;
+					
+					
+					this->currentX=lines[currentY].length()-1;
+					this->currentX=1;
+					this->updateBuffer();
+					this->CTK_drawBox(false,true);
+				}
+#endif
 			ret=termkey_waitkey(this->tk,&key);
 			lineadd=1;
 			switch(key.type)
@@ -216,10 +266,9 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 								break;
 							}
 
-						lines[this->currentY].insert(this->currentX,1,key.code.codepoint);
+						this->CTK_insertChar(lines[this->currentY],key.code.codepoint);
 						if(usesrc==true)
 							srclines[this->currentY]=lines[this->currentY];
-						this->currentX++;
 						this->isDirty=true;
 						this->needsRefresh=true;
 						break;
@@ -280,24 +329,23 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										this->isDirty=true;
 										break;
 									case TERMKEY_SYM_TAB:
-										lines[this->currentY].insert(this->currentX,1,'\t');
-										this->currentX++;
-										this->updateBuffer();
-										this->isDirty=true;
+										this->CTK_insertChar(lines[this->currentY],'\t');
+										if(usesrc==true)
+											srclines[this->currentY]=lines[this->currentY];
 										break;
 									case TERMKEY_SYM_ESCAPE:
 										this->runLoop=false;
 										this->updateBuffer();
 										continue;
 										break;
-								case TERMKEY_SYM_HOME:
-								case TERMKEY_SYM_FIND://console?
-									this->currentX=0;
-									break;
-								case TERMKEY_SYM_END:
-								case TERMKEY_SYM_SELECT://console?
-									this->currentX=lines[this->currentY].length()-1;
-									break;
+									case TERMKEY_SYM_HOME:
+									case TERMKEY_SYM_FIND://console?
+										this->currentX=0;
+										break;
+									case TERMKEY_SYM_END:
+									case TERMKEY_SYM_SELECT://console?
+										this->currentX=lines[this->currentY].length()-1;
+										break;
 
 									case TERMKEY_SYM_PAGEUP:
 										lineadd=this->hite;
@@ -357,6 +405,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 								}
 						}
 				}
+		//	this->adjustXY();
 			this->CTK_drawBox(false,true);
 			this->mc->CTK_emptyIPBuffer();
 		}
@@ -475,7 +524,13 @@ void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 {
 	this->showLineNumbers=show;
-	this->lineReserve=show+2;
+	if(show!=0)
+		this->lineReserve=show+2;
+	else
+		this->lineReserve=0;
+
+	this->blank="";
+	this->blank.insert(0,this->wid-this->lineReserve,' ');
 	this->updateBuffer();
 }
 

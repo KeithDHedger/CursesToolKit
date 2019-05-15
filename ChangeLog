@@ -1,4 +1,7 @@
 0.1.3
+Fixed edit box at different positions on screen.
+Fixed various formating bugs.
+Rewrote edit/src box code.
 Code clean.
 Various bug fixes.
 Made src/edit box event function virtual.

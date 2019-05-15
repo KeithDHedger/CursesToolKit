@@ -177,10 +177,48 @@ static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 	return(false);
 }
 
-static inline int getColForXpos(std::string str,int tabwidth,int cx)
+static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 {
-	int	column=0;
-	int	next_tab_column=1;
+/*
+	int maxcol=offset+width;
+
+//	column=offset;
+	for(unsigned int j=0;j<str.length();j++)
+		{
+			if(str[j]=='\t')
+				column=((column-1+tabwidth)/tabwidth)*tabwidth;
+			//else
+			column++;			
+
+			if(column>maxcol)
+
+*/
+
+	int	column=pad;
+
+	for(unsigned int j=0;j<cx;j++)
+		{
+			if(str[j]=='\t')
+				column=((column-1+tabwidth)/tabwidth)*tabwidth;
+
+			column++;			
+		}
+	return(column);
+#if 0
+	int	column=pad;
+
+	for(int j=0;j<cx;j++)
+		{
+			if(str[j]=='\t')
+				column=(column+tabwidth/4);
+			else
+				column++;
+		}
+	return(column);
+return -1;
+#if 0
+	int	column=pad;
+	int	next_tab_column;
 
 	for(int j=0;j<cx;j++)
 		{
@@ -189,11 +227,13 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx)
 					next_tab_column=column + (tabwidth-column % tabwidth);
 					while(++column<next_tab_column);
 				} 
-			else
+			//else
 				column++;
 	}
 
-	return(column);
+	return(column++);
+#endif
+#endif
 }
 
 #endif

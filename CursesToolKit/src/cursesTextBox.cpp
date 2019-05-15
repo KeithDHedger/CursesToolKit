@@ -106,7 +106,7 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 		{
 			if(j<this->txtStrings.size())
 				{
-					this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
+					this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
 					j++;
 				}
 			else

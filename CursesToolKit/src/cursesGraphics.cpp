@@ -119,26 +119,31 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	fflush(NULL);
 }
 
-void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blank,int width)
-{
-	if(line[strlen(line)-1]=='\n')
-		{
-			printf("%.*s%.*s",strlen(line)-1,line,width-strlen(line),blank);
-		}
-	else
-		{
-			printf("%s%.*s",line,width-strlen(line),blank);
-		}
-}
-
-void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int boxwidth)
-{
-	printf("\e[s%*s\e[u%s",boxwidth," ",line);
-}
+//void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blank,int width)
+//{
+//	if(line[strlen(line)-1]=='\n')
+//		{
+//			printf("%.*s%.*s",strlen(line)-1,line,width-strlen(line),blank);
+//		}
+//	else
+//		{
+//			printf("%s%.*s",line,width-strlen(line),blank);
+//		}
+//}
+//
+//void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int boxwidth)
+//{
+//	printf("\e[s%*s\e[u%s",boxwidth," ",line);
+//}
+//
 
 void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int sx,int sy,int boxwidth)
 {
-	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth," ",sy,sx,line);
+	printf("\e[%i;%iH%*s\n",sy,sx,boxwidth,line);
 }
 
+void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth)
+{
+	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth,blnk,sy,sx,line);
+}
 
