@@ -230,24 +230,6 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 	while(this->runLoop==true)
 		{
-#if 0
-			if(this->currentX>=lines[currentY].length())//TODO//?edge conditions
-				{
-					if(this->currentY<lines.size()-1)
-						{
-							this->currentY++;
-							}
-
-					if(this->currentY==lines.size()-1)
-						this->startLine++;
-					
-					
-					this->currentX=lines[currentY].length()-1;
-					this->currentX=1;
-					this->updateBuffer();
-					this->CTK_drawBox(false,true);
-				}
-#endif
 			ret=termkey_waitkey(this->tk,&key);
 			lineadd=1;
 			switch(key.type)
@@ -587,6 +569,10 @@ int CTK_cursesEditBoxClass::CTK_getHeight(void)
 void CTK_cursesEditBoxClass::CTK_setEditable(bool edit)
 {
 	this->canEdit=edit;
+	if(edit==false)
+		this->editStatus="Read Only";
+	else
+		this->editStatus="Normal";
 }
 
 

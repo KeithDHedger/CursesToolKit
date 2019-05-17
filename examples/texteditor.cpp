@@ -23,8 +23,8 @@ exit $retval
 
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
 int					windowRows=mainApp->maxRows-3;
-//int					windowCols=mainApp->maxCols;
-int					windowCols=60;
+int					windowCols=mainApp->maxCols;
+//int					windowCols=60;
 int					showLineNumbers=4;
 
 #define TABWIDTH 4

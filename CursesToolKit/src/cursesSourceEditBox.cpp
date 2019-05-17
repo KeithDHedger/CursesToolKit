@@ -64,7 +64,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	srchilite::LanguageInfer	inf;
 	srchilite::SourceHighlight	sourceHighlight("esc.outlang");
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
-	std::string					inputLang="nohilite.lang";
+//	std::string					inputLang="nohilite.lang";
 
 	this->txtStrings.clear();
 	freeAndNull(&this->txtBuffer);
@@ -127,27 +127,31 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	inpstream << std::endl; 
 
 	sourceHighlight.setDataDir(SRCDATADIR);
-	if(this->filePath.compare("")!=0)
+	std::string lang="";
+	if((this->filePath.compare("")!=0) && (this->forceLang==false))
 		{
-			std::string lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
+			lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
 
-		if(lang != "")
-			inputLang=lang;
-		else
-			{
-				lang=inf.infer(this->filePath.c_str());
-				if(lang != "")
-					{
-						langMap.open();
-						inputLang=langMap.getFileName(lang);
-					}
-			}
+			if(lang != "")
+				this->inputLang=lang;
+			else
+				{
+					lang=inf.infer(this->filePath.c_str());
+					if(lang != "")
+						{
+							langMap.open();
+							this->inputLang=langMap.getFileName(lang);
+						}
+				}
 		}
-	if(inputLang=="")
-		inputLang="nohilite.lang";
+
+	if(this->forceLang==false)
+		if(lang=="")
+			this->inputLang="nohilite.lang";
+
 	sourceHighlight.setStyleFile("esc.style");
 
-	sourceHighlight.highlight(inpstream,oputstream,inputLang,"");
+	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
 }
 
@@ -262,4 +266,18 @@ std::vector<std::string> &CTK_cursesSourceEditBoxClass::CTK_getSrcStrings(void)
 	return((this->srcStrings));
 }
 
+void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
+{
+	if(lang!=NULL)
+		{
+			this->inputLang=lang;
+			this->forceLang=true;
+		}
+	else
+		{
+			this->inputLang="default.lang";
+			this->forceLang=false;
+		}
+	this->updateBuffer();
+}
 

@@ -30,13 +30,15 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false);
 		std::vector<std::string>	&CTK_getSrcStrings(void);
-
+		void						CTK_setInputLang(const char *lang);
 		int							sourceX;
 
 	private:
 		std::string					filePath="";
 		bool						fullUpdate=true;
 		void						setScreenX(void);
+		std::string					inputLang="default.lang";
+		bool						forceLang=false;
 
 	protected:
 		std::vector<std::string>	srcStrings;

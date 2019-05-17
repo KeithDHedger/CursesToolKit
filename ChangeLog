@@ -1,4 +1,5 @@
 0.1.3
+Set edit/src box status line to read only/normal/edit.
 Added set edit/src boxes editable.
 Added scrolling edit/src boxes in NORMAL mode, same as text boxes.
 Fixed edit box at different positions on screen.

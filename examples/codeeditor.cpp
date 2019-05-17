@@ -99,6 +99,7 @@ void menuSelectCB(void *inst)
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
 										mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,cu.stringResult.c_str());
+										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setInputLang(NULL);
 										mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
