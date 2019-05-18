@@ -108,6 +108,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	this->startLineNumber=1;
 	for(int j=0;j<this->txtStrings.size();j++)
 		{
+			this->bookMarks.push_back(false);
 			if(flag==true)
 				this->lineNumbers.push_back(this->startLineNumber++);
 			else
@@ -205,6 +206,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int	linenum=0;
 	int	boxline=0;
 	std::string tclip;
+	const char *mark=INVERSEON "M" INVERSEOFF;
 
 	SETNORMAL;
 	if(this->colours.fancyGadgets==true)
@@ -217,6 +219,13 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+			MOVETO(this->sx+this->showLineNumbers,this->sy+boxline);
+			if(this->bookMarks[boxline+this->startLine]==true)
+				printf(mark);
+			else
+				printf("  ");
+
 			if(this->showLineNumbers>0)
 				{
 					MOVETO(this->sx,this->sy+boxline);

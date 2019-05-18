@@ -599,7 +599,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 					case TERMKEY_TYPE_UNICODE:
 						if(this->menuBar==NULL)
 							break;
-						
+						//fprintf(stderr,"keymod=%i\n",key.modifiers);
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
 								tstr[1]=toupper(key.code.codepoint);

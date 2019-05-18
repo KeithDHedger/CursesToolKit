@@ -21,11 +21,12 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
-int					windowRows=mainApp->maxRows-3;
-int					windowCols=mainApp->maxCols;
-//int					windowCols=60;
-int					showLineNumbers=4;
+CTK_mainAppClass					*mainApp=new CTK_mainAppClass();
+int									windowRows=mainApp->maxRows-3;
+int									windowCols=mainApp->maxCols;
+//int					windowCols=40;
+int									showLineNumbers=4;
+std::vector<bookmarkStruct>	bms;
 
 #define TABWIDTH 4
 
@@ -33,19 +34,22 @@ int					showLineNumbers=4;
 #define EDITMENU 1
 #define NAVMENU 2
 #define TABMENU 3
-#define HELPMENU 4
+#define BMMENU 4
+#define HELPMENU 5
 
 enum {NEWITEM=0,OPENITEM,SAVEITEM,SAVEASITEM,CLOSEITEM,QUITITEM};
 enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE};
 enum {GOTOLINE=0,FIND,FINDNEXT};
 enum {NEXTTAB=0,PREVTAB};
+enum {REMOVEMARKS=0,TOGGLEMARK};
 enum {HELP=0,ABOUT};
 
-const char	*menuNames[]={"File","Edit","Navigation","Tabs","Help",NULL};
+const char	*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
 const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
+const char	*bmMenuNames[]={" Remove All Marks"," Toggle Mark",NULL};
 const char	*helpMenuNames[]={" _Help"," About",NULL};
 
 int			newCnt=0;
@@ -61,6 +65,37 @@ void rebuildTabMenu(void)
 
 	for(unsigned j=0;j<mainApp->pages.size();j++)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,(const char*)mainApp->pages[j].userData);
+}
+
+void rebuildBMMenu(void)
+{
+	int		cnt=0;
+	char	buffer[4096]={0,};
+
+	mainApp->menuBar->CTK_clearMenu(BMMENU);
+	while(bmMenuNames[cnt]!=NULL)
+		mainApp->menuBar->CTK_addMenuItem(BMMENU,bmMenuNames[cnt++]);
+
+	for(int j=0;j<bms.size();j++)
+		freeAndNull(&bms[j].label);
+	bms.clear();
+	
+	for(unsigned j=0;j<mainApp->pages.size();j++)
+		{
+			for(int k=0;k<mainApp->pages[j].editBoxes[0]->CTK_getLineCnt();k++)
+				{
+					if(mainApp->pages[j].editBoxes[0]->CTK_getBookMark(k)==true)
+						{
+							bookmarkStruct bm;
+							bm.pageNum=j;
+							bm.lineNum=mainApp->pages[j].editBoxes[0]->CTK_getLineAtY(k);
+							sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
+							bm.label=strdup(buffer);
+							bms.push_back(bm);
+							mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
+						}
+				}
+		}
 }
 
 void menuSelectCB(void *inst)
@@ -84,6 +119,7 @@ void menuSelectCB(void *inst)
 								mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
+								rebuildBMMenu();
 							}
 							break;
 
@@ -101,6 +137,7 @@ void menuSelectCB(void *inst)
 										mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
+										rebuildBMMenu();
 									}
 								free(buffer);
 							}
@@ -135,6 +172,7 @@ void menuSelectCB(void *inst)
 												fclose(f);
 												mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=false;
 												rebuildTabMenu();
+												rebuildBMMenu();
 											}
 									}
 								free(holdstr);
@@ -153,7 +191,10 @@ void menuSelectCB(void *inst)
 							if(mainApp->pageNumber==-1)
 								mainApp->runEventLoop=false;
 							else
-								rebuildTabMenu();
+								{
+									rebuildTabMenu();
+									rebuildBMMenu();
+								}
 							break;
 						case QUITITEM:
 							if(mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty==true)
@@ -236,6 +277,27 @@ void menuSelectCB(void *inst)
 					}
 				}
 				break;
+
+			case BMMENU:
+				switch(mc->menuItemNumber)
+					{
+						case REMOVEMARKS:
+							for(unsigned j=0;j<mainApp->pages.size();j++)
+								for(int k=0;k<mainApp->pages[j].editBoxes[0]->CTK_getLineCnt();k++)
+									mainApp->pages[j].editBoxes[0]->CTK_setBookMark(k,false);
+							rebuildBMMenu();
+							break;
+						case TOGGLEMARK:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCursLine());
+							rebuildBMMenu();
+							break;
+						default:
+							mainApp->CTK_setPage(bms[mc->menuItemNumber-2].pageNum);
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_gotoLine(bms[mc->menuItemNumber-2].lineNum);
+							break;
+					}
+				break;
+
 			case HELPMENU:
 				switch(mc->menuItemNumber)
 					{
@@ -276,6 +338,7 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[EDITMENU]);
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[NAVMENU]);
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[TABMENU]);
+	mainApp->menuBar->CTK_addMenuToBar(menuNames[BMMENU]);
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[HELPMENU]);
 
 	int cnt=0;
@@ -309,8 +372,11 @@ int main(int argc, char **argv)
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 
-	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_updateText("../ChangeLog",true);
 
+	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_updateText("../ChangeLog",true);
+	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(10);
+	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(56);
+	rebuildBMMenu();
 	//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setEditable(true);
 
 	mainApp->eventLoopCB=mainloopCB;

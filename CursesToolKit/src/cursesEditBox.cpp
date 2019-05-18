@@ -37,6 +37,7 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 		}
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
+	this->bookMarks.clear();
 }
 
 void CTK_cursesEditBoxClass::CTK_setColours(coloursStruct cs)
@@ -108,6 +109,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	this->startLineNumber=1;
 	for(int j=0;j<this->txtStrings.size();j++)
 		{
+			this->bookMarks.push_back(false);
 			if(flag==true)
 				this->lineNumbers.push_back(this->startLineNumber++);
 			else
@@ -131,6 +133,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int	linenum=0;
 	int	boxline=0;
 	std::string tclip;
+	const char *mark=INVERSEON "M" INVERSEOFF;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
@@ -143,6 +146,12 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+			MOVETO(this->sx+this->showLineNumbers,this->sy+boxline);
+			if(this->bookMarks[boxline+this->startLine]==true)
+				printf(mark);
+			else
+				printf("  ");
 			if(this->showLineNumbers>0)
 				{
 					MOVETO(this->sx,this->sy+boxline);
@@ -550,10 +559,21 @@ int CTK_cursesEditBoxClass::CTK_getCursLine(void)
 	int	y=this->lineNumbers[this->currentY];
 	int	cnt=0;
 	while(y==-1)
-		{
-			y=this->lineNumbers[this->currentY-cnt++];
-		}
+		y=this->lineNumbers[this->currentY-cnt++];
 	return(y);
+}
+
+int CTK_cursesEditBoxClass::CTK_getLineAtY(int y)
+{
+	int	yy=this->lineNumbers[y];
+	while(yy==-1)
+		yy=this->lineNumbers[y--];
+	return(yy);
+}
+
+bool CTK_cursesEditBoxClass::CTK_getBookMark(int y)
+{
+	return(this->bookMarks[y]);
 }
 
 int CTK_cursesEditBoxClass::CTK_getCurrentY(void)
@@ -575,7 +595,34 @@ void CTK_cursesEditBoxClass::CTK_setEditable(bool edit)
 		this->editStatus="Normal";
 }
 
+void CTK_cursesEditBoxClass::CTK_toggleBookMark(int y)
+{
+	for(int j=0;j<this->lineNumbers.size();j++)
+		{
+			if(this->lineNumbers[j]==y)
+				{
+					this->bookMarks[j]=!this->bookMarks[j];
+					return;
+				}
+		}
+}
 
+void CTK_cursesEditBoxClass::CTK_setBookMark(int y,bool set)
+{
+	for(int j=0;j<this->lineNumbers.size();j++)
+		{
+			if(this->lineNumbers[j]==y)
+				{
+					this->bookMarks[j]=set;
+					return;
+				}
+		}
+}
+
+int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
+{
+	return(this->txtStrings.size());
+}
 
 
 

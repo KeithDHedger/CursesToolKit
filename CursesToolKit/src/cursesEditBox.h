@@ -51,15 +51,20 @@ class CTK_cursesEditBoxClass
 		void						CTK_setShowLineNumbers(int show);
 		void						CTK_gotoLine(int line);
 		int							CTK_getCursLine(void);
+		int							CTK_getLineAtY(int y);
 		int							CTK_getCurrentY(void);
 		int							CTK_getHeight(void);
-	
+		void						CTK_toggleBookMark(int y);
+		void						CTK_setBookMark(int y,bool set);
+		bool						CTK_getBookMark(int y);
 		std::vector<std::string>	&CTK_getStrings(void);
 		void						CTK_insertChar(std::string &str,char chr);
+		int							CTK_getLineCnt(void);
 
 	private:
 
 	protected:
+		std::vector<bool>			bookMarks;
 		bool						canEdit=true;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
@@ -70,11 +75,11 @@ class CTK_cursesEditBoxClass
 		int							sy;
 		int							wid;
 		int							hite;
+		std::vector<int>			lineNumbers;
 		int							lineReserve=0;
 		int							showLineNumbers=0;
 		bool						canSelect=true;
 		bool						runLoop=false;
-		std::vector<int>			lineNumbers;
 		int							startLine=0;
 		int							startLineNumber=1;
 		char						*txtBuffer=NULL;
