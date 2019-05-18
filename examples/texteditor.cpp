@@ -388,6 +388,9 @@ int main(int argc, char **argv)
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 
+	for(int j=0;j<bms.size();j++)
+		freeAndNull(&bms[j].label);
+
 	for(int k=0;k<mainApp->pages.size();k++)
 		free(mainApp->pages[k].userData);
 
