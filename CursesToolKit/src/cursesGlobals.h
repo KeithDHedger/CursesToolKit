@@ -52,13 +52,6 @@
 
 #include "cursesApplication.h"
 
-struct bookmarkStruct
-{
-	int		pageNum=-1;
-	int		lineNum=-1;
-	char	*label=NULL;
-};
-
 struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;

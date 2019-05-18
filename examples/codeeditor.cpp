@@ -31,6 +31,13 @@ exit $retval
 #define BMMENU 4
 #define HELPMENU 5
 
+struct bookmarkStruct
+{
+	int		pageNum=-1;
+	int		lineNum=-1;
+	char	*label=NULL;
+};
+
 enum {NEWITEM=0,OPENITEM,SAVEITEM,SAVEASITEM,CLOSEITEM,QUITITEM};
 enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE};
 enum {GOTOLINE=0,FIND,FINDNEXT};

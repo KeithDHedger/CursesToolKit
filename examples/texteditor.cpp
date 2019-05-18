@@ -21,13 +21,6 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-CTK_mainAppClass					*mainApp=new CTK_mainAppClass();
-int									windowRows=mainApp->maxRows-3;
-int									windowCols=mainApp->maxCols;
-//int					windowCols=40;
-int									showLineNumbers=4;
-std::vector<bookmarkStruct>	bms;
-
 #define TABWIDTH 4
 
 #define FILEMENU 0
@@ -36,6 +29,13 @@ std::vector<bookmarkStruct>	bms;
 #define TABMENU 3
 #define BMMENU 4
 #define HELPMENU 5
+
+struct bookmarkStruct
+{
+	int		pageNum=-1;
+	int		lineNum=-1;
+	char	*label=NULL;
+};
 
 enum {NEWITEM=0,OPENITEM,SAVEITEM,SAVEASITEM,CLOSEITEM,QUITITEM};
 enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE};
@@ -52,8 +52,14 @@ const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
 const char	*bmMenuNames[]={" Remove All Marks"," Toggle Mark",NULL};
 const char	*helpMenuNames[]={" _Help"," About",NULL};
 
-int			newCnt=0;
-std::string	clip="";
+CTK_mainAppClass			*mainApp=new CTK_mainAppClass();
+int							windowRows=mainApp->maxRows-3;
+int							windowCols=mainApp->maxCols;
+//int						windowCols=40;
+int							showLineNumbers=4;
+std::vector<bookmarkStruct>	bms;
+int							newCnt=0;
+std::string					clip="";
 
 void rebuildTabMenu(void)
 {
