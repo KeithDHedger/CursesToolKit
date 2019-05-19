@@ -28,6 +28,8 @@
 #define NOBUTTON 1<<1
 #define CANCELBUTTON 1<<2
 #define ALLBUTTONS (YESBUTTON) + (NOBUTTON) + (CANCELBUTTON)
+#define ABOUTWIDTH 60
+#define ABOUTHITE 10
 
 class CTK_mainAppClass;
 
@@ -49,6 +51,7 @@ class CTK_cursesUtilsClass
 		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="");
 		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel=false);
 		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons);
+		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence);
 		void						CTK_emptyIPBuffer(void);
 
 	private:

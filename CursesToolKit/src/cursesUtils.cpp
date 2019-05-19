@@ -195,6 +195,64 @@ static void buttonSelectCB(void *inst,void *ud)
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 
+	if(strcmp(bc->label,"Credits")==0)
+		{
+			fileUDStruct		*subfud=new fileUDStruct;
+			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+
+			coloursStruct		cs;
+			cs.labelBoxType=INBOX;
+			cs.fancyGadgets=true;
+			selectapp->CTK_setColours(cs);
+
+			selectapp->CTK_addNewLabel(6,5,selectapp->maxCols-10,selectapp->maxRows-9,(char*)fud->credits);
+			selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
+
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
+			subfud->app=selectapp;
+			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
+
+			selectapp->CTK_appWindow(4,3,selectapp->maxCols-7,selectapp->maxRows-5,"Credits ...",NULL);
+			selectapp->CTK_mainEventLoop();
+
+			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
+			fud->app->CTK_updateScreen(fud->app,NULL);
+			fud->app->useAppWindow=false;
+			return;
+		}
+
+	if(strcmp(bc->label,"Licence")==0)
+		{
+			fileUDStruct		*subfud=new fileUDStruct;
+			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+			coloursStruct		cs;
+	
+			cs.textBoxType=INBOX;
+			cs.fancyGadgets=true;
+			selectapp->CTK_setColours(cs);
+
+			selectapp->CTK_addNewEditBox(selectapp,6,5,selectapp->maxCols-10,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
+			selectapp->pages[0].editBoxes[0]->CTK_setEditable(false);
+
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
+			subfud->app=selectapp;
+			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
+
+			selectapp->CTK_appWindow(4,3,selectapp->maxCols-7,selectapp->maxRows-5,"Licence ...",NULL);
+			selectapp->CTK_mainEventLoop();
+
+			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
+			fud->app->CTK_updateScreen(fud->app,NULL);
+			fud->app->useAppWindow=false;
+			return;
+		}
+
+	if(strcmp(bc->label," Done ")==0)
+		{
+			fud->app->runEventLoop=false;
+			return;
+		}
+
 	if(strcmp(bc->label,"CANCEL")==0)
 		{
 			fud->buttonPressed=CANCELBUTTON;
@@ -455,6 +513,46 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	return(fud->isValid);
 }
 
+void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence)
+{
+	char				*aboutbuffer;
+	fileUDStruct		*fud=new fileUDStruct;
+	CTK_mainAppClass	*selectapp;
+	coloursStruct		cs;
+
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->credits=credits;
+	fud->licenceFilename=licence;
+
+	selectapp=new CTK_mainAppClass();
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=OUTBOX;
+	cs.labelBoxType=NOBOX;
+	cs.fancyGadgets=true;
+	selectapp->CTK_setColours(cs);
+
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(ABOUTWIDTH/2),(selectapp->maxRows/2)-6,ABOUTWIDTH,ABOUTHITE,"About ...",NULL);
+	fud->app=selectapp;
+
+//body
+	asprintf(&aboutbuffer,"%s\n\n%s\n%s\n%s\n%s\n",appname,appinfo,copyright,email,website);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(ABOUTWIDTH/2),(selectapp->maxRows/2)-5,ABOUTWIDTH,6,aboutbuffer);
+	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
+
+	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"Credits");
+	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+
+	selectapp->CTK_addNewButton((selectapp->maxCols/2)-4,(selectapp->maxRows/2)+2,6,1,"Licence");
+	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+
+	selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-9,(selectapp->maxRows/2)+2,6,1," Close ");
+	selectapp->pages[0].buttons[2]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+
+	selectapp->CTK_mainEventLoop();
+	app->CTK_clearScreen();
+	free(aboutbuffer);
+}
 
 
 

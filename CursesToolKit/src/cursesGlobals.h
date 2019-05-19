@@ -62,6 +62,8 @@ struct fileUDStruct
 	bool					isOpenDialog=false;
 	int						buttonsToShow=YESBUTTON|NOBUTTON;
 	int						buttonPressed=NOBUTTONPRESSED;
+	const char				*licenceFilename=NULL;
+	const char				*credits=NULL;
 };
 
 struct pageStruct
