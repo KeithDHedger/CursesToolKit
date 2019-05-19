@@ -317,7 +317,13 @@ void menuSelectCB(void *inst)
 					 case HELP:
 					 	break;
 					 case ABOUT:
-					 	break;
+					 	{
+						 	CTK_cursesUtilsClass	*cu;
+						 	cu=new CTK_cursesUtilsClass;
+							cu->CTK_aboutDialog(mainApp,"Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE");
+							delete cu;
+						}
+						break;
 					}
 				break;
 		}
