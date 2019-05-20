@@ -91,7 +91,6 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 
 	if(isfilename==false)
 		{
-			fprintf(stderr,">%s<\n",txt);
 			this->txtBuffer=strdup(txt);
 		}
 	else
