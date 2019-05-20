@@ -49,6 +49,7 @@
 #define CLEARTOEOS "\e[0J"
 
 #define MOVETO(x,y) printf("\e[%i;%iH",y,x);fflush(NULL);
+//#define MOVETO(x,y) printf("\e[%i;%iH",y,x);
 
 #define ALTCHARSET "\e(0"
 #define NORMCHARSET "\e(B"
@@ -126,7 +127,7 @@ static inline void setForeColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[38;5;%im",fc);
-	fflush(NULL);
+	//fflush(NULL);
 }
 
 static inline void setBackColour(int fc,bool use256=false)
@@ -135,7 +136,7 @@ static inline void setBackColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[48;5;%im",fc);
-	fflush(NULL);
+	//fflush(NULL);
 }
 
 static inline void setBothColours(int fc,int bc,bool use256=false)
@@ -144,7 +145,7 @@ static inline void setBothColours(int fc,int bc,bool use256=false)
 		printf("\e[%i;%im",fc,bc);
 	else
 		printf("\e[38;5;%i;48;5;%im",fc,bc);
-	fflush(NULL);
+//	fflush(NULL);
 }
 
 static inline void CTK_freeAndNull(char **data)
