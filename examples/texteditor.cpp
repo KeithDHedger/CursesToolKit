@@ -83,7 +83,7 @@ void rebuildBMMenu(void)
 		mainApp->menuBar->CTK_addMenuItem(BMMENU,bmMenuNames[cnt++]);
 
 	for(int j=0;j<bms.size();j++)
-		freeAndNull(&bms[j].label);
+		CTK_freeAndNull(&bms[j].label);
 	bms.clear();
 	
 	for(unsigned j=0;j<mainApp->pages.size();j++)
@@ -173,7 +173,7 @@ void menuSelectCB(void *inst)
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getBuffer());
-												freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
+												CTK_freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
 												mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(buffer));
 												fclose(f);
 												mainApp->pages[mainApp->pageNumber].editBoxes[0]->isDirty=false;
@@ -192,7 +192,7 @@ void menuSelectCB(void *inst)
 									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
 								}
 							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
-							freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
+							CTK_freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
 							mainApp->CTK_removePage(mainApp->pageNumber);
 							if(mainApp->pageNumber==-1)
 								mainApp->runEventLoop=false;
@@ -395,7 +395,7 @@ int main(int argc, char **argv)
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)
-		freeAndNull(&bms[j].label);
+		CTK_freeAndNull(&bms[j].label);
 
 	for(int k=0;k<mainApp->pages.size();k++)
 		free(mainApp->pages[k].userData);

@@ -147,7 +147,7 @@ static inline void setBothColours(int fc,int bc,bool use256=false)
 	fflush(NULL);
 }
 
-static inline void freeAndNull(char **data)
+static inline void CTK_freeAndNull(char **data)
 {
 	if((data!=NULL) && (*data!=NULL))
 		{

@@ -22,7 +22,7 @@
 
 CTK_cursesButtonClass::~CTK_cursesButtonClass()
 {
-	freeAndNull(&this->label);
+	CTK_freeAndNull(&this->label);
 }
 
 CTK_cursesButtonClass::CTK_cursesButtonClass()

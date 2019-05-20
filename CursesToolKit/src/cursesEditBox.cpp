@@ -70,9 +70,10 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	long						fsize;
 	FILE						*f;
 	bool						flag=true;
+	std::string					buff;
 
 	this->txtStrings.clear();
-	freeAndNull(&this->txtBuffer);
+	CTK_freeAndNull(&this->txtBuffer);
 	if(reset==true)
 		{
 			this->currentX=0;
@@ -80,8 +81,19 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			this->startLine=0;
 		}
 
+	if((isfilename==true) && (access(txt,F_OK|R_OK)!=(F_OK)))
+		{
+			buff="File not found ...\n";
+			buff+=txt;
+			isfilename=false;
+			txt=buff.c_str();
+		}
+
 	if(isfilename==false)
-		this->txtBuffer=strdup(txt);
+		{
+			fprintf(stderr,">%s<\n",txt);
+			this->txtBuffer=strdup(txt);
+		}
 	else
 		{
 			f=fopen(txt,"rb");

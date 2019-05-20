@@ -64,15 +64,23 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	srchilite::LanguageInfer	inf;
 	srchilite::SourceHighlight	sourceHighlight("esc.outlang");
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
-//	std::string					inputLang="nohilite.lang";
+	std::string					buff;
 
 	this->txtStrings.clear();
-	freeAndNull(&this->txtBuffer);
+	CTK_freeAndNull(&this->txtBuffer);
 	if(reset==true)
 		{
 			this->currentX=0;
 			this->currentY=0;
 			this->startLine=0;
+		}
+
+	if((isfilename==true) && (access(txt,F_OK|R_OK)!=(F_OK)))
+		{
+			buff="File not found ...\n";
+			buff+=txt;
+			isfilename=false;
+			txt=buff.c_str();
 		}
 
 	if(isfilename==false)

@@ -22,7 +22,7 @@
 
 CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 {
-	freeAndNull(&this->label);
+	CTK_freeAndNull(&this->label);
 }
 
 CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass()

@@ -205,14 +205,14 @@ static void buttonSelectCB(void *inst,void *ud)
 			cs.fancyGadgets=true;
 			selectapp->CTK_setColours(cs);
 
-			selectapp->CTK_addNewLabel(6,5,selectapp->maxCols-10,selectapp->maxRows-9,(char*)fud->credits);
+			selectapp->CTK_addNewLabel(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,(char*)fud->credits);
 			selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 
 			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
 			subfud->app=selectapp;
 			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
 
-			selectapp->CTK_appWindow(4,3,selectapp->maxCols-7,selectapp->maxRows-5,"Credits ...",NULL);
+			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Credits ...",NULL);
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
@@ -231,14 +231,14 @@ static void buttonSelectCB(void *inst,void *ud)
 			cs.fancyGadgets=true;
 			selectapp->CTK_setColours(cs);
 
-			selectapp->CTK_addNewEditBox(selectapp,6,5,selectapp->maxCols-10,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
+			selectapp->CTK_addNewEditBox(selectapp,selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
 			selectapp->pages[0].editBoxes[0]->CTK_setEditable(false);
 
 			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
 			subfud->app=selectapp;
 			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
 
-			selectapp->CTK_appWindow(4,3,selectapp->maxCols-7,selectapp->maxRows-5,"Licence ...",NULL);
+			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Licence ...",NULL);
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
@@ -408,7 +408,7 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,
 		this->inFolder=startdir;	
 	this->isValidFile=this->runOpenFile(app,wname,open,filename);
 	app->CTK_clearScreen();
-	freeAndNull(&folder);
+	CTK_freeAndNull(&folder);
 }
 
 bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel)

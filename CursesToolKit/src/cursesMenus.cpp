@@ -392,7 +392,7 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 		}
 	this->menuNames[menunum]->menuItem.clear();
 	if(full==true)
-		freeAndNull(&this->menuNames[menunum]->menuName);
+		CTK_freeAndNull(&this->menuNames[menunum]->menuName);
 	this->menuNames[menunum]->menuItemCnt=0;
 }
 
