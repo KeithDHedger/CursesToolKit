@@ -157,27 +157,20 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 
 	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
-//			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//			MOVETO(this->sx+this->showLineNumbers,this->sy+boxline);
-//			if(this->bookMarks[boxline+this->startLine]==true)
-//				printf(mark);
-//			else
-//				printf("  ");
+			MOVETO(this->sx,this->sy+boxline);
 			if(this->showLineNumbers>0)
 				{
-					MOVETO(this->sx,this->sy+boxline);
 					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
 						printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
 					else
 						printf("%*s",this->showLineNumbers," ");
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//			MOVETO(this->sx+this->showLineNumbers,this->sy+boxline);
-			if(this->bookMarks[boxline+this->startLine]==true)
-				printf(mark);
-			else
-				printf("  ");
 
+					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+					if(this->bookMarks[boxline+this->startLine]==true)
+						printf(mark);
+					else
+						printf("  ");
 				}
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
