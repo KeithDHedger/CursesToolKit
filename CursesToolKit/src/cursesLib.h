@@ -102,6 +102,8 @@ struct coloursStruct
 	int		backCol=BACK_WHITE;
 	int		hiliteForeCol=FORE_BLACK;
 	int		hiliteBackCol=BACK_CYAN;
+	int		markBackCol=BACK_RED;
+	int		markForeCol=FORE_WHITE;
 	int		cursBackCol=BACK_GREEN;
 	int		cursForeCol=FORE_BLACK;
 	int		menuBackCol=BACK_GREEN;
@@ -146,6 +148,17 @@ static inline void setBothColours(int fc,int bc,bool use256=false)
 	else
 		printf("\e[38;5;%i;48;5;%im",fc,bc);
 //	fflush(NULL);
+}
+
+static char colBuffer[256]={0,};
+
+static inline const char* getBothColours(int fc,int bc,bool use256=false)
+{
+	if(use256==false)
+		sprintf(colBuffer,"\e[%i;%im",fc,bc);
+	else
+		sprintf(colBuffer,"\e[38;5;%i;48;5;%im",fc,bc);
+	return(colBuffer);
 }
 
 static inline void CTK_freeAndNull(char **data)

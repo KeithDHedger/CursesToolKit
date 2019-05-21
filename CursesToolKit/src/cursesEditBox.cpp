@@ -144,7 +144,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	int	linenum=0;
 	int	boxline=0;
 	std::string tclip;
-	const char *mark=INVERSEON "M" INVERSEOFF " ";
+	const char *mark="M";
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
@@ -155,88 +155,49 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	if(this->startLine<0)
 		this->startLine=0;
 
-int hb=boxline;
+	int hb=boxline;
 	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 		{
 			char	buffer[4096]={0,};
 			int		cnt=0;
-		//	sprintf(buffer,"%s",this->blank.c_str());
-			//sprintf(buffer,"%s",this->blank.c_str());
-			//printf("%*s\n",this->wid-this->lineReserve,this->blank.c_str());
-//			std::string buffstr="";
-//			//printf("\e[%i;%im",fc,bc);setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
-			cnt=sprintf(buffer,"\e[%i;%im",this->colours.lineNumForeCol,this->colours.lineNumBackCol);
-//			buffstr+="\e[";
-//			buffstr+=this->colours.lineNumForeCol;
-//			buffstr+=";";
-//			buffstr+=this->colours.lineNumBackCol;
-//			buffstr+="m";
-			if(this->lineNumbers[boxline+this->startLine]!=-1)
-				{
-//				buffstr+=
-				cnt+=sprintf(&buffer[cnt],"%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
-	//			printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
-				}
-			else
-			{
-				cnt+=sprintf(&buffer[cnt],"%*s",this->showLineNumbers," ");
-			}
-//				printf("%*s",this->showLineNumbers," ");
-			cnt+=sprintf(&buffer[cnt],"\e[%i;%im",this->colours.foreCol,this->colours.backCol);
-			if(this->bookMarks[boxline+this->startLine]==true)
-				cnt+=sprintf(&buffer[cnt],mark);
-			else
-				cnt+=sprintf(&buffer[cnt],"  ");
-				
-		//	cnt+=sprintf(&buffer[cnt-1],"\e[%i;%im",this->colours.lineNumForeCol,this->colours.lineNumBackCol);
-			cnt+=sprintf(&buffer[cnt],"%s",this->txtStrings[boxline+this->startLine].c_str());
-			//buffer[cnt]='Z';
-			//buffer[cnt+1]='Z';
-			fprintf(stderr,"%s",buffer);
-			//MOVETO(this->sx,this->sy+boxline);
-			//printf("\e[%i;%im%*s\n",this->colours.foreCol,this->colours.backCol,this->wid,this->blank.c_str());
-			MOVETO(this->sx,this->sy+boxline);
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			printf("\e[%iX",this->wid);
-			printf("%s",buffer);
-			boxline++;
-		}
-boxline=hb;
-#if 0
-	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
-		{
-			MOVETO(this->sx,this->sy+boxline);
+
+//line numbers
 			if(this->showLineNumbers>0)
 				{
-					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
+					cnt=sprintf(&buffer[cnt],"%s",getBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours));
 					if(this->lineNumbers[boxline+this->startLine]!=-1)
-						printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
+						cnt+=sprintf(&buffer[cnt],"%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
 					else
-						printf("%*s",this->showLineNumbers," ");
-
-					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+						cnt+=sprintf(&buffer[cnt],"%*s",this->showLineNumbers," ");
+//marks
 					if(this->bookMarks[boxline+this->startLine]==true)
-						printf(mark);
+						{
+							cnt+=sprintf(&buffer[cnt],"%s",getBothColours(this->colours.markForeCol,this->colours.markBackCol,this->colours.use256Colours));
+							cnt+=sprintf(&buffer[cnt],mark);
+						}
 					else
-						printf("  ");
+						{
+							cnt+=sprintf(&buffer[cnt]," ");
+						}
+					cnt+=sprintf(&buffer[cnt],"%s ",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours));
 				}
-
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+			sprintf(&buffer[cnt],"%s",this->txtStrings[boxline+this->startLine].c_str());
+			MOVETO(this->sx,this->sy+boxline);
+//clear and print line
+			printf("%s\e[%iX%s",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),this->wid,buffer);
 			boxline++;
 		}
-#endif
+	boxline=hb;
+
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
 
 	MOVETO(this->sx,this->sy+hite+1);
-	printf("%s",this->blank.c_str());
-	MOVETO(this->sx,this->sy+hite+1);
 	tclip=this->CTK_getCurrentWord();
 	if(tclip.back()=='\n')
 		tclip.pop_back();
-	printf("COL %i, LINE %i, MODE %s SELECTION %s",this->currentX+1,this->currentY+1,this->editStatus,tclip.c_str());
+	printf("\e[%iXCOL %i, LINE %i, MODE %s SELECTION %s",this->wid,this->currentX+1,this->currentY+1,this->editStatus,tclip.c_str());
 
 	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 	printf("%s",this->txtStrings[this->currentY].substr(0,this->currentX).c_str());
@@ -244,10 +205,10 @@ boxline=hb;
 		{
 			case '\t':
 			case '\n':
-				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
+				printf("%s ",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours));
 				break;
 			default:
-				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtStrings[this->currentY][this->currentX]);
+				printf("%s%c",getBothColours(this->colours.cursForeCol,this->colours.cursBackCol,this->colours.use256Colours),this->txtStrings[this->currentY][this->currentX]);
 				break;
 			}
 	MOVETO(this->sx+this->lineReserve,this->sy+boxline);
