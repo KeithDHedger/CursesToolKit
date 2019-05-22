@@ -69,6 +69,7 @@ class CTK_cursesEditBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 		std::vector<std::string>	txtStrings;
+		//std::vector<std::string>	prtStrings;
 		int							currentX;
 		int							currentY;
 		int							sx;
