@@ -129,7 +129,7 @@ static inline void setForeColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[38;5;%im",fc);
-	//fflush(NULL);
+//	fflush(NULL);
 }
 
 static inline void setBackColour(int fc,bool use256=false)
