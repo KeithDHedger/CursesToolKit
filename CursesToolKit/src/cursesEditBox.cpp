@@ -175,9 +175,9 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 				}
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			//printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
-			//fflush(stdout);
-			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+			printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
+			fflush(stdout);
+			//this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
