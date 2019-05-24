@@ -715,4 +715,53 @@ void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 	tcflush(stdincopy,TCIFLUSH);
 	close(stdincopy);
 }
+void CTK_mainAppClass::CTK_setDefaultGadget(int type,int num)
+{
+	this->hiliteBtnNum=-1;
+	this->hiliteTxtBoxNum=-1;
+	this->hiliteInputNum=-1;
+	this->hiliteListNum=-1;
+	this->hiliteCheckBoxNum=-1;
+	this->hiliteEditBoxNum=-1;
+	this->hiliteSourceEditBoxNum=-1;
+	this->hiliting=HLNONE;
+
+	switch(type)
+		{
+			case BUTTON:
+				this->hiliteBtnNum=num;
+				this->hiliting=HLBUTTONS;
+				break;
+			case TXTBOX:
+				this->hiliteTxtBoxNum=num;
+				this->hiliting=HLTEXT;
+				break;
+			case INPUT:
+				this->hiliteInputNum=num;
+				this->hiliting=HLINPUTS;
+				this->CTK_clearScreen();
+				this->CTK_updateScreen(this,NULL);
+				this->pages[this->pageNumber].inputs[num]->CTK_doInput();
+				break;
+			case LIST:
+				this->hiliteListNum=num;
+				this->hiliting=HLLISTS;
+				break;
+			case CHKBOX:
+				this->hiliteCheckBoxNum=num;
+				this->hiliting=HLCHKBOXS;
+				break;
+			case EDBOX:
+				this->hiliteEditBoxNum=num;
+				this->hiliting=HLEDITBOXES;
+				break;
+			case SRCBOX:
+				this->hiliteSourceEditBoxNum=num;
+				this->hiliting=HLSRCEDITBOXES;
+				break;
+		}
+}
+
+
+
 

@@ -52,6 +52,8 @@
 
 #include "cursesApplication.h"
 
+enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
+
 struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;

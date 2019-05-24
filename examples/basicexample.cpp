@@ -170,7 +170,6 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->pages[0].inputs[0]->CTK_setColours(cs);
 
-
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	lb->CTK_newListBox(86,3,10,4);
 	lb->CTK_addListItem("Item 1");
@@ -205,6 +204,9 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->pages[0].labels[1]->CTK_setJustify(CENTRE);
 	mainApp->CTK_addNewLabel(85,21,40,2,"Right justified non selectable label.\nLine 2 of label.");
 	mainApp->pages[0].labels[2]->CTK_setJustify(RIGHT);
+
+//mainApp->CTK_setDefaultGadget(CHKBOX,0);
+	mainApp->CTK_setDefaultGadget(INPUT,0);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

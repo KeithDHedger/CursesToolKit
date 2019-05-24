@@ -337,8 +337,8 @@ int main(int argc, char **argv)
 
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;
-	cs.foreCol=FORE_BLACK;
-	cs.backCol=BACK_GREEN;
+	cs.menuForeCol=FORE_BLACK;
+	cs.menuBackCol=BACK_GREEN;
 	cs.lineNumBackCol=BACK_WHITE;
 	cs.lineNumForeCol=FORE_BLACK;
 

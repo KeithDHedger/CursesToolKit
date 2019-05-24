@@ -90,6 +90,8 @@ class CTK_mainAppClass
 		void									CTK_mainEventLoop(void);
 		void									CTK_emptyIPBuffer(void);
 
+		void									CTK_setDefaultGadget(int type,int num);
+
 		int										x;
 		int										y;
 		int										wid;

@@ -1,4 +1,6 @@
 0.1.3
+Set default widgets in util dialogs.
+Added set default gadget to main app class.
 Fixed no access to file when creating/changing edit/src box.
 Changed name of freeAndNull to CTK_freeAndNull.
 Added about box example.
