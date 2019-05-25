@@ -1,12 +1,26 @@
 #
 #
 
-m4_define([CURSESTOOLKIT_MAJ_N],[0])
-m4_define([CURSESTOOLKIT_MIN_N],[1])
-m4_define([CURSESTOOLKIT_REV_N],[3])
+#shared library versioning
+#LIBRARY_VERSION=4:1:0
+#               | | |
+#        +------+ | +---+
+#        |        |     |
+#      current:revision:age
+#        |        |     |
+#        |        |     +- increment if interfaces have been added
+#        |        |        set to zero if interfaces have been removed
+#        |        |        or changed
+#        |        +- increment if source code has changed
+#        |           set to zero if current is incremented
+#        +- increment if interfaces have been added, removed or changed
+
+m4_define([CURSESTOOLKIT_MAJ_N],[1])
+m4_define([CURSESTOOLKIT_MIN_N],[0])
+m4_define([CURSESTOOLKIT_REV_N],[1])
 
 m4_define([ctk_api_version], [1.0])
-m4_define([ctk_version],[CURSESTOOLKIT_MAJ_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
+m4_define([ctk_version],[CURSESTOOLKIT_MAJ_N.CURSESTOOLKIT_REV_N.CURSESTOOLKIT_MIN_N])
 
 AC_INIT([CursesToolKit],[ctk_version],[PROJ],[CursesToolKit])
 
@@ -21,15 +35,16 @@ AC_HEADER_STDC
 LT_INIT([disable-static])
 
 # libtool
+CURSESTOOLKIT_MAJOR=CURSESTOOLKIT_MAJ_N()
 CURSESTOOLKIT_MINOR=CURSESTOOLKIT_MIN_N()
-CURSESTOOLKIT_INTERFACE=$(( CURSESTOOLKIT_MAJ_N() + ${CURSESTOOLKIT_MINOR} ))
 CURSESTOOLKIT_REVISION=CURSESTOOLKIT_REV_N()
+CURSESTOOLKIT_INTERFACE=$(( CURSESTOOLKIT_MAJ_N() ))
+
 CURSESTOOLKIT_LIBTOOL_VERSION=$CURSESTOOLKIT_INTERFACE:$CURSESTOOLKIT_REVISION:$CURSESTOOLKIT_MINOR
+CURSESTOOLKIT_VERSION=$CURSESTOOLKIT_INTERFACE:$CURSESTOOLKIT_REVISION:$CURSESTOOLKIT_MINOR
 
-CURSESTOOLKIT_VERSION=ctk_version
-
-AC_SUBST(CURSESTOOLKIT_LIBTOOL_VERSION)
 AC_SUBST(CURSESTOOLKIT_VERSION)
+AC_SUBST(CURSESTOOLKIT_LIBTOOL_VERSION)
 
 AC_SUBST(CFLAGS)
 AC_SUBST(CPPFLAGS)

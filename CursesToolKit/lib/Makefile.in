@@ -145,6 +145,10 @@ AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+libcursestoolkit_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CXXLD) \
+	$(AM_CXXFLAGS) $(CXXFLAGS) $(libcursestoolkit_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -354,6 +358,7 @@ lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
 #man1_MANS = ../resources/man/cursesmenus.1
+libcursestoolkit_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(CURSESTOOLKIT_VERSION)
 ctktoolkit_includedir = $(includedir)/cursestoolkit
 ctktoolkit_include_HEADERS = ../src/*.h
 all: all-am
@@ -459,7 +464,7 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 
 libcursestoolkit.la: $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_DEPENDENCIES) $(EXTRA_libcursestoolkit_la_DEPENDENCIES) 
-	$(AM_V_CXXLD)$(CXXLINK) -rpath $(libdir) $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_LIBADD) $(LIBS)
+	$(AM_V_CXXLD)$(libcursestoolkit_la_LINK) -rpath $(libdir) $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
