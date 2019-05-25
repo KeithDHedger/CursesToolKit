@@ -131,7 +131,6 @@ static inline void setForeColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[38;5;%im",fc);
-//	fflush(NULL);
 }
 
 static inline void setBackColour(int fc,bool use256=false)
@@ -140,7 +139,6 @@ static inline void setBackColour(int fc,bool use256=false)
 		printf("\e[%im",fc);
 	else
 		printf("\e[48;5;%im",fc);
-	//fflush(NULL);
 }
 
 static inline void setBothColours(int fc,int bc,bool use256=false)
@@ -149,7 +147,6 @@ static inline void setBothColours(int fc,int bc,bool use256=false)
 		printf("\e[%i;%im",fc,bc);
 	else
 		printf("\e[38;5;%i;48;5;%im",fc,bc);
-//	fflush(NULL);
 }
 
 static char colBuffer[256]={0,};
@@ -195,21 +192,6 @@ static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 
 static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 {
-/*
-	int maxcol=offset+width;
-
-//	column=offset;
-	for(unsigned int j=0;j<str.length();j++)
-		{
-			if(str[j]=='\t')
-				column=((column-1+tabwidth)/tabwidth)*tabwidth;
-			//else
-			column++;			
-
-			if(column>maxcol)
-
-*/
-
 	int	column=pad;
 
 	for(unsigned int j=0;j<cx;j++)
@@ -220,36 +202,6 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 			column++;			
 		}
 	return(column);
-#if 0
-	int	column=pad;
-
-	for(int j=0;j<cx;j++)
-		{
-			if(str[j]=='\t')
-				column=(column+tabwidth/4);
-			else
-				column++;
-		}
-	return(column);
-return -1;
-#if 0
-	int	column=pad;
-	int	next_tab_column;
-
-	for(int j=0;j<cx;j++)
-		{
-			if(str[j]=='\t')
-				{
-					next_tab_column=column + (tabwidth-column % tabwidth);
-					while(++column<next_tab_column);
-				} 
-			//else
-				column++;
-	}
-
-	return(column++);
-#endif
-#endif
 }
 
 #endif

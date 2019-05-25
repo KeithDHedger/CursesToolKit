@@ -523,6 +523,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	fileUDStruct		*fud=new fileUDStruct;
 	CTK_mainAppClass	*selectapp;
 	coloursStruct		cs;
+	int					btnnum=0;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -544,16 +545,22 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(ABOUTWIDTH/2),(selectapp->maxRows/2)-5,ABOUTWIDTH,6,aboutbuffer);
 	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 
-	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"Credits");
-	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
-
-	selectapp->CTK_addNewButton((selectapp->maxCols/2)-4,(selectapp->maxRows/2)+2,6,1,"Licence");
-	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
-
 	selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-9,(selectapp->maxRows/2)+2,6,1," Close ");
-	selectapp->pages[0].buttons[2]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+	selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
 
-	selectapp->CTK_setDefaultGadget(BUTTON,2);
+	if(credits!=NULL)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"Credits");
+			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+		}
+
+	if(licence!=NULL)
+		{
+			selectapp->CTK_addNewButton((selectapp->maxCols/2)-4,(selectapp->maxRows/2)+2,6,1,"Licence");
+			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+		}
+
+	selectapp->CTK_setDefaultGadget(BUTTON,0);
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
 	free(aboutbuffer);

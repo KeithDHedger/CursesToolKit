@@ -175,9 +175,9 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 				}
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
-			fflush(stdout);
-			//this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+//			printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
+//			fflush(stdout);
+			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 			boxline++;
 		}
 
@@ -196,7 +196,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 		{
 			case '\t':
 //				printf("%s",getBothColours(this->colours.backCol,this->colours.foreCol,this->colours.use256Colours));
-//				printf("\e[D\e[1X");
+//				printf("\e[1P");
 //				fflush(stdout);
 //				//printf("%s\e[D ",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours));
 //				//break;
