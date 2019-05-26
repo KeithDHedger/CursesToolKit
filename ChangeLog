@@ -1,4 +1,6 @@
 1.0.1
+Make util dialogs variable width.
+Added automatic positioning of multiple buttons in util dialogs.
 Weird autotools versioning.
 
 0.1.3

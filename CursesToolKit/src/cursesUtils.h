@@ -30,7 +30,8 @@
 #define ALLBUTTONS (YESBUTTON) + (NOBUTTON) + (CANCELBUTTON)
 #define ABOUTWIDTH 60
 #define ABOUTHITE 10
-
+#define QUERYBOXWIDTH 60
+#define ENTRYWIDTH 40
 class CTK_mainAppClass;
 
 class CTK_cursesUtilsClass
@@ -49,10 +50,11 @@ class CTK_cursesUtilsClass
 		std::vector<std::string>	CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim=true);
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="");
-		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel=false);
-		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons);
-		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence);
+		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth=ENTRYWIDTH);
+		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
+		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 		void						CTK_emptyIPBuffer(void);
+		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);
 
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename);

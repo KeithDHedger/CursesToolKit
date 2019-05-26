@@ -413,11 +413,13 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,
 	CTK_freeAndNull(&folder);
 }
 
-bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel)
+bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth)
 {
 	fileUDStruct		*fud=new fileUDStruct;
 	coloursStruct		cs;
 	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+	int					maxbtns=1;
+	int					btnnum=0;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -429,21 +431,26 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-5,44,10,name,title);
-
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+
+1,10,name,title);
 	cs.labelBoxType=NOBOX;	
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-4,41,3,bodytxt);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,5,bodytxt);
+	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 	selectapp->pages[0].labels[0]->CTK_setColours(cs);
 
-	selectapp->CTK_addNewInput((selectapp->maxCols/2)-20,(selectapp->maxRows/2)+1,41,1,defaulttxt);
+	selectapp->CTK_addNewInput((selectapp->maxCols/2)-(dialogwidth/2)+1,(selectapp->maxRows/2)+1,dialogwidth-2,1,defaulttxt);
+
+	if(hascancel==true)
+		maxbtns=2;
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
-	selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+3,6,1,"  OK  ");
+	selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum++),(selectapp->maxRows/2)+3,6,1,"  OK  ");
+
 	selectapp->pages[0].buttons[0]->CTK_setColours(cs);
 	if(hascancel==true)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-10,(selectapp->maxRows/2)+3,6,1,"CANCEL");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"CANCEL");
 			selectapp->pages[0].buttons[1]->CTK_setColours(cs);
 			selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 		}
@@ -461,12 +468,13 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		return(true);
 }
 
-int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons)
+int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth)
 {
 	fileUDStruct		*fud=new fileUDStruct;
 	coloursStruct		cs;
 	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
 	int					btnnum=0;
+	int					maxbtns=0;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -479,17 +487,28 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-22,(selectapp->maxRows/2)-6,45,10,name,title);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+
+1,10,name,title);
 	cs.labelBoxType=NOBOX;	
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-20,(selectapp->maxRows/2)-4,42,5,bodytxt);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,5,bodytxt);
+
 	selectapp->pages[0].labels[0]->CTK_setColours(cs);
+	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
 
 	if((buttons&YESBUTTON)==YESBUTTON)
+		maxbtns++;
+	if((buttons&NOBUTTON)==NOBUTTON)
+		maxbtns++;
+	if((buttons&CANCELBUTTON)==CANCELBUTTON)
+		maxbtns++;
+
+
+	if((buttons&YESBUTTON)==YESBUTTON)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"  OK  ");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"  OK  ");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
@@ -497,7 +516,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 
 	if((buttons&NOBUTTON)==NOBUTTON)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-4,(selectapp->maxRows/2)+2,6,1,"  NO  ");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"  NO  ");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
@@ -505,7 +524,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 
 	if((buttons&CANCELBUTTON)==CANCELBUTTON)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-9,(selectapp->maxRows/2)+2,6,1,"CANCEL");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"CANCEL");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,fud);
@@ -517,13 +536,14 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	return(fud->isValid);
 }
 
-void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence)
+void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth)
 {
 	char				*aboutbuffer;
 	fileUDStruct		*fud=new fileUDStruct;
 	CTK_mainAppClass	*selectapp;
 	coloursStruct		cs;
 	int					btnnum=0;
+	int					maxbtns=1;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -537,26 +557,32 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-(ABOUTWIDTH/2),(selectapp->maxRows/2)-6,ABOUTWIDTH,ABOUTHITE,"About ...",NULL);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+1,ABOUTHITE,"About ...",NULL);
 	fud->app=selectapp;
 
 //body
 	asprintf(&aboutbuffer,"%s\n\n%s\n%s\n%s\n%s\n",appname,appinfo,copyright,email,website);
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(ABOUTWIDTH/2),(selectapp->maxRows/2)-5,ABOUTWIDTH,6,aboutbuffer);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,6,aboutbuffer);
 	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 
-	selectapp->CTK_addNewButton((selectapp->maxCols/2)+20-9,(selectapp->maxRows/2)+2,6,1," Close ");
-	selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+	if(credits!=NULL)
+		maxbtns++;
+	if(licence!=NULL)
+		maxbtns++;
+
+	selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum++),(selectapp->maxRows/2)+2,6,1," Close ");
+	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
 
 	if(credits!=NULL)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-19,(selectapp->maxRows/2)+2,6,1,"Credits");
-			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum),(selectapp->maxRows/2)+2,6,1,"Credits");
+			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
+			btnnum++;
 		}
 
 	if(licence!=NULL)
 		{
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-4,(selectapp->maxRows/2)+2,6,1,"Licence");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum),(selectapp->maxRows/2)+2,6,1,"Licence");
 			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,(void*)fud);
 		}
 
@@ -565,6 +591,16 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	app->CTK_clearScreen();
 	free(aboutbuffer);
 }
+
+int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum)
+{
+	int x;
+	double secs=(wid/(gadgetcnt+1));
+
+	x=(sx+(secs/2))+(secs*(gadgetnum))+((secs/2)-(gadgetwid/2));
+	return(x);
+}
+
 
 
 

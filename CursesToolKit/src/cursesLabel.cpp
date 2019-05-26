@@ -37,6 +37,7 @@ void CTK_cursesLabelClass::CTK_newLabel(int x,int y,int width,int hite,const cha
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
+	this->centre=(this->wid/2)+this->sx;
 
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
@@ -56,7 +57,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	this->text=txt;
 
 	str=this->text;
-	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth,false);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
 void CTK_cursesLabelClass::CTK_drawLabel(void)
@@ -119,6 +120,5 @@ void CTK_cursesLabelClass::CTK_setColours(coloursStruct cs)
 void CTK_cursesLabelClass::CTK_setJustify(int just)
 {
 	this->justify=just;
-	this->centre=(this->wid/2)+this->sx;
 }
 
