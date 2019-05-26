@@ -1,4 +1,5 @@
 1.0.1
+Fixed label text.
 Make util dialogs variable width.
 Added automatic positioning of multiple buttons in util dialogs.
 Weird autotools versioning.

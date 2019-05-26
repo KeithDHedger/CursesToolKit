@@ -57,7 +57,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	this->text=txt;
 
 	str=this->text;
-	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid,this->tabWidth,this->sx,true);
 }
 
 void CTK_cursesLabelClass::CTK_drawLabel(void)
@@ -107,7 +107,6 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 				return;
 		}
 
-	MOVETO(this->sx,this->sy+100);
 	fflush(NULL);
 }
 

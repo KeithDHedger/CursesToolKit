@@ -206,7 +206,7 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->pages[0].labels[2]->CTK_setJustify(RIGHT);
 
 //mainApp->CTK_setDefaultGadget(CHKBOX,0);
-	mainApp->CTK_setDefaultGadget(INPUT,0);
+//	mainApp->CTK_setDefaultGadget(INPUT,0);
 
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();

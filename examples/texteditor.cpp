@@ -385,7 +385,7 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
 
 
-	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_updateText("../ChangeLog",true);
+	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_updateText("../ChangeLogxx",true);
 	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(10);
 	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(56);
 	rebuildBMMenu();
