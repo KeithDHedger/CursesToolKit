@@ -163,6 +163,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 				{
 					MOVETO(this->sx,this->sy+boxline);
 					//printf("\e[0m%s\e[%iX",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),this->wid);
+					fflush(NULL);
 					if(this->showLineNumbers>0)
 						{
 							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
