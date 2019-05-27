@@ -79,6 +79,7 @@ class CTK_cursesEditBoxClass
 		std::vector<int>			lineNumbers;
 		int							lineReserve=0;
 		int							showLineNumbers=0;
+		int							statusCLPad=4;
 		bool						canSelect=true;
 		bool						runLoop=false;
 		int							startLine=0;

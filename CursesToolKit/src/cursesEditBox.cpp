@@ -185,8 +185,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 		}
 	else
 		{
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			this->gc->CTK_printLine(this->txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+			this->refreshLine();
 		}
 
 	if(hilite==true)
@@ -196,7 +195,8 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	if(tclip.back()=='\n')
 		tclip.pop_back();
 	MOVETO(this->sx,this->sy+hite+1);
-	printf("\e[%iXCOL %i, LINE %i, MODE %s SELECTION %s",this->wid,this->currentX+1,this->currentY+1,this->editStatus,tclip.c_str());
+	//printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->showLineNumbers,this->currentX+1,this->showLineNumbers,this->currentY+1,this->editStatus,tclip.c_str());
+	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 
 	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 	printf("%s",this->txtStrings[this->currentY].substr(0,this->currentX).c_str());
