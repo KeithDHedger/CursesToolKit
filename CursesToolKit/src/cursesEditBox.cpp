@@ -195,7 +195,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	if(tclip.back()=='\n')
 		tclip.pop_back();
 	MOVETO(this->sx,this->sy+hite+1);
-	//printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->showLineNumbers,this->currentX+1,this->showLineNumbers,this->currentY+1,this->editStatus,tclip.c_str());
 	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 
 	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);

@@ -615,6 +615,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 							}
 						break;
 				}
+			this->CTK_emptyIPBuffer();
 			this->CTK_updateScreen(this,NULL);
 			if(this->eventLoopCB!=NULL)
 				this->eventLoopCB(this,NULL);
