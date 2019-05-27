@@ -138,7 +138,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		}
 }
 
-void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
+void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
 	int	startchr=0;
 	int j;
@@ -147,38 +147,46 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	std::string tclip;
 	const char *mark=INVERSEON "M" INVERSEOFF;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
-
-	if((this->txtStrings.size()-1)-this->startLine<this->hite)
-		this->startLine=this->txtStrings.size()-this->hite;
-
-	if(this->startLine<0)
-		this->startLine=0;
-
-	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
+	if(shortupdate==false)
 		{
-			MOVETO(this->sx,this->sy+boxline);
-			if(this->showLineNumbers>0)
+			if(this->colours.fancyGadgets==true)
+				this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
+
+			if((this->txtStrings.size()-1)-this->startLine<this->hite)
+				this->startLine=this->txtStrings.size()-this->hite;
+
+			if(this->startLine<0)
+				this->startLine=0;
+
+			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 				{
-					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
-					if(this->lineNumbers[boxline+this->startLine]!=-1)
-						printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
-					else
-						printf("%*s",this->showLineNumbers," ");
+					MOVETO(this->sx,this->sy+boxline);
+					if(this->showLineNumbers>0)
+						{
+							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
+							if(this->lineNumbers[boxline+this->startLine]!=-1)
+								printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
+							else
+								printf("%*s",this->showLineNumbers," ");
+
+							setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+							if(this->bookMarks[boxline+this->startLine]==true)
+								printf(mark);
+							else
+								printf("  ");
+						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-					if(this->bookMarks[boxline+this->startLine]==true)
-						printf(mark);
-					else
-						printf("  ");
-				}
-
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 //			printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
 //			fflush(stdout);
-			this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
-			boxline++;
+					this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+					boxline++;
+				}
+		}
+	else
+		{
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+			this->gc->CTK_printLine(this->txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 		}
 
 	if(hilite==true)
@@ -245,13 +253,13 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 	TermKeyResult	ret;
 	TermKeyKey		key;
 	int				lineadd=1;
-
+	bool			shortdraw=false;
 	char			tstr[3]={'_',0,0};
 
 	if(this->canEdit==false)
 		return;
 	this->editStatus="Edit Mode";
-	this->CTK_drawBox(false,true);
+	this->CTK_drawBox(false,true,shortdraw);
 	fflush(NULL);
 	this->runLoop=true;
 
@@ -304,6 +312,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 										if(this->currentY>0)
 											{
+												shortdraw=false;
 												lines[this->currentY-1].erase(lines[this->currentY-1].length()-1,1);
 												if(lines[this->currentY-1].length()>0)
 													this->currentX=lines[this->currentY-1].length();
@@ -325,11 +334,15 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											this->isDirty=true;
 											this->needsRefresh=true;
 											if(hold=='\n')
-												this->updateBuffer();
+												{
+													shortdraw=false;
+													this->updateBuffer();
+												}
 										}
 										break;
 									case TERMKEY_SYM_ENTER:
 										lines[this->currentY].insert(this->currentX,1,'\n');
+										shortdraw=false;
 										this->currentX=0;
 										this->currentY++;
 
@@ -346,6 +359,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										break;
 									case TERMKEY_SYM_ESCAPE:
 										this->runLoop=false;
+										shortdraw=false;
 										this->updateBuffer();
 										continue;
 										break;
@@ -359,13 +373,18 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										break;
 
 									case TERMKEY_SYM_PAGEUP:
+										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
+										this->refreshLine();
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY-=lineadd;
 										if(currentY<this->startLine)
-											this->startLine-=lineadd;
+											{
+												this->startLine-=lineadd;
+												shortdraw=false;
+											}
 										if((this->currentY<0) || (this->startLine<0))
 											{
 												this->currentY=0;
@@ -375,15 +394,20 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											this->currentX=lines[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
+										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
+										this->refreshLine();
 										if(this->needsRefresh==true)
 											this->updateBuffer();
 										this->currentY+=lineadd;
 										if(this->currentY>=lines.size())
 											this->currentY=lines.size()-1;
 										if((this->currentY-this->startLine)>=this->hite)
-											this->startLine+=lineadd;
+											{
+												shortdraw=false;
+												this->startLine+=lineadd;
+											}
 										if(this->currentX>=lines[this->currentY].length())
 											this->currentX=lines[this->currentY].length()-1;
 										break;
@@ -393,6 +417,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											{
 												if(this->currentY>0)
 													{
+														this->refreshLine();
 														this->currentY--;
 														this->currentX=lines[this->currentY].size()-1;
 													}
@@ -406,6 +431,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											{
 												if(this->currentY<lines.size()-1)
 													{
+														this->refreshLine();
 														this->currentY++;
 														this->currentX=0;
 													}
@@ -417,8 +443,9 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 						}
 				}
 		//	this->adjustXY();
-			this->CTK_drawBox(false,true);
+			this->CTK_drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
+			shortdraw=true;
 		}
 	this->editStatus="Normal";
 }
@@ -642,6 +669,10 @@ int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
 	return(this->txtStrings.size());
 }
 
-
+void CTK_cursesEditBoxClass::refreshLine(void)
+{
+	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+}
 
 

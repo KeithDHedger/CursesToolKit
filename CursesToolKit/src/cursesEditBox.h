@@ -33,7 +33,7 @@ class CTK_cursesEditBoxClass
 		bool						needsRefresh=false;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
-		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false);
+		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
 
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
@@ -91,6 +91,7 @@ class CTK_cursesEditBoxClass
 
 		virtual void				updateBuffer(void);
 		void						adjustXY(void);
+		virtual void				refreshLine(void);
 };
 
 #endif

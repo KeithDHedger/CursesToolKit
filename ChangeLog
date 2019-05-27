@@ -1,4 +1,5 @@
 1.0.1
+Just refresh current line.
 Fixed label text.
 Make util dialogs variable width.
 Added automatic positioning of multiple buttons in util dialogs.

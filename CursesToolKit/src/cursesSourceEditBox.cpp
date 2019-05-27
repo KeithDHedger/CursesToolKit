@@ -207,7 +207,7 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 			}
 }
 
-void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
+void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
 	int	startchr=0;
 	int j;
@@ -216,38 +216,45 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor)
 	std::string tclip;
 	const char *mark=INVERSEON "M" INVERSEOFF;
 
-	SETNORMAL;
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
-	if((this->txtStrings.size()-1)-this->startLine<this->hite)
-		this->startLine=this->txtStrings.size()-this->hite;
-
-	if(this->startLine<0)
-		this->startLine=0;
-
-	while((boxline<this->hite) && (boxline<this->txtStrings.size()))
+	//SETNORMAL;
+	if(shortupdate==false)
 		{
-			MOVETO(this->sx,this->sy+boxline);
-			if(this->showLineNumbers>0)
+			if(this->colours.fancyGadgets==true)
+				this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
+			if((this->txtStrings.size()-1)-this->startLine<this->hite)
+				this->startLine=this->txtStrings.size()-this->hite;
+
+			if(this->startLine<0)
+				this->startLine=0;
+
+			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 				{
-					setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
-					if(this->lineNumbers[boxline+this->startLine]!=-1)
-						printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
-					else
-						printf("%*s",this->showLineNumbers," ");
+					MOVETO(this->sx,this->sy+boxline);
+					if(this->showLineNumbers>0)
+						{
+							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
+							if(this->lineNumbers[boxline+this->startLine]!=-1)
+								printf("%.*i",this->showLineNumbers,this->lineNumbers[boxline+this->startLine]);
+							else
+								printf("%*s",this->showLineNumbers," ");
+
+							setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+							if(this->bookMarks[boxline+this->startLine]==true)
+								printf(mark);
+							else
+								printf("  ");
+						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-					if(this->bookMarks[boxline+this->startLine]==true)
-						printf(mark);
-					else
-						printf("  ");
+					this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+					boxline++;
 				}
-
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
-			boxline++;
 		}
-
+	else
+		{
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+			this->gc->CTK_printLine(this->srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+		}
 	if(hilite==true)
 		{
 			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -295,3 +302,8 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 	this->updateBuffer();
 }
 
+void CTK_cursesSourceEditBoxClass::refreshLine(void)
+{
+	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+	this->gc->CTK_printLine(srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+}
