@@ -288,9 +288,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	for(int j=0;j<app->pages[app->pageNumber].editBoxes.size();j++)
 		{
 			if(app->hiliteEditBoxNum==j)
-				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(true);
+				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(true,false);
 			else
-				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(false);
+				app->pages[app->pageNumber].editBoxes[j]->CTK_drawBox(false,false);
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].srcEditBoxes.size();j++)
@@ -308,7 +308,6 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			else
 				app->pages[app->pageNumber].lists[j]->CTK_drawListWindow(false);
 		}
-
 	SETNORMAL;
 }
 
@@ -461,8 +460,10 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->CTK_updateScreen(this,NULL);
 										if(this->menuBar!=NULL)
 											{
+											fprintf(stderr,"do menu\n");
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
+											fprintf(stderr,"do menu out\n");
 											}
 										break;
 

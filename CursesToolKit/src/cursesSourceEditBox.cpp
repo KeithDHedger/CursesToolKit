@@ -227,9 +227,11 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 			if(this->startLine<0)
 				this->startLine=0;
 
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 				{
 					MOVETO(this->sx,this->sy+boxline);
+					//printf("\e[%iX",this->wid);
 					if(this->showLineNumbers>0)
 						{
 							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
@@ -246,6 +248,8 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+//					printf("\e[%iX%s",this->wid,this->srcStrings[boxline+this->startLine].c_str());
+					//printf("%s",this->srcStrings[boxline+this->startLine].c_str());
 					this->gc->CTK_printLine(this->srcStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}
@@ -254,6 +258,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 		{
 			this->refreshLine();
 		}
+
 	if(hilite==true)
 		{
 			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);

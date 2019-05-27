@@ -158,9 +158,11 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 			if(this->startLine<0)
 				this->startLine=0;
 
+			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 				{
 					MOVETO(this->sx,this->sy+boxline);
+					//printf("\e[0m%s\e[%iX",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),this->wid);
 					if(this->showLineNumbers>0)
 						{
 							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
@@ -177,8 +179,9 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//			printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
-//			fflush(stdout);
+					//printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
+					//printf("%s",this->txtStrings[boxline+this->startLine].c_str());
+					//fflush(stdout);
 					this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}

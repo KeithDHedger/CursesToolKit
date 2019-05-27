@@ -1,4 +1,4 @@
-1.0.1
+									1.0.1
 Flush ip buffer in main event loop.
 Set zero pading for line/col numbers in status line.
 Reset colours when drawing line numbers.

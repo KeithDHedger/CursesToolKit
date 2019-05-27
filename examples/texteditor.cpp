@@ -108,7 +108,7 @@ void menuSelectCB(void *inst)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 	
-//	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
+	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
 
 	switch(mc->menuNumber)
 		{
@@ -324,6 +324,7 @@ void menuSelectCB(void *inst)
 
 void mainloopCB(void *mainc,void *data)
 {
+fprintf(stderr,"here\n");
 //MOVETO(1,2);
 //printf("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 fflush(NULL);
