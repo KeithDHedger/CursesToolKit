@@ -144,9 +144,9 @@ static inline void setBackColour(int fc,bool use256=false)
 static inline void setBothColours(int fc,int bc,bool use256=false)
 {
 	if(use256==false)
-		printf("\e[%i;%im",fc,bc);
+		printf("\e[0m\e[%i;%im",fc,bc);
 	else
-		printf("\e[38;5;%i;48;5;%im",fc,bc);
+		printf("\e[0m\e[38;5;%i;48;5;%im",fc,bc);
 }
 
 static char colBuffer[256]={0,};
@@ -154,9 +154,9 @@ static char colBuffer[256]={0,};
 static inline const char* getBothColours(int fc,int bc,bool use256=false)
 {
 	if(use256==false)
-		sprintf(colBuffer,"\e[%i;%im",fc,bc);
+		sprintf(colBuffer,"\e[0m\e[%i;%im",fc,bc);
 	else
-		sprintf(colBuffer,"\e[38;5;%i;48;5;%im",fc,bc);
+		sprintf(colBuffer,"\e[0m\e[38;5;%i;48;5;%im",fc,bc);
 	return(colBuffer);
 }
 

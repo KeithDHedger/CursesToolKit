@@ -1,4 +1,5 @@
 1.0.1
+Reset colours when drawing line numbers.
 Just refresh current line.
 Fixed label text.
 Make util dialogs variable width.
