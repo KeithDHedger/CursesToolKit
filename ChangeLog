@@ -1,4 +1,5 @@
 1.0.1
+Fixed query box util dialog.
 Fixed pkg-config version.
 Fixed pasting line at end of edit/src box.
 Redraw edit/src box on delete line.

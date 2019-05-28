@@ -487,10 +487,10 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+
-1,10,name,title);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-4,dialogwidth+
+1,8,name,title);
 	cs.labelBoxType=NOBOX;	
-	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,5,bodytxt);
+	selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-3,dialogwidth,5,bodytxt);
 
 	selectapp->pages[0].labels[0]->CTK_setColours(cs);
 	selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
@@ -508,7 +508,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 
 	if((buttons&YESBUTTON)==YESBUTTON)
 		{
-			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"  OK  ");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"  OK  ");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
@@ -516,7 +516,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 
 	if((buttons&NOBUTTON)==NOBUTTON)
 		{
-			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"  NO  ");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"  NO  ");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum++]->CTK_setSelectCB(buttonSelectCB,fud);
@@ -524,7 +524,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 
 	if((buttons&CANCELBUTTON)==CANCELBUTTON)
 		{
-			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+2,6,1,"CANCEL");
+			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"CANCEL");
 			selectapp->pages[0].buttons[btnnum]->CTK_setColours(cs);
 			selectapp->CTK_setDefaultGadget(BUTTON,btnnum);
 			selectapp->pages[0].buttons[btnnum]->CTK_setSelectCB(buttonSelectCB,fud);
