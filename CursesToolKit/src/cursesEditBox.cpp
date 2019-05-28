@@ -107,9 +107,10 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			else
 				{
 					fseek(f,0,SEEK_SET);
-					this->txtBuffer=(char*)malloc(fsize+1);
+					this->txtBuffer=(char*)malloc(fsize+2);
 					fread(this->txtBuffer,1,fsize,f);
-					this->txtBuffer[fsize]=0;
+					this->txtBuffer[fsize]='\n';
+					this->txtBuffer[fsize+1]=0;
 				}
 			fclose(f);
 		}
@@ -467,6 +468,7 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 
 	for(int j=0;j<this->txtStrings.size();j++)
 		buff.append(this->txtStrings[j]);
+//	buff.append("\n");
 
 	this->CTK_updateText(buff.c_str(),false,false);
 }
@@ -531,6 +533,8 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 
 void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
+	if((txt==NULL) || (strlen(txt)==0))
+		return;
 	this->isDirty=true;
 	this->txtStrings[this->currentY].insert(this->currentX,txt);
 	this->updateBuffer();
@@ -538,7 +542,7 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 	if(this->currentX>=this->txtStrings[this->currentY].length())
 		this->currentX=this->txtStrings[this->currentY].length()-1;
 
-	if(this->txtStrings[this->currentY][this->currentX]=='\n')
+	if(txt[strlen(txt)-1]=='\n')
 		{
 			this->currentX=0;
 			this->currentY++;

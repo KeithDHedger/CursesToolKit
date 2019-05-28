@@ -101,9 +101,10 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			else
 				{
 					fseek(f,0,SEEK_SET);
-					this->txtBuffer=(char*)malloc(fsize+1);
+					this->txtBuffer=(char*)malloc(fsize+2);
 					fread(this->txtBuffer,1,fsize,f);
-					this->txtBuffer[fsize]=0;
+					this->txtBuffer[fsize]='\n';
+					this->txtBuffer[fsize+1]=0;
 				}
 			fclose(f);
 		}
