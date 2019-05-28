@@ -148,7 +148,8 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 			printf(CLEARTOSOL);
 			return;
 		}
-
+//		printf "\e[30;47m\e[%i;%iH\e[35;46mZZZZ" $((y1++)) $x1
+//	printf("\e[30;47m\e[%i;%iH\e[35;46m",y,x);
 	for(unsigned j=0;j<this->menuWidth;j++)
 		{
 			if(j<strlen(themenu->menuName))
@@ -157,6 +158,7 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 						{
 							j++;
 							printf("%s%c%s",UNDERSCOREON,themenu->menuName[j],UNDERSCOREOFF);
+							//printf("%c",themenu->menuName[j]);
 							gotus=true;
 						}
 					else

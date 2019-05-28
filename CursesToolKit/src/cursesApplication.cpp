@@ -460,10 +460,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->CTK_updateScreen(this,NULL);
 										if(this->menuBar!=NULL)
 											{
-											fprintf(stderr,"do menu\n");
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
-											fprintf(stderr,"do menu out\n");
 											}
 										break;
 
