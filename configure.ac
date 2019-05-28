@@ -20,7 +20,7 @@ m4_define([CURSESTOOLKIT_MIN_N],[0])
 m4_define([CURSESTOOLKIT_REV_N],[1])
 
 m4_define([ctk_api_version], [1.0])
-m4_define([ctk_version],[CURSESTOOLKIT_MAJ_N.CURSESTOOLKIT_REV_N.CURSESTOOLKIT_MIN_N])
+m4_define([ctk_version],[CURSESTOOLKIT_MAJ_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
 
 AC_INIT([CursesToolKit],[ctk_version],[PROJ],[CursesToolKit])
 
