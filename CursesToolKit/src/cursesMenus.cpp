@@ -78,6 +78,7 @@ char CTK_cursesMenuClass::setShortCut(const char *name)
 		{
 			if(name[j]=='_')
 				return(toupper(name[j+1]));
+				//return(name[j+1]);
 		}
 	return(0);
 }
@@ -400,6 +401,7 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 
 bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 {
+//fprintf(stderr,"key=%i %c\n",key,key);
 	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
 		{
 			if(key==this->menuNames[menunum]->menuItem[k]->key)

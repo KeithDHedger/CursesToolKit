@@ -282,6 +282,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
 								tstr[1]=toupper(key.code.codepoint);
+								//tstr[1]=key.code.codepoint;
 								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
 									{
 										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
@@ -523,16 +524,28 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 {
 	this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
+	this->isDirty=true;
+	this->updateBuffer();
+	this->CTK_drawBox(false,true,false);
 }
-
 
 void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
+	this->isDirty=true;
 	this->txtStrings[this->currentY].insert(this->currentX,txt);
 	this->updateBuffer();
 	this->currentX+=strlen(txt);
 	if(this->currentX>=this->txtStrings[this->currentY].length())
 		this->currentX=this->txtStrings[this->currentY].length()-1;
+
+	if(this->txtStrings[this->currentY][this->currentX]=='\n')
+		{
+			this->currentX=0;
+			this->currentY++;
+			if(this->currentY-this->startLine>=this->hite)
+				this->startLine++;
+		}
+	this->CTK_drawBox(false,true,false);
 }
 
 void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
