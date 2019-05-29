@@ -601,8 +601,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 						//fprintf(stderr,"keymod=%i key=%i =%c\n",key.modifiers,key.code.codepoint,key.code.codepoint);
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
-								tstr[1]=toupper(key.code.codepoint);
-								//tstr[1]=key.code.codepoint;
+								//tstr[1]=toupper(key.code.codepoint);
+								tstr[1]=key.code.codepoint;
 								for(int j=0;j<this->menuBar->menuNames.size();j++)
 									{
 										if(this->menuBar->CTK_doShortCutKey(tstr[1],j)==true)

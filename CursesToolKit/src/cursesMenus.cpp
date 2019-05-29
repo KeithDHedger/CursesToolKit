@@ -78,9 +78,19 @@ char CTK_cursesMenuClass::setShortCut(const char *name)
 		{
 			if(name[j]=='_')
 				return(toupper(name[j+1]));
-				//return(name[j+1]);
 		}
 	return(0);
+}
+
+void CTK_cursesMenuClass::CTK_setMenuShortCut(int menunum,int menuitem,char key)
+{
+	this->menuNames[menunum]->menuItem[menuitem]->shortcutKey=key;
+	this->menuNames[menunum]->itemsHaveKey=true;
+
+	int len=strlen(this->menuNames[menunum]->menuItem[menuitem]->menuName);
+
+	if(this->menuNames[menunum]->maxWidth<len)
+		this->menuNames[menunum]->maxWidth=len;
 }
 
 void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name,bool shortcut)
@@ -89,19 +99,12 @@ void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name,bool shor
 
 	menu->menuName=strdup(name);
 	if(shortcut==true)
-		menu->key=setShortCut(name);
-	menu->maxWidth=strlen(name);
-	if(menu->key!=0)
-		{
-			this->menuNames[menunum]->itemsHaveKey=true;
-			if(this->menuNames[menunum]->maxWidth<strlen(name)+strlen("Ctrl+X"))
-				this->menuNames[menunum]->maxWidth=strlen(name)+strlen("Ctrl+X");
-		}
-	else
-		{
-			if(this->menuNames[menunum]->maxWidth<menu->maxWidth)
-				this->menuNames[menunum]->maxWidth=menu->maxWidth;
-		}
+		menu->menuKey=setShortCut(name);
+	menu->maxWidth=strlen(name)+1;
+
+	if(this->menuNames[menunum]->maxWidth<menu->maxWidth)
+		this->menuNames[menunum]->maxWidth=menu->maxWidth;
+
 	menu->menuItem.clear();
 	this->menuNames[menunum]->menuItem[this->menuNames[menunum]->menuItemCnt++]=menu;
 }
@@ -111,7 +114,8 @@ void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
 	menuStruct	*menu=new menuStruct;
 
 	menu->menuName=strdup(name);
-	menu->key=0;
+	menu->menuKey=0;
+	menu->shortcutKey=0;
 	menu->startCol=this->menuNamesStartX;
 	this->menuNamesStartX+=strlen(name)+1;
 	menu->menuItem.clear();
@@ -145,42 +149,36 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 
 	if(style==BLANK)
 		{
-			MOVETO(x+this->menuWidth+1,y);
+			MOVETO(x+this->menuWidth+8,y);
 			printf(CLEARTOSOL);
 			return;
 		}
-//		printf "\e[30;47m\e[%i;%iH\e[35;46mZZZZ" $((y1++)) $x1
-//	printf("\e[30;47m\e[%i;%iH\e[35;46m",y,x);
-	for(unsigned j=0;j<this->menuWidth;j++)
+
+	MOVETO(x,y);
+	for(unsigned j=0;j<this->menuNames[menunum]->maxWidth-1;j++)
+		printf(" ");
+	if(this->menuNames[menunum]->itemsHaveKey==true)
+		printf("       ");
+
+	MOVETO(x,y);
+	for(unsigned j=0;j<strlen(themenu->menuName);j++)
 		{
-			if(j<strlen(themenu->menuName))
+			if((themenu->menuName[j]=='_')  && (style!=BLANK))
 				{
-					if((themenu->menuName[j]=='_') && (doshortcut==true) && (style!=BLANK))
-						{
-							j++;
-							printf("%s%c%s",UNDERSCOREON,themenu->menuName[j],UNDERSCOREOFF);
-							//printf("%c",themenu->menuName[j]);
-							gotus=true;
-						}
-					else
-						printf("%c",themenu->menuName[j]);
+					j++;
+					printf("%s%c%s",UNDERSCOREON,themenu->menuName[j],UNDERSCOREOFF);
+					gotus=true;
 				}
 			else
-				printf(" ");
+				printf("%c",themenu->menuName[j]);
 		}
 
-	if((gotus==true) && (dopad==true))
+	if(themenu->shortcutKey!=0)
 		{
-			MOVETO(x+this->menuWidth-6,y);
-			printf(" Ctrl+%c ",themenu->key);
+			MOVETO(x+this->menuWidth-1,y);
+			printf("Ctrl+%c ",themenu->shortcutKey);
 		}
-
-	if(gotus==false)
-		if(doshortcut==true)
-			printf("  ");
-		else
-			printf(" ");
-	fflush(NULL);
+	fflush(stdout);
 }
 
 int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut)
@@ -189,12 +187,8 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	int	maxitems=0;
 	int msx=this->menuNames[menunum]->startCol;
 
-	this->menuWidth=0;
-
 	maxitems=this->menuNames[menunum]->menuItemCnt;
 	this->menuWidth=this->menuNames[menunum]->maxWidth;
-	if(doshortcut==true)
-		this->menuWidth--;
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
 		{
@@ -302,7 +296,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuNumber--;
 												if(this->menuNumber<0)
-													this->menuNumber=0;
+													this->menuNumber=this->menuCnt-1;
 												loop=false;
 												selection=0;
 												continue;
@@ -314,7 +308,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 												loop=false;
 												this->menuNumber++;
 												if(this->menuNumber>=this->menuCnt)
-													this->menuNumber--;
+													this->menuNumber=0;
 												continue;
 												break;
 											case TERMKEY_SYM_HOME:
@@ -368,7 +362,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 									{
 										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										tstr[1]=toupper(key.code.codepoint);
-										if(this->CTK_doShortCutKey(tstr[1],this->menuNumber)==true)
+										if(this->CTK_doMenuKey(tstr[1],this->menuNumber)==true)
 											{
 												this->selectCB(this);
 												return(SELECTED);
@@ -401,10 +395,9 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 
 bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 {
-//fprintf(stderr,"key=%i %c\n",key,key);
 	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
 		{
-			if(key==this->menuNames[menunum]->menuItem[k]->key)
+			if(key==this->menuNames[menunum]->menuItem[k]->shortcutKey)
 				{
 					this->menuItemNumber=k;
 					return(true);
@@ -412,6 +405,20 @@ bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 		}
 	return(false);
 }
+
+bool CTK_cursesMenuClass::CTK_doMenuKey(char key,int menunum)
+{
+	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
+		{
+			if(key==this->menuNames[menunum]->menuItem[k]->menuKey)
+				{
+					this->menuItemNumber=k;
+					return(true);
+				}
+		}
+	return(false);
+}
+
 
 void CTK_cursesMenuClass::CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp)
 {

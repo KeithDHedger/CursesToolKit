@@ -52,12 +52,12 @@ int					showLineNumbers=4;
 std::vector<bookmarkStruct>	bms;
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
-const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," Clos_e"," _Quit",NULL};
+const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
-const char	*tabMenuNames[]={" Next Tab"," Prev Tab",NULL};
-const char	*bmMenuNames[]={" Remove All Marks"," Toggle Mark",NULL};
-const char	*helpMenuNames[]={" _Help"," About",NULL};
+const char	*tabMenuNames[]={" _Next Tab"," _Prev Tab",NULL};
+const char	*bmMenuNames[]={" _Remove All Marks"," _Toggle Mark",NULL};
+const char	*helpMenuNames[]={" _Help"," About ",NULL};
 
 int			newCnt=0;
 std::string	clip="";
@@ -358,6 +358,8 @@ int main(int argc, char **argv)
 	int cnt=0;
 	while(fileMenuNames[cnt]!=NULL)
 		mainApp->menuBar->CTK_addMenuItem(FILEMENU,fileMenuNames[cnt++]);
+
+	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'q');
 
 	cnt=0;
 	while(editMenuNames[cnt]!=NULL)

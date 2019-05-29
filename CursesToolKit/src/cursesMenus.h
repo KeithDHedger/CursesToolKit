@@ -24,7 +24,8 @@
 struct	menuStruct
 {
 	char							*menuName=NULL;
-	char							key=0;
+	char							shortcutKey=0;
+	char							menuKey=0;
 	int								menuItemCnt=0;
 	int								startCol=0;
 	int								maxWidth=0;
@@ -57,7 +58,9 @@ class CTK_cursesMenuClass
 		void						CTK_clearMenu(int menunum,bool full=false);
 		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//TODO// private
 		bool						CTK_doShortCutKey(char key,int menunum);
+		bool						CTK_doMenuKey(char key,int menunum);
 		void						CTK_setColours(coloursStruct cs);
+		void						CTK_setMenuShortCut(int menunum,int menuitem,char key);
 
 	private:
 		void						(*updateCB)(void *,void*);
