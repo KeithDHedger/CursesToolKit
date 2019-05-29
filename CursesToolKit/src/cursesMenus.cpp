@@ -391,6 +391,7 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 	if(full==true)
 		CTK_freeAndNull(&this->menuNames[menunum]->menuName);
 	this->menuNames[menunum]->menuItemCnt=0;
+	this->menuNames[menunum]->maxWidth=0;
 }
 
 bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
