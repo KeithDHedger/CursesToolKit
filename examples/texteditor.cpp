@@ -358,6 +358,7 @@ int main(int argc, char **argv)
 		mainApp->menuBar->CTK_addMenuItem(FILEMENU,fileMenuNames[cnt++]);
 
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'q');
+	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,OPENITEM,'O');
 
 	cnt=0;
 	while(editMenuNames[cnt]!=NULL)

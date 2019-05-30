@@ -84,7 +84,7 @@ char CTK_cursesMenuClass::setShortCut(const char *name)
 
 void CTK_cursesMenuClass::CTK_setMenuShortCut(int menunum,int menuitem,char key)
 {
-	this->menuNames[menunum]->menuItem[menuitem]->shortcutKey=key;
+	this->menuNames[menunum]->menuItem[menuitem]->shortcutKey=toupper(key);
 	this->menuNames[menunum]->itemsHaveKey=true;
 
 	int len=strlen(this->menuNames[menunum]->menuItem[menuitem]->menuName);

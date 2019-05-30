@@ -282,14 +282,16 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 					case TERMKEY_TYPE_UNICODE:
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
-								//tstr[1]=toupper(key.code.codepoint);
-								tstr[1]=key.code.codepoint;
+								tstr[1]=toupper(key.code.codepoint);
+								//tstr[1]=key.code.codepoint;
 								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
 									{
 										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
 											{
 												this->mc->menuBar->menuNumber=j;
 												this->mc->menuBar->selectCB(this->mc->menuBar);
+												this->mc->CTK_updateScreen(this->mc,NULL);
+												
 												break;
 											}
 									}
