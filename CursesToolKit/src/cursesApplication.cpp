@@ -457,6 +457,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteInputNum=-1;
 										this->hiliteListNum=-1;
 										this->hiliteCheckBoxNum=-1;
+										this->hiliteTxtBoxNum=-1;
+										this->hiliteSourceEditBoxNum=-1;
 										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
 										if(this->menuBar!=NULL)
@@ -532,7 +534,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										break;
 
 									case TERMKEY_SYM_PAGEDOWN:
-
 											if(this->hiliteEditBoxNum!=-1)
 												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight());
 											
