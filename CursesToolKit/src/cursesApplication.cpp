@@ -579,6 +579,10 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											}
 										if(this->hiliteListNum!=-1)
 											{
+												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getMultipleSelect()==true)
+													{
+														this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_toggleItem(this->pages[this->pageNumber].lists[this->hiliteListNum]->listItemNumber);
+													}
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB((void*)this->pages[this->pageNumber].lists[this->hiliteListNum],this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)

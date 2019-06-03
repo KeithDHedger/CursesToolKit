@@ -42,6 +42,9 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 
 void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 {
+	char	buffer[4096];
+	char	selected;
+
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,false);
 
@@ -53,9 +56,23 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 				setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 			if(j<this->listItems.size())
-				this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
+				{
+					if(this->multi==false)
+						this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
+					else
+						{
+							if(this->selections[j+this->listStart]==true)
+								selected='X';
+							else
+								selected=' ';
+							sprintf(buffer,"[%c] %s",selected,this->listItems[j+this->listStart]->label.c_str());
+							this->gc->CTK_printLine(buffer,this->blank.c_str(),this->sx,this->sy+j,this->wid);
+						}
+				}
 			else
-				this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+				{
+					this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+				}
 		}
 	MOVETO(this->sx,this->sy+this->hite);
 }
@@ -136,4 +153,54 @@ void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
+
+void CTK_cursesListBoxClass::CTK_selectAll(void)
+{
+	for(int j=0;j<this->listItems.size();j++)
+		this->selections[j]=true;
+}
+
+void CTK_cursesListBoxClass::CTK_selectNone(void)
+{
+	for(int j=0;j<this->listItems.size();j++)
+		this->selections[j]=false;
+}
+
+void CTK_cursesListBoxClass::CTK_setMultipleSelect(bool multi)
+{
+	this->multi=multi;
+	this->selections.clear();
+	for(int j=0;j<this->listItems.size();j++)
+		this->selections.push_back(false);
+}
+
+bool CTK_cursesListBoxClass::CTK_getMultipleSelect(void)
+{
+	return(this->multi);
+}
+
+void CTK_cursesListBoxClass::CTK_toggleItem(int item)
+{
+	this->selections[item]=!this->selections[item];
+}
+
+void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
+{
+	this->selections[item]=set;
+}
+
+const std::vector<bool> CTK_cursesListBoxClass::CTK_getSelections(void)
+{
+	return(this->selections);
+}
+
+
+
+
+
+
+
+
+
+
 

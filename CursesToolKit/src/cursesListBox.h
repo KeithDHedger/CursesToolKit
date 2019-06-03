@@ -51,6 +51,13 @@ class CTK_cursesListBoxClass
 		void							CTK_keyUpDown(bool doup,bool page=false);
 		void							CTK_setEnterDeselects(bool deselect);
 		bool							CTK_getEnterDeselects(void);
+		void							CTK_selectAll(void);
+		void							CTK_selectNone(void);
+		void							CTK_setMultipleSelect(bool multi);
+		bool							CTK_getMultipleSelect(void);
+		const std::vector<bool>			CTK_getSelections(void);
+		void							CTK_toggleItem(int item);
+		void							CTK_setItem(int item,bool set);
 
 	private:
 		int								sx;
@@ -59,7 +66,8 @@ class CTK_cursesListBoxClass
 		int								hite;
 		bool							enterDeselects=true;
 		std::string						blank;
-
+		bool							multi=false;
+		std::vector<bool>				selections;
 		coloursStruct					colours;
 		CTK_cursesGraphicsClass			*gc;
 };

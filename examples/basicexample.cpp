@@ -20,6 +20,7 @@ exit $retval
 //#include <cursesApplication.h>
 #include <cursesGlobals.h>
 CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
+CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
 
 #define FILEMENU 0
 #define QUITITEM 5
@@ -50,6 +51,11 @@ void buttonselctCB(void *inst,void *userdata)
 
 	sprintf(buffer,"Button '%s' clicked.",bc->label);
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	if(strcmp(bc->label,"Select All")==0)
+		lb1->CTK_selectAll();
+	if(strcmp(bc->label,"Select None")==0)
+		lb1->CTK_selectNone();
+		
 }
 
 void listselctCB(void *inst,void *userdata)
@@ -57,8 +63,18 @@ void listselctCB(void *inst,void *userdata)
 	char						*buffer=(char*)alloca(256);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 
-	sprintf(buffer,"List item '%s' clicked, user data=%p.",ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
+	sprintf(buffer,"List %i List item '%s' clicked, user data=%p.",(long)userdata,ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	if(ls->CTK_getMultipleSelect()==true)
+		{
+			std::vector<bool>	sels=ls->CTK_getSelections();
+			for(int j=0;j<sels.size();j++)
+				{
+					if(sels[j]==true)
+						fprintf(stderr,"%s:",ls->listItems[j]->label.c_str());
+				}
+			fprintf(stderr,"\n");
+		}
 }
 
 void checkselctCB(void *inst,void *userdata)
@@ -162,9 +178,9 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
 	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 
-	mainApp->CTK_addNewButton(8,16,30,1,"Hello World");
+	mainApp->CTK_addNewButton(8,16,30,1,"Select All");
 	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
-	mainApp->CTK_addNewButton(32,16,11,1,"A Button");
+	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
 	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
 
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
@@ -179,7 +195,7 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_addListItem("Item 5");
 	lb->CTK_addListItem("Item 6");
 	lb->CTK_addListItem("Item 7",(void*)7);
-	lb->CTK_setSelectCB(listselctCB,NULL);
+	lb->CTK_setSelectCB(listselctCB,(void*)1);
 
 //use some 256 colours
 	cs.foreCol=0;
@@ -191,6 +207,31 @@ Pasting is done via middle click of mouse as usual.\
 	lb->CTK_setColours(cs);
 
 	mainApp->CTK_addListBox(lb);
+
+	//CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
+	lb1->CTK_newListBox(127,13,20,9);
+	lb1->CTK_addListItem("Item 1");
+	lb1->CTK_addListItem("Item 2");
+	lb1->CTK_addListItem("Item 3",(void*)0xdeadbeef);
+	lb1->CTK_addListItem("Item 4");
+	lb1->CTK_addListItem("Item 5");
+	lb1->CTK_addListItem("Item 6");
+	lb1->CTK_addListItem("Item 7",(void*)17);
+	lb1->CTK_addListItem("Item 8",(void*)18);
+	lb1->CTK_addListItem("Item 9",(void*)19);
+	lb1->CTK_setSelectCB(listselctCB,(void*)2);
+
+	cs.hiliteBackCol=BACK_CYAN;
+	cs.hiliteForeCol=FORE_BLACK;
+	cs.foreCol=FORE_BLACK;
+	cs.backCol=BACK_WHITE;
+	cs.use256Colours=false;
+
+	lb1->CTK_setColours(cs);
+	lb1->CTK_setMultipleSelect(true);
+	lb1->CTK_setEnterDeselects(false);
+	mainApp->CTK_addListBox(lb1);
+
 
 	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
