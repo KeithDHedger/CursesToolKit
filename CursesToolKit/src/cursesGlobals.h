@@ -59,6 +59,9 @@
 
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
+/**
+* Private struct ure for util dialogs.
+*/
 struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;
@@ -73,6 +76,9 @@ struct fileUDStruct
 	const char				*credits=NULL;
 };
 
+/**
+* Page struct
+*/
 struct pageStruct
 {
 	std::vector<CTK_cursesButtonClass*>			buttons;

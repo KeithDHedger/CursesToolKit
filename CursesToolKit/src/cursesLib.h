@@ -49,7 +49,6 @@
 #define CLEARTOEOS "\e[0J"
 
 #define MOVETO(x,y) printf("\e[%i;%iH",y,x);fflush(NULL);
-//#define MOVETO(x,y) printf("\e[%i;%iH",y,x);
 
 #define ALTCHARSET "\e(0"
 #define NORMCHARSET "\e(B"
@@ -125,6 +124,11 @@ struct coloursStruct
 	bool	fancyGadgets=false;
 };
 
+static char colBuffer[256]={0,};
+
+/**
+* Set foreground colour
+*/
 static inline void setForeColour(int fc,bool use256=false)
 {
 	if(use256==false)
@@ -133,6 +137,9 @@ static inline void setForeColour(int fc,bool use256=false)
 		printf("\e[38;5;%im",fc);
 }
 
+/**
+* Set background colour
+*/
 static inline void setBackColour(int fc,bool use256=false)
 {
 	if(use256==false)
@@ -141,6 +148,9 @@ static inline void setBackColour(int fc,bool use256=false)
 		printf("\e[48;5;%im",fc);
 }
 
+/**
+* Set fore and background colour
+*/
 static inline void setBothColours(int fc,int bc,bool use256=false)
 {
 	if(use256==false)
@@ -149,8 +159,10 @@ static inline void setBothColours(int fc,int bc,bool use256=false)
 		printf("\e[0m\e[38;5;%i;48;5;%im",fc,bc);
 }
 
-static char colBuffer[256]={0,};
-
+/**
+* Get ansi codes to set fore/back colours.
+* \note returns pointer to static buffer **Do not free**
+*/
 static inline const char* getBothColours(int fc,int bc,bool use256=false)
 {
 	if(use256==false)
@@ -160,6 +172,9 @@ static inline const char* getBothColours(int fc,int bc,bool use256=false)
 	return(colBuffer);
 }
 
+/**
+* Free a ptr and set to NULL
+*/
 static inline void CTK_freeAndNull(char **data)
 {
 	if((data!=NULL) && (*data!=NULL))
@@ -169,6 +184,10 @@ static inline void CTK_freeAndNull(char **data)
 		}
 }
 
+/**
+* Check if line will fit into len
+* \note tabwidth should match terminal/console tabwidth.
+*/
 static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 {
 	int	column=0;
@@ -190,6 +209,10 @@ static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 	return(false);
 }
 
+/**
+* Get column for position X in string.
+* \note takes into account tabwidth as above.
+*/
 static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 {
 	int	column=pad;

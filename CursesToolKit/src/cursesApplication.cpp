@@ -20,6 +20,9 @@
 
 #include "cursesGlobals.h"
 
+/**
+*  \brief Main app class destroy.
+*/
 CTK_mainAppClass::~CTK_mainAppClass()
 {
 	delete this->menuBar;
@@ -48,6 +51,9 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	fflush(NULL);
 }
 
+/**
+*  \brief Main app class.
+*/
 CTK_mainAppClass::CTK_mainAppClass()
 {
 	winsize w;
@@ -66,12 +72,18 @@ CTK_mainAppClass::CTK_mainAppClass()
 		}
 }
 
+/**
+* Clear screen. 
+*/
 void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	printf("\e[2J\e[H");
 }
 
+/**
+* Add main menu bar. 
+*/
 void CTK_mainAppClass::CTK_addNewMenuBar(void)
 {
 	this->menuBar=new CTK_cursesMenuClass();
@@ -79,6 +91,10 @@ void CTK_mainAppClass::CTK_addNewMenuBar(void)
 	this->menuBar->CTK_setColours(this->colours);
 }
 
+/**
+* Create and add new text box gadget.
+* \note text only.
+*/
 void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
@@ -88,6 +104,10 @@ void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const ch
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 }
 
+/**
+* Create and add new text box gadget.
+* \note can be a file.
+*/
 void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
@@ -98,6 +118,9 @@ void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isf
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 }
 
+/**
+* Create and add new button gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass();
@@ -106,6 +129,9 @@ void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const cha
 	this->pages[this->pageNumber].buttons.push_back(btn);
 }
 
+/**
+* Create and add new input gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
@@ -118,6 +144,9 @@ void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
 {
 }
 
+/**
+* Create and add new check box gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *label)
 {
 	CTK_cursesCheckBoxClass	*cb=new CTK_cursesCheckBoxClass();
@@ -126,6 +155,9 @@ void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *labe
 	this->pages[this->pageNumber].checkBoxes.push_back(cb);
 }
 
+/**
+* Create and add new edit box gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesEditBoxClass	*edbox=new CTK_cursesEditBoxClass();
@@ -136,6 +168,9 @@ void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int wi
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
 }
 
+/**
+* Create and add new source edit box gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesSourceEditBoxClass	*edbox=new CTK_cursesSourceEditBoxClass();
@@ -146,6 +181,9 @@ void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,
 	this->pages[this->pageNumber].srcEditBoxes.push_back(edbox);
 }
 
+/**
+* Create and add new label gadget. 
+*/
 void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
 {
 	CTK_cursesLabelClass	*label=new CTK_cursesLabelClass();
@@ -155,51 +193,83 @@ void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char
 	this->pages[this->pageNumber].labels.push_back(label);
 }
 
+/**
+* Add menu bar. 
+*/
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
 {
 	this->menuBar=mb;
 }
 
+/**
+* Add text box gadget. 
+*/
 void CTK_mainAppClass::CTK_addTextBox(CTK_cursesTextBoxClass *txtbox)
 {
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 }
 
+/**
+* Add button gadget. 
+*/
 void CTK_mainAppClass::CTK_addButton(CTK_cursesButtonClass *btn)
 {
 	this->pages[this->pageNumber].buttons.push_back(btn);
 }
 
+/**
+* Add input box gadget. 
+*/
 void CTK_mainAppClass::CTK_addInput(CTK_cursesInputClass *inp)
 {
 	this->pages[this->pageNumber].inputs.push_back(inp);
 }
 
+/**
+* Add new list box gadget. 
+*/
 void CTK_mainAppClass::CTK_addListBox(CTK_cursesListBoxClass *lb)
 {
 	this->pages[this->pageNumber].lists.push_back(lb);
 }
 
+/**
+* Add check box gadget. 
+*/
 void CTK_mainAppClass::CTK_addCheckBox(CTK_cursesCheckBoxClass *cb)
 {
 	this->pages[this->pageNumber].checkBoxes.push_back(cb);
 }
 
+/**
+* Add edit box gadget. 
+*/
 void CTK_mainAppClass::CTK_addEditBox(CTK_cursesEditBoxClass *edbox)
 {
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
 }
 
+/**
+* Add source edit box gadget. 
+*/
 void CTK_mainAppClass::CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox)
 {
 	this->pages[this->pageNumber].srcEditBoxes.push_back(edbox);
 }
 
+/**
+* Add label gadget. 
+*/
 void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
 {
 	this->pages[this->pageNumber].labels.push_back(label);
 }
 
+/**
+* Redraw the screen.
+* \note object=ptr to main class object
+* \note sets highlight if needed.
+*/
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
@@ -311,6 +381,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	SETNORMAL;
 }
 
+/**
+* \note private.
+*/
 void CTK_mainAppClass::setHilite(bool forward)
 {
 	int addit=1;
@@ -419,6 +492,10 @@ void CTK_mainAppClass::setHilite(bool forward)
 		}
 }
 
+/**
+* Main event loop.
+* \note Handles highlighting selecting etc etc.
+*/
 void CTK_mainAppClass::CTK_mainEventLoop(void)
 {
 	int				selection=CONT;
