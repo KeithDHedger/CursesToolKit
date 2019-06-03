@@ -52,6 +52,11 @@
 
 #include "cursesApplication.h"
 
+/**
+ *
+ * \brief CTK globals.
+ */
+
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
 struct fileUDStruct

@@ -256,6 +256,7 @@ CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 DLLTOOL = @DLLTOOL@
+DOXYGEN = @DOXYGEN@
 DSYMUTIL = @DSYMUTIL@
 DUMPBIN = @DUMPBIN@
 ECHO_C = @ECHO_C@
@@ -876,6 +877,22 @@ uninstall-am: uninstall-pkgconfigDATA
 
 .PRECIOUS: Makefile
 
+
+.PHONY: docs
+
+docs:
+	cd docs && $(MAKE)
+
+clean-docs:
+	rm -r docs/html
+	rm docs/searchdata.xml
+
+docs-install:
+	$(INSTALL) -d $(DESTDIR)$(docdir)
+	cp -rvp docs/html docs/searchdata.xml $(DESTDIR)$(docdir)
+
+docs-uninstall:
+	rm -rv $(DESTDIR)$(docdir)
 
 remake:
 	$(shell ./remakesourcelist)
