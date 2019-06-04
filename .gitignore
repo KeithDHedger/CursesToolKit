@@ -16,5 +16,5 @@ stamp-*
 config.h
 autom4te.cache
 IGNORE
-docs/html
-docs/searchdata.xml
+html
+searchdata.xml
