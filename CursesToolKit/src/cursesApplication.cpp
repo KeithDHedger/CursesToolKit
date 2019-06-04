@@ -705,6 +705,9 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 		}
 }
 
+/**
+* Set gadget colours and box styles etc.
+*/
 void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
@@ -719,6 +722,9 @@ int CTK_mainAppClass::CTK_addPage(void)
 	return(this->pageNumber);
 }
 
+/**
+* Set current page and update screen.
+*/
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
 	if((pagenum>=0) && (pagenum<this->pages.size()))
@@ -726,6 +732,9 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	this->CTK_clearScreen();
 }
 
+/**
+* Goto prev page and update screen.
+*/
 int CTK_mainAppClass::CTK_previousPage(void)
 {
 	if(this->pageNumber>0)
@@ -734,6 +743,9 @@ int CTK_mainAppClass::CTK_previousPage(void)
 	return(this->pageNumber);
 }
 
+/**
+* Goto next page and update screen.
+*/
 int CTK_mainAppClass::CTK_nextPage(void)
 {
 	if(this->pageNumber<this->pages.size()-1)
@@ -742,6 +754,10 @@ int CTK_mainAppClass::CTK_nextPage(void)
 	return(this->pageNumber);
 }
 
+/**
+* Delete page and gadgets.
+* \note freeing any user data set is up to the caller.
+*/
 int CTK_mainAppClass::CTK_removePage(int pagenum)
 {
 	if((pagenum>=0) && (pagenum<this->pages.size()))
@@ -766,11 +782,18 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)
 	return(this->pageNumber);
 }
 
+/**
+* Set page user data.
+*/
 void CTK_mainAppClass::CTK_setPageUserData(int pagenum,void *userdata)
 {
 	this->pages[pagenum].userData=userdata;
 }
 
+/**
+* Set an application window.
+* \note see the utility dialogs.
+*/
 void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title)
 {
 	this->x=x;
@@ -782,6 +805,10 @@ void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windown
 	this->useAppWindow=true;
 }
 
+/**
+* Set application tab with.
+* \note also sets terminal/console tab width via 'tabs' application.
+*/
 void CTK_mainAppClass::CTK_setTabWidth(int width)
 {
 	char	buffer[256];
@@ -792,6 +819,10 @@ void CTK_mainAppClass::CTK_setTabWidth(int width)
 	fflush(NULL);
 }
 
+/**
+* Empty the i/p buffer.
+* \note mostly for slow terminals.
+*/
 void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 {
 	int stdincopy=dup(STDIN_FILENO);
@@ -799,6 +830,10 @@ void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 	tcflush(stdincopy,TCIFLUSH);
 	close(stdincopy);
 }
+
+/**
+* Set the gadget to immediately highlight.
+*/
 void CTK_mainAppClass::CTK_setDefaultGadget(int type,int num)
 {
 	this->hiliteBtnNum=-1;
@@ -845,7 +880,3 @@ void CTK_mainAppClass::CTK_setDefaultGadget(int type,int num)
 				break;
 		}
 }
-
-
-
-

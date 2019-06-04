@@ -68,8 +68,8 @@ if test -z "$DOXYGEN";
    then AC_MSG_WARN([Doxygen not found - continuing without Doxygen support])
 fi
 AM_CONDITIONAL([HAVE_DOXYGEN],
-[test -n "$DOXYGEN"])AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([docs/Doxyfile])])
+[test -n "$DOXYGEN"])AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([CursesToolKit/docs/Doxyfile])])
 
 AC_CONFIG_FILES([cursestoolkit.pc])
-AC_OUTPUT(Makefile CursesToolKit/lib/Makefile docs/Makefile)
+AC_OUTPUT(Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile)
 

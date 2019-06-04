@@ -16085,13 +16085,13 @@ else
   HAVE_DOXYGEN_FALSE=
 fi
 if test -z "$HAVE_DOXYGEN_TRUE"; then :
-  ac_config_files="$ac_config_files docs/Doxyfile"
+  ac_config_files="$ac_config_files CursesToolKit/docs/Doxyfile"
 
 fi
 
 ac_config_files="$ac_config_files cursestoolkit.pc"
 
-ac_config_files="$ac_config_files Makefile CursesToolKit/lib/Makefile docs/Makefile"
+ac_config_files="$ac_config_files Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -17210,11 +17210,11 @@ do
     "config.h") CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "libtool") CONFIG_COMMANDS="$CONFIG_COMMANDS libtool" ;;
-    "docs/Doxyfile") CONFIG_FILES="$CONFIG_FILES docs/Doxyfile" ;;
+    "CursesToolKit/docs/Doxyfile") CONFIG_FILES="$CONFIG_FILES CursesToolKit/docs/Doxyfile" ;;
     "cursestoolkit.pc") CONFIG_FILES="$CONFIG_FILES cursestoolkit.pc" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "CursesToolKit/lib/Makefile") CONFIG_FILES="$CONFIG_FILES CursesToolKit/lib/Makefile" ;;
-    "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
+    "CursesToolKit/docs/Makefile") CONFIG_FILES="$CONFIG_FILES CursesToolKit/docs/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

@@ -28,6 +28,9 @@ CTK_cursesUtilsClass::CTK_cursesUtilsClass()
 {
 }
 
+/**
+* Explode a <String> splitting on a character.
+*/
 std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,const char c)
 {
 	std::string buff;
@@ -51,6 +54,13 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,c
 	return(v);
 }
 
+/**
+* Explode a <String> splitting on a character OR width.
+* \note takes into account tabwidth.
+* \note offset = start counting columns from this.
+* \note incdelim = include split char in the string.
+* \note tabwidth should match terminal/console tab width.
+*/
 std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string str,const char termchar,int width,int tabwidth,int offset,bool incdelim)
 {
 	std::string buff;
@@ -93,8 +103,12 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 	return(v);
 }
 
-
-
+/**
+* Explode a <String> splitting on a character OR width.
+* \note takes into account tabwidth.
+* \note incdelim = include split char in the string.
+* \note tabwidth should match terminal/console tab width.
+*/
 std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim)
 {
 	std::string buff;
@@ -148,6 +162,9 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 	return(v);
 }
 
+/**
+* Private internal callback
+*/
 static void listSelectCB(void *inst,void *ud)
 {
 	char						*buffer=(char*)alloca(PATH_MAX);
@@ -190,6 +207,9 @@ static void listSelectCB(void *inst,void *ud)
 		}
 }
 
+/**
+* Private internal callback
+*/
 static void buttonSelectCB(void *inst,void *ud)
 {
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
@@ -270,6 +290,9 @@ static void buttonSelectCB(void *inst,void *ud)
 	fud->app->runEventLoop=false;
 }
 
+/**
+* Private internal callback
+*/
 void checkSelectCB(void *inst,void *ud)
 {
 	char					*buffer=(char*)alloca(256);
@@ -294,6 +317,9 @@ void checkSelectCB(void *inst,void *ud)
 		}
 }
 
+/**
+* Private
+*/
 bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename)
 {
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
@@ -396,6 +422,9 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	return(retval);
 }
 
+/**
+* Open file convenience dialog.
+*/
 void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open,const char *filename)
 {
 	char	*folder=NULL;
@@ -413,6 +442,9 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,
 	CTK_freeAndNull(&folder);
 }
 
+/**
+* Get user entry convenience dialog.
+*/
 bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth)
 {
 	fileUDStruct		*fud=new fileUDStruct;
@@ -468,6 +500,9 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		return(true);
 }
 
+/**
+* User notification convenience dialog.
+*/
 int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth)
 {
 	fileUDStruct		*fud=new fileUDStruct;
@@ -536,6 +571,9 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	return(fud->isValid);
 }
 
+/**
+* About convenience dialog.
+*/
 void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth)
 {
 	char				*aboutbuffer;
@@ -592,6 +630,9 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	free(aboutbuffer);
 }
 
+/**
+* Private
+*/
 int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum)
 {
 	int x;

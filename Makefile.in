@@ -881,15 +881,17 @@ uninstall-am: uninstall-pkgconfigDATA
 .PHONY: docs
 
 docs:
-	cd docs && $(MAKE)
+	cd CursesToolKit/docs && $(MAKE)
 
 clean-docs:
-	rm -r docs/html
-	rm docs/searchdata.xml
+	rm -r CursesToolKit/docs/html
+	rm CursesToolKit/docs/searchdata.xml
+	rm -r CursesToolKit/src/html
+	rm CursesToolKit/src/searchdata.xml
 
 docs-install:
 	$(INSTALL) -d $(DESTDIR)$(docdir)
-	cp -rvp docs/html docs/searchdata.xml $(DESTDIR)$(docdir)
+	cp -rvp CursesToolKit/docs/html CursesToolKit/docs/searchdata.xml $(DESTDIR)$(docdir)
 
 docs-uninstall:
 	rm -rv $(DESTDIR)$(docdir)
