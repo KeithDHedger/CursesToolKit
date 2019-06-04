@@ -31,10 +31,16 @@
 
 #define SRCDATADIR "/usr/share/source-highlight"
 
+/**
+*  Source code box class destroy.
+*/
 CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 {
 }
 
+/**
+*  Source code box class.
+*/
 CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 {
 	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);

@@ -20,15 +20,25 @@
 
 #include "cursesButton.h"
 
+/**
+*  \brief Button class destroy.
+*/
 CTK_cursesButtonClass::~CTK_cursesButtonClass()
 {
 	CTK_freeAndNull(&this->label);
 }
 
+/**
+*  \brief Button class.
+*/
 CTK_cursesButtonClass::CTK_cursesButtonClass()
 {
 }
 
+/**
+*  Draw button.
+* \note hilite=true draw in highlight colour.
+*/
 void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 {
 	MOVETO(this->sx,this->sy);
@@ -45,6 +55,9 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 	fflush(NULL);
 }
 
+/**
+*  New button.
+*/
 void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const char *label)
 {
 	this->sx=x;
@@ -55,22 +68,34 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 	asprintf(&(this->label),"%s",label);
 }
 
+/**
+*  Set button 'pressed' callback.
+*/
 void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
 	this->selectCBUserData=userdata;
 }
 
+/**
+*  Set whether to deselect gadget after 'pressing'.
+*/
 void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)
 {
 	this->enterDeselects=deselect;
 }
 
+/**
+*  Get whether to deselect gadget after 'pressing'.
+*/
 bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
 {
 	return(this->enterDeselects);
 }
 
+/**
+*  Set button colours etc.
+*/
 void CTK_cursesButtonClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;

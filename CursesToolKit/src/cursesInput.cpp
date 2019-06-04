@@ -20,12 +20,18 @@
 
 #include "cursesGlobals.h"
 
+/**
+* Input box class destroy.
+*/
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
 	delete this->gc;
 	termkey_destroy(this->tk);
 }
 
+/**
+* Input box class.
+*/
 CTK_cursesInputClass::CTK_cursesInputClass()
 {
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
@@ -39,6 +45,9 @@ CTK_cursesInputClass::CTK_cursesInputClass()
 	gc->CTK_setColours(this->colours);
 }
 
+/**
+* Private.
+*/
 void CTK_cursesInputClass::updateText(const char *txt)
 {
 	this->text=txt;
@@ -56,6 +65,9 @@ void CTK_cursesInputClass::updateText(const char *txt)
 	this->blank.insert(this->blank.begin(),this->wid,' ');
 }
 
+/**
+* New input gadget.
+*/
 void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt)
 {
 	this->sx=x;
@@ -66,6 +78,9 @@ void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt
 	this->updateText(txt);
 }
 
+/**
+* Draw input gadget.
+*/
 void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 {
 	if(this->colours.fancyGadgets==true)
@@ -83,6 +98,9 @@ void CTK_cursesInputClass::CTK_drawInput(bool hilite)
 	MOVETO(this->sx+this->curs,this->sy);
 }
 
+/**
+* Event loop for input gadget.
+*/
 void CTK_cursesInputClass::CTK_doInput(void)
 {
 	bool			loop=true;
@@ -173,17 +191,27 @@ void CTK_cursesInputClass::CTK_doInput(void)
 	fflush(NULL);
 }
 
+
+/**
+*  Set colours etc.
+*/
 void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* Set text of gadget.
+*/
 void CTK_cursesInputClass::CTK_setText(const char *txt)
 {
 	this->updateText(txt);
 }
 
+/**
+* Get text of gadget.
+*/
 const char *CTK_cursesInputClass::CTK_getText(void)
 {
 	return(this->text.c_str());

@@ -20,6 +20,9 @@
  
 #include "cursesGlobals.h"
 
+/**
+* Edit box class destroy.
+*/
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {
 	free(this->txtBuffer);
@@ -27,6 +30,9 @@ CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 	termkey_destroy(this->tk);
 }
 
+/**
+* Edit box class.
+*/
 CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 {
 	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
@@ -40,12 +46,18 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 	this->bookMarks.clear();
 }
 
+/**
+* Set colours etc.
+*/
 void CTK_cursesEditBoxClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+*  New edit box.
+*/
 void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	this->sx=x;
@@ -56,9 +68,11 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 
 	this->blank.insert(0,width,' ');
 	this->CTK_updateText(txt,isfilename);
-//	this->prtStrings.reserve(hite);
 }
 
+/**
+* Update the text in the edit box.
+*/
 void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
 {
 	const char					*ptr=NULL;
@@ -139,6 +153,9 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		}
 }
 
+/**
+* Draw edit box.
+*/
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
 	int	startchr=0;
@@ -231,6 +248,9 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	fflush(NULL);
 }
 
+/**
+* Insert char at current position.
+*/
 void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
 {
 //TODO//Last line
@@ -258,6 +278,9 @@ void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
 	return;
 }
 
+/**
+* Main edit/source box event loop
+*/
 void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
 {
 	TermKeyResult	ret;
@@ -463,6 +486,9 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 	this->editStatus="Normal";
 }
 
+/**
+* Private.
+*/
 void CTK_cursesEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
@@ -475,17 +501,26 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 	this->CTK_updateText(buff.c_str(),false,false);
 }
 
+/**
+* Get the current text buffer.
+*/
 const char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
 {
 	this->updateBuffer();
 	return(this->txtBuffer);
 }
 
+/**
+* Get current line of text.
+*/
 const std::string CTK_cursesEditBoxClass::CTK_getCurrentLine(void)
 {
 	return(this->txtStrings[this->currentY]);
 }
 
+/**
+* Get word under cursor.
+*/
 const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 {
 	int startchr=this->currentX;
@@ -506,6 +541,9 @@ const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 	return(this->txtStrings[this->currentY].substr(startchr,endchr-startchr+1));
 }
 
+/**
+* Delete word under cursor.
+*/
 void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 {
 	int startchr=this->currentX;
@@ -525,6 +563,9 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 	this->txtStrings[this->currentY].erase(startchr,endchr-startchr+1);
 }
 
+/**
+* Delete current line.
+*/
 void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 {
 	this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
@@ -533,6 +574,9 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 	this->CTK_drawBox(false,true,false);
 }
 
+/**
+* Insert text at cursor.
+*/
 void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
 	if((txt==NULL) || (strlen(txt)==0))
@@ -554,6 +598,9 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 	this->CTK_drawBox(false,true,false);
 }
 
+/**
+* Go to position X at line Y.
+*/
 void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 {
 	this->currentX=x;
@@ -562,11 +609,17 @@ void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 	this->adjustXY();
 }
 
+/**
+* Set the event loop.
+*/
 void CTK_cursesEditBoxClass::CTK_setRunLoop(bool loop)
 {
 	this->runLoop=loop;
 }
 
+/**
+* Private
+*/
 void CTK_cursesEditBoxClass::adjustXY(void)
 {
 	if(this->currentY<0)
@@ -582,11 +635,18 @@ void CTK_cursesEditBoxClass::adjustXY(void)
 		this->currentX=this->txtStrings[this->currentY].length()-1;
 }
 
+/**
+* Set tab width.
+* \note should match terminal/console tab width.
+*/
 void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 {
 	this->tabWidth=width;
 }
 
+/**
+* Set whether to show line numbers.
+*/
 void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 {
 	this->showLineNumbers=show;
@@ -600,6 +660,10 @@ void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 	this->updateBuffer();
 }
 
+/**
+* Goto line.
+* \note goes to the start of the (unwrapped) line .
+*/
 void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 {
 	int j;
@@ -622,11 +686,17 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	this->adjustXY();
 }
 
+/**
+* Get the current text as vector of <String>'s.
+*/
 std::vector<std::string> &CTK_cursesEditBoxClass::CTK_getStrings(void)
 {
 	return((this->txtStrings));
 }
 
+/**
+* Get the line the cursor is on.
+*/
 int CTK_cursesEditBoxClass::CTK_getCursLine(void)
 {
 	int	y=this->lineNumbers[this->currentY];
@@ -636,6 +706,9 @@ int CTK_cursesEditBoxClass::CTK_getCursLine(void)
 	return(y);
 }
 
+/**
+* Get nearest line to Y (unwrapped).
+*/
 int CTK_cursesEditBoxClass::CTK_getLineAtY(int y)
 {
 	int	yy=this->lineNumbers[y];
@@ -644,21 +717,33 @@ int CTK_cursesEditBoxClass::CTK_getLineAtY(int y)
 	return(yy);
 }
 
+/**
+* Get bookmark at Y.
+*/
 bool CTK_cursesEditBoxClass::CTK_getBookMark(int y)
 {
 	return(this->bookMarks[y]);
 }
 
+/**
+* Get current line.
+*/
 int CTK_cursesEditBoxClass::CTK_getCurrentY(void)
 {
 	return(this->currentY);
 }
 
+/**
+* Get height of gadget.
+*/
 int CTK_cursesEditBoxClass::CTK_getHeight(void)
 {
 	return(this->hite);
 }
 
+/**
+* Set whether text is editable.
+*/
 void CTK_cursesEditBoxClass::CTK_setEditable(bool edit)
 {
 	this->canEdit=edit;
@@ -668,6 +753,9 @@ void CTK_cursesEditBoxClass::CTK_setEditable(bool edit)
 		this->editStatus="Normal";
 }
 
+/**
+* Toggle a bookmark at Y (unwrapped).
+*/
 void CTK_cursesEditBoxClass::CTK_toggleBookMark(int y)
 {
 	for(int j=0;j<this->lineNumbers.size();j++)
@@ -680,6 +768,9 @@ void CTK_cursesEditBoxClass::CTK_toggleBookMark(int y)
 		}
 }
 
+/**
+* Set a bookmark at Y (unwrapped) to 'set'.
+*/
 void CTK_cursesEditBoxClass::CTK_setBookMark(int y,bool set)
 {
 	for(int j=0;j<this->lineNumbers.size();j++)
@@ -692,11 +783,17 @@ void CTK_cursesEditBoxClass::CTK_setBookMark(int y,bool set)
 		}
 }
 
+/**
+* Get total number of lines.
+*/
 int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
 {
 	return(this->txtStrings.size());
 }
 
+/**
+* Private
+*/
 void CTK_cursesEditBoxClass::refreshLine(void)
 {
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);

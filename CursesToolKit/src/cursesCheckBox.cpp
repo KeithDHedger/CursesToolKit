@@ -20,15 +20,25 @@
 
 #include "cursesGlobals.h"
 
+/**
+*  \brief Checkbox class destroy.
+*/
 CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 {
 	CTK_freeAndNull(&this->label);
 }
 
+/**
+*  \brief Checkbox class.
+*/
 CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass()
 {
 }
 
+/**
+*  Draw checkbox.
+* \note hilite=true draw in highlight colour.
+*/
 void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 {
 	char	val=' ';
@@ -47,6 +57,9 @@ void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
 		printf("[%c] %s",val,this->label);
 }
 
+/**
+*  New checkbox.
+*/
 void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *label)
 {
 	this->sx=x;
@@ -57,32 +70,50 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 	asprintf(&(this->label),"%s",label);
 }
 
+/**
+*  Set checkbox 'pressed' callback.
+*/
 void CTK_cursesCheckBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
 	this->selectCBUserData=userdata;
 }
 
+/**
+*  Set checkbox value.
+*/
 void CTK_cursesCheckBoxClass::CTK_setValue(bool val)
 {
 	this->value=val;
 }
 
+/**
+*  Get checkbox value.
+*/
 bool CTK_cursesCheckBoxClass::CTK_getValue(void)
 {
 	return(this->value);
 }
 
+/**
+*  Set whether to deselect gadget after 'pressing'.
+*/
 void CTK_cursesCheckBoxClass::CTK_setEnterDeselects(bool deselect)
 {
 	this->enterDeselects=deselect;
 }
 
+/**
+*  Get whether to deselect gadget after 'pressing'.
+*/
 bool CTK_cursesCheckBoxClass::CTK_getEnterDeselects(void)
 {
 	return(this->enterDeselects);
 }
 
+/**
+*  Set checkbox colours etc.
+*/
 void CTK_cursesCheckBoxClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;

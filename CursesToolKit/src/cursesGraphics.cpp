@@ -20,19 +20,31 @@
 
 #include "cursesGlobals.h"
 
+/**
+*  Graphics class destroy.
+*/
 CTK_cursesGraphicsClass::~CTK_cursesGraphicsClass()
 {
 }
 
+/**
+* Graphics class.
+*/
 CTK_cursesGraphicsClass::CTK_cursesGraphicsClass()
 {
 }
 
+/**
+* Set colours etc from coloursStruct.
+*/
 void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 }
 
+/**
+* Draw a box a la dialog.
+*/
 void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow)
 {
 	int	topcol;
@@ -118,12 +130,18 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	fflush(NULL);
 }
 
+/**
+* Print a single line.
+*/
 void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int sx,int sy,int boxwidth)
 {
 	//printf("\e[%i;%iH%*s\n",sy,sx,boxwidth,line);
 	printf("\e[%i;%iH\e[%iX%s\n",sy,sx,boxwidth,line);
 }
 
+/**
+* Print a single line, blanking first.
+*/
 void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth)
 {
 //	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth,blnk,sy,sx,line);

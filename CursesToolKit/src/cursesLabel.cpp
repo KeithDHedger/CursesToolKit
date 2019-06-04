@@ -20,17 +20,26 @@
 
 #include "cursesGlobals.h"
 
+/**
+* Label class destroy.
+*/
 CTK_cursesLabelClass::~CTK_cursesLabelClass()
 {
 	delete this->gc;
 }
 
+/**
+* Label class.
+*/
 CTK_cursesLabelClass::CTK_cursesLabelClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* New label.
+*/
 void CTK_cursesLabelClass::CTK_newLabel(int x,int y,int width,int hite,const char *txt)
 {
 	this->sx=x;
@@ -43,6 +52,9 @@ void CTK_cursesLabelClass::CTK_newLabel(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
+/**
+* Update label text.
+*/
 void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 {
 	const char					*ptr=NULL;
@@ -60,6 +72,9 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid,this->tabWidth,this->sx,true);
 }
 
+/**
+* Draw label.
+*/
 void CTK_cursesLabelClass::CTK_drawLabel(void)
 {
 	int xcnt=0;
@@ -110,12 +125,19 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 	fflush(NULL);
 }
 
+/**
+* Set colours etc.
+*/
 void CTK_cursesLabelClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* Set justifaction of label.
+* \note LEFT=0, CENTRE=1, RIGHT=2.
+*/
 void CTK_cursesLabelClass::CTK_setJustify(int just)
 {
 	this->justify=just;
