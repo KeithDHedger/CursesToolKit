@@ -538,7 +538,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteSourceEditBoxNum=-1;
 										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
-										if(this->menuBar!=NULL)
+										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true))
 											{
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();

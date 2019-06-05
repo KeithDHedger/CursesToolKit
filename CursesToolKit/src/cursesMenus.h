@@ -30,10 +30,11 @@ struct	menuStruct
 	int								startCol=0;
 	int								maxWidth=0;
 	bool							itemsHaveKey=false;
+	bool							menuEnabled=true;
 	std::map<int,menuStruct*>		menuItem;
 };
 
-enum menuStyle {FLATNORM=0,FLATINVERT,BLANK};
+enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};
 
 class CTK_cursesMenuClass
 {
@@ -61,6 +62,8 @@ class CTK_cursesMenuClass
 		bool						CTK_doMenuKey(char key,int menunum);
 		void						CTK_setColours(coloursStruct cs);
 		void						CTK_setMenuShortCut(int menunum,int menuitem,char key);
+		void						CTK_setMenuBarEnable(bool enable);
+		bool						CTK_getMenuBarEnable(void);
 
 	private:
 		void						(*updateCB)(void *,void*);
@@ -69,7 +72,7 @@ class CTK_cursesMenuClass
 		int							menuNamesStartX=1;
 		int							pad=1;
 		bool						menuShowing=false;
-
+		bool						enableMenuBar=true;
 		void						drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad);
 		int							drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut);
 		char						setShortCut(const char *name);

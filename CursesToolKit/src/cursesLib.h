@@ -115,6 +115,7 @@ struct coloursStruct
 	int		windowForeCol=FORE_WHITE;
 	int		buttonBackCol=BACK_BLUE;
 	int		buttonForeCol=FORE_WHITE;
+	int		disabledForeCol=FORE_BOLD_WHITE;
 	int		boxType=PLAINBOX;
 	int		textBoxType=OUTBOX;
 	int		inputBoxType=INBOX;

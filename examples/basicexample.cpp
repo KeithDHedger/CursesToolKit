@@ -81,7 +81,8 @@ void checkselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
-
+	if((long)userdata==1)
+		mainApp->menuBar->CTK_setMenuBarEnable(cb->CTK_getValue());
 	cb->CTK_setValue(!cb->CTK_getValue());
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
@@ -126,6 +127,7 @@ Pasting is done via middle click of mouse as usual.\
 	cs.hiliteForeCol=FORE_GREEN;
 	cs.menuForeCol=FORE_WHITE;
 	cs.menuBackCol=BACK_RED;
+	cs.disabledForeCol=FORE_BOLD_RED;
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
@@ -159,6 +161,8 @@ Pasting is done via middle click of mouse as usual.\
 			mainApp->menuBar->CTK_addMenuItem(3,buffer,false);
 		}
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
+	for(int j=2;j<10;j++)
+		mainApp->menuBar->menuNames[3]->menuItem[j]->menuEnabled=false;
 
 //reset colours to defaults
 	cs.hiliteBackCol=BACK_CYAN;
@@ -233,11 +237,11 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_addListBox(lb1);
 
 
-	mainApp->CTK_addNewCheckBox(85,9,10,"A Checkbox");
-	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,NULL);
+	mainApp->CTK_addNewCheckBox(85,9,10,"Menus On");
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,(void*)1);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
-	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,NULL);
+	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,(void*)2);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
 
 	mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");

@@ -1,5 +1,9 @@
 1.0.2
-changed docs location.
+Menu navigation skips disabled menu items.
+Added disbled item colour.
+Added enable/disable menitems.
+Added enable/disable menu bar.
+Changed docs location.
 Started documentation :(
 Added multiple selections to list box.
 

@@ -56,7 +56,10 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
-			setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+			if(this->enableMenuBar==true)
+				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+			else
+				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			MOVETO(x,y);
 			if((this->menuShowing==true) && (this->menuNumber==j))
 				{
@@ -140,6 +143,9 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 			case BLANK:
 				setBothColours(this->colours.windowBackCol,this->colours.windowBackCol,this->colours.use256Colours);
 				break;
+			case DISABLED:
+				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				break;
 		}
 
 	if(menuitem<0)
@@ -200,10 +206,17 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 						}
 					else
 						{
-							if(prelight==cnt)
-								this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+							if(this->menuNames[menunum]->menuItem[cnt+this->menuStart]->menuEnabled==true)
+								{
+									if(prelight==cnt)
+										this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
+									else
+										this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
+								}
 							else
-								this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATNORM,doshortcut,true);
+								{
+									this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,DISABLED,doshortcut,true);
+								}
 						}
 				}
 			else
@@ -268,10 +281,21 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 														if(menuStart>0)
 															menuStart--;
 													}
+//skip disabled menu items
+												while( (this->menuNames[this->menuNumber]->menuItem[selection-1+this->menuStart]->menuEnabled==false))
+													selection--;
+												while(selection<1)
+													{
+														selection++;
+														this->menuStart--;
+													}
 												this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
 												continue;
 												break;
 											case TERMKEY_SYM_DOWN:
+//skip disabled menu items
+												while((selection<maxitems) && (this->menuNames[this->menuNumber]->menuItem[selection]->menuEnabled==false))
+													selection++;
 												selection++;
 												if((selection>maxitems) || (selection>menuHite))
 													selection=menuHite-mBarHite;
@@ -442,6 +466,17 @@ void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
 	this->menuShowing=false;
 	this->CTK_drawMenuBar();
 }
+
+void CTK_cursesMenuClass::CTK_setMenuBarEnable(bool enable)
+{
+	this->enableMenuBar=enable;
+}
+
+bool CTK_cursesMenuClass::CTK_getMenuBarEnable(void)
+{
+	return(this->enableMenuBar);
+}
+
 
 
 
