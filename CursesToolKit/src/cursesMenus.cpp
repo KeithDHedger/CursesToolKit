@@ -59,7 +59,7 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 /**
 * Draw menu bar.
 */
-void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
+void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)//TODO//
 {
 	int	x=1;
 	int y=1;
@@ -71,13 +71,21 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
 			else
 				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			MOVETO(x,y);
+
 			if((this->menuShowing==true) && (this->menuNumber==j))
 				{
-					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+					if(this->menuNames[j]->menuEnabled==true)
+						setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+					else
+						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 					printf( "%s" ,this->menuNames[j]->menuName);
 				}
 			else
-				printf("%s",this->menuNames[j]->menuName);
+				{
+					if(this->menuNames[j]->menuEnabled==false)
+						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+					printf("%s",this->menuNames[j]->menuName);
+				}
 			setBackColour(this->colours.windowBackCol);
 			printf(" ");
 			x+=strlen(this->menuNames[j]->menuName)+1;
@@ -221,6 +229,9 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	int	maxitems=0;
 	int msx=this->menuNames[menunum]->startCol;
 
+	if(this->menuNames[menunum]->menuEnabled==false)
+		return(0);
+
 	maxitems=this->menuNames[menunum]->menuItemCnt;
 	this->menuWidth=this->menuNames[menunum]->maxWidth;
 
@@ -350,6 +361,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 												menuStart=0;
 												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuNumber--;
+												while((this->menuNumber>-1) && (this->menuNames[this->menuNumber]->menuEnabled==false))
+													this->menuNumber--;
 												if(this->menuNumber<0)
 													this->menuNumber=this->menuCnt-1;
 												loop=false;
@@ -362,6 +375,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 												selection=0;
 												loop=false;
 												this->menuNumber++;
+												while((this->menuNumber<this->menuCnt) && (this->menuNames[this->menuNumber]->menuEnabled==false))
+													this->menuNumber++;
 												if(this->menuNumber>=this->menuCnt)
 													this->menuNumber=0;
 												continue;

@@ -81,9 +81,13 @@ void checkselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
-	if((long)userdata==1)
-		mainApp->menuBar->CTK_setMenuBarEnable(cb->CTK_getValue());
+
 	cb->CTK_setValue(!cb->CTK_getValue());
+	if((long)userdata==1)
+		mainApp->menuBar->CTK_setMenuBarEnable(!cb->CTK_getValue());
+	if((long)userdata==2)
+		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
+
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
@@ -236,11 +240,10 @@ Pasting is done via middle click of mouse as usual.\
 	lb1->CTK_setEnterDeselects(false);
 	mainApp->CTK_addListBox(lb1);
 
-
-	mainApp->CTK_addNewCheckBox(85,9,10,"Menus On");
+	mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,(void*)1);
 	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
-	mainApp->CTK_addNewCheckBox(85,11,10,"Checkbox 2");
+	mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
 	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,(void*)2);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
 
