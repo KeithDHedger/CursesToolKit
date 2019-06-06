@@ -20,6 +20,10 @@
 
 #include "cursesGlobals.h"
 
+
+/**
+* Menus class destroy.
+*/
 CTK_cursesMenuClass::~CTK_cursesMenuClass()
 {
 	for(int j=0;j<menuNames.size();j++)
@@ -31,6 +35,9 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 	termkey_destroy(this->tk);
 }
 
+/**
+* Menus class.
+*/
 CTK_cursesMenuClass::CTK_cursesMenuClass()
 {
 	winsize	w;
@@ -49,6 +56,9 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	CTK_setColours(this->colours);
 }
 
+/**
+* Draw menu bar.
+*/
 void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
 {
 	int	x=1;
@@ -75,6 +85,9 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)
 	SETNORMAL;
 }
 
+/**
+* Private
+*/
 char CTK_cursesMenuClass::setShortCut(const char *name)
 {
 	for(int j=0;j<strlen(name);j++)
@@ -85,6 +98,9 @@ char CTK_cursesMenuClass::setShortCut(const char *name)
 	return(0);
 }
 
+/**
+* Set a shortcut key to menu item.
+*/
 void CTK_cursesMenuClass::CTK_setMenuShortCut(int menunum,int menuitem,char key)
 {
 	this->menuNames[menunum]->menuItem[menuitem]->shortcutKey=toupper(key);
@@ -96,6 +112,9 @@ void CTK_cursesMenuClass::CTK_setMenuShortCut(int menunum,int menuitem,char key)
 		this->menuNames[menunum]->maxWidth=len;
 }
 
+/**
+* Add menu item to menu.
+*/
 void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name,bool shortcut)
 {
 	menuStruct	*menu=new menuStruct;
@@ -112,6 +131,9 @@ void CTK_cursesMenuClass::CTK_addMenuItem(int menunum,const char *name,bool shor
 	this->menuNames[menunum]->menuItem[this->menuNames[menunum]->menuItemCnt++]=menu;
 }
 
+/**
+* Add menu to menu bar.
+*/
 void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
 {
 	menuStruct	*menu=new menuStruct;
@@ -126,6 +148,9 @@ void CTK_cursesMenuClass::CTK_addMenuToBar(const char *name)
 	this->menuNames[this->menuCnt++]=menu;
 }
 
+/**
+* Private.
+*/
 void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad)
 {
 	bool		gotus=false;
@@ -187,6 +212,9 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	fflush(stdout);
 }
 
+/**
+* Private.
+*/
 int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut)
 {
 	int	y=sy+1;
@@ -226,6 +254,9 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	return(maxitems);
 }
 
+/**
+* Handle menu events.
+*/
 int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 {
 	bool			loop=true;
@@ -404,6 +435,10 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	return(selection);
 }
 
+/**
+* Clear all menu items from menu.
+* \note User data is the callers responsibility.
+*/
 void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 {
 	for(int j=0;j<this->menuNames[menunum]->menuItem.size();j++)
@@ -418,6 +453,9 @@ void CTK_cursesMenuClass::CTK_clearMenu(int menunum,bool full)
 	this->menuNames[menunum]->maxWidth=0;
 }
 
+/**
+* Check for and handle shortcut key.
+*/
 bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 {
 	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
@@ -431,6 +469,9 @@ bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 	return(false);
 }
 
+/**
+* Handle menu key.
+*/
 bool CTK_cursesMenuClass::CTK_doMenuKey(char key,int menunum)
 {
 	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
@@ -444,34 +485,51 @@ bool CTK_cursesMenuClass::CTK_doMenuKey(char key,int menunum)
 	return(false);
 }
 
-
+/**
+* Set menu update callback.
+*/
 void CTK_cursesMenuClass::CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp)
 {
 	this->updateCB=update;
 	this->mainApp=mainapp;
 }
 
+/**
+* Set menu 'pressed' callback.
+*/
 void CTK_cursesMenuClass::CTK_setSelectCB(void (*select)(void *))
 {
 	this->selectCB=select;
 }
 
+/**
+* Set menu colours etc.
+*/
 void CTK_cursesMenuClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 }
 
+/**
+* Draw main menu bar.
+*/
 void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
 {
 	this->menuShowing=false;
 	this->CTK_drawMenuBar();
 }
 
+/**
+* Set whether menu bar is enabled.
+*/
 void CTK_cursesMenuClass::CTK_setMenuBarEnable(bool enable)
 {
 	this->enableMenuBar=enable;
 }
 
+/**
+* Get whether menu bar is enabled.
+*/
 bool CTK_cursesMenuClass::CTK_getMenuBarEnable(void)
 {
 	return(this->enableMenuBar);

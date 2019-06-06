@@ -54,6 +54,9 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* Update the text in the source box.
+*/
 void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
 {
 	const char					*ptr=NULL;
@@ -171,6 +174,9 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
 }
 
+/**
+* Private.
+*/
 void CTK_cursesSourceEditBoxClass::setScreenX(void)
 {
 	this->sourceX=0;
@@ -214,6 +220,9 @@ void CTK_cursesSourceEditBoxClass::setScreenX(void)
 			}
 }
 
+/**
+* Draw gadget.
+*/
 void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
 	int	startchr=0;
@@ -281,6 +290,9 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 	fflush(NULL);
 }
 
+/**
+* Private.
+*/
 void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
@@ -292,11 +304,17 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 	this->needsRefresh=false;
 }
 
+/**
+* Get the current source lines as vector of <String>'s.
+*/
 std::vector<std::string> &CTK_cursesSourceEditBoxClass::CTK_getSrcStrings(void)
 {
 	return((this->srcStrings));
 }
 
+/**
+* Force a source language.
+*/
 void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 {
 	if(lang!=NULL)
@@ -312,6 +330,9 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 	this->updateBuffer();
 }
 
+/**
+* Private.
+*/
 void CTK_cursesSourceEditBoxClass::refreshLine(void)
 {
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);

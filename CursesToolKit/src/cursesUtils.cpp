@@ -20,10 +20,16 @@
  
 #include "cursesGlobals.h"
 
+/**
+* Utils class destroy.
+*/
 CTK_cursesUtilsClass::~CTK_cursesUtilsClass()
 {
 }
 
+/**
+* Utils class.
+*/
 CTK_cursesUtilsClass::CTK_cursesUtilsClass()
 {
 }
@@ -540,7 +546,6 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	if((buttons&CANCELBUTTON)==CANCELBUTTON)
 		maxbtns++;
 
-
 	if((buttons&YESBUTTON)==YESBUTTON)
 		{
 			selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"  OK  ");
@@ -631,7 +636,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 }
 
 /**
-* Private
+* Calulate X position for gadget given total width, gadget width, gadget count and gadget number.   
 */
 int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum)
 {

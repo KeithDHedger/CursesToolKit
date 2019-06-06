@@ -60,7 +60,7 @@
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
 /**
-* Private struct ure for util dialogs.
+* Private structure for util dialogs.
 */
 struct fileUDStruct
 {
@@ -78,6 +78,8 @@ struct fileUDStruct
 
 /**
 * Page struct
+* \note Caller is responsible for allocating/freeing userData.
+* \note Other objects are handled by application class.
 */
 struct pageStruct
 {

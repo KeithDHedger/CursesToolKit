@@ -21,6 +21,9 @@
 #ifndef _CURSESMENUS_
 #define _CURSESMENUS_
 
+/**
+* \note Sub menus not implemented yet.
+*/
 struct	menuStruct
 {
 	char							*menuName=NULL;

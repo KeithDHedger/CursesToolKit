@@ -21,6 +21,10 @@
 #ifndef _CURSESLISTBOX_
 #define _CURSESLISTBOX_
 
+/**
+* Struct for list item.
+* \note Caller is responsible for allocating/freeing userData.
+*/
 struct listItemStruct
 {
 	std::string	label;

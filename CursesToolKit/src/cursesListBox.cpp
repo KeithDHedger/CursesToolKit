@@ -20,18 +20,28 @@
 
 #include "cursesGlobals.h"
 
+/**
+* List class destroy.
+*/
 CTK_cursesListBoxClass::~CTK_cursesListBoxClass()
 {
 	this->CTK_clearList();
 	delete this->gc;
 }
 
+/**
+* List class.
+*/
 CTK_cursesListBoxClass::CTK_cursesListBoxClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* Add new item to list.
+* \note Disposing of user data is up to the caller.
+*/
 void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 {
 	listItemStruct	*ls=new listItemStruct;
@@ -40,6 +50,10 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 	this->listItems.push_back(ls);
 }
 
+/**
+* Draw list.
+* \note hilite=true draw in highlight colour.
+*/
 void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 {
 	char	buffer[4096];
@@ -77,6 +91,10 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 	MOVETO(this->sx,this->sy+this->hite);
 }
 
+/**
+* Clear list.
+* \note any user data set on item should be disposed of by the caller first.
+*/
 void CTK_cursesListBoxClass::CTK_clearList(void)
 {
 	for(int j=0;j<this->listItems.size();j++)
@@ -89,12 +107,18 @@ void CTK_cursesListBoxClass::CTK_clearList(void)
 	this->listItemNumber=0;
 }
 
+/**
+* Set list 'pressed' callback.
+*/
 void CTK_cursesListBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
 	this->selectCBUserData=userdata;
 }
 
+/**
+* New list.
+*/
 void CTK_cursesListBoxClass::CTK_newListBox(int x,int y,int width,int hite)
 {
 	this->sx=x;
@@ -104,6 +128,9 @@ void CTK_cursesListBoxClass::CTK_newListBox(int x,int y,int width,int hite)
 	this->blank.insert(this->blank.begin(),width,' ');
 }
 
+/**
+* Move selection.
+*/
 void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 {
 	int	lines=1;
@@ -138,34 +165,52 @@ void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 		}
 }
 
+/**
+* Set whether to deselect list box on 'pressed'.
+*/
 void CTK_cursesListBoxClass::CTK_setEnterDeselects(bool deselect)
 {
 	this->enterDeselects=deselect;
 }
 
+/**
+* Get whether to deselect list box on 'pressed'.
+*/
 bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
 {
 	return(this->enterDeselects);
 }
 
+/**
+* Set button colours etc.
+*/
 void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* Select all items in list.
+*/
 void CTK_cursesListBoxClass::CTK_selectAll(void)
 {
 	for(int j=0;j<this->listItems.size();j++)
 		this->selections[j]=true;
 }
 
+/**
+* De-Select all items in list.
+*/
 void CTK_cursesListBoxClass::CTK_selectNone(void)
 {
 	for(int j=0;j<this->listItems.size();j++)
 		this->selections[j]=false;
 }
 
+/**
+* Set whether to allow multiple selections.
+*/
 void CTK_cursesListBoxClass::CTK_setMultipleSelect(bool multi)
 {
 	this->multi=multi;
@@ -174,33 +219,35 @@ void CTK_cursesListBoxClass::CTK_setMultipleSelect(bool multi)
 		this->selections.push_back(false);
 }
 
+/**
+* Get whether to allow multiple selections.
+*/
 bool CTK_cursesListBoxClass::CTK_getMultipleSelect(void)
 {
 	return(this->multi);
 }
 
+/**
+* Toggle select item.
+*/
 void CTK_cursesListBoxClass::CTK_toggleItem(int item)
 {
 	this->selections[item]=!this->selections[item];
 }
 
+/**
+* Set select item.
+*/
 void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
 {
 	this->selections[item]=set;
 }
 
+/**
+* Get multiple selection list.
+*/
 const std::vector<bool> CTK_cursesListBoxClass::CTK_getSelections(void)
 {
 	return(this->selections);
 }
-
-
-
-
-
-
-
-
-
-
 

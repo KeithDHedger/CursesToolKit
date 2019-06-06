@@ -20,17 +20,26 @@
 
 #include "cursesGlobals.h"
 
+/**
+* Text box class destroy.
+*/
 CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
 {
 	delete this->gc;
 }
 
+/**
+* Text box class.
+*/
 CTK_cursesTextBoxClass::CTK_cursesTextBoxClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 }
 
+/**
+* New text box.
+*/
 void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const char *txt,bool selectable)
 {
 	this->sx=x;
@@ -43,6 +52,10 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->CTK_updateText(txt);
 }
 
+
+/**
+* Update the text in the gadget.
+*/
 void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool reset)
 {
 	const char					*ptr=NULL;
@@ -85,6 +98,9 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
 }
 
+/**
+* Draw gadget.
+*/
 void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 {
 	int xcnt=0;
@@ -116,16 +132,27 @@ void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
 	fflush(NULL);
 }
 
+/**
+* Scroll text by 1 line.
+* \param bool true=scroll up.
+*/
 void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)
 {
 	this->TBscroll(scrollup,1);
 }
 
+/**
+* Scroll text by 1 page.
+* \param bool true=scroll up.
+*/
 void CTK_cursesTextBoxClass::CTK_scrollPage(bool scrollup)
 {
 	this->TBscroll(scrollup,this->hite);
 }
 
+/**
+* Private.
+*/
 void CTK_cursesTextBoxClass::TBscroll(bool scrollup,int numlines)
 {
 	if(scrollup==true)
@@ -142,21 +169,33 @@ void CTK_cursesTextBoxClass::TBscroll(bool scrollup,int numlines)
 		}
 }
 
+/**
+* Set whether gadget is selectable.
+*/
 void CTK_cursesTextBoxClass::CTK_setSelectable(bool canselect)
 {
 	this->canSelect=canselect;
 }
 
+/**
+* Get whether gadget is selectable.
+*/
 bool CTK_cursesTextBoxClass::CTK_getSelectable(void)
 {
 	return(this->canSelect);
 }
 
+/**
+* Get text of gadget.
+*/
 const std::string CTK_cursesTextBoxClass::CTK_getText(void)
 {
 	return(this->text);
 }
 
+/**
+* Set gadget colours etc.
+*/
 void CTK_cursesTextBoxClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
