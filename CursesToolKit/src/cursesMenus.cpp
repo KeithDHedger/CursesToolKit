@@ -419,7 +419,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 											case TERMKEY_SYM_ENTER:
 												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuItemNumber=selection+this->menuStart-1;
-												this->selectCB(this);
+												if(this->menuItemNumber>-1)
+													this->selectCB(this);
 												return(SELECTED);
 												break;
 											default:
