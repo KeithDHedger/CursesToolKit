@@ -644,8 +644,9 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											{
 												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCBUserData);
-												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
-													this->hiliteBtnNum=-1;
+												if(this->pages[this->pageNumber].buttons.size()>this->hiliteBtnNum)
+													if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
+														this->hiliteBtnNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 										if(this->hiliteInputNum!=-1)
@@ -662,16 +663,18 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 													}
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB((void*)this->pages[this->pageNumber].lists[this->hiliteListNum],this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCBUserData);
-												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)
-													this->hiliteListNum=-1;
+												if(this->pages[this->pageNumber].lists.size()>this->hiliteListNum)
+													if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)
+														this->hiliteListNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 										if(this->hiliteCheckBoxNum!=-1)
 											{
 												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCBUserData);
-												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
-													this->hiliteCheckBoxNum=-1;
+												if(this->pages[this->pageNumber].checkBoxes.size()>this->hiliteCheckBoxNum)
+													if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
+														this->hiliteCheckBoxNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
 										break;

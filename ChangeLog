@@ -1,4 +1,5 @@
 1.0.2
+Prevented seg fault if button/checkbox/list callback destroys page.
 Menu navigation skips disabled menus.
 Added enable/disable main menus.
 Done Doxygen docs.
