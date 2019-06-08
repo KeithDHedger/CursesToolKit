@@ -120,6 +120,10 @@ Shortcut keys can be used ( without the CTRL key when menus are open )\n\
 'ESC' will exit edit mode.\n\
 \n\
 Pasting is done via middle click of mouse as usual.\
+\n\n\
+List two is a multiple selection list, use SPACE to toggle.\n\
+The check boxes are the same.\n\
+Both lists and checkboxes can have the 'select' key set by the caller.\n\
 ";
 
 	coloursStruct cs;
@@ -136,6 +140,7 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
+//	mainApp->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);//0
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[1]);//1
@@ -238,6 +243,7 @@ Pasting is done via middle click of mouse as usual.\
 	lb1->CTK_setColours(cs);
 	lb1->CTK_setMultipleSelect(true);
 	lb1->CTK_setEnterDeselects(false);
+	lb1->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 	mainApp->CTK_addListBox(lb1);
 
 	mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
@@ -246,6 +252,10 @@ Pasting is done via middle click of mouse as usual.\
 	mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
 	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,(void*)2);
 	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
+
+	mainApp->pages[0].checkBoxes[1]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+	mainApp->pages[0].checkBoxes[0]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+
 
 	mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
 	mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");

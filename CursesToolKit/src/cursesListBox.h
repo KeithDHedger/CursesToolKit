@@ -47,7 +47,8 @@ class CTK_cursesListBoxClass
 		
 		void							CTK_setSelectCB(void (*select)(void *,void *),void *);
 		void							(*selectCB)(void *,void *)=NULL;
-
+		void							CTK_setSelectKey(TermKeySym key);
+		TermKeySym						CTK_getSelectKey(void);
 
 		void							CTK_addListItem(const char *label,void *userdata=NULL);
 		void							CTK_clearList(void);
@@ -69,6 +70,7 @@ class CTK_cursesListBoxClass
 		int								wid;
 		int								hite;
 		bool							enterDeselects=true;
+		TermKeySym						selectKey=TERMKEY_SYM_ENTER;
 		std::string						blank;
 		bool							multi=false;
 		std::vector<bool>				selections;

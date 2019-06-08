@@ -64,7 +64,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->CTK_addPage();
 	this->pageNumber=0;
 
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
+	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC|TERMKEY_FLAG_SPACESYMBOL);
 	if(!this->tk)
 		{
 			fprintf(stderr, "Cannot allocate termkey instance\n");
@@ -623,7 +623,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false,true);
 										break;
 
-									case TERMKEY_SYM_ENTER:
+									//case TERMKEY_SYM_ENTER:
+									default:
+										if((key.code.sym!=this->selectKey) && (this->hiliteCheckBoxNum==-1) && (this->hiliteListNum==-1))
+											break;
+
 										if(this->hiliteSourceEditBoxNum!=-1)
 											{
 												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEvent(true,this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getSrcStrings());
@@ -655,8 +659,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 												this->hiliteInputNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
+//lists
 										if(this->hiliteListNum!=-1)
 											{
+												if(key.code.sym!=this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getSelectKey())
+													break;
+
 												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getMultipleSelect()==true)
 													{
 														this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_toggleItem(this->pages[this->pageNumber].lists[this->hiliteListNum]->listItemNumber);
@@ -668,8 +676,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 														this->hiliteListNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
+//check boxes
 										if(this->hiliteCheckBoxNum!=-1)
 											{
+												if(key.code.sym!=this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getSelectKey())
+													break;
 												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].checkBoxes.size()>this->hiliteCheckBoxNum)
@@ -883,3 +894,15 @@ void CTK_mainAppClass::CTK_setDefaultGadget(int type,int num)
 				break;
 		}
 }
+
+/**
+* Set select key, default=TERMKEY_SYM_ENTER.
+*/
+void CTK_mainAppClass::CTK_setSelectKey(TermKeySym key)
+{
+	this->selectKey=key;
+}
+
+
+
+

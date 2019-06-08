@@ -1,4 +1,7 @@
 1.0.2
+Added user definable select key in check box class.
+Added user definable select key in list class.
+Added user definable select key in main app class.
 Fixed scroll flicker in list box.
 Fixed trying to select main menu.
 Prevented seg fault if button/checkbox/list callback destroys page.

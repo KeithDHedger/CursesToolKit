@@ -89,6 +89,7 @@ class CTK_mainAppClass
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
 		void									CTK_emptyIPBuffer(void);
+		void									CTK_setSelectKey(TermKeySym key);
 
 		void									CTK_setDefaultGadget(int type,int num);
 
@@ -103,6 +104,7 @@ class CTK_mainAppClass
 
 	private:
 		TermKey									*tk;
+		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
 		int										hiliteBtnNum=-1;
 		int										hiliteTxtBoxNum=-1;
 		int										hiliteInputNum=-1;
