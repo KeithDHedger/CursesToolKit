@@ -1,4 +1,5 @@
 1.0.2
+Fixed scroll flicker in list box.
 Fixed trying to select main menu.
 Prevented seg fault if button/checkbox/list callback destroys page.
 Menu navigation skips disabled menus.

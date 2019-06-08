@@ -72,7 +72,7 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 			if(j<this->listItems.size())
 				{
 					if(this->multi==false)
-						this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
+						this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid);
 					else
 						{
 							if(this->selections[j+this->listStart]==true)
@@ -80,7 +80,7 @@ void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
 							else
 								selected=' ';
 							sprintf(buffer,"[%c] %s",selected,this->listItems[j+this->listStart]->label.c_str());
-							this->gc->CTK_printLine(buffer,this->blank.c_str(),this->sx,this->sy+j,this->wid);
+							this->gc->CTK_printLine(buffer,this->sx,this->sy+j,this->wid);
 						}
 				}
 			else
