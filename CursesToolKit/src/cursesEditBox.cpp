@@ -561,6 +561,7 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 		else
 			endchr=j;
 	this->txtStrings[this->currentY].erase(startchr,endchr-startchr+1);
+	this->currentX=startchr;
 }
 
 /**

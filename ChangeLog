@@ -1,4 +1,5 @@
 1.0.2
+Cut word in edit box sets cursor to the start of the word.
 Left/Right keys now switch highlighting between gadget types.
 Added user definable select key in check box class.
 Added user definable select key in list class.
