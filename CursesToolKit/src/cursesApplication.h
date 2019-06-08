@@ -115,6 +115,7 @@ class CTK_mainAppClass
 		int										hiliting=HLNONE;
 
 		void									setHilite(bool forward);
+		void									setHiliteNone(void);
 
 };
 

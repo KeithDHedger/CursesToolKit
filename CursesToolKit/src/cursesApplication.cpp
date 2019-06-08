@@ -545,6 +545,19 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											}
 										break;
 
+//next group
+									case TERMKEY_SYM_RIGHT:
+										this->hiliting++;
+										this->setHiliteNone();
+										setHilite(true);
+										break;
+//prev group
+									case TERMKEY_SYM_LEFT:
+										this->setHiliteNone();
+										setHilite(false);
+										this->hiliting++;
+										setHilite(false);
+										break;
 //tab select
 									case TERMKEY_SYM_TAB:
 										if((key.modifiers==1) || (key.modifiers==2))
@@ -903,6 +916,17 @@ void CTK_mainAppClass::CTK_setSelectKey(TermKeySym key)
 	this->selectKey=key;
 }
 
-
-
+/**
+* Private.
+*/
+void CTK_mainAppClass::setHiliteNone(void)
+{
+	this->hiliteBtnNum=-1;
+	this->hiliteTxtBoxNum=-1;
+	this->hiliteInputNum=-1;
+	this->hiliteListNum=-1;
+	this->hiliteCheckBoxNum=-1;
+	this->hiliteEditBoxNum=-1;
+	this->hiliteSourceEditBoxNum=-1;
+}
 

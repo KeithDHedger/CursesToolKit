@@ -1,4 +1,5 @@
 1.0.2
+Left/Right keys now switch highlighting between gadget types.
 Added user definable select key in check box class.
 Added user definable select key in list class.
 Added user definable select key in main app class.
