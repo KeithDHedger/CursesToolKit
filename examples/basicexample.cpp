@@ -84,7 +84,10 @@ void checkselctCB(void *inst,void *userdata)
 
 	cb->CTK_setValue(!cb->CTK_getValue());
 	if((long)userdata==1)
-		mainApp->menuBar->CTK_setMenuBarEnable(!cb->CTK_getValue());
+		{
+			mainApp->menuBar->CTK_setMenuBarEnable(!cb->CTK_getValue());
+			mainApp->menuBar->enableShortcuts=!cb->CTK_getValue();
+		}
 	if((long)userdata==2)
 		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
 
@@ -265,7 +268,7 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 
 //mainApp->CTK_setDefaultGadget(CHKBOX,0);
 //	mainApp->CTK_setDefaultGadget(INPUT,0);
-
+	mainApp->menuBar->CTK_setMenuShortCut(0,5,'Q');
 	mainApp->eventLoopCB=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;

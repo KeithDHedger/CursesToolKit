@@ -568,6 +568,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
+//prev button/checkbox
+										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1))
+											{
+												setHilite(false);
+												break;
+											}
 										if(this->hiliteTxtBoxNum!=-1)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(true);
 										if(this->hiliteListNum!=-1)
@@ -587,6 +593,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										break;
 
 									case TERMKEY_SYM_DOWN:
+//next button/checkbox
+										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1))
+											{
+												setHilite(true);
+												break;
+											}
 										if(this->hiliteTxtBoxNum!=-1)
 											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(false);
 										if(this->hiliteListNum!=-1)
@@ -706,7 +718,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 						}
 
 					case TERMKEY_TYPE_UNICODE:
-						if(this->menuBar==NULL)
+						if((this->menuBar==NULL) || (this->menuBar->enableShortcuts==false))
 							break;
 						//fprintf(stderr,"keymod=%i key=%i =%c\n",key.modifiers,key.code.codepoint,key.code.codepoint);
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)

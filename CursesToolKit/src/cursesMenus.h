@@ -48,7 +48,7 @@ class CTK_cursesMenuClass
 		int							menuStart=0;
 		int							menuCnt=0;
 		int							menuItemNumber=-1;
-
+		bool						enableShortcuts=true;
 		void						CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp);
 		void						CTK_setSelectCB(void (*select)(void *));
 		void						(*selectCB)(void *);
