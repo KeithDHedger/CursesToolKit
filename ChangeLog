@@ -1,4 +1,7 @@
 1.0.2
+Shortcut key for menuitem disabled if menu disabled.
+Added callbacks for main event loop at begining and end of loop.
+Update text in edit box now virtual.
 Added enable/disable shortcut keys.
 Up/Down can now be used to select between buttons/chechk boxes.
 Cut word in edit box sets cursor to the start of the word.

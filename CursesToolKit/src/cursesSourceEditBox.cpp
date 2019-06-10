@@ -339,3 +339,12 @@ void CTK_cursesSourceEditBoxClass::refreshLine(void)
 	this->gc->CTK_printLine(srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }
 
+/**
+* Get the current text buffer.
+*/
+const char *CTK_cursesSourceEditBoxClass::CTK_getBuffer(void)
+{
+	this->updateBuffer();
+	return(this->txtBuffer);
+}
+

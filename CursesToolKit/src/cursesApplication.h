@@ -61,7 +61,8 @@ class CTK_mainAppClass
 		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
 		void									CTK_setTabWidth(int width);
 
-		void									(*eventLoopCB)(void*,void*)=NULL;
+		void									(*eventLoopCBIn)(void*,void*)=NULL;
+		void									(*eventLoopCBOut)(void*,void*)=NULL;
 
 //build new gadgets
 		void									CTK_addNewMenuBar(void);
@@ -100,7 +101,7 @@ class CTK_mainAppClass
 		const char								*windowName;
 		const char								*title;
 		bool									useAppWindow=false;
-
+		void									*userData=NULL;
 
 	private:
 		TermKey									*tk;

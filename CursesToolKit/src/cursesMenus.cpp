@@ -476,7 +476,7 @@ bool CTK_cursesMenuClass::CTK_doShortCutKey(char key,int menunum)
 {
 	for(int k=0;k<this->menuNames[menunum]->menuItem.size();k++)
 		{
-			if(key==this->menuNames[menunum]->menuItem[k]->shortcutKey)
+			if((this->menuNames[menunum]->menuItem[k]->menuEnabled==true) && (key==this->menuNames[menunum]->menuItem[k]->shortcutKey))
 				{
 					this->menuItemNumber=k;
 					return(true);

@@ -513,6 +513,9 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 	while(this->runEventLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
+			if(this->eventLoopCBIn!=NULL)
+				this->eventLoopCBIn(this,this->userData);
+
 //fprintf(stderr,"key.code.sym=%i<<\n",key.code.sym);
 //fprintf(stderr,"key.code.codepoint=%i<<\n",key.code.codepoint);
 //fprintf(stderr,"key.modifiers=%i<<\n",key.modifiers);
@@ -653,19 +656,27 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if((key.code.sym!=this->selectKey) && (this->hiliteCheckBoxNum==-1) && (this->hiliteListNum==-1))
 											break;
 
+//do src edit events
 										if(this->hiliteSourceEditBoxNum!=-1)
 											{
 												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEvent(true,this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getSrcStrings());
 												this->hiliteSourceEditBoxNum=-1;
+												this->CTK_emptyIPBuffer();
 												this->CTK_updateScreen(this,NULL);
+												if(this->eventLoopCBOut!=NULL)
+													this->eventLoopCBOut(this,this->userData);
 												continue;
 											}
 
+//do edit events
 										if(this->hiliteEditBoxNum!=-1)
 											{
 												this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_doEvent(false,this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings());
 												this->hiliteEditBoxNum=-1;
+												this->CTK_emptyIPBuffer();
 												this->CTK_updateScreen(this,NULL);
+												if(this->eventLoopCBOut!=NULL)
+													this->eventLoopCBOut(this,this->userData);
 												continue;
 											}
 											
@@ -739,8 +750,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 				}
 			this->CTK_emptyIPBuffer();
 			this->CTK_updateScreen(this,NULL);
-			if(this->eventLoopCB!=NULL)
-				this->eventLoopCB(this,NULL);
+			if(this->eventLoopCBOut!=NULL)
+				this->eventLoopCBOut(this,this->userData);
 		}
 }
 

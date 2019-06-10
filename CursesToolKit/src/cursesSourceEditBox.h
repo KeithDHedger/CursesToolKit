@@ -31,6 +31,7 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
 		std::vector<std::string>	&CTK_getSrcStrings(void);
 		void						CTK_setInputLang(const char *lang);
+		virtual const char			*CTK_getBuffer(void);
 		int							sourceX;
 
 	private:

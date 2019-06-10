@@ -38,7 +38,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
-		const char					*CTK_getBuffer(void);
+		virtual const char			*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
 		void						CTK_deleteCurrentWord(void);

@@ -39,8 +39,15 @@ void menuselctCB(void *inst)
 		mainApp->runEventLoop=false;
 }
 
-void mainloopCB(void *mainc,void *data)
+void mainloopCBIn(void *mainc,void *data)
 {
+	fprintf(stderr,"event loop in\n");
+	//fprintf(stderr,">>%p %p<<\n",mainc,data);
+}
+
+void mainloopCBOut(void *mainc,void *data)
+{
+	fprintf(stderr,"event loop out\n");
 	//fprintf(stderr,">>%p %p<<\n",mainc,data);
 }
 
@@ -269,7 +276,8 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 //mainApp->CTK_setDefaultGadget(CHKBOX,0);
 //	mainApp->CTK_setDefaultGadget(INPUT,0);
 	mainApp->menuBar->CTK_setMenuShortCut(0,5,'Q');
-	mainApp->eventLoopCB=mainloopCB;
+	mainApp->eventLoopCBIn=mainloopCBIn;
+	mainApp->eventLoopCBOut=mainloopCBOut;
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
 
