@@ -41,13 +41,13 @@ void menuselctCB(void *inst)
 
 void mainloopCBIn(void *mainc,void *data)
 {
-	fprintf(stderr,"event loop in\n");
+	//fprintf(stderr,"event loop in\n");
 	//fprintf(stderr,">>%p %p<<\n",mainc,data);
 }
 
 void mainloopCBOut(void *mainc,void *data)
 {
-	fprintf(stderr,"event loop out\n");
+	//fprintf(stderr,"event loop out\n");
 	//fprintf(stderr,">>%p %p<<\n",mainc,data);
 }
 
