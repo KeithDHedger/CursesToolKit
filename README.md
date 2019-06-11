@@ -43,3 +43,9 @@ codeeditor.cpp.<br>
 ![Alt text](screenshots/ctksssrced.png?raw=true "Code editor")
 about.cpp.<br>
 ![Alt text](screenshots/ctkssabout.png?raw=true "About box")
+
+keithdhedger@gmail.com
+
+Please donate
+If you have a PayPal account you can donate any amount you like by logging into your account and click the 'Send Money' tab, enter my email address and then send it
+Thank you for helping to support Free software.
