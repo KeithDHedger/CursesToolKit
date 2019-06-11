@@ -767,6 +767,15 @@ int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
 
+	ps.buttons.clear();
+	ps.textBoxes.clear();
+	ps.inputs.clear();
+	ps.lists.clear();
+	ps.checkBoxes.clear();
+	ps.editBoxes.clear();
+	ps.srcEditBoxes.clear();
+	ps.labels.clear();
+
 	this->pages.push_back(ps);
 	this->pageNumber=this->pages.size()-1;
 	return(this->pageNumber);
