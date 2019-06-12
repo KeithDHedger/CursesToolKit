@@ -67,6 +67,8 @@ class CTK_cursesMenuClass
 		void						CTK_setMenuShortCut(int menunum,int menuitem,char key);
 		void						CTK_setMenuBarEnable(bool enable);
 		bool						CTK_getMenuBarEnable(void);
+		void						CTK_setMenuBarVisible(bool show);
+		bool						CTK_getMenuBarVisible(void);
 
 	private:
 		void						(*updateCB)(void *,void*);
@@ -76,6 +78,7 @@ class CTK_cursesMenuClass
 		int							pad=1;
 		bool						menuShowing=false;
 		bool						enableMenuBar=true;
+		bool						menuBarVisible=true;
 		void						drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad);
 		int							drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut);
 		char						setShortCut(const char *name);

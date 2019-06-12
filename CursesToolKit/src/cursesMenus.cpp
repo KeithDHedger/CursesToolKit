@@ -64,6 +64,9 @@ void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)//TODO//
 	int	x=1;
 	int y=1;
 
+	if(this->menuBarVisible==false)
+		return;
+
 	for(int j=0;j<this->menuCnt;j++)
 		{
 			if(this->enableMenuBar==true)
@@ -531,6 +534,8 @@ void CTK_cursesMenuClass::CTK_setColours(coloursStruct cs)
 */
 void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
 {
+	if(this->menuBarVisible==false)
+		return;
 	this->menuShowing=false;
 	this->CTK_drawMenuBar();
 }
@@ -549,6 +554,23 @@ void CTK_cursesMenuClass::CTK_setMenuBarEnable(bool enable)
 bool CTK_cursesMenuClass::CTK_getMenuBarEnable(void)
 {
 	return(this->enableMenuBar);
+}
+
+/**
+* Set whether menu bar is visible.
+* \note To disable shortcuts while menu bar hidden, disable bar as well.
+*/
+void CTK_cursesMenuClass::CTK_setMenuBarVisible(bool show)
+{
+	this->menuBarVisible=show;
+}
+
+/**
+* Get whether menu bar is visible.
+*/
+bool CTK_cursesMenuClass::CTK_getMenuBarVisible(void)
+{
+	return(this->menuBarVisible);
 }
 
 

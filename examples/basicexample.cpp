@@ -19,8 +19,10 @@ exit $retval
 
 //#include <cursesApplication.h>
 #include <cursesGlobals.h>
-CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
+
+CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
+bool					mbarVis=true;
 
 #define FILEMENU 0
 #define QUITITEM 5
@@ -62,6 +64,12 @@ void buttonselctCB(void *inst,void *userdata)
 		lb1->CTK_selectAll();
 	if(strcmp(bc->label,"Select None")==0)
 		lb1->CTK_selectNone();
+	if(strcmp(bc->label,"Toggle Menus")==0)
+		{
+			mbarVis=!mbarVis;
+			mainApp->menuBar->CTK_setMenuBarVisible(mbarVis);
+			mainApp->CTK_clearScreen();
+		}
 		
 }
 
@@ -93,7 +101,10 @@ void checkselctCB(void *inst,void *userdata)
 	if((long)userdata==1)
 		{
 			mainApp->menuBar->CTK_setMenuBarEnable(!cb->CTK_getValue());
+		//	mainApp->menuBar->CTK_setMenuBarVisible(!cb->CTK_getValue());
 			mainApp->menuBar->enableShortcuts=!cb->CTK_getValue();
+		//	mainApp->CTK_clearScreen();
+		//	mainApp->CTK_updateScreen(mainApp,NULL);
 		}
 	if((long)userdata==2)
 		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
@@ -205,6 +216,8 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
 	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
 	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
+	mainApp->CTK_addNewButton(56,16,11,1,"Toggle Menus");
+	mainApp->pages[0].buttons[2]->CTK_setSelectCB(buttonselctCB,NULL);
 
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->pages[0].inputs[0]->CTK_setColours(cs);

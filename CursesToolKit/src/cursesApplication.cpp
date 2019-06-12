@@ -277,13 +277,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 
 	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
 
-	if(app->menuBar!=NULL)
+	if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
 		app->menuBar->CTK_drawMenuBar();
 
 	if(app->pageNumber<0)
 		{
 			app->CTK_clearScreen();
-			if(app->menuBar!=NULL)
+			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
+			//if(app->menuBar!=NULL)
 				app->menuBar->CTK_drawMenuBar();
 			fflush(NULL);
 			SETNORMAL;
@@ -293,7 +294,8 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 	if(app->useAppWindow==true)
 		{
 			int	yadj=0;
-			if(app->menuBar!=NULL)
+			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
+		//	if(app->menuBar!=NULL)
 				yadj=1;
 			setBackColour(BACK_BLUE,false);
 //TODO//FLICKER//
@@ -541,7 +543,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteSourceEditBoxNum=-1;
 										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
-										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true))
+										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
 											{
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
