@@ -31,6 +31,11 @@ class CTK_cursesEditBoxClass
 		int							tabWidth=8;
 		bool						isDirty=false;
 		bool						needsRefresh=false;
+		int							startSelection=-1;
+		int							endSelection=-1;
+
+
+		bool						isSelecting=false;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
@@ -41,6 +46,7 @@ class CTK_cursesEditBoxClass
 		virtual const char			*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
+		const std::string			CTK_getCurrentSelection(void);
 		void						CTK_deleteCurrentWord(void);
 		void						CTK_deleteCurrentLine(void);
 		void						CTK_insertText(const char *txt);
@@ -53,6 +59,7 @@ class CTK_cursesEditBoxClass
 		int							CTK_getCursLine(void);
 		int							CTK_getLineAtY(int y);
 		int							CTK_getCurrentY(void);
+		int							CTK_getCurrentX(void);
 		int							CTK_getHeight(void);
 		void						CTK_toggleBookMark(int y);
 		void						CTK_setBookMark(int y,bool set);
@@ -69,6 +76,9 @@ class CTK_cursesEditBoxClass
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
 		std::vector<std::string>	txtStrings;
+//		int							startSelection=-1;
+//		int							endSelection=-1;
+
 		//std::vector<std::string>	prtStrings;
 		int							currentX;
 		int							currentY;

@@ -38,7 +38,7 @@ struct bookmarkStruct
 };
 
 enum {NEWITEM=0,OPENITEM,SAVEITEM,SAVEASITEM,CLOSEITEM,QUITITEM};
-enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE};
+enum {COPYWORD=0,CUTWORD,COPYLINE,CUTLINE,PASTE,STARTSEL,ENDSEL};
 enum {GOTOLINE=0,FIND,FINDNEXT};
 enum {NEXTTAB=0,PREVTAB};
 enum {REMOVEMARKS=0,TOGGLEMARK};
@@ -46,7 +46,7 @@ enum {HELP=0,ABOUT};
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
-const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste",NULL};
+const char	*editMenuNames[]={" _Copy"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste"," Start Sel"," End Sel",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" _Next Tab"," _Prev Tab",NULL};
 const char	*bmMenuNames[]={" _Remove All Marks"," _Toggle Mark",NULL};
@@ -60,6 +60,8 @@ int							showLineNumbers=4;
 std::vector<bookmarkStruct>	bms;
 int							newCnt=0;
 std::string					clip="";
+//int							startSelection=-1;
+//int							endSelection=-1;
 
 void rebuildTabMenu(void)
 {
@@ -217,8 +219,24 @@ void menuSelectCB(void *inst)
 			case EDITMENU:
 				switch(mc->menuItemNumber)
 					{
+						case ENDSEL:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=false;
+							break;
+						case STARTSEL:
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=true;
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->startSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
+							break;
 						case COPYWORD:
-							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
+							if(mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting==true)
+								{
+									mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
+									mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=false;
+									clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentSelection();
+								}
+							else
+								clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
 							break;
 						case COPYLINE:
 							clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentLine();
@@ -326,6 +344,7 @@ void mainloopCB(void *mainc,void *data)
 {
 //MOVETO(1,2);
 //printf("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+fprintf(stderr,"sx=%i -> se=%i\n",mainApp->pages[mainApp->pageNumber].editBoxes[0]->startSelection,mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection);
 fflush(NULL);
 }
 
@@ -367,6 +386,8 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,PASTE,'v');
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,COPYWORD,'c');
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,CUTWORD,'x');
+	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,STARTSEL,'s');
+	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,ENDSEL,'e');
 
 	cnt=0;
 	while(navMenuNames[cnt]!=NULL)
@@ -398,7 +419,7 @@ int main(int argc, char **argv)
 	rebuildBMMenu();
 	//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setEditable(true);
 
-	mainApp->eventLoopCB=mainloopCB;
+	mainApp->eventLoopCBIn=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)

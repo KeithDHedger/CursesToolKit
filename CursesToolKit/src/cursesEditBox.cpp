@@ -245,6 +245,27 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 				break;
 			}
 
+	if(this->isSelecting==true)
+		{
+			int	tsx;
+			int	tex;
+
+			if(this->endSelection<this->startSelection)
+				{
+					tex=this->startSelection+1;
+					tsx=this->endSelection;
+				}
+			else
+				{
+					tsx=this->startSelection;
+					tex=this->endSelection;
+				}
+
+			MOVETO(this->sx+this->lineReserve+tsx,this->sy+this->currentY-this->startLine);
+			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+			printf("%s",txtStrings[this->currentY].substr(tsx,tex-tsx).c_str());
+		}
+
 	fflush(NULL);
 }
 
@@ -462,6 +483,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 												else
 													this->currentX=0;
 											}
+										if(this->isSelecting==true)
+											this->endSelection=this->currentX;
 										break;
 									case TERMKEY_SYM_RIGHT:
 										this->currentX++;
@@ -476,6 +499,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 												else
 													this->currentX=lines[currentY].length()-1;
 											}
+										if(this->isSelecting==true)
+											this->endSelection=this->currentX;
 										break;
 								}
 						}
@@ -483,6 +508,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 		//	this->adjustXY();
 			this->CTK_drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
+//if(this->isSelecting==true)
+//	fprintf(stderr,"sx=%i -> se=%i\n",this->startSelection,this->endSelection);
 			shortdraw=true;
 		}
 	this->editStatus="Normal";
@@ -541,6 +568,28 @@ const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 			endchr=j;
 			
 	return(this->txtStrings[this->currentY].substr(startchr,endchr-startchr+1));
+}
+
+/**
+* Getselection.
+*/
+const std::string CTK_cursesEditBoxClass::CTK_getCurrentSelection(void)
+{
+	int sx;
+	int ex;
+
+	if(this->endSelection<this->startSelection)
+		{
+			ex=this->startSelection;
+			sx=this->endSelection;
+		}
+	else
+		{
+			sx=this->startSelection;
+			ex=this->endSelection;
+		}
+
+	return(txtStrings[this->currentY].substr(sx,ex-sx+1));
 }
 
 /**
@@ -734,6 +783,14 @@ bool CTK_cursesEditBoxClass::CTK_getBookMark(int y)
 int CTK_cursesEditBoxClass::CTK_getCurrentY(void)
 {
 	return(this->currentY);
+}
+
+/**
+* Get current curs.
+*/
+int CTK_cursesEditBoxClass::CTK_getCurrentX(void)
+{
+	return(this->currentX);
 }
 
 /**
