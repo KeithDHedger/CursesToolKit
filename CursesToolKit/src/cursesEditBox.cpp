@@ -44,6 +44,7 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 	this->bookMarks.clear();
+	this->myType=EDITBOXCLASS;
 }
 
 /**
@@ -158,12 +159,19 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 */
 void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
-	int	startchr=0;
-	int j;
-	int	linenum=0;
-	int	boxline=0;
-	std::string tclip;
-	const char *mark=INVERSEON "M" INVERSEOFF;
+	int							startchr=0;
+	int							j;
+	int							linenum=0;
+	int							boxline=0;
+	std::string					 tclip;
+	const char					*mark=INVERSEON "M" INVERSEOFF;
+	char						charundercurs=0;
+	std::vector<std::string>	edstrings;
+
+	if(this->myType==EDITBOXCLASS)
+		edstrings=this->CTK_getStrings();
+	else
+		edstrings=dynamic_cast<CTK_cursesSourceEditBoxClass*>(this)->CTK_getSrcStrings();
 
 	if(shortupdate==false)
 		{
@@ -180,8 +188,6 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
 				{
 					MOVETO(this->sx,this->sy+boxline);
-					//printf("\e[0m%s\e[%iX",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),this->wid);
-					//fflush(NULL);
 					if(this->showLineNumbers>0)
 						{
 							setBothColours(this->colours.lineNumForeCol,this->colours.lineNumBackCol,this->colours.use256Colours);
@@ -198,16 +204,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-					//for(int j=0;j<this->wid/4;j++)
-					//	{
-					//		printf("\e[30;47m\e[%iX\e[30;47m",this->wid-this->lineReserve);
-					///	}
-					//MOVETO(this->sx+this->lineReserve,this->sy+boxline);
-					
-					//printf("\e[%iX%s",this->wid,this->txtStrings[boxline+this->startLine].c_str());
-					//printf("%s",this->txtStrings[boxline+this->startLine].c_str());
-					//fflush(stdout);
-					this->gc->CTK_printLine(this->txtStrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+					this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}
 		}
@@ -225,32 +222,25 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	MOVETO(this->sx,this->sy+hite+1);
 	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 
-	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
-	printf("%s",this->txtStrings[this->currentY].substr(0,this->currentX).c_str());
+//print cursor
+	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
 	switch(this->txtStrings[this->currentY][this->currentX])
 		{
 			case '\t':
-//				printf("%s",getBothColours(this->colours.backCol,this->colours.foreCol,this->colours.use256Colours));
-//				printf("\e[1P");
-//				fflush(stdout);
-//				//printf("%s\e[D ",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours));
-//				//break;
-//				
-//				//MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
 			case '\n':
-				printf("%s ",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours));
+				charundercurs=' ';
 				break;
 			default:
-				printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),this->txtStrings[this->currentY][this->currentX]);
+				charundercurs=this->txtStrings[this->currentY][this->currentX];
 				break;
-			}
+		}	
+	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
 
+//higlite selection
 	if(this->isSelecting==true)
 		{
 			for(int j=0;j<this->multiLineSels.size();j++)
 				{
-				//	fprintf(stderr,"this->sx+this->lineReserve+this->multiLineSels[j].sx=%i\n",this->sx+this->lineReserve+this->multiLineSels[j].sx);
-					//fprintf(stderr,"corrected=%i\n",getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve));
 					MOVETO(getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve),this->sy+this->multiLineSels[j].line-this->startLine);
 					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 					printf("%s",this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());

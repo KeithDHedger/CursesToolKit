@@ -28,6 +28,8 @@ struct	selectStruct
 	int ex;
 };
 
+enum {EDITBOXCLASS=0,SRCBOXCLASS};
+
 class CTK_cursesEditBoxClass
 {
 	public:
@@ -43,7 +45,7 @@ class CTK_cursesEditBoxClass
 
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
-		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
+		void						CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
 
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
@@ -81,6 +83,7 @@ class CTK_cursesEditBoxClass
 	private:
 
 	protected:
+		int							myType;
 		std::vector<selectStruct>	multiLineSels;
 		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;

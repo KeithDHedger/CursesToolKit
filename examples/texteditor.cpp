@@ -424,6 +424,7 @@ int main(int argc, char **argv)
 	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_toggleBookMark(56);
 	rebuildBMMenu();
 	//mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setEditable(true);
+//fprintf(stderr,">%s<\n",typeid(mainApp->pages[mainApp->pageNumber].editBoxes[0]).name());
 
 	mainApp->eventLoopCBIn=mainloopCB;
 	mainApp->CTK_mainEventLoop();

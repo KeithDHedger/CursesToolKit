@@ -418,7 +418,7 @@ int main(int argc, char **argv)
 
 	//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setEditable(false);
 	rebuildBMMenu();
-
+//fprintf(stderr,">%s<\n",typeid(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]).name());
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)
