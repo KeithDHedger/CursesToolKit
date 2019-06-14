@@ -292,7 +292,7 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 		{
 			for(int j=0;j<this->multiLineSels.size();j++)
 				{
-					MOVETO(this->sx+this->lineReserve+this->multiLineSels[j].sx,this->sy+this->multiLineSels[j].line-this->startLine);
+					MOVETO(getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve),this->sy+this->multiLineSels[j].line-this->startLine);
 					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 					printf("%s",txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
 				}

@@ -249,7 +249,9 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 		{
 			for(int j=0;j<this->multiLineSels.size();j++)
 				{
-					MOVETO(this->sx+this->lineReserve+this->multiLineSels[j].sx,this->sy+this->multiLineSels[j].line-this->startLine);
+				//	fprintf(stderr,"this->sx+this->lineReserve+this->multiLineSels[j].sx=%i\n",this->sx+this->lineReserve+this->multiLineSels[j].sx);
+					//fprintf(stderr,"corrected=%i\n",getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve));
+					MOVETO(getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve),this->sy+this->multiLineSels[j].line-this->startLine);
 					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 					printf("%s",this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
 				}
@@ -853,6 +855,7 @@ void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
 	this->multiLineSels.clear();
 	isSelecting=false;
 }
+
 /**
 * Get selection.
 */
@@ -863,4 +866,27 @@ std::string CTK_cursesEditBoxClass::CTK_getSelection(void)
 		str+=this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx+1);
 	return(str);
 }
+
+/**
+* Delete selection.
+*/
+void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
+{
+	for(int j=this->multiLineSels.size()-1;j>=0;j--)
+		this->txtStrings[this->multiLineSels[j].line].erase(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx+1);
+
+	this->currentX=this->multiLineSels[0].sx;
+	this->currentY=this->multiLineSels[0].line;
+	this->adjustXY();
+	this->CTK_finishSelecting();
+}
+
+
+
+
+
+
+
+
+
 

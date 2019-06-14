@@ -55,6 +55,7 @@ class CTK_cursesEditBoxClass
 		void						CTK_startSelecting(void);
 		void						CTK_finishSelecting(void);
 		std::string					CTK_getSelection(void);
+		void						CTK_deleteSelection(void);
 		void						CTK_deleteCurrentWord(void);
 		void						CTK_deleteCurrentLine(void);
 		void						CTK_insertText(const char *txt);

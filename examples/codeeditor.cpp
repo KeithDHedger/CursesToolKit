@@ -249,8 +249,16 @@ void menuSelectCB(void *inst)
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer();
 							break;
 						case CUTLINE:
-							clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentLine();
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteCurrentLine();
+							if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting==true)
+								{
+									clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getSelection();
+									mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteSelection();
+								}
+							else
+								{
+									clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentLine();
+									mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteCurrentLine();
+								}
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=true;
 							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer();
 							break;
@@ -382,6 +390,7 @@ int main(int argc, char **argv)
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,CUTWORD,'x');
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,STARTSEL,'s');
 	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,ENDSEL,'e');
+	mainApp->menuBar->CTK_setMenuShortCut(EDITMENU,CUTLINE,'l');
 
 	cnt=0;
 	while(navMenuNames[cnt]!=NULL)
