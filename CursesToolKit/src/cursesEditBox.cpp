@@ -44,7 +44,7 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
 	this->bookMarks.clear();
-	this->myType=EDITBOXCLASS;
+	this->thisType=EDITBOXCLASS;
 }
 
 /**
@@ -168,7 +168,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	char						charundercurs=0;
 	std::vector<std::string>	edstrings;
 
-	if(this->myType==EDITBOXCLASS)
+	if(this->thisType==EDITBOXCLASS)
 		edstrings=this->CTK_getStrings();
 	else
 		edstrings=dynamic_cast<CTK_cursesSourceEditBoxClass*>(this)->CTK_getSrcStrings();

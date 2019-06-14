@@ -52,7 +52,7 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
-	this->myType=SRCBOXCLASS;
+	this->thisType=SRCBOXCLASS;
 }
 
 /**

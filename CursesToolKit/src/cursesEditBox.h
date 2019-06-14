@@ -83,7 +83,7 @@ class CTK_cursesEditBoxClass
 	private:
 
 	protected:
-		int							myType;
+		int							thisType;
 		std::vector<selectStruct>	multiLineSels;
 		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;
