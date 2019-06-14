@@ -247,23 +247,12 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 
 	if(this->isSelecting==true)
 		{
-			int	tsx;
-			int	tex;
-
-			if(this->endSelection<this->startSelection)
+			for(int j=0;j<this->multiLineSels.size();j++)
 				{
-					tex=this->startSelection+1;
-					tsx=this->endSelection;
+					MOVETO(this->sx+this->lineReserve+this->multiLineSels[j].sx,this->sy+this->multiLineSels[j].line-this->startLine);
+					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+					printf("%s",this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
 				}
-			else
-				{
-					tsx=this->startSelection;
-					tex=this->endSelection;
-				}
-
-			MOVETO(this->sx+this->lineReserve+tsx,this->sy+this->currentY-this->startLine);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-			printf("%s",txtStrings[this->currentY].substr(tsx,tex-tsx).c_str());
 		}
 
 	fflush(NULL);
@@ -330,6 +319,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 									break;
 								tstr[1]=toupper(key.code.codepoint);
 								//tstr[1]=key.code.codepoint;
+								//fprintf(stderr,"key=%c\n",tstr[1]);
 								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
 									{
 										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
@@ -435,6 +425,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
+										this->isSelecting=false;
 										this->refreshLine();
 										if(this->needsRefresh==true)
 											this->updateBuffer();
@@ -453,6 +444,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											this->currentX=lines[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
+										this->isSelecting=false;
 										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
@@ -483,9 +475,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 												else
 													this->currentX=0;
 											}
-										if(this->isSelecting==true)
-											this->endSelection=this->currentX;
 										break;
+
 									case TERMKEY_SYM_RIGHT:
 										this->currentX++;
 										if(this->currentX>=lines[currentY].length())
@@ -499,17 +490,23 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 												else
 													this->currentX=lines[currentY].length()-1;
 											}
-										if(this->isSelecting==true)
-											this->endSelection=this->currentX;
 										break;
 								}
 						}
 				}
-		//	this->adjustXY();
+
+			if(this->isSelecting==true)
+				{
+					if(this->multiLineSels.back().line!=this->currentY)
+						{
+							this->multiLineSels.back().ex=this->txtStrings[this->multiLineSels.back().line].length();
+							this->multiLineSels.push_back({this->currentY,0,this->currentX});
+						}
+					this->multiLineSels.back().ex=this->currentX;
+				}
+
 			this->CTK_drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
-//if(this->isSelecting==true)
-//	fprintf(stderr,"sx=%i -> se=%i\n",this->startSelection,this->endSelection);
 			shortdraw=true;
 		}
 	this->editStatus="Normal";
@@ -568,28 +565,6 @@ const std::string CTK_cursesEditBoxClass::CTK_getCurrentWord(void)
 			endchr=j;
 			
 	return(this->txtStrings[this->currentY].substr(startchr,endchr-startchr+1));
-}
-
-/**
-* Getselection.
-*/
-const std::string CTK_cursesEditBoxClass::CTK_getCurrentSelection(void)
-{
-	int sx;
-	int ex;
-
-	if(this->endSelection<this->startSelection)
-		{
-			ex=this->startSelection;
-			sx=this->endSelection;
-		}
-	else
-		{
-			sx=this->startSelection;
-			ex=this->endSelection;
-		}
-
-	return(txtStrings[this->currentY].substr(sx,ex-sx+1));
 }
 
 /**
@@ -860,4 +835,32 @@ void CTK_cursesEditBoxClass::refreshLine(void)
 	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }
 
+/**
+* Start selecting lines
+*/
+void CTK_cursesEditBoxClass::CTK_startSelecting(void)
+{
+	this->multiLineSels.clear();
+	this->multiLineSels.push_back({this->currentY,this->currentX,this->currentX});
+	isSelecting=true;
+}
+
+/**
+* Stop selecting lines
+*/
+void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
+{
+	this->multiLineSels.clear();
+	isSelecting=false;
+}
+/**
+* Get selection.
+*/
+std::string CTK_cursesEditBoxClass::CTK_getSelection(void)
+{
+	std::string str="";
+	for(int j=0;j<this->multiLineSels.size();j++)
+		str+=this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx+1);
+	return(str);
+}
 

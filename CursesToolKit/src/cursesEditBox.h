@@ -21,6 +21,13 @@
 #ifndef _CURSESEDITBOX_
 #define _CURSESEDITBOX_
 
+struct	selectStruct
+{
+	int line;
+	int sx;
+	int ex;
+};
+
 class CTK_cursesEditBoxClass
 {
 	public:
@@ -31,11 +38,9 @@ class CTK_cursesEditBoxClass
 		int							tabWidth=8;
 		bool						isDirty=false;
 		bool						needsRefresh=false;
-		int							startSelection=-1;
-		int							endSelection=-1;
-
 
 		bool						isSelecting=false;
+
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		virtual void				CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
@@ -43,13 +48,17 @@ class CTK_cursesEditBoxClass
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 		void						CTK_setColours(coloursStruct cs);
+
 		virtual const char			*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
-		const std::string			CTK_getCurrentSelection(void);
+		void						CTK_startSelecting(void);
+		void						CTK_finishSelecting(void);
+		std::string					CTK_getSelection(void);
 		void						CTK_deleteCurrentWord(void);
 		void						CTK_deleteCurrentLine(void);
 		void						CTK_insertText(const char *txt);
+
 		void						CTK_gotoXY(int x,int y);
 		void						CTK_setRunLoop(bool loop);
 		void						CTK_setEditable(bool edit);
@@ -71,15 +80,13 @@ class CTK_cursesEditBoxClass
 	private:
 
 	protected:
+		std::vector<selectStruct>	multiLineSels;
+		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;
 		bool						canEdit=true;
 		coloursStruct				colours;
 		CTK_cursesGraphicsClass		*gc;
-		std::vector<std::string>	txtStrings;
-//		int							startSelection=-1;
-//		int							endSelection=-1;
 
-		//std::vector<std::string>	prtStrings;
 		int							currentX;
 		int							currentY;
 		int							sx;

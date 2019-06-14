@@ -53,7 +53,7 @@ std::vector<bookmarkStruct>	bms;
 
 const char	*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
 const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
-const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste"," Start Sel"," End Sel",NULL};
+const char	*editMenuNames[]={" _Copy"," C_ut Word"," Copy _Line"," Cu_t Line"," _Paste"," Start Sel"," End Sel",NULL};
 const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
 const char	*tabMenuNames[]={" _Next Tab"," _Prev Tab",NULL};
 const char	*bmMenuNames[]={" _Remove All Marks"," _Toggle Mark",NULL};
@@ -225,20 +225,16 @@ void menuSelectCB(void *inst)
 				switch(mc->menuItemNumber)
 					{
 						case ENDSEL:
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentX();
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting=false;
+							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_finishSelecting();
 							break;
 						case STARTSEL:
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting=true;
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->startSelection=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentX();
-							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentX();
+							mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_startSelecting();
 							break;
 						case COPYWORD:
 							if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting==true)
 								{
-									mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentX();
-									mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting=false;
-									clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentSelection();
+									clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getSelection();
+									mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_finishSelecting();
 								}
 							else
 								clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentWord();

@@ -287,27 +287,16 @@ void CTK_cursesSourceEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool 
 	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 
 	this->setScreenX();
+
 	if(this->isSelecting==true)
 		{
-			int	tsx;
-			int	tex;
-
-			if(this->endSelection<this->startSelection)
+			for(int j=0;j<this->multiLineSels.size();j++)
 				{
-					tex=this->startSelection+1;
-					tsx=this->endSelection;
+					MOVETO(this->sx+this->lineReserve+this->multiLineSels[j].sx,this->sy+this->multiLineSels[j].line-this->startLine);
+					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+					printf("%s",txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
 				}
-			else
-				{
-					tsx=this->startSelection;
-					tex=this->endSelection;
-				}
-
-			MOVETO(this->sx+this->lineReserve+tsx,this->sy+this->currentY-this->startLine);
-			setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-			printf("%s",txtStrings[this->currentY].substr(tsx,tex-tsx).c_str());
 		}
-
 
 	fflush(NULL);
 }

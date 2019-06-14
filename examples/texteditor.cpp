@@ -220,20 +220,16 @@ void menuSelectCB(void *inst)
 				switch(mc->menuItemNumber)
 					{
 						case ENDSEL:
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=false;
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_finishSelecting();
 							break;
 						case STARTSEL:
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=true;
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->startSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
-							mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
+							mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_startSelecting();
 							break;
 						case COPYWORD:
 							if(mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting==true)
 								{
-									mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentX();
-									mainApp->pages[mainApp->pageNumber].editBoxes[0]->isSelecting=false;
-									clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentSelection();
+									clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getSelection();
+									mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_finishSelecting();
 								}
 							else
 								clip=mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_getCurrentWord();
@@ -344,7 +340,7 @@ void mainloopCB(void *mainc,void *data)
 {
 //MOVETO(1,2);
 //printf("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-fprintf(stderr,"sx=%i -> se=%i\n",mainApp->pages[mainApp->pageNumber].editBoxes[0]->startSelection,mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection);
+//fprintf(stderr,"sx=%i -> se=%i\n",mainApp->pages[mainApp->pageNumber].editBoxes[0]->startSelection,mainApp->pages[mainApp->pageNumber].editBoxes[0]->endSelection);
 fflush(NULL);
 }
 
