@@ -31,14 +31,12 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		std::vector<std::string>	&CTK_getSrcStrings(void);
 		void						CTK_setInputLang(const char *lang);
 		virtual const char			*CTK_getBuffer(void);
-		int							sourceX;
 
 	private:
 		std::string					filePath="";
-		bool						fullUpdate=true;
-		void						setScreenX(void);
 		std::string					inputLang="default.lang";
 		bool						forceLang=false;
+		bool						needsRefresh=false;
 
 	protected:
 		std::vector<std::string>	srcStrings;

@@ -173,8 +173,10 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 	else
 		edstrings=dynamic_cast<CTK_cursesSourceEditBoxClass*>(this)->CTK_getSrcStrings();
 
-	if(shortupdate==false)
+	if((shortupdate==false) || (this->needsRefresh==true))
 		{
+			this->needsRefresh=false;
+		//fprintf(stderr,"long draw\n");
 			if(this->colours.fancyGadgets==true)
 				this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
@@ -210,6 +212,7 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 		}
 	else
 		{
+	//	fprintf(stderr,"short draw\n");
 			this->refreshLine();
 		}
 
@@ -417,7 +420,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_UP:
-										this->isSelecting=false;
+										this->CTK_finishSelecting();
 										this->refreshLine();
 										if(this->needsRefresh==true)
 											this->updateBuffer();
@@ -436,7 +439,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											this->currentX=lines[this->currentY].length()-1;
 										break;
 									case TERMKEY_SYM_PAGEDOWN:
-										this->isSelecting=false;
+										this->CTK_finishSelecting();
 										shortdraw=false;
 										lineadd=this->hite;
 									case TERMKEY_SYM_DOWN:
@@ -710,7 +713,7 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 */
 std::vector<std::string> &CTK_cursesEditBoxClass::CTK_getStrings(void)
 {
-	return((this->txtStrings));
+	return(this->txtStrings);
 }
 
 /**
@@ -832,6 +835,8 @@ void CTK_cursesEditBoxClass::refreshLine(void)
 */
 void CTK_cursesEditBoxClass::CTK_startSelecting(void)
 {
+	if(this->isSelecting==true)
+		return;
 	this->multiLineSels.clear();
 	this->multiLineSels.push_back({this->currentY,this->currentX,this->currentX});
 	isSelecting=true;
@@ -842,8 +847,11 @@ void CTK_cursesEditBoxClass::CTK_startSelecting(void)
 */
 void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
 {
+	if(this->isSelecting==false)
+		return;
 	this->multiLineSels.clear();
 	isSelecting=false;
+	this->needsRefresh=true;
 }
 
 /**

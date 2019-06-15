@@ -178,52 +178,6 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 /**
 * Private.
 */
-void CTK_cursesSourceEditBoxClass::setScreenX(void)
-{
-	this->sourceX=0;
-	while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
-		while(this->srcStrings[this->currentY][this->sourceX++]!='m');
-
-	for(int j=0;j<this->currentX;j++)
-		{
-			while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
-				while(this->srcStrings[this->currentY][this->sourceX++]!='m');
-
-			switch(this->txtStrings[this->currentY][j])
-				{
-					case '\t':
-						this->sourceX++;
-						break;
-					default:
-						this->sourceX++;
-						break;
-				}
-		}
-return;
-	while(this->srcStrings[this->currentY][this->sourceX]==0x1b)
-		{
-			while(this->srcStrings[this->currentY][this->sourceX]!='m')
-				this->sourceX++;
-			this->sourceX++;
-		}
-
-	MOVETO(this->sx+this->lineReserve,this->sy+this->currentY-this->startLine);
-	printf("%s",this->srcStrings[this->currentY].substr(0,this->sourceX).c_str());
-	switch(this->txtStrings[this->currentY][this->currentX])
-		{
-			case '\t':
-			case '\n':
-				printf( "\e[%im\e[%im " ,this->colours.cursBackCol,this->colours.cursForeCol);
-				break;
-			default:
-				printf("\e[%im\e[%im%c",this->colours.cursBackCol,this->colours.cursForeCol,this->txtStrings[this->currentY][this->currentX]);
-				break;
-			}
-}
-
-/**
-* Private.
-*/
 void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 {
 	std::string buff;
@@ -240,7 +194,7 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 */
 std::vector<std::string> &CTK_cursesSourceEditBoxClass::CTK_getSrcStrings(void)
 {
-	return((this->srcStrings));
+	return(this->srcStrings);
 }
 
 /**

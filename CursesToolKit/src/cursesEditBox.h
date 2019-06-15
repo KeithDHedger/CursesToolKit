@@ -39,10 +39,7 @@ class CTK_cursesEditBoxClass
 		CTK_mainAppClass			*mc=NULL;
 		int							tabWidth=8;
 		bool						isDirty=false;
-		bool						needsRefresh=false;
-
 		bool						isSelecting=false;
-
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
@@ -81,6 +78,7 @@ class CTK_cursesEditBoxClass
 		int							CTK_getLineCnt(void);
 
 	private:
+		bool						needsRefresh=false;
 
 	protected:
 		int							thisType;
