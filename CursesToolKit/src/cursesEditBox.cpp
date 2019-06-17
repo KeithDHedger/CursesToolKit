@@ -45,6 +45,7 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 	this->gc->CTK_setColours(this->colours);
 	this->bookMarks.clear();
 	this->thisType=EDITBOXCLASS;
+	this->userData=this;
 }
 
 /**
@@ -285,6 +286,8 @@ void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
 
 /**
 * Main edit/source box event loop
+* \note If the mainApp class CB is set it will be called with this->userData.
+* \note The default is to set this->userData to this
 */
 void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
 {
@@ -304,6 +307,9 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 	while(this->runLoop==true)
 		{
 			ret=termkey_waitkey(this->tk,&key);
+			if(this->mc->eventLoopCBIn!=NULL)
+				this->mc->eventLoopCBIn(this->mc,this->userData);
+
 			lineadd=1;
 			switch(key.type)
 				{
@@ -511,6 +517,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 			this->CTK_drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
+			if(this->eventLoopCBOut!=NULL)
+				this->eventLoopCBOut(this->mc,this->userData);
 			shortdraw=true;
 		}
 	this->editStatus="Normal";

@@ -40,6 +40,9 @@ class CTK_cursesEditBoxClass
 		int							tabWidth=8;
 		bool						isDirty=false;
 		bool						isSelecting=false;
+		void						*userData=NULL;
+		//void						(*eventLoopCBIn)(void*,void*)=NULL;
+		//void						(*eventLoopCBOut)(void*,void*)=NULL;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);

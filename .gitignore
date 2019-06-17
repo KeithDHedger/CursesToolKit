@@ -16,6 +16,6 @@ stamp-*
 config.h
 autom4te.cache
 IGNORE
-html
-searchdata.xml
+CursesToolKit/docs/html
+CursesToolKit/docs/searchdata.xml
 tmpexamples

@@ -1,3 +1,7 @@
+1.0.3
+Docs clean.
+Added CB to editbox event loop.
+
 1.0.2
 Got rid of redundant edit menu entrys in edit/src box examples.
 'Insert' now starts multi line selecting.
