@@ -1,4 +1,6 @@
 1.0.2
+Got rid of redundant edit menu entrys in edit/src box examples.
+'Insert' now starts multi line selecting.
 Code clean.
 Cleaned edit/src box draw.
 Added multi line delete.

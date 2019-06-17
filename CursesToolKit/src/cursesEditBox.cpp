@@ -401,12 +401,21 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										if(usesrc==true)
 											srclines[this->currentY]=lines[this->currentY];
 										break;
+//exit loop
 									case TERMKEY_SYM_ESCAPE:
 										this->runLoop=false;
 										shortdraw=false;
 										this->updateBuffer();
 										continue;
 										break;
+//start selecting
+									case TERMKEY_SYM_INSERT:
+										if(this->isSelecting==false)
+											this->CTK_startSelecting();
+										else
+											this->CTK_finishSelecting();
+										break;
+
 									case TERMKEY_SYM_HOME:
 									case TERMKEY_SYM_FIND://console?
 										this->currentX=0;
