@@ -517,8 +517,8 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 			this->CTK_drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
-			if(this->eventLoopCBOut!=NULL)
-				this->eventLoopCBOut(this->mc,this->userData);
+			if(this->mc->eventLoopCBOut!=NULL)
+				this->mc->eventLoopCBOut(this->mc,this->userData);
 			shortdraw=true;
 		}
 	this->editStatus="Normal";
