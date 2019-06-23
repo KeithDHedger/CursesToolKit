@@ -2,12 +2,12 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./openfile.cpp ~
+#(cd ../;make -j4);./openfolder.cpp ~
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o fileselect ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./fileselect "$@"
+g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o folderselect ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./folderselect "$@"
 retval=$?
-rm fileselect
+rm folderselect
 reset
 exit $retval
 

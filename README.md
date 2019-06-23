@@ -15,7 +15,7 @@ List box.<br>
 Check box.<br>
 Label.<br>
 
-Convienience functions:<br>
+Convenience functions:<br>
 Entry dialog.<br>
 Query dialog.<br>
 Save file dialog.<br>
