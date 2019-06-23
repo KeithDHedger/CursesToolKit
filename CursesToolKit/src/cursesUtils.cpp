@@ -169,6 +169,30 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 }
 
 /**
+* Private
+*/
+static void setPathAndType(char *retbuffer,const char *path,int type)
+{
+	switch(type)
+		{
+			case FOLDERTYPE:
+				sprintf(retbuffer,"%s/",path);
+				break;
+			case FOLDERLINKTYPE:
+				sprintf(retbuffer,"%s@",(char*)path);
+				break;
+			case FILETYPE:
+				sprintf(retbuffer,"%s",path);
+				break;
+			case BROKENLINKTYPE:
+			case FILELINKTYPE:
+				sprintf(retbuffer,"%s@",path);
+				break;
+		}
+}
+
+#if 1
+/**
 * Private internal callback
 */
 static void listSelectCB(void *inst,void *ud)
@@ -178,6 +202,7 @@ static void listSelectCB(void *inst,void *ud)
 	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
 
 	fud->isValid=false;
+
 	if((fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE) || (fud->find->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
 		{
 			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
@@ -190,29 +215,115 @@ static void listSelectCB(void *inst,void *ud)
 			ls->CTK_clearList();
 			for(int j=0;j<fud->find->data.size();j++)
 				{
-					if((fud->find->data[j].fileType==FOLDERTYPE) || (fud->find->data[j].fileType==FOLDERLINKTYPE))
-						sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
-					else
-						sprintf(buffer,"%s",fud->find->data[j].name.c_str());
+					setPathAndType(buffer,fud->find->data[j].name.c_str(),fud->find->data[j].fileType);
+					ls->CTK_addListItem(buffer,NULL);
+				}
+		}
+				
+	if(fud->isSelectFolder==true)
+		{
+			sprintf(buffer,"Folder: %s",fud->inst->inFolder.c_str());
+			fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+			fud->inst->isValidFile=true;
+		}
+	else
+		{
+			if((fud->isOpenDialog==true) )
+				{
+					if(fud->find->data[ls->listItemNumber].fileType!=FOLDERTYPE)
+						{
+							sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
+							fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+							fud->inst->isValidFile=true;
+						}
+				}
+			else
+				{
+					if(fud->find->data[ls->listItemNumber].fileType!=FOLDERTYPE)
+						{
+							fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
+							fud->inst->isValidFile=true;
+						}
+				}
+		}
+}
+
+#else
+/**
+* Private internal callback
+*/
+static void listSelectCB(void *inst,void *ud)
+{
+	char						*buffer=(char*)alloca(PATH_MAX);
+	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
+	fileUDStruct				*fud=static_cast<fileUDStruct*>(ud);
+
+	fud->isValid=false;
+
+//			if((fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE) || (fud->find->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
+//				{
+//					sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
+//					chdir(buffer);
+//					fud->inst->inFolder=get_current_dir_name();
+//					fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
+//					fud->find->LFSTK_setSort(false);
+//					fud->find->LFSTK_sortByTypeAndName();
+//				}
+				
+	if(fud->isSelectFolder==true)
+		{
+			sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
+			chdir(buffer);
+			fud->inst->inFolder=get_current_dir_name();
+			fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
+			fud->find->LFSTK_setSort(false);
+			fud->find->LFSTK_sortByTypeAndName();
+			sprintf(buffer,"Folder:%s",fud->inst->inFolder.c_str());
+			fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+			fud->inst->isValidFile=true;
+
+			ls->CTK_clearList();
+			for(int j=0;j<fud->find->data.size();j++)
+				{
+					setPathAndType(buffer,fud->find->data[j].name.c_str(),fud->find->data[j].fileType);
 					ls->CTK_addListItem(buffer,NULL);
 				}
 		}
 	else
 		{
-			if(fud->isOpenDialog==true)
+			if((fud->find->data[ls->listItemNumber].fileType==FOLDERTYPE) || (fud->find->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
 				{
-					sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
-					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
-					fud->inst->isValidFile=true;
+					sprintf(buffer,"%s/%s",fud->inst->inFolder.c_str(),fud->find->data[ls->listItemNumber].name.c_str());
+					chdir(buffer);
+					fud->inst->inFolder=get_current_dir_name();
+					fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
+					fud->find->LFSTK_setSort(false);
+					fud->find->LFSTK_sortByTypeAndName();
+
+					ls->CTK_clearList();
+					for(int j=0;j<fud->find->data.size();j++)
+						{
+							setPathAndType(buffer,fud->find->data[j].name.c_str(),fud->find->data[j].fileType);
+							ls->CTK_addListItem(buffer,NULL);
+						}
 				}
 			else
 				{
-					fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
+					if(fud->isOpenDialog==true)
+						{
+							sprintf(buffer,"File: %s",fud->find->data[ls->listItemNumber].path.c_str());
+							fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+							fud->inst->isValidFile=true;
+						}
+					else
+						{
+							fud->app->pages[0].inputs[0]->CTK_setText(fud->find->data[ls->listItemNumber].name.c_str());
+						}
+					fud->isValid=true;
 				}
-			fud->isValid=true;
 		}
 }
-
+#endif
 /**
 * Private internal callback
 */
@@ -315,10 +426,7 @@ void checkSelectCB(void *inst,void *ud)
 	fud->list->CTK_clearList();
 	for(int j=0;j<fud->find->data.size();j++)
 		{
-			if(fud->find->data[j].fileType==FOLDERTYPE)
-				sprintf(buffer,"%s/",fud->find->data[j].name.c_str());
-			else
-				sprintf(buffer,"%s",fud->find->data[j].name.c_str());
+			setPathAndType(buffer,fud->find->data[j].name.c_str(),fud->find->data[j].fileType);
 			fud->list->CTK_addListItem(buffer,NULL);
 		}
 }
@@ -377,11 +485,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 		{
 			if((files->data[lb->listItemNumber].fileType==FOLDERTYPE) || (files->data[j].fileType==FOLDERLINKTYPE))
 				{
-					if((files->data[j].fileType==FOLDERTYPE) || (files->data[j].fileType==FOLDERLINKTYPE))
-						sprintf(buffer,"%s/",files->data[j].name.c_str());
-					else
-						sprintf(buffer,"%s",files->data[j].name.c_str());
-					
+					setPathAndType(buffer,files->data[j].name.c_str(),files->data[j].fileType);
 					lb->CTK_addListItem(buffer,NULL);
 				}
 		}
@@ -411,7 +515,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 
 	if((fud->buttonPressed==YESBUTTON) && (this->isValidFile==true) && (open==true))
 		{
-			this->stringResult=files->data[lb->listItemNumber].path;
+			this->stringResult=selectapp->pages[0].textBoxes[0]->CTK_getText().substr(6);
 			retval=true;
 		}
 
@@ -427,6 +531,117 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	
 	return(retval);
 }
+
+/**
+* Private
+*/
+bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder)
+{
+	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
+	LFSTK_findClass			*files=new LFSTK_findClass();
+	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
+	char					*buffer=(char*)alloca(PATH_MAX);
+	fileUDStruct			*fud=new fileUDStruct;
+	bool					retval=false;
+	coloursStruct			cs;
+	int						x=6;
+	int						y=4;
+	int						w=app->maxCols-10;
+	int						h=selectapp->maxRows-6;
+	int						lx=x+2;
+	int						ly=y+2;
+	int						lw=w-3;
+	int						lh=h-7;
+	int						ty=y+h-3;
+	int						by=y+h-1;
+	const char				*title="Select Folder ...";
+
+	cs.fancyGadgets=true;
+	cs.textBoxType=INBOX;
+	selectapp->CTK_setColours(cs);
+	selectapp->CTK_clearScreen();
+	lb->CTK_setColours(cs);
+
+	fud->find=files;
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->list=lb;
+	fud->isValid=true;
+	fud->isSelectFolder=true;
+
+	selectapp->CTK_appWindow(x,y,w,h,wname,title);
+
+	lb->CTK_newListBox(lx,ly,lw,lh);
+
+	files->LFSTK_setFollowLinks(true);
+	files->LFSTK_setFindType(FOLDERTYPE);
+	files->LFSTK_setFullPath(true);
+	files->LFSTK_findFiles(this->inFolder.c_str());
+	files->LFSTK_setSort(false);
+	files->LFSTK_sortByTypeAndName();
+
+	for(int j=0;j<files->data.size();j++)
+		{
+					setPathAndType(buffer,files->data[j].name.c_str(),files->data[j].fileType);
+					lb->CTK_addListItem(buffer,NULL);
+		}
+
+	lb->CTK_setSelectCB(listSelectCB,fud);
+	lb->CTK_setEnterDeselects(false);
+	selectapp->CTK_addListBox(lb);
+
+	sprintf(buffer,"Folder: %s",folder);
+	selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
+
+	selectapp->CTK_addNewButton(lx,by,1,1,"  OK  ");
+	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
+	selectapp->CTK_addNewButton(lx+lw-10,by,11,1,"CANCEL");
+	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
+
+	selectapp->CTK_addNewCheckBox(lx+(lw/2)-8,by,14,"Show Hidden");
+	selectapp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkSelectCB,fud);
+	selectapp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
+
+	this->isValidFile=true;
+
+	selectapp->CTK_mainEventLoop();
+
+	if(fud->buttonPressed==CANCELBUTTON)
+		retval=false;
+
+	if((fud->buttonPressed==YESBUTTON) && (this->isValidFile==true) )
+		{
+			this->stringResult=selectapp->pages[0].textBoxes[0]->CTK_getText().substr(8);
+			retval=true;
+		}
+
+	delete fud;
+	delete files;
+	delete selectapp;
+	
+	return(retval);
+}
+
+/**
+* Select folder convenience dialog.
+*/
+void CTK_cursesUtilsClass::CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir)
+{
+	char	*folder=NULL;
+
+	app->CTK_clearScreen();
+	if(startdir==NULL)
+		{
+			folder=get_current_dir_name();
+			this->inFolder=folder;
+		}
+	else
+		this->inFolder=startdir;	
+	this->isValidFile=this->runSelectFolder(app,wname,this->inFolder.c_str());
+	app->CTK_clearScreen();
+	CTK_freeAndNull(&folder);
+}
+
 
 /**
 * Open file convenience dialog.

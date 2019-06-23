@@ -70,6 +70,7 @@ struct fileUDStruct
 	CTK_cursesListBoxClass	*list=NULL;
 	bool					isValid=false;
 	bool					isOpenDialog=false;
+	bool					isSelectFolder=false;
 	int						buttonsToShow=YESBUTTON|NOBUTTON;
 	int						buttonPressed=NOBUTTONPRESSED;
 	const char				*licenceFilename=NULL;

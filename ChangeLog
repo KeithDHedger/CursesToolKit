@@ -1,4 +1,8 @@
 1.0.3
+File dialogs now show '@' or '/' at the end of names a la 'ls -F'.
+Added openfolder.cpp to examples.
+Added open folder dialog to utils class.
+Fixed open file dialog.
 Docs clean.
 Added CB to editbox event loop.
 

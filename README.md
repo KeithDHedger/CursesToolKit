@@ -20,6 +20,7 @@ Entry dialog.<br>
 Query dialog.<br>
 Save file dialog.<br>
 Open file dialog.<br>
+Open folder dialog.<br>
 About dialog.<br>
 
 Main application class including event handlers etc.
@@ -35,6 +36,8 @@ querybox.cpp.<br>
 ![Alt text](screenshots/ctkssqbox.png?raw=true "Query box")
 openfile.cpp.<br>
 ![Alt text](screenshots/ctkssopen.png?raw=true "Open file")
+openfolder.cpp.<br>
+![Alt text](screenshots/ctkssopenfolder.png?raw=true "Open folder")
 savefile.cpp.<br>
 ![Alt text](screenshots/ctksssave.png?raw=true "Save file")
 texteditor.cpp.<br>
