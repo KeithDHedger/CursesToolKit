@@ -205,6 +205,34 @@ static void folderSelectCB(void *inst,void *ud)
 	fud->inst->isValidFile=true;
 }
 
+/**
+* Private internal callback
+*/
+static void fileSelectCB(void *inst,void *ud)
+{
+	char					*buffer=(char*)alloca(PATH_MAX);
+	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
+	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
+
+	if((fud->isOpenDialog==true) )
+		{
+			if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
+				{
+					sprintf(buffer,"File: %s",ch->files->data[ch->lb->listItemNumber].path.c_str());
+					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+					fud->inst->isValidFile=true;
+				}
+		}
+	else
+		{
+			if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
+				{
+					fud->app->pages[0].inputs[0]->CTK_setText(ch->files->data[ch->lb->listItemNumber].name.c_str());
+					fud->inst->isValidFile=true;
+				}
+		}
+}
+
 #if 1
 /**
 * Private internal callback
@@ -458,8 +486,7 @@ void checkSelectCB(void *inst,void *ud)
 */
 bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename)
 {
-	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	LFSTK_findClass			*files=new LFSTK_findClass();
+	CTK_cursesChooserClass	*chooser;
 	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
 	char					*buffer=(char*)alloca(256);
 	fileUDStruct			*fud=new fileUDStruct;
@@ -481,12 +508,9 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	cs.textBoxType=INBOX;
 	selectapp->CTK_setColours(cs);
 	selectapp->CTK_clearScreen();
-	lb->CTK_setColours(cs);
 
-	fud->find=files;
 	fud->app=selectapp;
 	fud->inst=this;
-	fud->list=lb;
 	fud->isValid=false;
 	fud->isOpenDialog=open;
 
@@ -494,27 +518,14 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 		title="Save File ...";
 	selectapp->CTK_appWindow(x,y,w,h,wname,title);
 
-	lb->CTK_newListBox(lx,ly,lw,lh);
+	chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
+	fud->chooser=chooser;
+	chooser->CTK_setShowTypes(ANYTYPE);
+	chooser->CTK_setShowHidden(false);
+	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
+	selectapp->CTK_addChooserBox(chooser);
+	chooser->CTK_setSelectCB(fileSelectCB,fud);
 
-	files->LFSTK_setFollowLinks(true);
-	files->LFSTK_setFindType(ANYTYPE);
-	files->LFSTK_setFullPath(true);
-	files->LFSTK_findFiles(this->inFolder.c_str());
-	files->LFSTK_setSort(false);
-	files->LFSTK_sortByTypeAndName();
-
-	for(int j=0;j<files->data.size();j++)
-		{
-			if((files->data[lb->listItemNumber].fileType==FOLDERTYPE) || (files->data[j].fileType==FOLDERLINKTYPE))
-				{
-					setPathAndType(buffer,files->data[j].name.c_str(),files->data[j].fileType);
-					lb->CTK_addListItem(buffer,NULL);
-				}
-		}
-
-	lb->CTK_setSelectCB(listSelectCB,fud);
-	lb->CTK_setEnterDeselects(false);
-	selectapp->CTK_addListBox(lb);
 
 	if(open==true)
 		selectapp->CTK_addNewTextBox(lx,ty,lw,1,"File:",false);
@@ -531,7 +542,6 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	selectapp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
 
 	selectapp->CTK_mainEventLoop();
-
 	if(fud->buttonPressed==CANCELBUTTON)
 		retval=false;
 
@@ -543,14 +553,13 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 
 	if((open==false) && (fud->buttonPressed==YESBUTTON) && (strlen(selectapp->pages[0].inputs[0]->CTK_getText())>0))
 		{
+			this->inFolder=chooser->folderPath;
 			this->stringResult=selectapp->pages[0].inputs[0]->CTK_getText();
 			retval=true;
 		}
 
 	delete fud;
-	delete files;
 	delete selectapp;
-	
 	return(retval);
 }
 
@@ -559,9 +568,8 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 */
 bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder)
 {
-	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	LFSTK_findClass			*files=new LFSTK_findClass();
 	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
+	CTK_cursesChooserClass	*chooser;
 	char					*buffer=(char*)alloca(PATH_MAX);
 	fileUDStruct			*fud=new fileUDStruct;
 	bool					retval=false;
@@ -582,47 +590,22 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 	cs.textBoxType=INBOX;
 	selectapp->CTK_setColours(cs);
 	selectapp->CTK_clearScreen();
-	lb->CTK_setColours(cs);
 
-	fud->find=files;
 	fud->app=selectapp;
 	fud->inst=this;
-	fud->list=lb;
 	fud->isValid=true;
 	fud->isSelectFolder=true;
 
 	selectapp->CTK_appWindow(x,y,w,h,wname,title);
 
-
-	CTK_cursesChooserClass *chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
+	chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
 	fud->chooser=chooser;
 	chooser->CTK_setShowTypes(FOLDERTYPE);
 	chooser->CTK_setShowHidden(false);
-//	fud->find=
 	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
 	selectapp->CTK_addChooserBox(chooser);
 	chooser->CTK_setSelectCB(folderSelectCB,fud);
-	//chooser->selectCBUserData=fud;
-#if 0
-	lb->CTK_newListBox(lx,ly,lw,lh);
 
-	files->LFSTK_setFollowLinks(true);
-	files->LFSTK_setFindType(FOLDERTYPE);
-	files->LFSTK_setFullPath(true);
-	files->LFSTK_findFiles(this->inFolder.c_str());
-	files->LFSTK_setSort(false);
-	files->LFSTK_sortByTypeAndName();
-
-	for(int j=0;j<files->data.size();j++)
-		{
-					setPathAndType(buffer,files->data[j].name.c_str(),files->data[j].fileType);
-					lb->CTK_addListItem(buffer,NULL);
-		}
-
-	lb->CTK_setSelectCB(listSelectCB,fud);
-	lb->CTK_setEnterDeselects(false);
-	selectapp->CTK_addListBox(lb);
-#endif
 	sprintf(buffer,"Folder: %s",folder);
 	selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
 
@@ -649,9 +632,7 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 		}
 
 	delete fud;
-	delete files;
 	delete selectapp;
-	
 	return(retval);
 }
 

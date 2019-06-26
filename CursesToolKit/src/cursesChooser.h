@@ -32,6 +32,8 @@ class CTK_cursesChooserClass
 		char					*folderPath=NULL;
 		void					(*selectCB)(void *,void *)=NULL;
 
+		CTK_cursesListBoxClass	*lb;
+
 		void					CTK_selectFolder(CTK_mainAppClass *app,const char *folder);
 		void					CTK_setShowHidden(bool show);
 		void					CTK_setShowTypes(int show);
@@ -41,7 +43,6 @@ class CTK_cursesChooserClass
 	protected:
 
 	private:
-		CTK_cursesListBoxClass	*lb;
 		CTK_mainAppClass		*mc;
 		int						x;
 		int						y;

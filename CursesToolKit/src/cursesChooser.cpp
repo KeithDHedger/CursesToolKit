@@ -26,7 +26,7 @@
 CTK_cursesChooserClass::~CTK_cursesChooserClass()
 {
 	delete this->files;
-	delete this->lb;
+	//delete this->lb;
 	CTK_freeAndNull(&this->folderPath);
 }
 
@@ -44,7 +44,6 @@ CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *app,int x,int y
 	this->lb=new CTK_cursesListBoxClass();
 	this->lb->CTK_newListBox(this->x,this->y,this->width,this->hite);
 }
-
 
 /**
 * Set chooser callback.

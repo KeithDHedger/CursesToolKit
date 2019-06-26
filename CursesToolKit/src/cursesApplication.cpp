@@ -44,6 +44,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 				delete this->pages[k].editBoxes[j];
 			for(int j=0;j<this->pages[k].srcEditBoxes.size();j++)
 				delete this->pages[k].srcEditBoxes[j];
+			for(int j=0;j<this->pages[k].choosers.size();j++)
+				delete this->pages[k].choosers[j];
 		}
 
 	this->pages.clear();
