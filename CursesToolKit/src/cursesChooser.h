@@ -29,7 +29,9 @@ class CTK_cursesChooserClass
 
 		LFSTK_findClass			*files;
 		void					*selectCBUserData=NULL;
-		char					*folderPath=NULL;
+		std::string				folderPath;
+		std::string				fileName;
+		std::string				filePath;
 		void					(*selectCB)(void *,void *)=NULL;
 
 		CTK_cursesListBoxClass	*lb;

@@ -26,8 +26,6 @@
 CTK_cursesChooserClass::~CTK_cursesChooserClass()
 {
 	delete this->files;
-	//delete this->lb;
-	CTK_freeAndNull(&this->folderPath);
 }
 
 /**
@@ -62,17 +60,28 @@ static void chooserSelectCB(void *inst,void *ud)
 	char						*buffer=(char*)alloca(PATH_MAX);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 	CTK_cursesChooserClass		*ch=static_cast<CTK_cursesChooserClass*>(ud);
+	char						*cwd;
 	//fprintf(stderr,">>%s<<\n",ch->files->data[ls->listItemNumber].path.c_str());
 
+	ch->fileName=ch->files->data[ls->listItemNumber].name;
+	ch->filePath=ch->files->data[ls->listItemNumber].path;
 	if((ch->files->data[ls->listItemNumber].fileType==FOLDERTYPE) || (ch->files->data[ls->listItemNumber].fileType==FOLDERLINKTYPE))
 		{
 			sprintf(buffer,"%s",ch->files->data[ls->listItemNumber].path.c_str());
 			chdir(buffer);
-			CTK_freeAndNull(&ch->folderPath);
-			ch->folderPath=get_current_dir_name();
+			getcwd(buffer,PATH_MAX);
+			ch->folderPath=buffer;
+			ch->fileName=ch->files->data[ls->listItemNumber].name;
+			ch->filePath=ch->files->data[ls->listItemNumber].path;
 			ch->CTK_updateList();
+	//		if(ch->selectCB!=NULL)
+	//			ch->selectCB((void*)ch,(void*)ch->selectCBUserData);
+	//		return;
 		}
 
+	//ch->fileName=ch->files->data[ls->listItemNumber].name;
+	//ch->filePath=ch->files->data[ls->listItemNumber].path;
+	fprintf(stderr,"folder=%s\nname=%s\npath=%s\n",ch->folderPath.c_str(),ch->fileName.c_str(),ch->filePath.c_str());
 	if(ch->selectCB!=NULL)
 		ch->selectCB((void*)ch,(void*)ch->selectCBUserData);
 }
@@ -85,7 +94,7 @@ void CTK_cursesChooserClass::CTK_updateList(void)
 	char	*buffer=(char*)alloca(PATH_MAX);
 
 	this->files->LFSTK_setIncludeHidden(this->showHidden);
-	this->files->LFSTK_findFiles(this->folderPath);
+	this->files->LFSTK_findFiles(this->folderPath.c_str());
 	this->files->LFSTK_setSort(false);
 	this->files->LFSTK_sortByTypeAndName();
 	this->lb->CTK_clearList();
@@ -139,7 +148,6 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 	this->lb->CTK_setEnterDeselects(false);
 	app->CTK_addListBox(this->lb);
 	this->lb->CTK_setSelectCB(chooserSelectCB,this);
-	CTK_freeAndNull(&this->folderPath);
 	this->folderPath=strdup(folder);
 	return;
 }
