@@ -266,6 +266,14 @@ void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
 }
 
 /**
+* Add chooser box gadget. 
+*/
+void CTK_mainAppClass::CTK_addChooserBox(CTK_cursesChooserClass *cb)
+{
+	this->pages[this->pageNumber].choosers.push_back(cb);
+}
+
+/**
 * Redraw the screen.
 * \note object=ptr to main class object
 * \note sets highlight if needed.

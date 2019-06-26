@@ -168,27 +168,41 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 	return(v);
 }
 
+///**
+//* Private
+//*/
+//static void setPathAndType(char *retbuffer,const char *path,int type)
+//{
+//	switch(type)
+//		{
+//			case FOLDERTYPE:
+//				sprintf(retbuffer,"%s/",path);
+//				break;
+//			case FOLDERLINKTYPE:
+//				sprintf(retbuffer,"%s@",(char*)path);
+//				break;
+//			case FILETYPE:
+//				sprintf(retbuffer,"%s",path);
+//				break;
+//			case BROKENLINKTYPE:
+//			case FILELINKTYPE:
+//				sprintf(retbuffer,"%s@",path);
+//				break;
+//		}
+//}
+
 /**
-* Private
+* Private internal callback
 */
-static void setPathAndType(char *retbuffer,const char *path,int type)
+static void folderSelectCB(void *inst,void *ud)
 {
-	switch(type)
-		{
-			case FOLDERTYPE:
-				sprintf(retbuffer,"%s/",path);
-				break;
-			case FOLDERLINKTYPE:
-				sprintf(retbuffer,"%s@",(char*)path);
-				break;
-			case FILETYPE:
-				sprintf(retbuffer,"%s",path);
-				break;
-			case BROKENLINKTYPE:
-			case FILELINKTYPE:
-				sprintf(retbuffer,"%s@",path);
-				break;
-		}
+	char					*buffer=(char*)alloca(PATH_MAX);
+	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
+	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
+
+	sprintf(buffer,"Folder: %s",ch->folderPath);
+	fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+	fud->inst->isValidFile=true;
 }
 
 #if 1
@@ -419,6 +433,13 @@ void checkSelectCB(void *inst,void *ud)
 
 	cb->CTK_setValue(!cb->CTK_getValue());
 
+	if(fud->chooser!=NULL)
+		{
+			fud->chooser->CTK_setShowHidden(cb->CTK_getValue());
+			fud->chooser->CTK_updateList();
+			return;
+		}
+
 	fud->find->LFSTK_setIncludeHidden(cb->CTK_getValue());
 	fud->find->LFSTK_findFiles(fud->inst->inFolder.c_str());
 	fud->find->LFSTK_setSort(false);
@@ -572,6 +593,17 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 
 	selectapp->CTK_appWindow(x,y,w,h,wname,title);
 
+
+	CTK_cursesChooserClass *chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
+	fud->chooser=chooser;
+	chooser->CTK_setShowTypes(FOLDERTYPE);
+	chooser->CTK_setShowHidden(false);
+//	fud->find=
+	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
+	selectapp->CTK_addChooserBox(chooser);
+	chooser->CTK_setSelectCB(folderSelectCB,fud);
+	//chooser->selectCBUserData=fud;
+#if 0
 	lb->CTK_newListBox(lx,ly,lw,lh);
 
 	files->LFSTK_setFollowLinks(true);
@@ -590,7 +622,7 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 	lb->CTK_setSelectCB(listSelectCB,fud);
 	lb->CTK_setEnterDeselects(false);
 	selectapp->CTK_addListBox(lb);
-
+#endif
 	sprintf(buffer,"Folder: %s",folder);
 	selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
 

@@ -1,3 +1,6 @@
+1.0.4
+Added chooser class.
+
 1.0.3
 File dialogs now show '@' or '/' at the end of names a la 'ls -F'.
 Added openfolder.cpp to examples.

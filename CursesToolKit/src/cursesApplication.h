@@ -32,6 +32,7 @@ class CTK_cursesMenuClass;
 class CTK_cursesListBoxClass;
 class CTK_cursesLabelClass;
 class CTK_cursesSourceEditBoxClass;
+class CTK_cursesChooserClass;
 
 enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
@@ -86,6 +87,7 @@ class CTK_mainAppClass
 		void									CTK_addEditBox(CTK_cursesEditBoxClass *edbox);
 		void									CTK_addLabel(CTK_cursesLabelClass *label);
 		void									CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox);
+		void									CTK_addChooserBox(CTK_cursesChooserClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);

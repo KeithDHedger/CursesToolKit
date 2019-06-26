@@ -133,12 +133,12 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libcursestoolkit_la_LIBADD =
 am__dirstamp = $(am__leading_dot)dirstamp
 am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
-	../src/cursesCheckBox.lo ../src/cursesEditBox.lo \
-	../src/cursesGraphics.lo ../src/cursesInput.lo \
-	../src/cursesLabel.lo ../src/cursesListBox.lo \
-	../src/cursesMenus.lo ../src/cursesSourceEditBox.lo \
-	../src/cursesTextBox.lo ../src/cursesUtils.lo \
-	../src/LFSTKFindClass.lo
+	../src/cursesCheckBox.lo ../src/cursesChooser.lo \
+	../src/cursesEditBox.lo ../src/cursesGraphics.lo \
+	../src/cursesInput.lo ../src/cursesLabel.lo \
+	../src/cursesListBox.lo ../src/cursesMenus.lo \
+	../src/cursesSourceEditBox.lo ../src/cursesTextBox.lo \
+	../src/cursesUtils.lo ../src/LFSTKFindClass.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -354,7 +354,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			$(SOURCEHILITE_CFLAGS) \
 			$(TERMKEY_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesEditBox.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -443,6 +443,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesCheckBox.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/cursesChooser.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesEditBox.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesGraphics.lo: ../src/$(am__dirstamp) \
@@ -479,6 +481,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesApplication.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesButton.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesCheckBox.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesChooser.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesEditBox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesGraphics.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesInput.Plo@am__quote@

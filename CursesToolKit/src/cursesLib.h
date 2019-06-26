@@ -228,5 +228,28 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 	return(column);
 }
 
+/**
+* Set file type to filepath
+*/
+static void setPathAndType(char *retbuffer,const char *path,int type)
+{
+	switch(type)
+		{
+			case FOLDERTYPE:
+				sprintf(retbuffer,"%s/",path);
+				break;
+			case FOLDERLINKTYPE:
+				sprintf(retbuffer,"%s@",(char*)path);
+				break;
+			case FILETYPE:
+				sprintf(retbuffer,"%s",path);
+				break;
+			case BROKENLINKTYPE:
+			case FILELINKTYPE:
+				sprintf(retbuffer,"%s@",path);
+				break;
+		}
+}
+
 #endif
 

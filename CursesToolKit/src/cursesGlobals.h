@@ -49,6 +49,7 @@
 #include "cursesEditBox.h"
 #include "cursesLabel.h"
 #include "cursesSourceEditBox.h"
+#include "cursesChooser.h"
 
 #include "cursesApplication.h"
 
@@ -68,6 +69,7 @@ struct fileUDStruct
 	LFSTK_findClass			*find=NULL;
 	CTK_mainAppClass		*app=NULL;
 	CTK_cursesListBoxClass	*list=NULL;
+	CTK_cursesChooserClass	*chooser=NULL;
 	bool					isValid=false;
 	bool					isOpenDialog=false;
 	bool					isSelectFolder=false;
@@ -92,6 +94,7 @@ struct pageStruct
 	std::vector<CTK_cursesEditBoxClass*>		editBoxes;
 	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
 	std::vector<CTK_cursesLabelClass*>			labels;
+	std::vector<CTK_cursesChooserClass*>		choosers;
 	void										*userData=NULL;
 	bool										menusActive=true;
 };
