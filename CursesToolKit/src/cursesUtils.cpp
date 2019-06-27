@@ -325,7 +325,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	coloursStruct			cs;
 	int						x=6;
 	int						y=4;
-	int						w=app->maxCols-10;
+	int						w=selectapp->maxCols-10;
 	int						h=selectapp->maxRows-6;
 	int						lx=x+2;
 	int						ly=y+2;
@@ -424,7 +424,6 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 	fud->app=selectapp;
 	fud->inst=this;
 	fud->isValid=true;
-	fud->isSelectFolder=true;
 
 	selectapp->CTK_appWindow(x,y,w,h,wname,title);
 

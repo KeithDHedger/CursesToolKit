@@ -66,13 +66,10 @@ enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;
-	//LFSTK_findClass			*find=NULL;
 	CTK_mainAppClass		*app=NULL;
-	//CTK_cursesListBoxClass	*list=NULL;
 	CTK_cursesChooserClass	*chooser=NULL;
 	bool					isValid=false;
 	bool					isOpenDialog=false;
-	bool					isSelectFolder=false;
 	int						buttonsToShow=YESBUTTON|NOBUTTON;
 	int						buttonPressed=NOBUTTONPRESSED;
 	const char				*licenceFilename=NULL;
