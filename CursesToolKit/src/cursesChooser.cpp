@@ -74,14 +74,9 @@ static void chooserSelectCB(void *inst,void *ud)
 			ch->fileName=ch->files->data[ls->listItemNumber].name;
 			ch->filePath=ch->files->data[ls->listItemNumber].path;
 			ch->CTK_updateList();
-	//		if(ch->selectCB!=NULL)
-	//			ch->selectCB((void*)ch,(void*)ch->selectCBUserData);
-	//		return;
 		}
 
-	//ch->fileName=ch->files->data[ls->listItemNumber].name;
-	//ch->filePath=ch->files->data[ls->listItemNumber].path;
-	fprintf(stderr,"folder=%s\nname=%s\npath=%s\n",ch->folderPath.c_str(),ch->fileName.c_str(),ch->filePath.c_str());
+//	fprintf(stderr,"folder=%s\nname=%s\npath=%s\n",ch->folderPath.c_str(),ch->fileName.c_str(),ch->filePath.c_str());
 	if(ch->selectCB!=NULL)
 		ch->selectCB((void*)ch,(void*)ch->selectCBUserData);
 }
