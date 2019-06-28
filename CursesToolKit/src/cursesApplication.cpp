@@ -196,6 +196,18 @@ void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char
 }
 
 /**
+* Create and add new drop down gadget. 
+*/
+void CTK_mainAppClass::CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label)
+{
+	CTK_cursesDropClass	*dropbox=new CTK_cursesDropClass();
+	dropbox->CTK_newDropButton(x,y,width,hite,label);
+	dropbox->mc=mc;
+	dropbox->CTK_setColours(this->colours);
+	this->pages[this->pageNumber].dropDowns.push_back(dropbox);
+}
+
+/**
 * Add menu bar. 
 */
 void CTK_mainAppClass::CTK_addMenuBar(CTK_cursesMenuClass *mb)
@@ -276,6 +288,14 @@ void CTK_mainAppClass::CTK_addChooserBox(CTK_cursesChooserClass *cb)
 }
 
 /**
+* Add drop down gadget. 
+*/
+void CTK_mainAppClass::CTK_addDropBox(CTK_cursesDropClass *dd)
+{
+	this->pages[this->pageNumber].dropDowns.push_back(dd);
+}
+
+/**
 * Redraw the screen.
 * \note object=ptr to main class object
 * \note sets highlight if needed.
@@ -330,6 +350,14 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 					setBothColours(FORE_BLUE,app->colours.backCol,false);//TODO//
 					printf("%s",app->title);
 				}
+		}
+
+	for(int j=0;j<app->pages[app->pageNumber].dropDowns.size();j++)
+		{
+			if(app->hiliteDropBoxNum==j)
+				app->pages[app->pageNumber].dropDowns[j]->CTK_drawDropButton(true);
+			else
+				app->pages[app->pageNumber].dropDowns[j]->CTK_drawDropButton(false);
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)
@@ -425,13 +453,26 @@ void CTK_mainAppClass::setHilite(bool forward)
 							this->setHilite(forward);
 					}
 				break;
+
+			case HLDROPDOWNS:
+				this->hiliteDropBoxNum+=addit;
+				if((this->hiliteDropBoxNum<0) || (this->hiliteDropBoxNum>=this->pages[this->pageNumber].dropDowns.size()))
+					{
+						this->hiliteDropBoxNum=-1;
+						if(addit==-1)
+							this->hiliteBtnNum=this->pages[this->pageNumber].buttons.size();
+						this->hiliting+=addit;
+						this->setHilite(forward);
+					}
+				break;
+
 			case HLTEXT:
 				this->hiliteTxtBoxNum+=addit;
 				if((this->hiliteTxtBoxNum<0) || (this->hiliteTxtBoxNum>=this->pages[this->pageNumber].textBoxes.size()))
 					{
 						this->hiliteTxtBoxNum=-1;
 						if(addit==-1)
-							this->hiliteBtnNum=this->pages[this->pageNumber].buttons.size();
+							this->hiliteDropBoxNum=this->pages[this->pageNumber].dropDowns.size();
 						this->hiliting+=addit;
 						this->setHilite(forward);
 						break;
@@ -551,6 +592,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										this->hiliteCheckBoxNum=-1;
 										this->hiliteTxtBoxNum=-1;
 										this->hiliteSourceEditBoxNum=-1;
+										this->hiliteDropBoxNum=-1;
 										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
 										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
@@ -665,8 +707,18 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 
 									//case TERMKEY_SYM_ENTER:
 									default:
-										if((key.code.sym!=this->selectKey) && (this->hiliteCheckBoxNum==-1) && (this->hiliteListNum==-1))
+										if((key.code.sym!=this->selectKey) && (this->hiliteCheckBoxNum==-1) && (this->hiliteListNum==-1) && (this->hiliteDropBoxNum==-1))
 											break;
+//do drop down events
+										if(this->hiliteDropBoxNum!=-1)
+											{
+												this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_doDropDownEvent();
+												if(this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB!=NULL)
+													this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB((void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum],(void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCBUserData);
+												if(this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_getEnterDeselects()==true)
+													this->hiliteDropBoxNum=-1;
+												this->CTK_updateScreen(this,NULL);
+											}
 
 //do src edit events
 										if(this->hiliteSourceEditBoxNum!=-1)
@@ -701,6 +753,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 														this->hiliteBtnNum=-1;
 												this->CTK_updateScreen(this,NULL);
 											}
+
 										if(this->hiliteInputNum!=-1)
 											{
 												this->pages[this->pageNumber].inputs[this->hiliteInputNum]->CTK_doInput();
@@ -972,5 +1025,6 @@ void CTK_mainAppClass::setHiliteNone(void)
 	this->hiliteCheckBoxNum=-1;
 	this->hiliteEditBoxNum=-1;
 	this->hiliteSourceEditBoxNum=-1;
+	this->hiliteDropBoxNum=-1;
 }
 

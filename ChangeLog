@@ -1,4 +1,6 @@
 1.0.4
+Added drop down list.
+Added menu hilite colours.
 Code clean.
 Changed file util diaog to use new class.
 Added chooser class.

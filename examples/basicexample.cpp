@@ -63,7 +63,14 @@ void buttonselctCB(void *inst,void *userdata)
 	if(strcmp(bc->label,"Select All")==0)
 		lb1->CTK_selectAll();
 	if(strcmp(bc->label,"Select None")==0)
-		lb1->CTK_selectNone();
+		{
+			mainApp->pages[0].dropDowns[0]->CTK_clearList();
+			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 100");
+			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 200");
+			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 30000");
+			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 50000");
+			lb1->CTK_selectNone();
+		}
 	if(strcmp(bc->label,"Toggle Menus")==0)
 		{
 			mbarVis=!mbarVis;
@@ -154,6 +161,10 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 //custom menu colours
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;
+
+	cs.menuHiliteBackCol=BACK_BLACK;
+	cs.menuHiliteForeCol=FORE_GREEN;
+
 	cs.menuForeCol=FORE_WHITE;
 	cs.menuBackCol=BACK_RED;
 	cs.disabledForeCol=FORE_BOLD_RED;
@@ -221,6 +232,12 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->pages[0].inputs[0]->CTK_setColours(cs);
+
+	mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
+	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 1");
+	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 2");
+	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 300");
+	mainApp->pages[0].dropDowns[0]->CTK_setColours(cs);
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	lb->CTK_newListBox(86,3,10,4);

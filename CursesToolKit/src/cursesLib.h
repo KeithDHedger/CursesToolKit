@@ -109,6 +109,8 @@ struct coloursStruct
 	int		cursForeCol=FORE_BLACK;
 	int		menuBackCol=BACK_GREEN;
 	int		menuForeCol=FORE_BLACK;
+	int		menuHiliteBackCol=BACK_BLACK;
+	int		menuHiliteForeCol=FORE_GREEN;
 	int		lineNumBackCol=BACK_BLACK;
 	int		lineNumForeCol=FORE_YELLOW;
 	int		windowBackCol=BACK_BLACK;

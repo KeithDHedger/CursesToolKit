@@ -20,7 +20,6 @@
 
 #include "cursesGlobals.h"
 
-
 /**
 * Menus class destroy.
 */
@@ -171,7 +170,8 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	switch(style)
 		{
 			case FLATINVERT:
-				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+				//setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+				setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
 				break;
 			case FLATNORM:
 				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);

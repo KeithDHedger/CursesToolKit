@@ -37,8 +37,6 @@ struct	menuStruct
 	std::map<int,menuStruct*>		menuItem;
 };
 
-enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};
-
 class CTK_cursesMenuClass
 {
 	public:

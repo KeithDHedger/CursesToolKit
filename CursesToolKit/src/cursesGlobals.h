@@ -50,6 +50,7 @@
 #include "cursesLabel.h"
 #include "cursesSourceEditBox.h"
 #include "cursesChooser.h"
+#include "cursesDropDown.h"
 
 #include "cursesApplication.h"
 
@@ -92,8 +93,11 @@ struct pageStruct
 	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
 	std::vector<CTK_cursesLabelClass*>			labels;
 	std::vector<CTK_cursesChooserClass*>		choosers;
+	std::vector<CTK_cursesDropClass*>			dropDowns;
 	void										*userData=NULL;
 	bool										menusActive=true;
 };
+
+enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};
 
 #endif

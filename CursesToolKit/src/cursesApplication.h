@@ -33,8 +33,9 @@ class CTK_cursesListBoxClass;
 class CTK_cursesLabelClass;
 class CTK_cursesSourceEditBoxClass;
 class CTK_cursesChooserClass;
+class CTK_cursesDropClass;
 
-enum {HLNONE=-1,HLBUTTONS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
+enum {HLNONE=-1,HLBUTTONS,HLDROPDOWNS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
 class CTK_mainAppClass
 {
@@ -77,6 +78,7 @@ class CTK_mainAppClass
 		void									CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		void									CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
 		void									CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		void									CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
@@ -88,6 +90,7 @@ class CTK_mainAppClass
 		void									CTK_addLabel(CTK_cursesLabelClass *label);
 		void									CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox);
 		void									CTK_addChooserBox(CTK_cursesChooserClass *cb);
+		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_mainEventLoop(void);
@@ -115,6 +118,7 @@ class CTK_mainAppClass
 		int										hiliteCheckBoxNum=-1;
 		int										hiliteEditBoxNum=-1;
 		int										hiliteSourceEditBoxNum=-1;
+		int										hiliteDropBoxNum=-1;
 		int										hiliting=HLNONE;
 
 		void									setHilite(bool forward);
