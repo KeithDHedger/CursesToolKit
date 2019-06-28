@@ -120,6 +120,14 @@ void checkselctCB(void *inst,void *userdata)
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
 }
 
+void dropboxCB(void *inst,void *userdata)
+{
+	char					*buffer=(char*)alloca(256);
+	CTK_cursesDropClass	*db=static_cast<CTK_cursesDropClass*>(inst);
+	sprintf(buffer,"Drop box item=%i label=%s",db->selectedItem,db->label.c_str());
+	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+}
+
 int main(int argc, char **argv)
 {
 
@@ -152,6 +160,8 @@ Pasting is done via middle click of mouse as usual.\
 List two is a multiple selection list, use SPACE to toggle.\n\
 The check boxes are the same.\n\
 Both lists and checkboxes can have the 'select' key set by the caller.\n\
+\n\n\
+Drop boxes act the same as menus once selcted in the normal way\n\
 ";
 
 	coloursStruct cs;
@@ -238,6 +248,7 @@ Both lists and checkboxes can have the 'select' key set by the caller.\n\
 	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 2");
 	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 300");
 	mainApp->pages[0].dropDowns[0]->CTK_setColours(cs);
+	mainApp->pages[0].dropDowns[0]->CTK_setSelectCB(dropboxCB,NULL);
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	lb->CTK_newListBox(86,3,10,4);

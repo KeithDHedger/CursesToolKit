@@ -210,6 +210,14 @@ void CTK_cursesDropClass::CTK_clearList(void)
 	this->label=this->holdLabel;
 }
 
+/**
+*  Set drop down 'pressed' callback.
+*/
+void CTK_cursesDropClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
+{
+	this->selectCB=select;
+	this->selectCBUserData=userdata;
+}
 
 
 
