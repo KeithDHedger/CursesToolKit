@@ -26,6 +26,7 @@ class CTK_cursesCheckBoxClass
 	public:
 		CTK_cursesCheckBoxClass();
 		~CTK_cursesCheckBoxClass();
+
 		char			*label=NULL;
 		void			*selectCBUserData=NULL;
 

@@ -99,7 +99,6 @@ void CTK_cursesDropClass::CTK_addDropItem(const char *name)
 	this->items.push_back(dss);
 }
 
-
 /**
 * Handle drop down events.
 */
@@ -134,11 +133,17 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 
 									case TERMKEY_SYM_UP:
 										selection--;
+//skip disabled menu items
+										while((selection>-1) && (this->items[selection].enabled==false))
+											selection--;
 										if(selection<0)
 											selection=0;
-												break;
+										break;
 									case TERMKEY_SYM_DOWN:
 										selection++;
+//skip disabled menu items
+										while((selection<this->items.size()) && (this->items[selection].enabled==false))
+											selection++;
 										if(selection==this->items.size())
 											selection=this->items.size()-1;
 										break;
@@ -176,10 +181,15 @@ void CTK_cursesDropClass::CTK_drawList(int selection)
 
 	for(int j=0;j<this->items.size();j++)
 		{
-			if(selection==j)
-				setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
+			if(this->items[j].enabled==false)
+				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			else
-				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				{
+					if(selection==j)
+						setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
+					else
+						setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				}
 			gc.CTK_printLine(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth);
 		}
 }
@@ -217,6 +227,16 @@ void CTK_cursesDropClass::CTK_setSelectCB(void (*select)(void *,void *),void *us
 {
 	this->selectCB=select;
 	this->selectCBUserData=userdata;
+}
+
+void CTK_cursesDropClass::CTK_setItemEnabled(int item,bool enable)
+{
+	 this->items[item].enabled=enable;
+}
+
+bool CTK_cursesDropClass::CTK_getItemEnabled(int item)
+{
+	return(this->items[item].enabled);
 }
 
 

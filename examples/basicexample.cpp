@@ -249,6 +249,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 300");
 	mainApp->pages[0].dropDowns[0]->CTK_setColours(cs);
 	mainApp->pages[0].dropDowns[0]->CTK_setSelectCB(dropboxCB,NULL);
+	mainApp->pages[0].dropDowns[0]->CTK_setItemEnabled(1,false);
 
 	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
 	lb->CTK_newListBox(86,3,10,4);

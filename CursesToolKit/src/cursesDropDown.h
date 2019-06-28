@@ -29,6 +29,7 @@ struct	dropDownStruct
 {
 	std::string						label;
 	int								maxWidth=0;
+	bool							enabled=true;
 };
 
 class CTK_cursesDropClass
@@ -46,6 +47,8 @@ class CTK_cursesDropClass
 		void						CTK_drawDropButton(bool hilite=false);
 		void						CTK_setEnterDeselects(bool deselect);
 		bool						CTK_getEnterDeselects(void);
+		void						CTK_setItemEnabled(int item,bool enable);
+		bool						CTK_getItemEnabled(int item);
 		void						CTK_setColours(coloursStruct cs);
 		void						CTK_addDropItem(const char *name);
 		void						CTK_clearList(void);
