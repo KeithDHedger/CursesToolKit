@@ -68,17 +68,17 @@ class CTK_mainAppClass
 
 //build new gadgets
 		void									CTK_addNewMenuBar(void);
-		void									CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
-		void									CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		CTK_cursesTextBoxClass*					CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable=true);
+		CTK_cursesTextBoxClass*					CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		
-		void									CTK_addNewButton(int x,int y,int width,int hite,const char *label);
-		void									CTK_addNewInput(int x,int y,int width,int hite,const char *label);
-		void									CTK_addNewListBox(int x,int y,int width,int hite);
-		void									CTK_addNewCheckBox(int x,int y,int width,const char *label);
-		void									CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
-		void									CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
-		void									CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
-		void									CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
+		CTK_cursesButtonClass*					CTK_addNewButton(int x,int y,int width,int hite,const char *label);
+		CTK_cursesInputClass*					CTK_addNewInput(int x,int y,int width,int hite,const char *label);
+		CTK_cursesListBoxClass*					CTK_addNewListBox(int x,int y,int width,int hite);//TO BE REMOVED?
+		CTK_cursesCheckBoxClass*				CTK_addNewCheckBox(int x,int y,int width,const char *label);
+		CTK_cursesEditBoxClass*					CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		CTK_cursesLabelClass*					CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
+		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		CTK_cursesDropClass*					CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);

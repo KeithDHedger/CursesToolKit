@@ -97,20 +97,21 @@ void CTK_mainAppClass::CTK_addNewMenuBar(void)
 * Create and add new text box gadget.
 * \note text only.
 */
-void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
+CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
 	txtbox->tabWidth=this->tabWidth;
 	txtbox->CTK_newBox(x,y,width,hite,txt,selectable);
 	txtbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
+	return(txtbox);
 }
 
 /**
 * Create and add new text box gadget.
 * \note can be a file.
 */
-void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass();
 	txtbox->tabWidth=this->tabWidth;
@@ -118,49 +119,58 @@ void CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int width,int hite,bool isf
 	txtbox->CTK_updateText(txt,isfilename);
 	txtbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
+	return(txtbox);
 }
 
 /**
 * Create and add new button gadget. 
 */
-void CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const char *label)
+CTK_cursesButtonClass* CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass();
 	btn->CTK_newButton(x,y,width,hite,label);
 	btn->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].buttons.push_back(btn);
+	return(btn);
 }
 
 /**
 * Create and add new input gadget. 
 */
-void CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char *label)
+CTK_cursesInputClass* CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesInputClass	*inp=new CTK_cursesInputClass();
 	inp->CTK_newInput(x,y,width,hite,label);
 	inp->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].inputs.push_back(inp);
+	return(inp);
 }
 
-void CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
+CTK_cursesListBoxClass* CTK_mainAppClass::CTK_addNewListBox(int x,int y,int width,int hite)
 {
+	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
+	lb->CTK_newListBox(x,y,width,hite);
+	lb->CTK_setColours(this->colours);
+	this->pages[this->pageNumber].lists.push_back(lb);
+	return(lb);
 }
 
 /**
 * Create and add new check box gadget. 
 */
-void CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *label)
+CTK_cursesCheckBoxClass* CTK_mainAppClass::CTK_addNewCheckBox(int x,int y,int width,const char *label)
 {
 	CTK_cursesCheckBoxClass	*cb=new CTK_cursesCheckBoxClass();
 	cb->CTK_newCheckBox(x,y,width,label);
 	cb->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].checkBoxes.push_back(cb);
+	return(cb);
 }
 
 /**
 * Create and add new edit box gadget. 
 */
-void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+CTK_cursesEditBoxClass* CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesEditBoxClass	*edbox=new CTK_cursesEditBoxClass();
 	edbox->tabWidth=this->tabWidth;
@@ -168,12 +178,13 @@ void CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int wi
 	edbox->mc=mc;
 	edbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].editBoxes.push_back(edbox);
+	return(edbox);
 }
 
 /**
 * Create and add new source edit box gadget. 
 */
-void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+CTK_cursesSourceEditBoxClass* CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
 {
 	CTK_cursesSourceEditBoxClass	*edbox=new CTK_cursesSourceEditBoxClass();
 	edbox->tabWidth=this->tabWidth;
@@ -181,30 +192,33 @@ void CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,
 	edbox->mc=mc;
 	edbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].srcEditBoxes.push_back(edbox);
+	return(edbox);
 }
 
 /**
 * Create and add new label gadget. 
 */
-void CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
+CTK_cursesLabelClass* CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,int hite,const char *txt)
 {
 	CTK_cursesLabelClass	*label=new CTK_cursesLabelClass();
 	label->tabWidth=this->tabWidth;
 	label->CTK_newLabel(x,y,width,hite,txt);
 	label->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].labels.push_back(label);
+	return(label);
 }
 
 /**
 * Create and add new drop down gadget. 
 */
-void CTK_mainAppClass::CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label)
+CTK_cursesDropClass* CTK_mainAppClass::CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label)
 {
 	CTK_cursesDropClass	*dropbox=new CTK_cursesDropClass();
 	dropbox->CTK_newDropButton(x,y,width,hite,label);
 	dropbox->mc=mc;
 	dropbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].dropDowns.push_back(dropbox);
+	return(dropbox);
 }
 
 /**

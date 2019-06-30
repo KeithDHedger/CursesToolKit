@@ -246,13 +246,14 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
 	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 1");
 	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 2");
-	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 300");
+	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 3");
 	mainApp->pages[0].dropDowns[0]->CTK_setColours(cs);
 	mainApp->pages[0].dropDowns[0]->CTK_setSelectCB(dropboxCB,NULL);
 	mainApp->pages[0].dropDowns[0]->CTK_setItemEnabled(1,false);
 
-	CTK_cursesListBoxClass	*lb=new CTK_cursesListBoxClass();
-	lb->CTK_newListBox(86,3,10,4);
+//auto add list box to main app
+	CTK_cursesListBoxClass	*lb;
+	lb=mainApp->CTK_addNewListBox(86,3,10,4);
 	lb->CTK_addListItem("Item 1");
 	lb->CTK_addListItem("Item 2");
 	lb->CTK_addListItem("Item 3",(void*)0xdeadbeef);
@@ -271,8 +272,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.use256Colours=true;
 	lb->CTK_setColours(cs);
 
-	mainApp->CTK_addListBox(lb);
-
+//manualy add list box
 	//CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
 	lb1->CTK_newListBox(127,13,20,9);
 	lb1->CTK_addListItem("Item 1");
