@@ -168,6 +168,10 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=true;
 
+	CTK_cursesUtilsClass	cu;
+	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 4 seconds.");
+	sleep(4);
+
 //custom menu colours
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;

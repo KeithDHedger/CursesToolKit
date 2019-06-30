@@ -705,6 +705,35 @@ int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gad
 	return(x);
 }
 
+/**
+* Non blocking splash screen.
+*/
+void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *text)
+{
+	CTK_cursesGraphicsClass 	gc;
+	CTK_cursesUtilsClass		cu;
+	std::string					str=text;
+	std::vector<std::string>	txtStrings;
+	int							centre=(app->maxCols/2);
+	int							boxx=4;
+	int							boxy=4;
+	int							boxw=app->maxCols-7;
+	int							boxh=app->maxRows-7;
+	int							offset=0;
+	txtStrings.clear();
+
+	SETHIDECURS;
+	txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',app->maxCols-24,app->tabWidth,24,false);
+
+	app->CTK_clearScreen();
+	gc.CTK_drawBox(boxx,boxy,boxw,boxh,PLAINBOX,true,false);
+	for(int j=0;j<txtStrings.size();j++)
+		{
+			MOVETO(centre-((txtStrings[j].length()-offset)/2),11+j);
+			printf("%s",txtStrings[j].c_str());
+		}
+	fflush(NULL);
+}
 
 
 

@@ -34,6 +34,10 @@ class CTK_cursesInputClass
 		void					CTK_setText(const char *txt);
 		const char				*CTK_getText(void);
 
+		void					*selectCBUserData=NULL;
+		void					CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
+		void					(*selectCB)(void *,void *)=NULL;
+
 	private:
 		int						sx;
 		int						sy;

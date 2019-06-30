@@ -1,4 +1,6 @@
 1.0.4
+Added non blocking splash screen to utils.
+Added callback for input gadget.
 Creating new gadgets via app class now returns the created gadget.
 Added drop down list.
 Added menu hilite colours.

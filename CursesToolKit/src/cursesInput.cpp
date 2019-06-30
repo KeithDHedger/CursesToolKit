@@ -119,6 +119,8 @@ void CTK_cursesInputClass::CTK_doInput(void)
 						switch(key.code.sym)
 							{
 								case TERMKEY_SYM_ENTER:
+									if(this->selectCB!=NULL)
+										this->selectCB(this,this->selectCBUserData);
 								case TERMKEY_SYM_TAB:
 								case TERMKEY_SYM_ESCAPE:
 									SETHIDECURS;
@@ -215,6 +217,15 @@ void CTK_cursesInputClass::CTK_setText(const char *txt)
 const char *CTK_cursesInputClass::CTK_getText(void)
 {
 	return(this->text.c_str());
+}
+
+/**
+* Set input callback on 'RETURN'.
+*/
+void CTK_cursesInputClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
+{
+	this->selectCB=select;
+	this->selectCBUserData=userdata;
 }
 
 
