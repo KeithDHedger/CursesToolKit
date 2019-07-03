@@ -640,7 +640,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
 //prev button/checkbox
-										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1))
+										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1) || (this->hiliteDropBoxNum!=-1))
 											{
 												setHilite(false);
 												break;
@@ -665,7 +665,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 
 									case TERMKEY_SYM_DOWN:
 //next button/checkbox
-										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1))
+										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1) || (this->hiliteDropBoxNum!=-1))
 											{
 												setHilite(true);
 												break;
