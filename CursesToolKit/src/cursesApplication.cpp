@@ -727,7 +727,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 										if(this->hiliteDropBoxNum!=-1)
 											{
 												this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_doDropDownEvent();
-												if(this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB!=NULL)
+												if((this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB!=NULL) && (this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectedItem>-1))
 													this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB((void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum],(void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCBUserData);
 												if(this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_getEnterDeselects()==true)
 													this->hiliteDropBoxNum=-1;

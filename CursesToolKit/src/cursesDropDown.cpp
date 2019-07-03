@@ -157,7 +157,8 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 										break;
 
 									case TERMKEY_SYM_ENTER:
-										this->selectedItem=selection;
+										if(selection>-1)
+											this->selectedItem=selection;
 										loop=false;
 										continue;
 										break;
@@ -169,7 +170,8 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 					}
 			this->CTK_drawList(selection);
 		}
-	this->label=this->items[this->selectedItem].label;
+	if(this->selectedItem>-1)
+		this->label=this->items[this->selectedItem].label;
 	this->mc->CTK_clearScreen();
 	this->mc->CTK_updateScreen(this->mc,NULL);
 }

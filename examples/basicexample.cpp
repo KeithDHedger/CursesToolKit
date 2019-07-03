@@ -169,8 +169,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.fancyGadgets=true;
 
 	CTK_cursesUtilsClass	cu;
-	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 4 seconds.");
-	sleep(4);
+	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds.");
+	sleep(2);
 
 //custom menu colours
 	cs.hiliteBackCol=BACK_BLACK;
@@ -237,11 +237,24 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
 	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
 
-	mainApp->CTK_addNewButton(8,16,30,1,"Select All");
+int 		maxlen=strlen("Toggle Menus");
+std::string	labelstr=cu.CTK_padString(std::string("Select All"),maxlen);
+int			maxwid=80;
+int			startx=1;
+
+//	mainApp->CTK_addNewButton(8,16,30,1,"Select All");
+//	mainApp->CTK_addNewButton(8,16,30,1,labelstr.c_str());
+	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,0),16,30,1,labelstr.c_str());
 	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
-	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
+//	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
+	labelstr=cu.CTK_padString(std::string("Select None"),maxlen);
+//	mainApp->CTK_addNewButton(32,16,11,1,labelstr.c_str());
+	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,1),16,11,1,labelstr.c_str());
 	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
-	mainApp->CTK_addNewButton(56,16,11,1,"Toggle Menus");
+//	mainApp->CTK_addNewButton(56,16,11,1,"Toggle Menus");
+	labelstr=cu.CTK_padString(std::string("Toggle Menus"),maxlen);
+//	mainApp->CTK_addNewButton(56,16,11,1,labelstr.c_str());
+	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,2),16,11,1,labelstr.c_str());
 	mainApp->pages[0].buttons[2]->CTK_setSelectCB(buttonselctCB,NULL);
 
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
@@ -311,7 +324,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	mainApp->pages[0].checkBoxes[1]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 	mainApp->pages[0].checkBoxes[0]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
-
 
 	mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
 	mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");

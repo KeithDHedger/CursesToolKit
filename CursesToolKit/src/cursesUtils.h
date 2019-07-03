@@ -58,6 +58,7 @@ class CTK_cursesUtilsClass
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 
 		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);
+		std::string					CTK_padString(std::string label,int maxlen);
 
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename);

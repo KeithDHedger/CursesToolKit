@@ -1,4 +1,5 @@
 1.0.4
+Added label padding to utils.
 Added non blocking splash screen to utils.
 Added callback for input gadget.
 Creating new gadgets via app class now returns the created gadget.

@@ -706,6 +706,20 @@ int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gad
 }
 
 /**
+* Pad string front and back.
+* \note if label length is an odd number, 1 is subtracted from the back padding.
+*/
+std::string CTK_cursesUtilsClass::CTK_padString(std::string label,int maxlen)
+{
+	std::string	labelstr=label;
+	int			padlen=(maxlen/2)-(labelstr.length()/2);
+
+	labelstr.insert(labelstr.begin(),padlen,' ');
+	labelstr.insert(labelstr.end(),padlen-(label.length()%2),' ');
+	return(labelstr);
+}
+
+/**
 * Non blocking splash screen.
 */
 void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *text)
