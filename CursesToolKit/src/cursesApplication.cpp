@@ -700,11 +700,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()-this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
 											}
 
-										if(this->hiliteTxtBoxNum!=-1)
-											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
-										if(this->hiliteListNum!=-1)
-											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true,true);
-										break;
+											if(this->hiliteTxtBoxNum!=-1)
+												this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
+											if(this->hiliteListNum!=-1)
+												this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true,true);
+											break;
 
 									case TERMKEY_SYM_PAGEDOWN:
 											if(this->hiliteEditBoxNum!=-1)
@@ -713,11 +713,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 											if(this->hiliteSourceEditBoxNum!=-1)
 												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
 
-										if(this->hiliteTxtBoxNum!=-1)
-											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
-										if(this->hiliteListNum!=-1)
-											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false,true);
-										break;
+											if(this->hiliteTxtBoxNum!=-1)
+												this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
+											if(this->hiliteListNum!=-1)
+												this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false,true);
+											break;
 
 									//case TERMKEY_SYM_ENTER:
 									default:
