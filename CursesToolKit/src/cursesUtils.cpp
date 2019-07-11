@@ -231,7 +231,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_addNewLabel(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,(char*)fud->credits);
 			selectapp->pages[0].labels[0]->CTK_setJustify(CENTRE);
 
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
+			selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");
 			subfud->app=selectapp;
 			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
 
@@ -258,7 +258,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_addNewEditBox(selectapp,selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
 			selectapp->pages[0].editBoxes[0]->CTK_setEditable(false);
 
-			selectapp->CTK_addNewButton((selectapp->maxCols/2)-3,selectapp->maxRows-3,6,1," Done ");
+			selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");
 			subfud->app=selectapp;
 			selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
 

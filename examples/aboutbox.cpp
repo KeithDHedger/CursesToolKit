@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 
 	if(argc<8)
 		{
-			printf("USAGE:\naboutbox \"App name\" \"App info\" \"Copyright\" \"Email\" \"Website\" \"Credits\" \"Licence\".\n");
+			printf("USAGE:\naboutbox \"App name\" \"App info\" \"Copyright\" \"Email\" \"Website\" \"Credits\" \"Licence File\".\n");
 			exit(1);
 		}
 
