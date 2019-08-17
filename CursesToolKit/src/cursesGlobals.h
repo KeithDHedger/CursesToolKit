@@ -35,6 +35,18 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 
+#include "config.h"
+
+#ifdef _USEFRAMBUFFER_
+#include <linux/fb.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <Magick++.h>
+#endif
+
+
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
 #include "cursesUtils.h"
@@ -51,6 +63,11 @@
 #include "cursesSourceEditBox.h"
 #include "cursesChooser.h"
 #include "cursesDropDown.h"
+
+#ifdef _USEFRAMBUFFER_
+#include <Magick++.h>
+#include "cursesFBImage.h"
+#endif
 
 #include "cursesApplication.h"
 
@@ -99,5 +116,12 @@ struct pageStruct
 };
 
 enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};
+
+#ifdef _USEFRAMBUFFER_
+static struct fb_fix_screeninfo					frameBufferInfo;
+static long int									screensize=0;
+static char 									*frameBufferMapPtr=0;
+static bool										fbIsMapped=false;
+#endif
 
 #endif

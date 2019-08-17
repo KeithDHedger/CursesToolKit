@@ -35,6 +35,10 @@ class CTK_cursesSourceEditBoxClass;
 class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
 
+//#ifdef _USEFRAMBUFFER_
+//class cursesFBImageClass;
+//#endif
+
 enum {HLNONE=-1,HLBUTTONS,HLDROPDOWNS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
 class CTK_mainAppClass

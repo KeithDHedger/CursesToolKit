@@ -1,3 +1,7 @@
+1.0.5
+Added imagmagick dependency if frame buffer graphics enabled.
+Added frame buffer graphics class.
+
 1.0.4
 Centered 'Done' buttons in about box dialog.
 Added drop box gadgets to Left/Right keys switching between gadget types.

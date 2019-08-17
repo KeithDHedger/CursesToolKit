@@ -4,7 +4,7 @@
 
 #USEVALGRIND="valgrind --leak-check=full"
 
-g++ -Wall -ggdb -O0 -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o basicexample ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey ) -lcursestoolkit "$0" -o basicexample ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./basicexample "$@"
 retval=$?
 rm basicexample

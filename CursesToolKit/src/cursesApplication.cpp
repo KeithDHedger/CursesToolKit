@@ -51,6 +51,11 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	this->pages.clear();
 	termkey_destroy(this->tk);
 	fflush(NULL);
+
+#ifdef _USEFRAMBUFFER_
+	munmap(frameBufferMapPtr,screensize);
+#endif
+
 }
 
 /**

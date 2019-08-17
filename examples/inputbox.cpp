@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o inputbox ||exit 1
+g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o inputbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./inputbox "$@"
 retval=$?
 rm inputbox

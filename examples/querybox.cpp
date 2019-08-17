@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ../;make -j4);./querybox.cpp "$(echo -e "Body String\nLine 2\nLine 3\nLine 4\n          \e[30;43;51mLine 5")" "Window name" "Dialog title" 7
 
-g++ -Wall -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o querybox ||exit 1
+g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o querybox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./querybox "$@"
 retval=$?
 rm querybox

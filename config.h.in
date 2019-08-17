@@ -59,3 +59,6 @@
 
 /* Version number of package */
 #undef VERSION
+
+/* Use FRAMEBUFFER */
+#undef _USEFRAMBUFFER_

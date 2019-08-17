@@ -70,6 +70,22 @@ fi
 AM_CONDITIONAL([HAVE_DOXYGEN],
 [test -n "$DOXYGEN"])AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([CursesToolKit/docs/Doxyfile])])
 
+AC_MSG_CHECKING(whether to enable framebuffer graphics)
+AC_ARG_ENABLE(framebuffer,
+    [  --disable-framebuffer	  Don't Use Framebuffer (Default is to enable).],
+    [enable_framebuffer=$enableval],
+    [enable_framebuffer="yes"])
+AC_MSG_RESULT($enable_framebuffer)
+
+if test "$enable_framebuffer" = "yes"; then
+	AC_DEFINE([_USEFRAMBUFFER_], [], [Use FRAMEBUFFER])
+	IMAGEMAGICK_MODULES="Magick++ >= 7.0.0"
+
+	PKG_CHECK_MODULES(IMAGEMAGICK,$IMAGEMAGICK_MODULES)
+	AC_SUBST(IMAGEMAGICK_CFLAGS)
+	AC_SUBST(IMAGEMAGICK_LIBS)
+fi
+
 AC_CONFIG_FILES([cursestoolkit.pc])
 AC_OUTPUT(Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile)
 
