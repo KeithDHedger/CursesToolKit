@@ -48,6 +48,10 @@ int main(int argc, char **argv)
 	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(1,16,-1,-1,"LFSTux.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
+	img->CTK_newFBImage(1,16,-1,-1,"LFSTuxRed.png");
+	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
+	mainApp->CTK_mainEventLoop(1);
+
 	SETSHOWCURS;
 
 	delete mainApp;
