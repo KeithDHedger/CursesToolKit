@@ -113,6 +113,8 @@ CTK_mainAppClass::CTK_mainAppClass()
 					
 					this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
 					this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
+					this->frameBufferData.screenWidth=frameBufferData.frameBufferInfo.line_length/4;
+					this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
 					//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
 #endif

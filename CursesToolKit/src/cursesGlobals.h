@@ -59,6 +59,8 @@ struct fbData
 	bool						fbIsMapped=false;
 	int							charWidth=1;
 	int							charHeight=1;
+	int							screenWidth=1;
+	int							screenHeight=1;
 };
 
 //#ifdef _USEFRAMBUFFER_

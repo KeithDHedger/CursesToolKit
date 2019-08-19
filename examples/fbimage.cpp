@@ -5,7 +5,7 @@
 #Needs to be run on the console NOT in a graphical terminal ( ie not in X ).
 #USEVALGRIND="valgrind --leak-check=full"
 #Run eg:
-#(cd ../;make -j4);./fbimage.cpp
+#(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
 g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++ ) -lcursestoolkit "$0" -o fbimageexample ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimageexample "$@"
@@ -36,6 +36,11 @@ int main(int argc, char **argv)
 	const char				*label="Simple Framebuffer Image Example, Press Any Key ...";
 	int						labellen=strlen(label);
 	struct fbData			*fbinf=mainApp->CTK_getFBData();
+	CTK_cursesUtilsClass	cu;
+	char					*folder=NULL;
+
+	if(argc>1)
+		folder=argv[1];
 
 	if(fbinf->usingFB==false)
 		fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
@@ -51,6 +56,14 @@ int main(int argc, char **argv)
 	img->CTK_newFBImage(1,2,100,100,"LFSTuxRed.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
+
+	cu.CTK_openFile(mainApp,"Open File Example",folder,true,NULL,".png;.tiff;.jpg;");
+	if(cu.isValidFile==true)
+		{
+			img->CTK_newFBImage(2,2,fbinf->screenWidth-(fbinf->charWidth*2),fbinf->screenHeight-(fbinf->charHeight*2),cu.stringResult.c_str());
+			img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
+			mainApp->CTK_mainEventLoop(1);
+		}
 
 	SETSHOWCURS;
 
