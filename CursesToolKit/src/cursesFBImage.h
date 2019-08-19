@@ -29,17 +29,18 @@ class CTK_cursesFBImageClass
 		CTK_cursesFBImageClass();
 		~CTK_cursesFBImageClass();
 
-		void	CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
-		void	CTK_drawFBImage(void);
+		void				CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
+		void				CTK_drawFBImage(void);
 
+		CTK_mainAppClass	*mc=NULL;
+		int					sx=0;
+		int					sy=0;
+		int					wid=-1;
+		int					hite=-1;
 	private:
-		int		sx=0;
-		int		sy=0;
-		int		wid=-1;
-		int		hite=-1;
 #ifdef _USEFRAMBUFFER_
-		Magick::Image	image;
-		Magick::Blob	blob;
+		Magick::Image	*image=NULL;
+		Magick::Blob	*blob=NULL;
 #endif
 };
 

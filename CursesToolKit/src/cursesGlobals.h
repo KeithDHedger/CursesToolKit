@@ -46,6 +46,23 @@
 #include <Magick++.h>
 #endif
 
+struct fbData
+{
+#ifdef _USEFRAMBUFFER_
+	struct fb_fix_screeninfo	frameBufferInfo;
+	bool						usingFB=true;
+#else
+	bool						usingFB=false;
+#endif
+	long int					screensize=1;
+	char						*frameBufferMapPtr=NULL;
+	bool						fbIsMapped=false;
+	int							charWidth=1;
+};
+
+//#ifdef _USEFRAMBUFFER_
+//#include <Magick++.h>
+//#endif
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
@@ -63,11 +80,8 @@
 #include "cursesSourceEditBox.h"
 #include "cursesChooser.h"
 #include "cursesDropDown.h"
-
-#ifdef _USEFRAMBUFFER_
-#include <Magick++.h>
 #include "cursesFBImage.h"
-#endif
+
 
 #include "cursesApplication.h"
 
@@ -111,17 +125,11 @@ struct pageStruct
 	std::vector<CTK_cursesLabelClass*>			labels;
 	std::vector<CTK_cursesChooserClass*>		choosers;
 	std::vector<CTK_cursesDropClass*>			dropDowns;
+	std::vector<CTK_cursesFBImageClass*>		fbImages;
 	void										*userData=NULL;
 	bool										menusActive=true;
 };
 
 enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};
-
-#ifdef _USEFRAMBUFFER_
-static struct fb_fix_screeninfo					frameBufferInfo;
-static long int									screensize=0;
-static char 									*frameBufferMapPtr=0;
-static bool										fbIsMapped=false;
-#endif
 
 #endif

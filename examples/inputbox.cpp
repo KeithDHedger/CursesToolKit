@@ -2,9 +2,9 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1
+#(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1 29
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey) -lcursestoolkit "$0"  -o inputbox ||exit 1
+g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++) -lcursestoolkit "$0"  -o inputbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./inputbox "$@"
 retval=$?
 rm inputbox
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 	CTK_cursesUtilsClass	*cu;
 	if(argc<7)
 		{
-			printf("USAGE:\ninputbox \"Body String\" \"Default Input String\" \"Window name\" \"Dialog title\" \"Show 'CANCEL' button (0=no show, 1=show)\" Dialog Width ( Default=40 )\n");
+			printf("USAGE:\ninputbox \"Body String\" \"Default Input String\" \"Window name\" \"Dialog title\" \"Show 'CANCEL' button (0=no show, 1=show)\" Dialog Width\n");
 			exit(1);
 		}
 

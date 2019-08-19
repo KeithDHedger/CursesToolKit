@@ -26,7 +26,12 @@
 */
 CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 {
-
+#ifdef _USEFRAMBUFFER_
+	if(this->image!=NULL)
+		delete this->image;
+	if(this->blob!=NULL)
+		delete this->blob;
+#endif
 }
 
 /**
@@ -34,33 +39,6 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 */
 CTK_cursesFBImageClass::CTK_cursesFBImageClass()
 {
-#ifdef _USEFRAMBUFFER_
-	int	fbfd=0;
-
-	if(fbIsMapped==false)
-		{
-// Open the file for reading and writing
-			fbfd=open("/dev/fb0",O_RDWR);
-			if(!fbfd)
-				{
-					printf("Error: cannot open framebuffer device.\n");
-				}
-
-// Get fixed screen information
-			if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferInfo))
-				{
-					printf("Error reading fixed information.\n");
-				}
-
-// map fb to user mem
-			screensize=frameBufferInfo.smem_len;
-			frameBufferMapPtr=(char*)mmap(NULL,screensize,(PROT_READ | PROT_WRITE),MAP_SHARED, fbfd,0);
-			close(fbfd);
-			fbIsMapped=true;
-//init imagemagick
-			Magick::InitializeMagick(NULL);
-		}
-#endif
 }
 
 /**
@@ -70,20 +48,28 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 {
 #ifdef _USEFRAMBUFFER_
 	char	*buffer;
+	if(this->image!=NULL)
+		delete this->image;
+	if(this->blob!=NULL)
+		delete this->blob;
 
-	this->image.read(filepath);
-	this->image.magick("BGRA");
+	this->image=new Magick::Image;
+	this->blob=new Magick::Blob;
+	this->image->read(filepath);
+	this->image->magick("BGRA");
 	if(wid!=-1)
 		{
 			if(keepaspect==true)
 				asprintf(&buffer,"%ix%i",width,hite);
 			else
 				asprintf(&buffer,"!%ix%i",width,hite);
-			this->image.resize(buffer);
+			this->image->resize(buffer);
 		}
-	this->image.write(&(this->blob));
-	this->wid=(int)image.columns();
-	this->hite=(int)image.rows();
+	this->image->write((this->blob));
+	this->wid=(int)image->columns();
+	this->hite=(int)image->rows();
+	this->sx=x;
+	this->sy=y;
 #endif
 }
 
@@ -93,5 +79,21 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 void CTK_cursesFBImageClass::CTK_drawFBImage(void)
 {
 #ifdef _USEFRAMBUFFER_
+	unsigned char	*datptr;
+	unsigned int	pixoffset;
+	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+
+	datptr=(unsigned char *)blob->data();
+	for(int y=0+this->sy;y<this->hite+this->sy;y++)
+		{
+			//pixoffset=(this->sx*4)+(y*frameBufferInfo.line_length);
+			pixoffset=(this->sx*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
+			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+			datptr+=this->wid*4;
+		}
 #endif
 }
+
+
+
+

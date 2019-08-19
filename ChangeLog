@@ -1,4 +1,6 @@
 1.0.5
+Added frame buffer image example.
+Working image class.
 Added imagmagick dependency if frame buffer graphics enabled.
 Added frame buffer graphics class.
 

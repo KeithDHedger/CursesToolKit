@@ -46,6 +46,10 @@ CTK_mainAppClass::~CTK_mainAppClass()
 				delete this->pages[k].srcEditBoxes[j];
 			for(int j=0;j<this->pages[k].choosers.size();j++)
 				delete this->pages[k].choosers[j];
+			for(int j=0;j<this->pages[k].dropDowns.size();j++)
+				delete this->pages[k].dropDowns[j];
+			for(int j=0;j<this->pages[k].fbImages.size();j++)
+				delete this->pages[k].fbImages[j];
 		}
 
 	this->pages.clear();
@@ -53,7 +57,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	fflush(NULL);
 
 #ifdef _USEFRAMBUFFER_
-	munmap(frameBufferMapPtr,screensize);
+	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 #endif
 
 }
@@ -77,6 +81,42 @@ CTK_mainAppClass::CTK_mainAppClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
+
+	if(frameBufferData.usingFB==true)
+		{
+#ifdef _USEFRAMBUFFER_
+			int	fbfd=0;
+
+			if(frameBufferData.fbIsMapped==false)
+				{
+// Open the file for reading and writing
+					fbfd=open("/dev/fb0",O_RDWR);
+					if(!fbfd)
+						{
+							fprintf(stderr,"Error: cannot open framebuffer device.\n");
+							return;
+						}
+
+// Get fixed screen information
+					if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferData.frameBufferInfo))
+						{
+							fprintf(stderr,"Error reading fixed information.\n");
+							return;
+						}
+
+// map fb to user mem
+						frameBufferData.screensize=frameBufferData.frameBufferInfo.smem_len;
+						frameBufferData.frameBufferMapPtr=(char*)mmap(NULL,frameBufferData.screensize,(PROT_READ | PROT_WRITE),MAP_SHARED,fbfd,0);
+						close(fbfd);
+						frameBufferData.fbIsMapped=true;
+//init imagemagick
+					Magick::InitializeMagick(NULL);
+					
+					this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
+		}
+#endif
+
+		}
 }
 
 /**
@@ -86,6 +126,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	printf("\e[2J\e[H");
+	fflush(NULL);
 }
 
 /**
@@ -224,6 +265,18 @@ CTK_cursesDropClass* CTK_mainAppClass::CTK_addNewDropDownBox(CTK_mainAppClass *m
 	dropbox->CTK_setColours(this->colours);
 	this->pages[this->pageNumber].dropDowns.push_back(dropbox);
 	return(dropbox);
+}
+
+/**
+* Create and add new frame buffer image. 
+*/
+CTK_cursesFBImageClass* CTK_mainAppClass::CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
+{
+	CTK_cursesFBImageClass	*fbi=new CTK_cursesFBImageClass();
+	fbi->CTK_newFBImage(x,y,width,hite,filepath,keepaspect);
+	fbi->mc=this;
+	this->pages[this->pageNumber].fbImages.push_back(fbi);
+	return(fbi);
 }
 
 /**
@@ -371,6 +424,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				}
 		}
 
+	for(int j=0;j<app->pages[app->pageNumber].fbImages.size();j++)
+		app->pages[app->pageNumber].fbImages[j]->CTK_drawFBImage();
+
 	for(int j=0;j<app->pages[app->pageNumber].dropDowns.size();j++)
 		{
 			if(app->hiliteDropBoxNum==j)
@@ -437,6 +493,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			else
 				app->pages[app->pageNumber].lists[j]->CTK_drawListWindow(false);
 		}
+
 	SETNORMAL;
 }
 
@@ -568,13 +625,14 @@ void CTK_mainAppClass::setHilite(bool forward)
 * Main event loop.
 * \note Handles highlighting selecting etc etc.
 */
-void CTK_mainAppClass::CTK_mainEventLoop(void)
+void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 {
 	int				selection=CONT;
 	TermKeyResult	ret;
 	TermKeyKey		key;
 	char			tstr[3]={'_',0,0};
 	int				tab=1;
+	int				countdown=runcnt;
 
 	this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);
@@ -836,6 +894,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(void)
 			this->CTK_updateScreen(this,NULL);
 			if(this->eventLoopCBOut!=NULL)
 				this->eventLoopCBOut(this,this->userData);
+			if(runcnt!=-1)
+				{
+					countdown--;
+					if(countdown==0)
+						this->runEventLoop=false;
+				}
 		}
 }
 
@@ -1046,4 +1110,11 @@ void CTK_mainAppClass::setHiliteNone(void)
 	this->hiliteSourceEditBoxNum=-1;
 	this->hiliteDropBoxNum=-1;
 }
+
+struct fbData* CTK_mainAppClass::CTK_getFBData(void)
+{
+	return(&this->frameBufferData);
+}
+
+
 

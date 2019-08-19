@@ -34,10 +34,7 @@ class CTK_cursesLabelClass;
 class CTK_cursesSourceEditBoxClass;
 class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
-
-//#ifdef _USEFRAMBUFFER_
-//class cursesFBImageClass;
-//#endif
+class CTK_cursesFBImageClass;
 
 enum {HLNONE=-1,HLBUTTONS,HLDROPDOWNS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
@@ -83,6 +80,7 @@ class CTK_mainAppClass
 		CTK_cursesLabelClass*					CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
 		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		CTK_cursesDropClass*					CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
+		CTK_cursesFBImageClass*					CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);
@@ -97,11 +95,12 @@ class CTK_mainAppClass
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
-		void									CTK_mainEventLoop(void);
+		void									CTK_mainEventLoop(int runcnt=-1);
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 
 		void									CTK_setDefaultGadget(int type,int num);
+		struct fbData							*CTK_getFBData(void);
 
 		int										x;
 		int										y;
@@ -127,7 +126,7 @@ class CTK_mainAppClass
 
 		void									setHilite(bool forward);
 		void									setHiliteNone(void);
-
+		struct fbData							frameBufferData;
 };
 
 #endif
