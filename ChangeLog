@@ -1,4 +1,5 @@
 1.0.5
+Libarary version bump.
 Image x/y now character based positioning same as text.
 Added option to run main event loop x number of times ( default is continuous ).
 Updated examples.
