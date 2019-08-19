@@ -59,7 +59,6 @@ CTK_mainAppClass::~CTK_mainAppClass()
 #ifdef _USEFRAMBUFFER_
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 #endif
-
 }
 
 /**
@@ -113,6 +112,8 @@ CTK_mainAppClass::CTK_mainAppClass()
 					Magick::InitializeMagick(NULL);
 					
 					this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
+					this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
+					//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
 #endif
 

@@ -58,6 +58,7 @@ struct fbData
 	char						*frameBufferMapPtr=NULL;
 	bool						fbIsMapped=false;
 	int							charWidth=1;
+	int							charHeight=1;
 };
 
 //#ifdef _USEFRAMBUFFER_

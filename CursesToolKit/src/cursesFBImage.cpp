@@ -84,10 +84,9 @@ void CTK_cursesFBImageClass::CTK_drawFBImage(void)
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 
 	datptr=(unsigned char *)blob->data();
-	for(int y=0+this->sy;y<this->hite+this->sy;y++)
+	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
 		{
-			//pixoffset=(this->sx*4)+(y*frameBufferInfo.line_length);
-			pixoffset=(this->sx*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
+			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
 			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
 			datptr+=this->wid*4;
 		}

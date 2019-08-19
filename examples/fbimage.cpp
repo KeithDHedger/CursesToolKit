@@ -45,10 +45,10 @@ int main(int argc, char **argv)
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),1,labellen,1,label);
 	lab->CTK_setJustify(CENTRE);
-	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(1,16,-1,-1,"LFSTux.png");
+	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(1,2,-1,-1,"LFSTux.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
-	img->CTK_newFBImage(1,16,-1,-1,"LFSTuxRed.png");
+	img->CTK_newFBImage(1,2,-1,-1,"LFSTuxRed.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
 
