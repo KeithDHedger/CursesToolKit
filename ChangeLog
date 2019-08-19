@@ -1,4 +1,7 @@
 1.0.5
+Added optional filetypes to util open/save dialog.
+Added filetypes by suffix to chooser class.
+Added filetypes by suffix to LFSTK_findClass.
 Libarary version bump.
 Image x/y now character based positioning same as text.
 Added option to run main event loop x number of times ( default is continuous ).

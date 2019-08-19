@@ -81,6 +81,7 @@ class LFSTK_findClass
 	private:
 		void		deleteData(void);
 		bool		fileTypeTest(int filetype);
+		bool		fileTypesTest(const char *name);
 
 		int			dataCnt=0;
 		int			minDepth=-1;

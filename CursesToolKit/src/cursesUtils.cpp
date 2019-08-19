@@ -315,7 +315,7 @@ void checkSelectCB(void *inst,void *ud)
 /**
 * Private
 */
-bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename)
+bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes)
 {
 	CTK_cursesChooserClass	*chooser;
 	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
@@ -352,6 +352,7 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
 	fud->chooser=chooser;
 	chooser->CTK_setShowTypes(ANYTYPE);
+	chooser->CTK_setShowFileTypes(filetypes);
 	chooser->CTK_setShowHidden(false);
 	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
 	selectapp->CTK_addChooserBox(chooser);
@@ -489,7 +490,7 @@ void CTK_cursesUtilsClass::CTK_selectFolder(CTK_mainAppClass *app,const char *wn
 /**
 * Open file convenience dialog.
 */
-void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open,const char *filename)
+void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open,const char *filename,const char *filetypes)
 {
 	char	*folder=NULL;
 
@@ -501,7 +502,7 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,
 		}
 	else
 		this->inFolder=startdir;	
-	this->isValidFile=this->runOpenFile(app,wname,open,filename);
+	this->isValidFile=this->runOpenFile(app,wname,open,filename,filetypes);
 	app->CTK_clearScreen();
 	CTK_freeAndNull(&folder);
 }

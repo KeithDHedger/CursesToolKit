@@ -25,6 +25,8 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
+//just pics
+	//cu.CTK_openFile(mainApp,"Open File Example",folder,true,NULL,".png;.tiff;");
 	cu.CTK_openFile(mainApp,"Open File Example",folder);
 	if(cu.isValidFile==true)
 		fprintf(stderr,"%s\n",cu.stringResult.c_str());

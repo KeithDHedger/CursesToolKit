@@ -118,6 +118,18 @@ void CTK_cursesChooserClass::CTK_setShowTypes(int show)
 }
 
 /**
+* Set show file types ( uses suffix eg *.jpg ).
+*/
+void CTK_cursesChooserClass::CTK_setShowFileTypes(const char *filetypes)
+{
+	if(filetypes==NULL)
+		return;
+	this->fileTypes=filetypes;
+	this->files->LFSTK_setFileTypes(this->fileTypes);
+}
+
+
+/**
 * Build selector.
 */
 void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *folder)

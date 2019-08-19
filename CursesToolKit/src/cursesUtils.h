@@ -50,7 +50,7 @@ class CTK_cursesUtilsClass
 		std::vector<std::string>	CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim=true);
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 
-		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="");
+		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="",const char *filetypes=NULL);
 		void						CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir);
 		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth=ENTRYWIDTH);
 		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
@@ -61,7 +61,7 @@ class CTK_cursesUtilsClass
 		std::string					CTK_padString(std::string label,int maxlen);
 
 	private:
-		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename);
+		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes);
 		bool						runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder);
 };
 

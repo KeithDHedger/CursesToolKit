@@ -340,6 +340,48 @@ bool LFSTK_findClass::LFSTK_getIgnoreNavLinks(void)
 }
 
 /**
+* Test for file types by suffix ( list seperated by semi-colon must end in semi-colon).
+* \return bool.
+*/
+bool LFSTK_findClass::fileTypesTest(const char *name)
+{
+	char	*ptr=this->fileTypes;
+	char	*tmptypes=(char*)alloca(256);
+	bool	loop=true;
+	bool	gotone=false;
+	char	*oldptr;
+
+	if(this->LFSTK_getFileTypes()!=NULL)
+		{
+			strncpy(tmptypes,this->fileTypes,255);
+			tmptypes[255]=0;
+			ptr=tmptypes;
+			while(loop==true)
+				{					
+					oldptr=ptr;
+					ptr=strstr(ptr,";");
+					if(ptr!=NULL)
+						{
+							*ptr=0;
+							if(strcasestr(name,oldptr)!=NULL)
+								{
+								fprintf(stderr,"found\n");
+									loop=false;
+									return(true);
+								}
+							ptr++;
+						}
+					else
+						loop=false;
+				}
+		}
+	else
+		return(true);
+	return(false);
+}
+
+
+/**
 * Main search function.
 * \param const char *dir Path to search.
 * \param bool Tru=Add this search to last, False=New search.
@@ -367,8 +409,7 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 						continue;
 					if((this->LFSTK_getIncludeHidden()==false) && ((strlen(entry->d_name)>2) && ((entry->d_name[0]=='.') && (entry->d_name[1]!='.') )))
 						continue;
-					if((this->LFSTK_getFileTypes()!=NULL) && (strcasestr(entry->d_name,this->LFSTK_getFileTypes())==NULL))
-						continue;
+
 					if((this->ignoreNavLinks==true) && ((strcmp(entry->d_name,".")==0) || (strcmp(entry->d_name,"..")==0)))
 						continue;
 
@@ -396,6 +437,8 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 													case S_IFREG:
 														if(this->fileTypeTest(FILELINKTYPE)==false)
 															continue;
+														if(this->fileTypesTest(entry->d_name)==false)
+															continue;
 														datas.fileType=FILELINKTYPE;
 														break;
 													case S_IFDIR:
@@ -414,6 +457,8 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 									case DT_REG:
 										if(this->fileTypeTest(FILETYPE)==false)
 											continue;
+										if(this->fileTypesTest(entry->d_name)==false)
+											continue;			
 										datas.fileType=FILETYPE;
 										break;
 									case DT_DIR:
@@ -423,6 +468,7 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 										break;
 								}
 						}
+
 					if(this->LFSTK_getFullPath()==true)
 						datas.path=filepath;
 					else

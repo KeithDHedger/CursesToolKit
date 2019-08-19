@@ -39,6 +39,7 @@ class CTK_cursesChooserClass
 		void					CTK_selectFolder(CTK_mainAppClass *app,const char *folder);
 		void					CTK_setShowHidden(bool show);
 		void					CTK_setShowTypes(int show);
+		void					CTK_setShowFileTypes(const char *filetypes);
 		void					CTK_updateList(void);
 		void					CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
 
@@ -52,6 +53,7 @@ class CTK_cursesChooserClass
 		int						hite;
 		bool					showHidden=false;
 		int						types=FOLDERTYPE;
+		const char				*fileTypes=NULL;
 };
 
 #endif
