@@ -1,4 +1,6 @@
 1.0.5
+Added option to run main event loop x number of times ( default is continuous ).
+Updated examples.
 Added frame buffer image example.
 Working image class.
 Added imagmagick dependency if frame buffer graphics enabled.
