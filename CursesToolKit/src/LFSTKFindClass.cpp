@@ -365,7 +365,6 @@ bool LFSTK_findClass::fileTypesTest(const char *name)
 							*ptr=0;
 							if(strcasestr(name,oldptr)!=NULL)
 								{
-								fprintf(stderr,"found\n");
 									loop=false;
 									return(true);
 								}
@@ -482,4 +481,5 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 	}
 	this->dataCnt=this->data.size();
 }
+
 
