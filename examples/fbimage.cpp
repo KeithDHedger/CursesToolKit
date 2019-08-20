@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
 
-	cu.CTK_openFile(mainApp,"Open File Example",folder,true,NULL,".png;.tiff;.jpg;");
+	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,NULL,".png;.tiff;.jpg;");
 	if(cu.isValidFile==true)
 		{
 			img->CTK_newFBImage(2,2,fbinf->screenWidth-(fbinf->charWidth*2),fbinf->screenHeight-(fbinf->charHeight*2),cu.stringResult.c_str());
@@ -71,3 +71,4 @@ int main(int argc, char **argv)
 	printf("\n");
 	return 0;
 }
+
