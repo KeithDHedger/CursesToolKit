@@ -1,4 +1,6 @@
 1.0.5
+Set enabled/disabled of OK button in open/save file/folder util.
+Added enable/disable to button class.
 Updated examples.
 Added optional filetypes to util open/save dialog.
 Added filetypes by suffix to chooser class.

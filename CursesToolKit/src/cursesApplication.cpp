@@ -522,6 +522,12 @@ void CTK_mainAppClass::setHilite(bool forward)
 				break;
 			case HLBUTTONS:
 				this->hiliteBtnNum+=addit;
+				if((this->hiliteBtnNum>=0) && (this->hiliteBtnNum<this->pages[this->pageNumber].buttons.size()))
+					{
+						if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnabled()==false)
+							this->hiliteBtnNum+=addit;
+					}
+
 				if((this->hiliteBtnNum<0) || (this->hiliteBtnNum>=this->pages[this->pageNumber].buttons.size()))
 					{
 						this->hiliteBtnNum=-1;
@@ -826,13 +832,20 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 											
 										if(this->hiliteBtnNum!=-1)
 											{
+												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnabled()==false)
+													{
+														continue;
+													}
+												//else
+												//	{
 												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB!=NULL)
 													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCBUserData);
+													}
 												if(this->pages[this->pageNumber].buttons.size()>this->hiliteBtnNum)
 													if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
 														this->hiliteBtnNum=-1;
 												this->CTK_updateScreen(this,NULL);
-											}
+											//}
 
 										if(this->hiliteInputNum!=-1)
 											{

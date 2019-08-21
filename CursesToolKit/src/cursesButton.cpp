@@ -42,10 +42,17 @@ CTK_cursesButtonClass::CTK_cursesButtonClass()
 void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 {
 	MOVETO(this->sx,this->sy);
-	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+	if(this->enabled==false)
+		{
+			setBothColours(this->colours.buttonDisabledForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+		}
 	else
-		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+		{
+			if(hilite==true)
+				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+			else
+				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+		}
 
 	if(this->colours.fancyGadgets==true)
 		printf("< %s >",this->label);
@@ -99,4 +106,20 @@ bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
 void CTK_cursesButtonClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
+}
+
+/**
+*  Set gadget enabled.
+*/
+void CTK_cursesButtonClass::CTK_setEnabled(bool enable)
+{
+	this->enabled=enable;
+}
+
+/**
+* Get gadget enabled.
+*/
+bool CTK_cursesButtonClass::CTK_getEnabled(void)
+{
+	return(this->enabled);
 }

@@ -185,18 +185,32 @@ static void folderSelectCB(void *inst,void *ud)
 /**
 * Private internal callback
 */
+static void inputCB(void *inst,void *ud)
+{
+	fileUDStruct	*fud=static_cast<fileUDStruct*>(ud);
+	CTK_cursesInputClass	*inp=static_cast<CTK_cursesInputClass*>(inst);
+
+	if(strlen(inp->CTK_getText())>0)
+		fud->app->pages[0].buttons[0]->CTK_setEnabled(true);
+	else
+		fud->app->pages[0].buttons[0]->CTK_setEnabled(false);
+}
+
+/**
+* Private internal callback
+*/
 static void fileSelectCB(void *inst,void *ud)
 {
 	char					*buffer=(char*)alloca(PATH_MAX);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
-
 	if((fud->isOpenDialog==true) )
 		{
 			if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
 				{
 					sprintf(buffer,"File: %s",ch->filePath.c_str());
 					fud->app->pages[0].textBoxes[0]->CTK_updateText(buffer);
+					fud->app->pages[0].buttons[0]->CTK_setEnabled(true);
 					fud->inst->isValidFile=true;
 				}
 		}
@@ -208,6 +222,8 @@ static void fileSelectCB(void *inst,void *ud)
 					fud->inst->isValidFile=true;
 				}
 		}
+	if(fud->inst->isValidFile==true)
+		fud->app->pages[0].buttons[0]->CTK_setEnabled(true);
 }
 
 /**
@@ -359,12 +375,20 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	chooser->CTK_setSelectCB(fileSelectCB,fud);
 
 	if(open==true)
-		selectapp->CTK_addNewTextBox(lx,ty,lw,1,"File:",false);
+		{
+			sprintf(buffer,"File: %s",filename);
+			selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
+		}
 	else
-		selectapp->CTK_addNewInput(lx,ty,lw,1,filename);
+		{
+			CTK_cursesInputClass	*inp=selectapp->CTK_addNewInput(lx,ty,lw,1,filename);
+			inp->CTK_setSelectCB(inputCB,fud);
+		}
 
 	selectapp->CTK_addNewButton(lx,by,1,1,"  OK  ");
 	selectapp->pages[0].buttons[0]->CTK_setSelectCB(buttonSelectCB,fud);
+	if((filename==NULL) || (strcmp(filename,"")==0))
+		selectapp->pages[0].buttons[0]->CTK_setEnabled(false);
 	selectapp->CTK_addNewButton(lx+lw-10,by,11,1,"CANCEL");
 	selectapp->pages[0].buttons[1]->CTK_setSelectCB(buttonSelectCB,fud);
 
