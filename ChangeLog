@@ -1,4 +1,5 @@
 1.0.5
+Leak fix.
 Set enabled/disabled of OK button in open/save file/folder util.
 Added enable/disable to button class.
 Updated examples.

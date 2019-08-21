@@ -47,7 +47,8 @@ CTK_cursesFBImageClass::CTK_cursesFBImageClass()
 void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
 {
 #ifdef _USEFRAMBUFFER_
-	char	*buffer;
+	char	buffer[256];
+
 	if(this->image!=NULL)
 		delete this->image;
 	if(this->blob!=NULL)
@@ -60,9 +61,10 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	if(wid!=-1)
 		{
 			if(keepaspect==true)
-				asprintf(&buffer,"%ix%i",width,hite);
+				snprintf(buffer,255,"%ix%i",width,hite);
 			else
-				asprintf(&buffer,"!%ix%i",width,hite);
+				snprintf(buffer,255,"!%ix%i",width,hite);
+			buffer[255]=0;
 			this->image->resize(buffer);
 		}
 	this->image->write((this->blob));

@@ -155,6 +155,6 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 	this->lb->CTK_setEnterDeselects(false);
 	app->CTK_addListBox(this->lb);
 	this->lb->CTK_setSelectCB(chooserSelectCB,this);
-	this->folderPath=strdup(folder);
+	this->folderPath=folder;
 	return;
 }

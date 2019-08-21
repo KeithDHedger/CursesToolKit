@@ -3,7 +3,7 @@
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
 #Needs to be run on the console NOT in a graphical terminal ( ie not in X ).
-#USEVALGRIND="valgrind --leak-check=full"
+USEVALGRIND="valgrind --leak-check=full"
 #Run eg:
 #(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
@@ -22,15 +22,9 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-CTK_mainAppClass	*mainApp=new CTK_mainAppClass();
-
-void mainloopCB(void *mainc,void *data)
-{
-	//fprintf(stderr,">>%p %p<<\n",mainc,data);
-}
-
 int main(int argc, char **argv)
 {
+	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 	coloursStruct			cs;
 	CTK_cursesLabelClass	*lab;
 	const char				*label="Simple Framebuffer Image Example, Press Any Key ...";
@@ -57,7 +51,7 @@ int main(int argc, char **argv)
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
 
-	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,NULL,".png;.tiff;.jpg;");
+	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,"",".png;.tiff;.jpg;");
 	if(cu.isValidFile==true)
 		{
 			img->CTK_newFBImage(2,2,fbinf->screenWidth-(fbinf->charWidth*2),fbinf->screenHeight-(fbinf->charHeight*2),cu.stringResult.c_str());
