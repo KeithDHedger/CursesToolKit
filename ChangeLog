@@ -1,4 +1,5 @@
 1.0.5
+Image width and height now set in character units.
 Leak fix.
 Set enabled/disabled of OK button in open/save file/folder util.
 Added enable/disable to button class.

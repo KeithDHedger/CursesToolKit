@@ -48,6 +48,7 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 {
 #ifdef _USEFRAMBUFFER_
 	char	buffer[256];
+	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 
 	if(this->image!=NULL)
 		delete this->image;
@@ -58,15 +59,16 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	this->blob=new Magick::Blob;
 	this->image->read(filepath);
 	this->image->magick("BGRA");
-	if(wid!=-1)
+	if(width!=-1)
 		{
 			if(keepaspect==true)
-				snprintf(buffer,255,"%ix%i",width,hite);
+				snprintf(buffer,255,"%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
 			else
-				snprintf(buffer,255,"!%ix%i",width,hite);
+				snprintf(buffer,255,"!%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
 			buffer[255]=0;
 			this->image->resize(buffer);
 		}
+
 	this->image->write((this->blob));
 	this->wid=(int)image->columns();
 	this->hite=(int)image->rows();

@@ -276,8 +276,8 @@ CTK_cursesDropClass* CTK_mainAppClass::CTK_addNewDropDownBox(CTK_mainAppClass *m
 CTK_cursesFBImageClass* CTK_mainAppClass::CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
 {
 	CTK_cursesFBImageClass	*fbi=new CTK_cursesFBImageClass();
-	fbi->CTK_newFBImage(x,y,width,hite,filepath,keepaspect);
 	fbi->mc=this;
+	fbi->CTK_newFBImage(x,y,width,hite,filepath,keepaspect);
 	this->pages[this->pageNumber].fbImages.push_back(fbi);
 	return(fbi);
 }

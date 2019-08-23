@@ -3,7 +3,7 @@
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
 #Needs to be run on the console NOT in a graphical terminal ( ie not in X ).
-USEVALGRIND="valgrind --leak-check=full"
+#USEVALGRIND="valgrind --leak-check=full"
 #Run eg:
 #(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
@@ -44,17 +44,18 @@ int main(int argc, char **argv)
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),1,labellen,1,label);
 	lab->CTK_setJustify(CENTRE);
-	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(1,2,-1,-1,"LFSTux.png");
+
+	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(2,2,64,32,"LFSTux.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
-	img->CTK_newFBImage(1,2,100,100,"LFSTuxRed.png");
+	img->CTK_newFBImage(1,2,-1,8,"LFSTuxRed.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
 
 	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,"",".png;.tiff;.jpg;");
 	if(cu.isValidFile==true)
 		{
-			img->CTK_newFBImage(2,2,fbinf->screenWidth-(fbinf->charWidth*2),fbinf->screenHeight-(fbinf->charHeight*2),cu.stringResult.c_str());
+			img->CTK_newFBImage(2,2,mainApp->maxCols-2,mainApp->maxRows-2,cu.stringResult.c_str());
 			img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 			mainApp->CTK_mainEventLoop(1);
 		}
