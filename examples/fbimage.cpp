@@ -3,7 +3,7 @@
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 
 #Needs to be run on the console NOT in a graphical terminal ( ie not in X ).
-#USEVALGRIND="valgrind --leak-check=full"
+USEVALGRIND="valgrind --leak-check=full"
 #Run eg:
 #(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
@@ -37,7 +37,10 @@ int main(int argc, char **argv)
 		folder=argv[1];
 
 	if(fbinf->usingFB==false)
-		fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
+		{
+			fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
+			return(1);
+		}
 
 	cs.windowBackCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
