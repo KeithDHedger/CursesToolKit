@@ -888,8 +888,6 @@ docs:
 clean-docs:
 	rm -r CursesToolKit/docs/html
 	rm CursesToolKit/docs/searchdata.xml
-	rm -r CursesToolKit/src/html
-	rm CursesToolKit/src/searchdata.xml
 
 docs-install:
 	$(INSTALL) -d $(DESTDIR)$(docdir)

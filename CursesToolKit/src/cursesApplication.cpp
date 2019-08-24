@@ -18,6 +18,7 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <poll.h>
 #include "cursesGlobals.h"
 
 /**
@@ -55,7 +56,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	this->pages.clear();
 	termkey_destroy(this->tk);
 	fflush(NULL);
-
+	Magick::TerminateMagick();//is this needed?
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 }
 
@@ -64,7 +65,9 @@ CTK_mainAppClass::~CTK_mainAppClass()
 */
 CTK_mainAppClass::CTK_mainAppClass()
 {
-	winsize w;
+	int		fbfd=0;
+	winsize	w;
+
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;
 	this->maxCols=w.ws_col;
@@ -78,41 +81,39 @@ CTK_mainAppClass::CTK_mainAppClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
-	if(frameBufferData.usingIM==true)
+
+	if(frameBufferData.fbIsMapped==false)
 		{
-			int	fbfd=0;
-			if(frameBufferData.fbIsMapped==false)
-				{
 // Open the file for reading and writing
-					fbfd=open("/dev/fb0",O_RDWR);
-					if(!fbfd)
-						{
-							fprintf(stderr,"Error: cannot open framebuffer device.\n");
-							return;
-						}
+			fbfd=open("/dev/fb0",O_RDWR);
+			if(!fbfd)
+				{
+					fprintf(stderr,"Error: cannot open framebuffer device.\n");
+					return;
+				}
 
 // Get fixed screen information
-					if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferData.frameBufferInfo))
-						{
-							fprintf(stderr,"Error reading fixed information.\n");
-							return;
-						}
+			if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferData.frameBufferInfo))
+				{
+					fprintf(stderr,"Error reading fixed information.\n");
+					return;
+				}
 
 // map fb to user mem
-						frameBufferData.screensize=frameBufferData.frameBufferInfo.smem_len;
-						frameBufferData.frameBufferMapPtr=(char*)mmap(NULL,frameBufferData.screensize,(PROT_READ | PROT_WRITE),MAP_SHARED,fbfd,0);
-						close(fbfd);
-						frameBufferData.fbIsMapped=true;
+			frameBufferData.screensize=frameBufferData.frameBufferInfo.smem_len;
+			frameBufferData.frameBufferMapPtr=(char*)mmap(NULL,frameBufferData.screensize,(PROT_READ | PROT_WRITE),MAP_SHARED,fbfd,0);
+			close(fbfd);
+			frameBufferData.fbIsMapped=true;
+
 #ifdef _IMAGEMAGICK_
 //init imagemagick
-					Magick::InitializeMagick(NULL);
+			Magick::InitializeMagick(NULL);
 #endif					
-					this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
-					this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
-					this->frameBufferData.screenWidth=frameBufferData.frameBufferInfo.line_length/4;
-					this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
-					//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
-				}
+			this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
+			this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
+			this->frameBufferData.screenWidth=frameBufferData.frameBufferInfo.line_length/4;
+			this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
+			//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
 }
 
@@ -623,8 +624,6 @@ void CTK_mainAppClass::setHilite(bool forward)
 				break;
 		}
 }
-
-#include <poll.h>
 
 /**
 * Main event loop.

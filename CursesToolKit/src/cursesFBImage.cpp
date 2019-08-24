@@ -40,9 +40,16 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 CTK_cursesFBImageClass::CTK_cursesFBImageClass()
 {
 }
-
+#include <Magick++.h> 
+#include <iostream>
+#include <exception>      // std::exception
+#include <typeinfo>
 /**
 * Create image
+* \param x,y 1 based postition, in characters
+* \param width,hite 1 based size, in characters
+* \param filepath
+* \param keepaspect
 */
 void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
 {
@@ -51,11 +58,6 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	Magick::Image	*limage;
 	Magick::Blob	*lblob;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
-//
-//	if(limage!=NULL)
-//		delete limage;
-//	if(lblob!=NULL)
-//		delete lblob;
 
 	if(this->image!=NULL)
 		delete static_cast<Magick::Image*>(this->image);
@@ -66,19 +68,33 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	lblob=new Magick::Blob;
 	this->image=(void*)limage;
 	this->blob=(void*)lblob;
-	limage->read(filepath);
-	limage->magick("BGRA");
-	if(width!=-1)
+	try
 		{
-			if(keepaspect==true)
-				snprintf(buffer,255,"%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
-			else
-				snprintf(buffer,255,"!%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
-			buffer[255]=0;
-			limage->resize(buffer);
+			limage->read(filepath);
+			limage->magick("BGRA");
+			if(width!=-1)
+				{
+					if(keepaspect==true)
+						snprintf(buffer,255,"%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
+					else
+						snprintf(buffer,255,"!%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
+					buffer[255]=0;
+					limage->resize(buffer);
+				}
+
+			limage->write((lblob));
+		}
+	catch(Magick::Exception &error_)
+		{
+		   	if(this->image!=NULL)
+				delete static_cast<Magick::Image*>(this->image);
+			if(this->blob!=NULL)
+				delete static_cast<Magick::Blob*>(this->blob);
+		    this->image=NULL;
+		    this->blob=NULL;
+		    return;
 		}
 
-	limage->write((lblob));
 	this->wid=(int)limage->columns();
 	this->hite=(int)limage->rows();
 	this->sx=x;
@@ -97,6 +113,8 @@ void CTK_cursesFBImageClass::CTK_drawFBImage(void)
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
 
+	if(lblob==NULL)
+		return;
 	datptr=(unsigned char *)lblob->data();
 	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
 		{

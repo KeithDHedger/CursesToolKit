@@ -50,7 +50,6 @@
 struct fbData
 {
 	struct fb_fix_screeninfo	frameBufferInfo;
-	bool						usingIM=true;
 	long int					screensize=1;
 	char						*frameBufferMapPtr=NULL;
 	bool						fbIsMapped=false;
@@ -59,10 +58,6 @@ struct fbData
 	int							screenWidth=1;
 	int							screenHeight=1;
 };
-
-//#ifdef _IMAGEMAGICK_
-//#include <Magick++.h>
-//#endif
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
@@ -81,7 +76,6 @@ struct fbData
 #include "cursesChooser.h"
 #include "cursesDropDown.h"
 #include "cursesFBImage.h"
-
 
 #include "cursesApplication.h"
 

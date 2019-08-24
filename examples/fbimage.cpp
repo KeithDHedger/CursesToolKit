@@ -36,11 +36,11 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
-	if(fbinf->usingIM==false)
-		{
-			fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
-			return(1);
-		}
+//	if(fbinf->usingIM==false)
+//		{
+//			fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
+//			return(1);
+//		}
 
 	cs.windowBackCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,"",".png;.tiff;.jpg;");
 	if(cu.isValidFile==true)
 		{
+			//img->CTK_newFBImage(2,2,-1,mainApp->maxRows-2,cu.stringResult.c_str());
 			img->CTK_newFBImage(2,2,mainApp->maxCols-2,mainApp->maxRows-2,cu.stringResult.c_str());
 			img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 			mainApp->CTK_mainEventLoop(1);

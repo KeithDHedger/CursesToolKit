@@ -1,4 +1,5 @@
 1.0.5
+Fixed segfault on bad image.
 Fixed missing key when using timeout.
 Added timeout to mainevent loop.
 Fixed linking.
