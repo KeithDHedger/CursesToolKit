@@ -1,4 +1,6 @@
 1.0.5
+Fixed missing key when using timeout.
+Added timeout to mainevent loop.
 Fixed linking.
 Option now is to enable/disable Imagemagick NOT the frame buffer.
 Image width and height now set in character units.

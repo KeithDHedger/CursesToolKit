@@ -56,9 +56,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	termkey_destroy(this->tk);
 	fflush(NULL);
 
-#ifdef _IMAGEMAGICK_
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
-#endif
 }
 
 /**
@@ -82,7 +80,6 @@ CTK_mainAppClass::CTK_mainAppClass()
 		}
 	if(frameBufferData.usingIM==true)
 		{
-							fprintf(stderr,">>>>>>>>>>>>>>.\n");
 			int	fbfd=0;
 			if(frameBufferData.fbIsMapped==false)
 				{
@@ -627,9 +624,14 @@ void CTK_mainAppClass::setHilite(bool forward)
 		}
 }
 
+#include <poll.h>
+
 /**
 * Main event loop.
 * \note Handles highlighting selecting etc etc.
+* \note runcnt<0 Wait upto abs(runcnt) ms for a keypress, run 1 main loop if timeout.
+* \note runcnt=0 Default, run main loop continously.
+* \note runcnt>0 run main loop runcnt times.
 */
 void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 {
@@ -639,6 +641,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 	char			tstr[3]={'_',0,0};
 	int				tab=1;
 	int				countdown=runcnt;
+	struct pollfd	fd;
 
 	this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);
@@ -646,9 +649,25 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 	SETHIDECURS;
 	fflush(NULL);
 	this->runEventLoop=true;
+
+	fd.fd=0;/* the file descriptor we passed to termkey_new() */
+	fd.events=POLLIN;
+
 	while(this->runEventLoop==true)
 		{
-			ret=termkey_waitkey(this->tk,&key);
+			if(runcnt<0)
+				{
+					poll(&fd,1,runcnt*-1);
+					this->runEventLoop=false;// Timed out
+					if(fd.revents&(POLLIN|POLLHUP|POLLERR))
+						termkey_advisereadable(tk);
+
+					while((ret=termkey_getkey(tk,&key))==TERMKEY_RES_KEY);
+				}
+			else
+				{
+					ret=termkey_waitkey(this->tk,&key);
+				}
 			if(this->eventLoopCBIn!=NULL)
 				this->eventLoopCBIn(this,this->userData);
 
@@ -886,7 +905,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 					case TERMKEY_TYPE_UNICODE:
 						if((this->menuBar==NULL) || (this->menuBar->enableShortcuts==false))
 							break;
-						//fprintf(stderr,"keymod=%i key=%i =%c\n",key.modifiers,key.code.codepoint,key.code.codepoint);
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
 								tstr[1]=toupper(key.code.codepoint);
@@ -907,7 +925,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 			this->CTK_updateScreen(this,NULL);
 			if(this->eventLoopCBOut!=NULL)
 				this->eventLoopCBOut(this,this->userData);
-			if(runcnt!=-1)
+			if(runcnt>0)
 				{
 					countdown--;
 					if(countdown==0)
