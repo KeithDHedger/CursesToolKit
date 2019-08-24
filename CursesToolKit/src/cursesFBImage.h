@@ -38,10 +38,8 @@ class CTK_cursesFBImageClass
 		int					wid=-1;
 		int					hite=-1;
 	private:
-#ifdef _USEFRAMBUFFER_
-		Magick::Image	*image=NULL;
-		Magick::Blob	*blob=NULL;
-#endif
+		void				*image=NULL;
+		void				*blob=NULL;
 };
 
 

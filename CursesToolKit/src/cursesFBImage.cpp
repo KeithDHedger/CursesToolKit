@@ -26,11 +26,11 @@
 */
 CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 {
-#ifdef _USEFRAMBUFFER_
+#ifdef _IMAGEMAGICK_
 	if(this->image!=NULL)
-		delete this->image;
+		delete static_cast<Magick::Image*>(this->image);
 	if(this->blob!=NULL)
-		delete this->blob;
+		delete static_cast<Magick::Blob*>(this->blob);
 #endif
 }
 
@@ -46,19 +46,28 @@ CTK_cursesFBImageClass::CTK_cursesFBImageClass()
 */
 void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
 {
-#ifdef _USEFRAMBUFFER_
+#ifdef _IMAGEMAGICK_
 	char	buffer[256];
+	Magick::Image	*limage;
+	Magick::Blob	*lblob;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+//
+//	if(limage!=NULL)
+//		delete limage;
+//	if(lblob!=NULL)
+//		delete lblob;
 
 	if(this->image!=NULL)
-		delete this->image;
+		delete static_cast<Magick::Image*>(this->image);
 	if(this->blob!=NULL)
-		delete this->blob;
+		delete static_cast<Magick::Blob*>(this->blob);
 
-	this->image=new Magick::Image;
-	this->blob=new Magick::Blob;
-	this->image->read(filepath);
-	this->image->magick("BGRA");
+	limage=new Magick::Image;
+	lblob=new Magick::Blob;
+	this->image=(void*)limage;
+	this->blob=(void*)lblob;
+	limage->read(filepath);
+	limage->magick("BGRA");
 	if(width!=-1)
 		{
 			if(keepaspect==true)
@@ -66,12 +75,12 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 			else
 				snprintf(buffer,255,"!%ix%i",width*fbinfo->charWidth,hite*fbinfo->charHeight);
 			buffer[255]=0;
-			this->image->resize(buffer);
+			limage->resize(buffer);
 		}
 
-	this->image->write((this->blob));
-	this->wid=(int)image->columns();
-	this->hite=(int)image->rows();
+	limage->write((lblob));
+	this->wid=(int)limage->columns();
+	this->hite=(int)limage->rows();
 	this->sx=x;
 	this->sy=y;
 #endif
@@ -82,12 +91,13 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 */
 void CTK_cursesFBImageClass::CTK_drawFBImage(void)
 {
-#ifdef _USEFRAMBUFFER_
+#ifdef _IMAGEMAGICK_
 	unsigned char	*datptr;
 	unsigned int	pixoffset;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
 
-	datptr=(unsigned char *)blob->data();
+	datptr=(unsigned char *)lblob->data();
 	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
 		{
 			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);

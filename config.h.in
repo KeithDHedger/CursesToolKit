@@ -60,5 +60,5 @@
 /* Version number of package */
 #undef VERSION
 
-/* Use FRAMEBUFFER */
-#undef _USEFRAMBUFFER_
+/* Use IMAGEMAGICK */
+#undef _IMAGEMAGICK_

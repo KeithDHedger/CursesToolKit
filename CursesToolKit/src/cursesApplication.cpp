@@ -56,7 +56,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	termkey_destroy(this->tk);
 	fflush(NULL);
 
-#ifdef _USEFRAMBUFFER_
+#ifdef _IMAGEMAGICK_
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 #endif
 }
@@ -80,12 +80,10 @@ CTK_mainAppClass::CTK_mainAppClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
-
-	if(frameBufferData.usingFB==true)
+	if(frameBufferData.usingIM==true)
 		{
-#ifdef _USEFRAMBUFFER_
+							fprintf(stderr,">>>>>>>>>>>>>>.\n");
 			int	fbfd=0;
-
 			if(frameBufferData.fbIsMapped==false)
 				{
 // Open the file for reading and writing
@@ -108,17 +106,16 @@ CTK_mainAppClass::CTK_mainAppClass()
 						frameBufferData.frameBufferMapPtr=(char*)mmap(NULL,frameBufferData.screensize,(PROT_READ | PROT_WRITE),MAP_SHARED,fbfd,0);
 						close(fbfd);
 						frameBufferData.fbIsMapped=true;
+#ifdef _IMAGEMAGICK_
 //init imagemagick
 					Magick::InitializeMagick(NULL);
-					
+#endif					
 					this->frameBufferData.charWidth=frameBufferData.frameBufferInfo.line_length/this->maxCols/4;
 					this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
 					this->frameBufferData.screenWidth=frameBufferData.frameBufferInfo.line_length/4;
 					this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
 					//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
-		}
-#endif
-
+				}
 		}
 }
 

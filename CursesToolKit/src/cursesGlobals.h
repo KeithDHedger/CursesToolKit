@@ -37,23 +37,20 @@
 
 #include "config.h"
 
-#ifdef _USEFRAMBUFFER_
 #include <linux/fb.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
+#ifdef _IMAGEMAGICK_
 #include <Magick++.h>
 #endif
 
 struct fbData
 {
-#ifdef _USEFRAMBUFFER_
 	struct fb_fix_screeninfo	frameBufferInfo;
-	bool						usingFB=true;
-#else
-	bool						usingFB=false;
-#endif
+	bool						usingIM=true;
 	long int					screensize=1;
 	char						*frameBufferMapPtr=NULL;
 	bool						fbIsMapped=false;
@@ -63,7 +60,7 @@ struct fbData
 	int							screenHeight=1;
 };
 
-//#ifdef _USEFRAMBUFFER_
+//#ifdef _IMAGEMAGICK_
 //#include <Magick++.h>
 //#endif
 

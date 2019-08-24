@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
-	if(fbinf->usingFB==false)
+	if(fbinf->usingIM==false)
 		{
 			fprintf(stderr,"Library not compiled with framebuffer support, can't display image :( ...\n");
 			return(1);

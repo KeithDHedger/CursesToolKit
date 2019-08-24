@@ -1,4 +1,6 @@
 1.0.5
+Fixed linking.
+Option now is to enable/disable Imagemagick NOT the frame buffer.
 Image width and height now set in character units.
 Leak fix.
 Set enabled/disabled of OK button in open/save file/folder util.

@@ -781,7 +781,7 @@ with_aix_soname
 with_gnu_ld
 with_sysroot
 enable_libtool_lock
-enable_framebuffer
+enable_imagemagick
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1435,7 +1435,7 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
-  --disable-framebuffer	  Don't Use Framebuffer (Default is to enable).
+  --disable-imagemagick	  Don't Use Imagemagick (Default is to enable).
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -16099,24 +16099,23 @@ if test -z "$HAVE_DOXYGEN_TRUE"; then :
 
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable framebuffer graphics" >&5
-$as_echo_n "checking whether to enable framebuffer graphics... " >&6; }
-# Check whether --enable-framebuffer was given.
-if test "${enable_framebuffer+set}" = set; then :
-  enableval=$enable_framebuffer; enable_framebuffer=$enableval
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable Imagemagick graphics" >&5
+$as_echo_n "checking whether to enable Imagemagick graphics... " >&6; }
+# Check whether --enable-imagemagick was given.
+if test "${enable_imagemagick+set}" = set; then :
+  enableval=$enable_imagemagick; enable_imagemagick=$enableval
 else
-  enable_framebuffer="yes"
+  enable_imagemagick="yes"
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_framebuffer" >&5
-$as_echo "$enable_framebuffer" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $enable_imagemagick" >&5
+$as_echo "$enable_imagemagick" >&6; }
 
-if test "$enable_framebuffer" = "yes"; then
+if test "$enable_imagemagick" = "yes"; then
 
-$as_echo "#define _USEFRAMBUFFER_ /**/" >>confdefs.h
+$as_echo "#define _IMAGEMAGICK_ /**/" >>confdefs.h
 
 	IMAGEMAGICK_MODULES="Magick++ >= 7.0.0"
-
 
 pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $IMAGEMAGICK_MODULES" >&5

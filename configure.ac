@@ -70,17 +70,16 @@ fi
 AM_CONDITIONAL([HAVE_DOXYGEN],
 [test -n "$DOXYGEN"])AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([CursesToolKit/docs/Doxyfile])])
 
-AC_MSG_CHECKING(whether to enable framebuffer graphics)
-AC_ARG_ENABLE(framebuffer,
-    [  --disable-framebuffer	  Don't Use Framebuffer (Default is to enable).],
-    [enable_framebuffer=$enableval],
-    [enable_framebuffer="yes"])
-AC_MSG_RESULT($enable_framebuffer)
+AC_MSG_CHECKING(whether to enable Imagemagick graphics)
+AC_ARG_ENABLE(imagemagick,
+    [  --disable-imagemagick	  Don't Use Imagemagick (Default is to enable).],
+    [enable_imagemagick=$enableval],
+    [enable_imagemagick="yes"])
+AC_MSG_RESULT($enable_imagemagick)
 
-if test "$enable_framebuffer" = "yes"; then
-	AC_DEFINE([_USEFRAMBUFFER_], [], [Use FRAMEBUFFER])
+if test "$enable_imagemagick" = "yes"; then
+	AC_DEFINE([_IMAGEMAGICK_], [], [Use IMAGEMAGICK])
 	IMAGEMAGICK_MODULES="Magick++ >= 7.0.0"
-
 	PKG_CHECK_MODULES(IMAGEMAGICK,$IMAGEMAGICK_MODULES)
 	AC_SUBST(IMAGEMAGICK_CFLAGS)
 	AC_SUBST(IMAGEMAGICK_LIBS)
