@@ -33,6 +33,7 @@ CTK_cursesButtonClass::~CTK_cursesButtonClass()
 */
 CTK_cursesButtonClass::CTK_cursesButtonClass()
 {
+	this->type=BUTTONGADGET;
 }
 
 /**

@@ -35,10 +35,13 @@ class CTK_cursesGadgetClass
 	public:
 		CTK_cursesGadgetClass();
 		virtual ~CTK_cursesGadgetClass();
-		
-	private:
-		
-	gadgetType	type;
+
+		const gadgetType	CTK_getGadgetType(void);
+
+	protected:
+		gadgetType	type=BASEGADGET;
+
+	private:		
 };
 
 #endif

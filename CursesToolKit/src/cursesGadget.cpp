@@ -31,3 +31,8 @@ CTK_cursesGadgetClass::~CTK_cursesGadgetClass()
 CTK_cursesGadgetClass::CTK_cursesGadgetClass()
 {
 }
+
+const gadgetType CTK_cursesGadgetClass::CTK_getGadgetType(void)
+{
+	return(this->type);
+}

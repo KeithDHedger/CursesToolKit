@@ -81,6 +81,7 @@ void buttonselctCB(void *inst,void *userdata)
 			mainApp->menuBar->CTK_setMenuBarVisible(mbarVis);
 			mainApp->CTK_clearScreen();
 		}
+	fprintf(stderr,"Gadget type=%i\n",bc->CTK_getGadgetType());
 }
 
 void listselctCB(void *inst,void *userdata)
