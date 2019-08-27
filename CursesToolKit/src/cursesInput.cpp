@@ -43,6 +43,7 @@ CTK_cursesInputClass::CTK_cursesInputClass()
 
 	this->gc=new CTK_cursesGraphicsClass;
 	gc->CTK_setColours(this->colours);
+	this->type=INPUTGADGET;
 }
 
 /**

@@ -30,7 +30,7 @@ struct	selectStruct
 
 enum {EDITBOXCLASS=0,SRCBOXCLASS};
 
-class CTK_cursesEditBoxClass
+class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesEditBoxClass();

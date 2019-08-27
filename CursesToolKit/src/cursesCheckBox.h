@@ -21,7 +21,7 @@
 #ifndef _CURSESCHECKBOX_
 #define _CURSESCHECKBOX_
 
-class CTK_cursesCheckBoxClass
+class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesCheckBoxClass();

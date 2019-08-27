@@ -35,6 +35,7 @@ CTK_cursesTextBoxClass::CTK_cursesTextBoxClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
+	this->type=TEXTGADGET;
 }
 
 /**

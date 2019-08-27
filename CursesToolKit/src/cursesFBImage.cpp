@@ -39,11 +39,9 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 */
 CTK_cursesFBImageClass::CTK_cursesFBImageClass()
 {
+	this->type=IMAGEGADGET;
 }
-#include <Magick++.h> 
-#include <iostream>
-#include <exception>      // std::exception
-#include <typeinfo>
+
 /**
 * Create image
 * \param x,y 1 based postition, in characters

@@ -32,7 +32,7 @@ struct	dropDownStruct
 	bool							enabled=true;
 };
 
-class CTK_cursesDropClass
+class CTK_cursesDropClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesDropClass();

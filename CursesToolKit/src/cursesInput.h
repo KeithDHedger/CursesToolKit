@@ -21,7 +21,7 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
-class CTK_cursesInputClass
+class CTK_cursesInputClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesInputClass();

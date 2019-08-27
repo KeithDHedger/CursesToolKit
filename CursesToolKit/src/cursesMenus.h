@@ -37,7 +37,7 @@ struct	menuStruct
 	std::map<int,menuStruct*>		menuItem;
 };
 
-class CTK_cursesMenuClass
+class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesMenuClass();

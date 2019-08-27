@@ -40,6 +40,7 @@ CTK_cursesDropClass::CTK_cursesDropClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
+	this->type=DROPGADGET;
 }
 
 /**

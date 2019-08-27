@@ -23,7 +23,7 @@
 
 #include "cursesGlobals.h"
 
-class CTK_cursesFBImageClass
+class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesFBImageClass();

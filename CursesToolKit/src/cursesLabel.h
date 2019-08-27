@@ -23,7 +23,7 @@
 
 enum {LEFT=0,CENTRE,RIGHT};
 
-class CTK_cursesLabelClass
+class CTK_cursesLabelClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesLabelClass();

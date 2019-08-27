@@ -41,6 +41,7 @@ CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *app,int x,int y
 	this->files=new LFSTK_findClass();
 	this->lb=new CTK_cursesListBoxClass();
 	this->lb->CTK_newListBox(this->x,this->y,this->width,this->hite);
+	this->type=CHOOSERGADGET;
 }
 
 /**

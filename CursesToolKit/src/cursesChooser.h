@@ -21,7 +21,7 @@
 #ifndef _CURSESCHOOSER_
 #define _CURSESCHOOSER_
 
-class CTK_cursesChooserClass
+class CTK_cursesChooserClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesChooserClass(CTK_mainAppClass *app,int x,int y,int width,int hite);

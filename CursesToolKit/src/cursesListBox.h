@@ -31,7 +31,7 @@ struct listItemStruct
 	void		*userData;
 };
 
-class CTK_cursesListBoxClass
+class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesListBoxClass();

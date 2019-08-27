@@ -21,7 +21,7 @@
 #ifndef _CURSESTEXTBOX_
 #define _CURSESTEXTBOX_
 
-class CTK_cursesTextBoxClass
+class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesTextBoxClass();

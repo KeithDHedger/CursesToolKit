@@ -53,6 +53,7 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	menuHite=rows-mBarHite;
 	this->menuNames.clear();
 	CTK_setColours(this->colours);
+	this->type=MENUGADGET;
 }
 
 /**

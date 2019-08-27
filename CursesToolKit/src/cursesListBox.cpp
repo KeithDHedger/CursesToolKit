@@ -36,6 +36,7 @@ CTK_cursesListBoxClass::CTK_cursesListBoxClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
+	this->type=LISTGADGET;
 }
 
 /**

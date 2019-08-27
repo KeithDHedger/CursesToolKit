@@ -35,6 +35,7 @@ CTK_cursesLabelClass::CTK_cursesLabelClass()
 {
 	this->gc=new CTK_cursesGraphicsClass;
 	this->gc->CTK_setColours(this->colours);
+	this->type=LABELGADGET;
 }
 
 /**

@@ -33,6 +33,7 @@ CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 */
 CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass()
 {
+	this->type=CHECKGADGET;
 }
 
 /**

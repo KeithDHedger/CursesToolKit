@@ -46,6 +46,7 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 	this->bookMarks.clear();
 	this->thisType=EDITBOXCLASS;
 	this->userData=this;
+	this->type=EDITGADGET;
 }
 
 /**
