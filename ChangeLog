@@ -1,4 +1,5 @@
 1.0.5
+Added button class to gadget class.
 Added gadget super class.
 Fixed button id in basic example.
 Fixed segfault on bad image.
