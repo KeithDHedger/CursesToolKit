@@ -23,7 +23,7 @@
 
 #include "cursesGlobals.h"
 
-class CTK_cursesButtonClass
+class CTK_cursesButtonClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesButtonClass();

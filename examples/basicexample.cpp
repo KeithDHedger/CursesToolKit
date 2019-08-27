@@ -57,12 +57,15 @@ void buttonselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
+	long					ud=(long)userdata;
 
 	sprintf(buffer,"Button '%s' clicked.",bc->label);
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
-	if(strcmp(bc->label,"Select All")==0)
+
+	if(ud==1)
 		lb1->CTK_selectAll();
-	if(strcmp(bc->label,"Select None")==0)
+
+	if(ud==2)
 		{
 			mainApp->pages[0].dropDowns[0]->CTK_clearList();
 			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 100");
@@ -71,13 +74,13 @@ void buttonselctCB(void *inst,void *userdata)
 			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 50000");
 			lb1->CTK_selectNone();
 		}
-	if(strcmp(bc->label,"Toggle Menus")==0)
+
+	if(ud==3)
 		{
 			mbarVis=!mbarVis;
 			mainApp->menuBar->CTK_setMenuBarVisible(mbarVis);
 			mainApp->CTK_clearScreen();
 		}
-		
 }
 
 void listselctCB(void *inst,void *userdata)
@@ -245,17 +248,17 @@ int			startx=1;
 //	mainApp->CTK_addNewButton(8,16,30,1,"Select All");
 //	mainApp->CTK_addNewButton(8,16,30,1,labelstr.c_str());
 	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,0),16,30,1,labelstr.c_str());
-	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,NULL);
+	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,(void*)1);
 //	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
 	labelstr=cu.CTK_padString(std::string("Select None"),maxlen);
 //	mainApp->CTK_addNewButton(32,16,11,1,labelstr.c_str());
 	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,1),16,11,1,labelstr.c_str());
-	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,NULL);
+	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,(void*)2);
 //	mainApp->CTK_addNewButton(56,16,11,1,"Toggle Menus");
 	labelstr=cu.CTK_padString(std::string("Toggle Menus"),maxlen);
 //	mainApp->CTK_addNewButton(56,16,11,1,labelstr.c_str());
 	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,2),16,11,1,labelstr.c_str());
-	mainApp->pages[0].buttons[2]->CTK_setSelectCB(buttonselctCB,NULL);
+	mainApp->pages[0].buttons[2]->CTK_setSelectCB(buttonselctCB,(void*)3);
 
 	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	mainApp->pages[0].inputs[0]->CTK_setColours(cs);

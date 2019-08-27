@@ -1,4 +1,6 @@
 1.0.5
+Added gadget super class.
+Fixed button id in basic example.
 Fixed segfault on bad image.
 Fixed missing key when using timeout.
 Added timeout to mainevent loop.
