@@ -56,9 +56,9 @@ void CTK_cursesGadgetClass::CTK_setSelectCB(void (*select)(void *,void *),void *
 }
 
 /**
-* get gadget CB user data.
+* Get gadget CB user data.
 */
-const void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
+void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
 {
 	return(this->selectCBUserData);
 }

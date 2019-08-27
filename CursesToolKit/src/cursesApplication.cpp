@@ -899,7 +899,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 												if(key.code.sym!=this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getSelectKey())
 													break;
 												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCBUserData);
+													//this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCBUserData);
+													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getCBUserData());
 												if(this->pages[this->pageNumber].checkBoxes.size()>this->hiliteCheckBoxNum)
 													if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
 														this->hiliteCheckBoxNum=-1;

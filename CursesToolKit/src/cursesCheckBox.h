@@ -28,7 +28,7 @@ class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 		~CTK_cursesCheckBoxClass();
 
 		char			*label=NULL;
-		void			*selectCBUserData=NULL;
+//		void			*selectCBUserData=NULL;
 
 		void			CTK_newCheckBox(int x,int y,int width,const char *label="");
 		void			CTK_drawCheckBox(bool hilite=false);
@@ -40,8 +40,8 @@ class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 
 		void			CTK_setSelectKey(TermKeySym key);
 		TermKeySym		CTK_getSelectKey(void);
-		void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
-		void			(*selectCB)(void *,void *)=NULL;
+//		void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
+//		void			(*selectCB)(void *,void *)=NULL;
 	private:
 		TermKeySym		selectKey=TERMKEY_SYM_ENTER;
 		int				sx;
@@ -49,7 +49,7 @@ class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 		int				wid;
 		int				hite;
 
-		coloursStruct	colours;
+//		coloursStruct	colours;
 		bool			value=false;
 		bool			enterDeselects=true;
 };

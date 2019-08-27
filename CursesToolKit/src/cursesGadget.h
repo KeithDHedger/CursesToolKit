@@ -39,7 +39,7 @@ class CTK_cursesGadgetClass
 		virtual ~CTK_cursesGadgetClass();
 
 		const gadgetType	CTK_getGadgetType(void);
-		const void			*CTK_getCBUserData(void);
+		void				*CTK_getCBUserData(void);
 		void				(*selectCB)(void *,void *)=NULL;
 		void				CTK_setColours(coloursStruct cs);
 
