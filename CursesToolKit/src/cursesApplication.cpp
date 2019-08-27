@@ -444,12 +444,19 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 				app->pages[app->pageNumber].textBoxes[j]->CTK_drawBox(false);
 		}
 
+//	for(int j=0;j<app->pages[app->pageNumber].buttons.size();j++)
+//		{
+//			if(app->hiliteBtnNum==j)
+//				app->pages[app->pageNumber].buttons[j]->CTK_drawButton(true);
+//			else
+//				app->pages[app->pageNumber].buttons[j]->CTK_drawButton(false);
+//		}
 	for(int j=0;j<app->pages[app->pageNumber].buttons.size();j++)
 		{
 			if(app->hiliteBtnNum==j)
-				app->pages[app->pageNumber].buttons[j]->CTK_drawButton(true);
+				app->pages[app->pageNumber].buttons[j]->CTK_drawGadget(true);
 			else
-				app->pages[app->pageNumber].buttons[j]->CTK_drawButton(false);
+				app->pages[app->pageNumber].buttons[j]->CTK_drawGadget(false);
 		}
 
 	for(int j=0;j<app->pages[app->pageNumber].inputs.size();j++)
@@ -854,7 +861,8 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 												//else
 												//	{
 												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCBUserData);
+												//	this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCBUserData);
+													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getCBUserData());
 													}
 												if(this->pages[this->pageNumber].buttons.size()>this->hiliteBtnNum)
 													if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)

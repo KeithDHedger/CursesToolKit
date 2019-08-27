@@ -21,6 +21,8 @@
 #ifndef _CURSESGADGET_
 #define _CURSESGADGET_
 
+//struct coloursStruct;
+
 enum gadgetType {BASEGADGET=0,BUTTONGADGET,CHECKGADGET,CHOOSERGADGET,DROPGADGET,EDITGADGET,IMAGEGADGET,INPUTGADGET,LABELGADGET,LISTGADGET,MENUGADGET,SRCGADGET,TEXTGADGET};
 
 /**
@@ -37,10 +39,18 @@ class CTK_cursesGadgetClass
 		virtual ~CTK_cursesGadgetClass();
 
 		const gadgetType	CTK_getGadgetType(void);
+		const void			*CTK_getCBUserData(void);
+		void				(*selectCB)(void *,void *)=NULL;
+		void				CTK_setColours(coloursStruct cs);
+
+//virtual functions
+		virtual void		CTK_drawGadget(bool hilite=false);
+		virtual void		CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
 
 	protected:
-		gadgetType	type=BASEGADGET;
-
+		void				*selectCBUserData=NULL;
+		gadgetType			type=BASEGADGET;
+		coloursStruct		colours;
 	private:		
 };
 

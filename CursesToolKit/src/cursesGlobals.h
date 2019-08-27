@@ -59,9 +59,9 @@ struct fbData
 	int							screenHeight=1;
 };
 
-#include "cursesGadget.h"
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
+#include "cursesGadget.h"
 #include "cursesUtils.h"
 #include "cursesGraphics.h"
 

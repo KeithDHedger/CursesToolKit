@@ -36,3 +36,38 @@ const gadgetType CTK_cursesGadgetClass::CTK_getGadgetType(void)
 {
 	return(this->type);
 }
+
+//virtual funcs and data
+/**
+* Draw gadget.
+* \note hilite=true draw in highlight colour.
+*/
+void CTK_cursesGadgetClass::CTK_drawGadget(bool hilite)
+{
+}
+
+/**
+* Set gadget 'pressed' callback.
+*/
+void CTK_cursesGadgetClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
+{
+	this->selectCB=select;
+	this->selectCBUserData=userdata;
+}
+
+/**
+* get gadget CB user data.
+*/
+const void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
+{
+	return(this->selectCBUserData);
+}
+
+/**
+* Set gadget colours etc.
+*/
+void CTK_cursesGadgetClass::CTK_setColours(coloursStruct cs)
+{
+	this->colours=cs;
+}
+

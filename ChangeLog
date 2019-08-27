@@ -1,4 +1,5 @@
 1.0.5
+Transfering gadget functions/data to super class.
 Added gadgets to gadget super class.
 Added gadget super class.
 Fixed button id in basic example.

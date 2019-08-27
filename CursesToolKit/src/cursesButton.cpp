@@ -35,12 +35,102 @@ CTK_cursesButtonClass::CTK_cursesButtonClass()
 {
 	this->type=BUTTONGADGET;
 }
+//
+///**
+//* Draw button.
+//* \note hilite=true draw in highlight colour.
+//*/
+//void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
+//{
+//	MOVETO(this->sx,this->sy);
+//	if(this->enabled==false)
+//		{
+//			setBothColours(this->colours.buttonDisabledForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+//		}
+//	else
+//		{
+//			if(hilite==true)
+//				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+//			else
+//				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+//		}
+//
+//	if(this->colours.fancyGadgets==true)
+//		printf("< %s >",this->label);
+//	else
+//		printf("%s",this->label);
+//
+//	fflush(NULL);
+//}
 
+/**
+* New button.
+*/
+void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const char *label)
+{
+	this->sx=x;
+	this->sy=y;
+	this->wid=width;
+	this->hite=hite;
+
+	asprintf(&(this->label),"%s",label);
+}
+
+///**
+//* Set button 'pressed' callback.
+//*/
+//void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
+//{
+//	this->selectCB=select;
+//	this->selectCBUserData=userdata;
+//}
+//
+/**
+*  Set whether to deselect gadget after 'pressing'.
+*/
+void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)
+{
+	this->enterDeselects=deselect;
+}
+
+/**
+* Get whether to deselect gadget after 'pressing'.
+*/
+bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
+{
+	return(this->enterDeselects);
+}
+
+///**
+//* Set button colours etc.
+//*/
+//void CTK_cursesButtonClass::CTK_setColours(coloursStruct cs)
+//{
+//	this->colours=cs;
+//}
+//
+/**
+*  Set gadget enabled.
+*/
+void CTK_cursesButtonClass::CTK_setEnabled(bool enable)
+{
+	this->enabled=enable;
+}
+
+/**
+* Get gadget enabled.
+*/
+bool CTK_cursesButtonClass::CTK_getEnabled(void)
+{
+	return(this->enabled);
+}
+
+//over ridden funcs
 /**
 * Draw button.
 * \note hilite=true draw in highlight colour.
 */
-void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
+void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 {
 	MOVETO(this->sx,this->sy);
 	if(this->enabled==false)
@@ -61,66 +151,4 @@ void CTK_cursesButtonClass::CTK_drawButton(bool hilite)
 		printf("%s",this->label);
 
 	fflush(NULL);
-}
-
-/**
-* New button.
-*/
-void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const char *label)
-{
-	this->sx=x;
-	this->sy=y;
-	this->wid=width;
-	this->hite=hite;
-
-	asprintf(&(this->label),"%s",label);
-}
-
-/**
-* Set button 'pressed' callback.
-*/
-void CTK_cursesButtonClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-{
-	this->selectCB=select;
-	this->selectCBUserData=userdata;
-}
-
-/**
-*  Set whether to deselect gadget after 'pressing'.
-*/
-void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)
-{
-	this->enterDeselects=deselect;
-}
-
-/**
-* Get whether to deselect gadget after 'pressing'.
-*/
-bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
-{
-	return(this->enterDeselects);
-}
-
-/**
-* Set button colours etc.
-*/
-void CTK_cursesButtonClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-}
-
-/**
-*  Set gadget enabled.
-*/
-void CTK_cursesButtonClass::CTK_setEnabled(bool enable)
-{
-	this->enabled=enable;
-}
-
-/**
-* Get gadget enabled.
-*/
-bool CTK_cursesButtonClass::CTK_getEnabled(void)
-{
-	return(this->enabled);
 }
