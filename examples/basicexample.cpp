@@ -38,6 +38,7 @@ void menuselctCB(void *inst)
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
 		mainApp->runEventLoop=false;
+	fprintf(stderr,"Gadget type=%i\n",mc->CTK_getGadgetType());
 }
 
 void mainloopCBIn(void *mainc,void *data)
@@ -100,6 +101,7 @@ void listselctCB(void *inst,void *userdata)
 				}
 			fprintf(stderr,"\n");
 		}
+	fprintf(stderr,"Gadget type=%i\n",ls->CTK_getGadgetType());
 }
 
 void checkselctCB(void *inst,void *userdata)
@@ -121,6 +123,7 @@ void checkselctCB(void *inst,void *userdata)
 
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	fprintf(stderr,"Gadget type=%i\n",cb->CTK_getGadgetType());
 }
 
 void dropboxCB(void *inst,void *userdata)
@@ -129,11 +132,11 @@ void dropboxCB(void *inst,void *userdata)
 	CTK_cursesDropClass	*db=static_cast<CTK_cursesDropClass*>(inst);
 	sprintf(buffer,"Drop box item=%i label=%s",db->selectedItem,db->label.c_str());
 	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	fprintf(stderr,"Gadget type=%i\n",db->CTK_getGadgetType());
 }
 
 int main(int argc, char **argv)
 {
-
 	const char	*menuNames[]={"File","Edit","Tabs","Navigation","Functions","Bookmarks","Tools","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 	const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
