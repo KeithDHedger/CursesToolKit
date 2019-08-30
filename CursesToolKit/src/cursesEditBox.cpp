@@ -26,7 +26,6 @@
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {
 	free(this->txtBuffer);
-	delete this->gc;
 	termkey_destroy(this->tk);
 }
 
@@ -35,27 +34,24 @@ CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 */
 CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 {
+}
+
+/**
+* Edit box class.
+*/
+CTK_cursesEditBoxClass::CTK_cursesEditBoxClass(CTK_mainAppClass *mc)
+{
 	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
 	if(!this->tk)
 		{
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
-	this->gc=new CTK_cursesGraphicsClass;
-	this->gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->bookMarks.clear();
 	this->thisType=EDITBOXCLASS;
 	this->userData=this;
 	this->type=EDITGADGET;
-}
-
-/**
-* Set colours etc.
-*/
-void CTK_cursesEditBoxClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
 }
 
 /**
@@ -159,7 +155,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 /**
 * Draw edit box.
 */
-void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortupdate)
+void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
 	int							startchr=0;
 	int							j;
@@ -256,6 +252,14 @@ void CTK_cursesEditBoxClass::CTK_drawBox(bool hilite,bool showcursor,bool shortu
 }
 
 /**
+* Draw edit box.
+*/
+void CTK_cursesEditBoxClass::CTK_drawGadget(bool hilite)
+{
+	this->drawBox(hilite,false);
+}
+
+/**
 * Insert char at current position.
 */
 void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
@@ -301,7 +305,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 	if(this->canEdit==false)
 		return;
 	this->editStatus="Edit Mode";
-	this->CTK_drawBox(false,true,shortdraw);
+	this->drawBox(false,true,shortdraw);
 	fflush(NULL);
 	this->runLoop=true;
 
@@ -327,7 +331,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
 											{
 												this->mc->menuBar->menuNumber=j;
-												this->mc->menuBar->selectCB(this->mc->menuBar);
+												this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
 												this->mc->CTK_updateScreen(this->mc,NULL);
 												
 												break;
@@ -516,7 +520,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 					this->multiLineSels.back().ex=this->currentX;
 				}
 
-			this->CTK_drawBox(false,true,shortdraw);
+			this->drawBox(false,true,shortdraw);
 			this->mc->CTK_emptyIPBuffer();
 			if(this->mc->eventLoopCBOut!=NULL)
 				this->mc->eventLoopCBOut(this->mc,this->userData);
@@ -611,7 +615,7 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 	this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
 	this->isDirty=true;
 	this->updateBuffer();
-	this->CTK_drawBox(false,true,false);
+	this->drawBox(false,true,false);
 }
 
 /**
@@ -635,7 +639,7 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 			if(this->currentY-this->startLine>=this->hite)
 				this->startLine++;
 		}
-	this->CTK_drawBox(false,true,false);
+	this->drawBox(false,true,false);
 }
 
 /**
@@ -896,13 +900,4 @@ void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
 	this->adjustXY();
 	this->CTK_finishSelecting();
 }
-
-
-
-
-
-
-
-
-
 

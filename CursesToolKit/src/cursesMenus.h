@@ -40,7 +40,7 @@ struct	menuStruct
 class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesMenuClass();
+		CTK_cursesMenuClass(CTK_mainAppClass *mc);
 		~CTK_cursesMenuClass();
 		int							menuNumber=0;
 		int							menuStart=0;
@@ -48,12 +48,9 @@ class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 		int							menuItemNumber=-1;
 		bool						enableShortcuts=true;
 		void						CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp);
-		void						CTK_setSelectCB(void (*select)(void *));
-		void						(*selectCB)(void *);
 
 		std::map<int,menuStruct*>	menuNames;
 
-		void						CTK_drawMenuBar(bool hilite=true);//TODO//
 		void						CTK_drawDefaultMenuBar(void);
 		void						CTK_addMenuToBar(const char *name);
 		void						CTK_addMenuItem(int menunum,const char *name,bool shortcut=true);
@@ -61,16 +58,17 @@ class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 		int							CTK_doMenuEvent(int sx,int sy,bool xdoshortcut);//TODO// private
 		bool						CTK_doShortCutKey(char key,int menunum);
 		bool						CTK_doMenuKey(char key,int menunum);
-		void						CTK_setColours(coloursStruct cs);
 		void						CTK_setMenuShortCut(int menunum,int menuitem,char key);
 		void						CTK_setMenuBarEnable(bool enable);
 		bool						CTK_getMenuBarEnable(void);
 		void						CTK_setMenuBarVisible(bool show);
 		bool						CTK_getMenuBarVisible(void);
 
+//over ridden virtual funcs and data
+		void						CTK_drawGadget(bool hilite=true);//TODO//
+
 	private:
 		void						(*updateCB)(void *,void*);
-		void						*mainApp=NULL;
 		unsigned					menuWidth=0;
 		int							menuNamesStartX=1;
 		int							pad=1;
@@ -86,7 +84,6 @@ class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 		int							menuHite=1;
 		int							rows=0;
 		unsigned					maxRows=0;
-		coloursStruct				colours;
 };
 
 #endif

@@ -32,7 +32,7 @@ CTK_cursesDropClass::~CTK_cursesDropClass()
 /**
 * Menus class constuctor.
 */
-CTK_cursesDropClass::CTK_cursesDropClass()
+CTK_cursesDropClass::CTK_cursesDropClass(CTK_mainAppClass *mc)
 {
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
 	if(!this->tk)
@@ -40,6 +40,7 @@ CTK_cursesDropClass::CTK_cursesDropClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
+	this->CTK_setCommon(mc);
 	this->type=DROPGADGET;
 }
 
@@ -54,37 +55,6 @@ void CTK_cursesDropClass::CTK_newDropButton(int x,int y,int width,int hite,const
 	this->hite=hite;
 	this->label=label;
 	this->holdLabel=label;
-}
-
-/**
-* Draw drop button.
-* \note hilite=true draw in highlight colour.
-*/
-void CTK_cursesDropClass::CTK_drawDropButton(bool hilite)
-{
-	CTK_cursesGraphicsClass	gc;
-	std::string				str=this->label;
-
-	MOVETO(this->sx,this->sy);
-	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-	else
-		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
-
-	gc.CTK_printLine(str.c_str(),this->sx,sy,this->wid);
-
-	if(this->colours.fancyGadgets==true)
-		gc.CTK_printLine(">",this->sx+this->wid,sy,1);
-
-	fflush(NULL);
-}
-
-/**
-* Set colours etc from coloursStruct.
-*/
-void CTK_cursesDropClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
 }
 
 /**
@@ -223,15 +193,6 @@ void CTK_cursesDropClass::CTK_clearList(void)
 	this->label=this->holdLabel;
 }
 
-/**
-*  Set drop down 'pressed' callback.
-*/
-void CTK_cursesDropClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-{
-	this->selectCB=select;
-	this->selectCBUserData=userdata;
-}
-
 void CTK_cursesDropClass::CTK_setItemEnabled(int item,bool enable)
 {
 	 this->items[item].enabled=enable;
@@ -242,5 +203,28 @@ bool CTK_cursesDropClass::CTK_getItemEnabled(int item)
 	return(this->items[item].enabled);
 }
 
+//over ridden funcs
+/**
+* Draw gadget.
+* \note hilite=true draw in highlight colour.
+*/
+void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
+{
+	CTK_cursesGraphicsClass	gc;
+	std::string				str=this->label;
+
+	MOVETO(this->sx,this->sy);
+	if(hilite==true)
+		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+	else
+		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+
+	gc.CTK_printLine(str.c_str(),this->sx,sy,this->wid);
+
+	if(this->colours.fancyGadgets==true)
+		gc.CTK_printLine(">",this->sx+this->wid,sy,1);
+
+	fflush(NULL);
+}
 
 

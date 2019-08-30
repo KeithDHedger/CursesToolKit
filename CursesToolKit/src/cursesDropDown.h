@@ -35,36 +35,27 @@ struct	dropDownStruct
 class CTK_cursesDropClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesDropClass();
+		CTK_cursesDropClass(CTK_mainAppClass *mc);
 		~CTK_cursesDropClass();
 
 		std::string					label;
 		int							selectedItem=-1;
-		CTK_mainAppClass			*mc=NULL;
-		void						*selectCBUserData=NULL;
 
-		void						CTK_newDropButton(int x,int y,int width,int hite,const char *label="");
-		void						CTK_drawDropButton(bool hilite=false);
+		void						CTK_newDropButton(int x,int y,int width,int hite,const char *label="");//TODO//?
 		void						CTK_setEnterDeselects(bool deselect);
 		bool						CTK_getEnterDeselects(void);
 		void						CTK_setItemEnabled(int item,bool enable);
 		bool						CTK_getItemEnabled(int item);
-		void						CTK_setColours(coloursStruct cs);
 		void						CTK_addDropItem(const char *name);
 		void						CTK_clearList(void);
 
 		void						CTK_doDropDownEvent(void);
 		void						CTK_drawList(int selection);
 
-		void						CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
-		void						(*selectCB)(void *,void *)=NULL;
+//over ridden virtual funcs
+		void						CTK_drawGadget(bool hilite=false);
 
 	private:
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
-		coloursStruct				colours;
 		std::vector<dropDownStruct>	items;
 		int							maxWidth=0;
 		TermKey						*tk;

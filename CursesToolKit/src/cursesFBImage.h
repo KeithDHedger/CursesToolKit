@@ -26,18 +26,19 @@
 class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesFBImageClass();
+		CTK_cursesFBImageClass(CTK_mainAppClass *mc);
 		~CTK_cursesFBImageClass();
 
-		void				CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
-		void				CTK_drawFBImage(void);
+		void	CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
+		void	CTK_drawGadget(bool hilite=false);
 
-		CTK_mainAppClass	*mc=NULL;
-		int					sx=0;
-		int					sy=0;
-		int					wid=-1;
-		int					hite=-1;
+		int		sx=0;
+		int		sy=0;
+		int		wid=-1;
+		int		hite=-1;//TODO//
+
 	private:
+		void				drawFBImage(void);
 		void				*image=NULL;
 		void				*blob=NULL;
 };

@@ -34,22 +34,21 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 {
 	public:
 		CTK_cursesEditBoxClass();
+		CTK_cursesEditBoxClass(CTK_mainAppClass *mc);
 		~CTK_cursesEditBoxClass();
 
-		CTK_mainAppClass			*mc=NULL;
 		int							tabWidth=8;
 		bool						isDirty=false;
 		bool						isSelecting=false;
 		void						*userData=NULL;
-		//void						(*eventLoopCBIn)(void*,void*)=NULL;
-		//void						(*eventLoopCBOut)(void*,void*)=NULL;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
-		void						CTK_drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
+
+//over ridden virtual funcs and data
+		void						CTK_drawGadget(bool hilite=false);
 
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
-		void						CTK_setColours(coloursStruct cs);
 
 		virtual const char			*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
@@ -82,6 +81,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 
 	private:
 		bool						needsRefresh=false;
+		void						drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
 
 	protected:
 		int							thisType;
@@ -89,15 +89,9 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;
 		bool						canEdit=true;
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass		*gc;
 
 		int							currentX;
 		int							currentY;
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
 		std::vector<int>			lineNumbers;
 		int							lineReserve=0;
 		int							showLineNumbers=0;

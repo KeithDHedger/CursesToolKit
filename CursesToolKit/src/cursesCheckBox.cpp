@@ -31,8 +31,9 @@ CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 /**
 *  \brief Checkbox class.
 */
-CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass()
+CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass(CTK_mainAppClass *mc)
 {
+	this->CTK_setCommon(mc);
 	this->type=CHECKGADGET;
 }
 
@@ -40,7 +41,7 @@ CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass()
 *  Draw checkbox.
 * \note hilite=true draw in highlight colour.
 */
-void CTK_cursesCheckBoxClass::CTK_drawCheckBox(bool hilite)
+void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 {
 	char	val=' ';
 
@@ -71,15 +72,6 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 	asprintf(&(this->label),"%s",label);
 }
 
-///**
-//*  Set checkbox 'pressed' callback.
-//*/
-//void CTK_cursesCheckBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-//{
-//	this->selectCB=select;
-//	this->selectCBUserData=userdata;
-//}
-//
 /**
 *  Set checkbox value.
 */
@@ -110,14 +102,6 @@ void CTK_cursesCheckBoxClass::CTK_setEnterDeselects(bool deselect)
 bool CTK_cursesCheckBoxClass::CTK_getEnterDeselects(void)
 {
 	return(this->enterDeselects);
-}
-
-/**
-*  Set checkbox colours etc.
-*/
-void CTK_cursesCheckBoxClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
 }
 
 /**

@@ -1,4 +1,8 @@
 1.0.5
+Major code clean.
+Fixed callback bug in chooser class.
+Removed unneeded functions from gadget subclasses.
+Fixed double delete on gadget destroy.
 Transfering gadget functions/data to super class.
 Added gadgets to gadget super class.
 Added gadget super class.

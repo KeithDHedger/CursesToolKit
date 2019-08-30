@@ -25,16 +25,14 @@
 */
 CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
 {
-	delete this->gc;
 }
 
 /**
 * Text box class.
 */
-CTK_cursesTextBoxClass::CTK_cursesTextBoxClass()
+CTK_cursesTextBoxClass::CTK_cursesTextBoxClass(CTK_mainAppClass *mc)
 {
-	this->gc=new CTK_cursesGraphicsClass;
-	this->gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->type=TEXTGADGET;
 }
 
@@ -52,7 +50,6 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
 }
-
 
 /**
 * Update the text in the gadget.
@@ -102,7 +99,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 /**
 * Draw gadget.
 */
-void CTK_cursesTextBoxClass::CTK_drawBox(bool hilite)
+void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 {
 	int xcnt=0;
 	int ycnt=0;
@@ -194,13 +191,5 @@ const std::string CTK_cursesTextBoxClass::CTK_getText(void)
 	return(this->text);
 }
 
-/**
-* Set gadget colours etc.
-*/
-void CTK_cursesTextBoxClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
-}
 
 

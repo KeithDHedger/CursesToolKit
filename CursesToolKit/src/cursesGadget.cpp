@@ -26,10 +26,18 @@
 */
 CTK_cursesGadgetClass::~CTK_cursesGadgetClass()
 {
+	delete this->gc;
 }
 
 CTK_cursesGadgetClass::CTK_cursesGadgetClass()
 {
+}
+
+void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
+{
+	this->mc=mc;
+	this->gc=new CTK_cursesGraphicsClass;
+	this->CTK_setColours(this->mc->colours);
 }
 
 const gadgetType CTK_cursesGadgetClass::CTK_getGadgetType(void)
@@ -47,7 +55,7 @@ void CTK_cursesGadgetClass::CTK_drawGadget(bool hilite)
 }
 
 /**
-* Set gadget 'pressed' callback.
+* Set gadget 'selected' callback.
 */
 void CTK_cursesGadgetClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
 {
@@ -69,5 +77,6 @@ void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
 void CTK_cursesGadgetClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
+	this->gc->CTK_setColours(this->colours);
 }
 

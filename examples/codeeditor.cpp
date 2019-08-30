@@ -102,7 +102,7 @@ void rebuildBMMenu(void)
 		}
 }
 
-void menuSelectCB(void *inst)
+void menuSelectCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 	
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
 	while(tabMenuNames[cnt]!=NULL)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,tabMenuNames[cnt++]);
 
-	mainApp->menuBar->CTK_setSelectCB(menuSelectCB);
+	mainApp->menuBar->CTK_setSelectCB(menuSelectCB,NULL);
 	cs.hiliteBackCol=BACK_CYAN;
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_WHITE;

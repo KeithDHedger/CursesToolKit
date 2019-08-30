@@ -34,25 +34,20 @@ struct listItemStruct
 class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesListBoxClass();
+		CTK_cursesListBoxClass(CTK_mainAppClass *mc);
 		~CTK_cursesListBoxClass();
 
 		int								listStart=0;
 		int								listItemNumber=0;
 		std::vector<listItemStruct*>	listItems;
-		void							*selectCBUserData=NULL;
 
 		void							CTK_newListBox(int x,int y,int width,int hite);
-		void							CTK_setColours(coloursStruct cs);
 		
-		void							CTK_setSelectCB(void (*select)(void *,void *),void *);
-		void							(*selectCB)(void *,void *)=NULL;
 		void							CTK_setSelectKey(TermKeySym key);
 		TermKeySym						CTK_getSelectKey(void);
 
 		void							CTK_addListItem(const char *label,void *userdata=NULL);
 		void							CTK_clearList(void);
-		void							CTK_drawListWindow(bool hilite);
 		void							CTK_keyUpDown(bool doup,bool page=false);
 		void							CTK_setEnterDeselects(bool deselect);
 		bool							CTK_getEnterDeselects(void);
@@ -64,18 +59,15 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		void							CTK_toggleItem(int item);
 		void							CTK_setItem(int item,bool set);
 
+//over ridden virtual funcs and data
+		void							CTK_drawGadget(bool hilite=false);
+
 	private:
-		int								sx;
-		int								sy;
-		int								wid;
-		int								hite;
 		bool							enterDeselects=true;
 		TermKeySym						selectKey=TERMKEY_SYM_ENTER;
 		std::string						blank;
 		bool							multi=false;
 		std::vector<bool>				selections;
-		coloursStruct					colours;
-		CTK_cursesGraphicsClass			*gc;
 };
 
 #endif

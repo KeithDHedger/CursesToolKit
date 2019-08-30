@@ -26,16 +26,14 @@
 CTK_cursesListBoxClass::~CTK_cursesListBoxClass()
 {
 	this->CTK_clearList();
-	delete this->gc;
 }
 
 /**
 * List class.
 */
-CTK_cursesListBoxClass::CTK_cursesListBoxClass()
+CTK_cursesListBoxClass::CTK_cursesListBoxClass(CTK_mainAppClass *mc)
 {
-	this->gc=new CTK_cursesGraphicsClass;
-	this->gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->type=LISTGADGET;
 }
 
@@ -55,7 +53,7 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 * Draw list.
 * \note hilite=true draw in highlight colour.
 */
-void CTK_cursesListBoxClass::CTK_drawListWindow(bool hilite)
+void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 {
 	char	buffer[4096];
 	char	selected;
@@ -106,15 +104,6 @@ void CTK_cursesListBoxClass::CTK_clearList(void)
 	this->listItems.clear();
 	this->listStart=0;
 	this->listItemNumber=0;
-}
-
-/**
-* Set list 'pressed' callback.
-*/
-void CTK_cursesListBoxClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-{
-	this->selectCB=select;
-	this->selectCBUserData=userdata;
 }
 
 /**
@@ -180,15 +169,6 @@ void CTK_cursesListBoxClass::CTK_setEnterDeselects(bool deselect)
 bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
 {
 	return(this->enterDeselects);
-}
-
-/**
-* Set button colours etc.
-*/
-void CTK_cursesListBoxClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
 }
 
 /**

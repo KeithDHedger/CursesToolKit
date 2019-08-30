@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1 29
+#(cd ../;make -j4);./inputbox.cpp "Body text" "Default input" "Window name" "Dialog title" 1 64
 
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++) -lcursestoolkit "$0"  -o inputbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./inputbox "$@"

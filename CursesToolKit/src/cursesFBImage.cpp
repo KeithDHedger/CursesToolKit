@@ -37,8 +37,13 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 /**
 * FB Image class.
 */
-CTK_cursesFBImageClass::CTK_cursesFBImageClass()
+CTK_cursesFBImageClass::CTK_cursesFBImageClass(CTK_mainAppClass *mc)
 {
+	this->CTK_setCommon(mc);
+//	this->sx=0;
+//	this->sy=0;
+//	this->wid=-1;
+//	this->hite=-1;//TODO//
 	this->type=IMAGEGADGET;
 }
 
@@ -103,7 +108,7 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 /**
 * Draw image
 */
-void CTK_cursesFBImageClass::CTK_drawFBImage(void)
+void CTK_cursesFBImageClass::drawFBImage(void)
 {
 #ifdef _IMAGEMAGICK_
 	unsigned char	*datptr;
@@ -123,6 +128,14 @@ void CTK_cursesFBImageClass::CTK_drawFBImage(void)
 #endif
 }
 
-
+//over ridden funcs
+/**
+* Draw image.
+* \note hilite=true draw in highlight colour. //TODO//
+*/
+void CTK_cursesFBImageClass::CTK_drawGadget(bool hilite)
+{
+	this->drawFBImage();
+}
 
 

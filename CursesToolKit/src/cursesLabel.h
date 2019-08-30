@@ -26,29 +26,23 @@ enum {LEFT=0,CENTRE,RIGHT};
 class CTK_cursesLabelClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesLabelClass();
+		CTK_cursesLabelClass(CTK_mainAppClass *mc);
 		~CTK_cursesLabelClass();
 
 		int							tabWidth=8;
 
 		void						CTK_newLabel(int x,int y,int width,int hite,const char *txt="");
 		void						CTK_updateText(const char *txt);
-		void						CTK_drawLabel(void);
-		void						CTK_setColours(coloursStruct cs);
 		void						CTK_setJustify(int just);
+//over ridden virtual funcs and data
+		void						CTK_drawGadget(bool hilite=false);
 
 	private:
 		int							justify=LEFT;
 		int							centre=0;
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
 		std::string					text;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass		*gc;
 };
 
 #endif

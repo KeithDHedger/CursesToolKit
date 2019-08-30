@@ -18,8 +18,6 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include "cursesGlobals.h"
-
 #ifndef _CURSESUTILS_
 #define _CURSESUTILS_
 
@@ -32,6 +30,7 @@
 #define ABOUTHITE 10
 #define QUERYBOXWIDTH 60
 #define ENTRYWIDTH 40
+
 class CTK_mainAppClass;
 
 class CTK_cursesUtilsClass

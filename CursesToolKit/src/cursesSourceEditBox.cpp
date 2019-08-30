@@ -41,7 +41,7 @@ CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 /**
 *  Source code box class.
 */
-CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
+CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc)
 {
 	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
 	if(!this->tk)
@@ -50,9 +50,9 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass()
 			exit(1);
 		}
 
-	this->gc=new CTK_cursesGraphicsClass;
-	this->gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->thisType=SRCBOXCLASS;
+	this->type=SRCGADGET;
 }
 
 /**

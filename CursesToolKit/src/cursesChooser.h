@@ -24,15 +24,13 @@
 class CTK_cursesChooserClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesChooserClass(CTK_mainAppClass *app,int x,int y,int width,int hite);
+		CTK_cursesChooserClass(CTK_mainAppClass *mc,int x,int y,int width,int hite);
 		~CTK_cursesChooserClass();
 
 		LFSTK_findClass			*files;
-		void					*selectCBUserData=NULL;
 		std::string				folderPath;
 		std::string				fileName;
 		std::string				filePath;
-		void					(*selectCB)(void *,void *)=NULL;
 
 		CTK_cursesListBoxClass	*lb;
 
@@ -41,16 +39,10 @@ class CTK_cursesChooserClass : public CTK_cursesGadgetClass
 		void					CTK_setShowTypes(int show);
 		void					CTK_setShowFileTypes(const char *filetypes);
 		void					CTK_updateList(void);
-		void					CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
 
 	protected:
 
 	private:
-		CTK_mainAppClass		*mc;
-		int						x;
-		int						y;
-		int						width;
-		int						hite;
 		bool					showHidden=false;
 		int						types=FOLDERTYPE;
 		const char				*fileTypes=NULL;

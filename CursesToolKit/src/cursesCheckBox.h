@@ -24,32 +24,25 @@
 class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesCheckBoxClass();
+		CTK_cursesCheckBoxClass(CTK_mainAppClass *mc);
 		~CTK_cursesCheckBoxClass();
 
 		char			*label=NULL;
-//		void			*selectCBUserData=NULL;
 
 		void			CTK_newCheckBox(int x,int y,int width,const char *label="");
-		void			CTK_drawCheckBox(bool hilite=false);
 		void			CTK_setValue(bool val);
 		bool			CTK_getValue(void);
 		void			CTK_setEnterDeselects(bool deselect);
 		bool			CTK_getEnterDeselects(void);
-		void			CTK_setColours(coloursStruct cs);
 
 		void			CTK_setSelectKey(TermKeySym key);
 		TermKeySym		CTK_getSelectKey(void);
-//		void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
-//		void			(*selectCB)(void *,void *)=NULL;
+
+//over ridden virtual funcs
+		void			CTK_drawGadget(bool hilite=false);
+
 	private:
 		TermKeySym		selectKey=TERMKEY_SYM_ENTER;
-		int				sx;
-		int				sy;
-		int				wid;
-		int				hite;
-
-//		coloursStruct	colours;
 		bool			value=false;
 		bool			enterDeselects=true;
 };

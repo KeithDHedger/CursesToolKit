@@ -31,26 +31,17 @@ CTK_cursesChooserClass::~CTK_cursesChooserClass()
 /**
 * Constructor.
 */
-CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *app,int x,int y,int width,int hite)
+CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *mc,int x,int y,int width,int hite)
 {
-	this->x=x;
-	this->y=y;
-	this->width=width;
+	this->CTK_setCommon(mc);
+	this->sx=x;
+	this->sy=y;
+	this->wid=width;
 	this->hite=hite;
-	this->mc=app;
 	this->files=new LFSTK_findClass();
-	this->lb=new CTK_cursesListBoxClass();
-	this->lb->CTK_newListBox(this->x,this->y,this->width,this->hite);
+	this->lb=new CTK_cursesListBoxClass(mc);
+	this->lb->CTK_newListBox(this->sx,this->sy,this->wid,this->hite);
 	this->type=CHOOSERGADGET;
-}
-
-/**
-* Set chooser callback.
-*/
-void CTK_cursesChooserClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-{
-	this->selectCB=select;
-	this->selectCBUserData=userdata;
 }
 
 /**
@@ -79,7 +70,7 @@ static void chooserSelectCB(void *inst,void *ud)
 
 //	fprintf(stderr,"folder=%s\nname=%s\npath=%s\n",ch->folderPath.c_str(),ch->fileName.c_str(),ch->filePath.c_str());
 	if(ch->selectCB!=NULL)
-		ch->selectCB((void*)ch,(void*)ch->selectCBUserData);
+		ch->selectCB((void*)ch,(void*)ch->CTK_getCBUserData());
 }
 
 /**
@@ -128,7 +119,6 @@ void CTK_cursesChooserClass::CTK_setShowFileTypes(const char *filetypes)
 	this->fileTypes=filetypes;
 	this->files->LFSTK_setFileTypes(this->fileTypes);
 }
-
 
 /**
 * Build selector.

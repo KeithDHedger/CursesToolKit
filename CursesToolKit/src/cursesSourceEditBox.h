@@ -24,7 +24,7 @@
 class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 {
 	public:
-		CTK_cursesSourceEditBoxClass();
+		CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc);
 		~CTK_cursesSourceEditBoxClass();
 
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);

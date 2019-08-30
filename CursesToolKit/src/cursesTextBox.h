@@ -24,33 +24,28 @@
 class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesTextBoxClass();
+		CTK_cursesTextBoxClass(CTK_mainAppClass *mc);
 		~CTK_cursesTextBoxClass();
 
 		int							tabWidth=8;
 
 		void						CTK_newBox(int x,int y,int width,int hite,const char *txt="",bool selectable=true);
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
-		void						CTK_drawBox(bool hilite=false);
 		void						CTK_scrollLine(bool scrollup);
 		void						CTK_scrollPage(bool scrollup);
 		void						CTK_setSelectable(bool canselect);
 		bool						CTK_getSelectable(void);
 		const std::string			CTK_getText(void);
-		void						CTK_setColours(coloursStruct cs);
+
+//over ridden virtual funcs and data
+		void						CTK_drawGadget(bool hilite=false);
 
 	private:
-		int							sx;
-		int							sy;
-		int							wid;
-		int							hite;
 		int							startLine=0;
 		std::string					text;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
 		bool						canSelect=true;
-		coloursStruct				colours;
-		CTK_cursesGraphicsClass		*gc;
 
 		void						TBscroll(bool scrollup,int numlines);
 };

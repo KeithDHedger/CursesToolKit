@@ -61,9 +61,9 @@ struct fbData
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
-#include "cursesGadget.h"
 #include "cursesUtils.h"
 #include "cursesGraphics.h"
+#include "cursesGadget.h"
 
 #include "cursesButton.h"
 #include "cursesTextBox.h"

@@ -37,7 +37,7 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 /**
 * Menus class.
 */
-CTK_cursesMenuClass::CTK_cursesMenuClass()
+CTK_cursesMenuClass::CTK_cursesMenuClass(CTK_mainAppClass *mc)
 {
 	winsize	w;
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
@@ -52,14 +52,14 @@ CTK_cursesMenuClass::CTK_cursesMenuClass()
 	maxRows=rows-mBarHite+1;
 	menuHite=rows-mBarHite;
 	this->menuNames.clear();
-	CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->type=MENUGADGET;
 }
 
 /**
 * Draw menu bar.
 */
-void CTK_cursesMenuClass::CTK_drawMenuBar(bool hilite)//TODO//
+void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 {
 	int	x=1;
 	int y=1;
@@ -171,7 +171,6 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	switch(style)
 		{
 			case FLATINVERT:
-				//setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 				setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
 				break;
 			case FLATNORM:
@@ -241,7 +240,7 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 
 	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
 		{
-			if(cnt<static_cast<CTK_mainAppClass*>(this->mainApp)->maxRows-2)
+			if(cnt<static_cast<CTK_mainAppClass*>(this->mc)->maxRows-2)
 				{
 					if(prelight==-10000)
 						{
@@ -298,7 +297,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 			this->menuStart=0;
 			if(this->menuNames[this->menuStart]!=NULL)
 				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
-			this->CTK_drawMenuBar();
+			this->CTK_drawGadget();
 			SETHIDECURS;
 			fflush(NULL);
 			loop=true;
@@ -424,7 +423,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 												this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 												this->menuItemNumber=selection+this->menuStart-1;
 												if(this->menuItemNumber>-1)
-													this->selectCB(this);
+													this->selectCB(this,NULL);
 												return(SELECTED);
 												break;
 											default:
@@ -439,7 +438,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 										tstr[1]=toupper(key.code.codepoint);
 										if(this->CTK_doMenuKey(tstr[1],this->menuNumber)==true)
 											{
-												this->selectCB(this);
+												this->selectCB(this,NULL);
 												return(SELECTED);
 											}
 									}
@@ -449,7 +448,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 								break;
 						}
 				}
-			this->updateCB((void*)this->mainApp,NULL);
+			//this->updateCB((void*)this->mainApp,NULL);
+			this->updateCB((void*)this->mc,NULL);
 		}
 	SETNORMAL;
 	return(selection);
@@ -511,23 +511,6 @@ bool CTK_cursesMenuClass::CTK_doMenuKey(char key,int menunum)
 void CTK_cursesMenuClass::CTK_setUpdateCB(void (*update)(void *,void*),void* mainapp)
 {
 	this->updateCB=update;
-	this->mainApp=mainapp;
-}
-
-/**
-* Set menu 'pressed' callback.
-*/
-void CTK_cursesMenuClass::CTK_setSelectCB(void (*select)(void *))
-{
-	this->selectCB=select;
-}
-
-/**
-* Set menu colours etc.
-*/
-void CTK_cursesMenuClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
 }
 
 /**
@@ -538,7 +521,7 @@ void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
 	if(this->menuBarVisible==false)
 		return;
 	this->menuShowing=false;
-	this->CTK_drawMenuBar();
+	this->CTK_drawGadget();
 }
 
 /**
@@ -573,7 +556,6 @@ bool CTK_cursesMenuClass::CTK_getMenuBarVisible(void)
 {
 	return(this->menuBarVisible);
 }
-
 
 
 

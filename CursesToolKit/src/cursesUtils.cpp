@@ -130,7 +130,6 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 					next_tab_column=column + (tw-column % tw);
 					while(++column<next_tab_column);
 				}
-			//else
 			column++;
 
 			if((column==width) && (incdelim==false))

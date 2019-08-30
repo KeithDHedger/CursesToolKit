@@ -25,14 +25,13 @@
 */
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
-	delete this->gc;
 	termkey_destroy(this->tk);
 }
 
 /**
 * Input box class.
 */
-CTK_cursesInputClass::CTK_cursesInputClass()
+CTK_cursesInputClass::CTK_cursesInputClass(CTK_mainAppClass *mc)
 {
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
 	if(!this->tk)
@@ -40,9 +39,7 @@ CTK_cursesInputClass::CTK_cursesInputClass()
 			fprintf(stderr, "Cannot allocate termkey instance\n");
 			exit(1);
 		}
-
-	this->gc=new CTK_cursesGraphicsClass;
-	gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->type=INPUTGADGET;
 }
 
@@ -82,7 +79,7 @@ void CTK_cursesInputClass::CTK_newInput(int x,int y, int w,int h,const char *txt
 /**
 * Draw input gadget.
 */
-void CTK_cursesInputClass::CTK_drawInput(bool hilite)
+void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 {
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
@@ -108,7 +105,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 	TermKeyResult	ret;
 	TermKeyKey		key;
 
-	this->CTK_drawInput(true);
+	this->CTK_drawGadget(true);
 	SETSHOWCURS;
 	fflush(NULL);
 	while(loop==true)
@@ -174,7 +171,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 									break;
 							}
 						MOVETO(this->sx+this->curs,this->sy);
-						this->CTK_drawInput(true);
+						this->CTK_drawGadget(true);
 						break;
 	
 					case TERMKEY_TYPE_UNICODE:
@@ -185,23 +182,13 @@ void CTK_cursesInputClass::CTK_doInput(void)
 								this->curs=this->wid;
 								this->startChar++;
 							}
-						this->CTK_drawInput(true);
+						this->CTK_drawGadget(true);
 						MOVETO(this->sx+this->curs,this->sy);
 						break;
 				}
 		}
 	SETHIDECURS;
 	fflush(NULL);
-}
-
-
-/**
-*  Set colours etc.
-*/
-void CTK_cursesInputClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
 }
 
 /**
@@ -218,15 +205,6 @@ void CTK_cursesInputClass::CTK_setText(const char *txt)
 const char *CTK_cursesInputClass::CTK_getText(void)
 {
 	return(this->text.c_str());
-}
-
-/**
-* Set input callback on 'RETURN'.
-*/
-void CTK_cursesInputClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
-{
-	this->selectCB=select;
-	this->selectCBUserData=userdata;
 }
 
 

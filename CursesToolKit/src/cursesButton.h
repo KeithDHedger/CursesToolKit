@@ -26,32 +26,21 @@
 class CTK_cursesButtonClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesButtonClass();
+		CTK_cursesButtonClass(CTK_mainAppClass *mc);
 		~CTK_cursesButtonClass();
 
 		char			*label=NULL;
-//		void			*selectCBUserData=NULL;
 
 		void			CTK_newButton(int x,int y,int width,int hite,const char *label="");
-//		void			CTK_drawButton(bool hilite=false);
 		void			CTK_setEnterDeselects(bool deselect);
 		bool			CTK_getEnterDeselects(void);
 		void			CTK_setEnabled(bool enable);
 		bool			CTK_getEnabled(void);
-//		void			CTK_setColours(coloursStruct cs);
 
-//		void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
-//		void			(*selectCB)(void *,void *)=NULL;
-
-//over ridden virtual funcs and data
+//over ridden virtual funcs
 		void			CTK_drawGadget(bool hilite=false);
 
 	private:
-		int				sx;
-		int				sy;
-		int				wid;
-		int				hite;
-	//	coloursStruct	colours;
 		bool			enterDeselects=true;
 		bool			enabled=true;
 };

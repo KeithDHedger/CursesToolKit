@@ -25,16 +25,14 @@
 */
 CTK_cursesLabelClass::~CTK_cursesLabelClass()
 {
-	delete this->gc;
 }
 
 /**
 * Label class.
 */
-CTK_cursesLabelClass::CTK_cursesLabelClass()
+CTK_cursesLabelClass::CTK_cursesLabelClass(CTK_mainAppClass *mc)
 {
-	this->gc=new CTK_cursesGraphicsClass;
-	this->gc->CTK_setColours(this->colours);
+	this->CTK_setCommon(mc);
 	this->type=LABELGADGET;
 }
 
@@ -76,7 +74,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 /**
 * Draw label.
 */
-void CTK_cursesLabelClass::CTK_drawLabel(void)
+void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 {
 	int xcnt=0;
 	int ycnt=0;
@@ -124,15 +122,6 @@ void CTK_cursesLabelClass::CTK_drawLabel(void)
 		}
 
 	fflush(NULL);
-}
-
-/**
-* Set colours etc.
-*/
-void CTK_cursesLabelClass::CTK_setColours(coloursStruct cs)
-{
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
 }
 
 /**

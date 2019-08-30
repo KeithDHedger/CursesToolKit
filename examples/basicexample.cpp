@@ -20,14 +20,14 @@ exit $retval
 #include <cursesGlobals.h>
 
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
+CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass(mainApp);
 bool					mbarVis=true;
 
 #define FILEMENU 0
 #define QUITITEM 5
 #define TABWIDTH 4
 
-void menuselctCB(void *inst)
+void menuselctCB(void *inst,void *userdata)
 {
 	char				*buffer=(char*)alloca(256);
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
@@ -175,8 +175,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.fancyGadgets=true;
 
 	CTK_cursesUtilsClass	cu;
-	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds.");
+	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
 	sleep(2);
+//	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
 	cs.hiliteBackCol=BACK_BLACK;
@@ -221,7 +222,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 			sprintf(buffer," Really long menu, menu item %i",j);
 			mainApp->menuBar->CTK_addMenuItem(3,buffer,false);
 		}
-	mainApp->menuBar->CTK_setSelectCB(menuselctCB);
+	mainApp->menuBar->CTK_setSelectCB(menuselctCB,NULL);
 	for(int j=2;j<10;j++)
 		mainApp->menuBar->menuNames[3]->menuItem[j]->menuEnabled=false;
 
@@ -237,7 +238,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/xxx");
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/manfile");
 	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
-
 //just set box type to inbox.
 	cs.textBoxType=INBOX;
 	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
