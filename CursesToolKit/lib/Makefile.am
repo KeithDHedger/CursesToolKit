@@ -10,7 +10,7 @@ libcursestoolkit_la_SOURCES = $(COMMONSRC)
 #man1_MANS = ../resources/man/cursesmenus.1
 
 
-libcursestoolkit_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(CURSESTOOLKIT_VERSION)
+libcursestoolkit_la_LDFLAGS = $(AM_LDFLAGS) -version-info $(CURSESTOOLKIT_LIBTOOL_VERSION)
 
 ctktoolkit_includedir = $(includedir)/cursestoolkit
 ctktoolkit_include_HEADERS = ../src/*.h
