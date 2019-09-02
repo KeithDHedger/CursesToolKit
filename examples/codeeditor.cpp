@@ -96,27 +96,17 @@ void rebuildBMMenu(void)
 	for(unsigned j=0;j<mainApp->pages.size();j++)
 		{
 			srcbox=getSrcBox(j);
-			//for(int k=0;k<mainApp->pages[j].srcEditBoxes[0]->CTK_getLineCnt();k++)
-			//for(int k=0;k<mainApp->pages[j].gadgets.size();k++)
-				{
-				//	if(mainApp->pages[j].gadgets[k]->CTK_getGadgetType()==SRCGADGET)
-						{
-						//	srcbox=static_cast<CTK_cursesSourceEditBoxClass*>(mainApp->pages[j].gadgets[k]);
-							for(int k=0;k<srcbox->CTK_getLineCnt();k++)
-//fprintf(stderr,"j=%i k=%i\n",j,k);
-					if(srcbox->CTK_getBookMark(k)==true)
-						{
-							bookmarkStruct bm;
-							bm.pageNum=j;
-							bm.lineNum=srcbox->CTK_getLineAtY(k);
-							sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
-							bm.label=strdup(buffer);
-							bms.push_back(bm);
-							mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
-						}
-						}
+			for(int k=0;k<srcbox->CTK_getLineCnt();k++)
+				if(srcbox->CTK_getBookMark(k)==true)
+					{
+						bookmarkStruct bm;
+						bm.pageNum=j;
+						bm.lineNum=srcbox->CTK_getLineAtY(k);
+						sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
+						bm.label=strdup(buffer);
+						bms.push_back(bm);
+						mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
 					}
-				
 		}
 }
 

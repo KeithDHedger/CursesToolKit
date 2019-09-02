@@ -42,10 +42,6 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		std::vector<listItemStruct*>	listItems;
 
 		void							CTK_newListBox(int x,int y,int width,int hite);
-		
-//		void							CTK_setSelectKey(TermKeySym key);
-//		TermKeySym						CTK_getSelectKey(void);
-
 		void							CTK_addListItem(const char *label,void *userdata=NULL);
 		void							CTK_clearList(void);
 		void							CTK_keyUpDown(bool doup,bool page=false);
@@ -61,7 +57,6 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		void							CTK_drawGadget(bool hilite=false);
 
 	private:
-	//	TermKeySym						selectKey=TERMKEY_SYM_ENTER;
 		std::string						blank;
 		bool							multi=false;
 		std::vector<bool>				selections;

@@ -215,19 +215,3 @@ const std::vector<bool> CTK_cursesListBoxClass::CTK_getSelections(void)
 {
 	return(this->selections);
 }
-//
-///**
-//* Set select key, default=TERMKEY_SYM_ENTER.
-//*/
-//void CTK_cursesListBoxClass::CTK_setSelectKey(TermKeySym key)
-//{
-//	this->selectKey=key;
-//}
-//
-///**
-//* Get select key, default=TERMKEY_SYM_ENTER.
-//*/
-//TermKeySym CTK_cursesListBoxClass::CTK_getSelectKey(void)
-//{
-//	return(this->selectKey);
-//}
