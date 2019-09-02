@@ -38,6 +38,10 @@ void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 	this->mc=mc;
 	this->gc=new CTK_cursesGraphicsClass;
 	this->CTK_setColours(this->mc->colours);
+	this->isSelectable=true;
+	this->selectDeselects=true;
+	this->enabled=true;
+	this->selectKey=TERMKEY_SYM_NONE;
 }
 
 const gadgetType CTK_cursesGadgetClass::CTK_getGadgetType(void)
@@ -78,5 +82,69 @@ void CTK_cursesGadgetClass::CTK_setColours(coloursStruct cs)
 {
 	this->colours=cs;
 	this->gc->CTK_setColours(this->colours);
+}
+
+/**
+*  Set whether to deselect gadget after 'activating'.
+*/
+void CTK_cursesGadgetClass::CTK_setSelectDeselects(bool deselect)
+{
+	this->selectDeselects=deselect;
+}
+
+/**
+* Get whether to deselect gadget after 'activating'.
+*/
+bool CTK_cursesGadgetClass::CTK_getSelectDeselects(void)
+{
+	return(this->selectDeselects);
+}
+
+/**
+*  Set gadget enabled.
+*/
+void CTK_cursesGadgetClass::CTK_setEnabled(bool enable)
+{
+	this->enabled=enable;
+}
+
+/**
+* Get gadget enabled.
+*/
+bool CTK_cursesGadgetClass::CTK_getEnabled(void)
+{
+	return(this->enabled);
+}
+
+/**
+*  Set gadget selectable.
+*/
+void CTK_cursesGadgetClass::CTK_setSelectable(bool enable)
+{
+	this->isSelectable=enable;
+}
+
+/**
+* Get gadget selectable.
+*/
+bool CTK_cursesGadgetClass::CTK_getSelectable(void)
+{
+	return(this->isSelectable);
+}
+
+/**
+* Set select key, default=TERMKEY_SYM_ENTER.
+*/
+void CTK_cursesGadgetClass::CTK_setSelectKey(TermKeySym key)
+{
+	this->selectKey=key;
+}
+
+/**
+* Get select key, default=TERMKEY_SYM_ENTER.
+*/
+TermKeySym CTK_cursesGadgetClass::CTK_getSelectKey(void)
+{
+	return(this->selectKey);
 }
 

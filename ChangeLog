@@ -1,4 +1,9 @@
 1.1.0
+Fixed overiding gadget select key.
+Fixed examples to use new super class.
+Fixed querybox button position.
+Fixed select bug when checkbox is last gadget created.
+More conversions to using super class.
 Version bump.
 
 1.0.5

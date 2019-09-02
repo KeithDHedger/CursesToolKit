@@ -168,22 +168,6 @@ void CTK_cursesDropClass::CTK_drawList(int selection)
 }
 
 /**
-*  Set whether to deselect gadget after 'pressing'.
-*/
-void CTK_cursesDropClass::CTK_setEnterDeselects(bool deselect)
-{
-	this->enterDeselects=deselect;
-}
-
-/**
-* Get whether to deselect gadget after 'pressing'.
-*/
-bool CTK_cursesDropClass::CTK_getEnterDeselects(void)
-{
-	return(this->enterDeselects);
-}
-
-/**
 * Clear drop down list.
 */
 void CTK_cursesDropClass::CTK_clearList(void)

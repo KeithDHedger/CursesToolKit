@@ -21,6 +21,10 @@ exit $retval
 
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass(mainApp);
+CTK_cursesTextBoxClass	*resulttextbox;
+CTK_cursesDropClass		*dropdown;
+CTK_cursesEditBoxClass	*edbox;
+
 bool					mbarVis=true;
 
 #define FILEMENU 0
@@ -32,9 +36,9 @@ void menuselctCB(void *inst,void *userdata)
 	char				*buffer=(char*)alloca(256);
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
-	mainApp->pages[mainApp->pageNumber].editBoxes[0]->CTK_setRunLoop(false);
+	edbox->CTK_setRunLoop(false);
 	sprintf(buffer,"Menu item (%i) '%s' of menu (%i) '%s' selected.",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
-	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	resulttextbox->CTK_updateText(buffer);
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
 		mainApp->runEventLoop=false;
@@ -60,18 +64,18 @@ void buttonselctCB(void *inst,void *userdata)
 	long					ud=(long)userdata;
 
 	sprintf(buffer,"Button '%s' clicked.",bc->label);
-	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	resulttextbox->CTK_updateText(buffer);
 
 	if(ud==1)
 		lb1->CTK_selectAll();
 
 	if(ud==2)
 		{
-			mainApp->pages[0].dropDowns[0]->CTK_clearList();
-			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 100");
-			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 200");
-			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 30000");
-			mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 50000");
+			dropdown->CTK_clearList();
+			dropdown->CTK_addDropItem("item 100");
+			dropdown->CTK_addDropItem("item 200");
+			dropdown->CTK_addDropItem("item 30000");
+			dropdown->CTK_addDropItem("item 50000");
 			lb1->CTK_selectNone();
 		}
 
@@ -90,7 +94,8 @@ void listselctCB(void *inst,void *userdata)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 
 	sprintf(buffer,"List %i List item '%s' clicked, user data=%p.",(long)userdata,ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
-	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	resulttextbox->CTK_updateText(buffer);
+fprintf(stderr,"getMultipleSelect=%i\n",ls->CTK_getMultipleSelect());
 	if(ls->CTK_getMultipleSelect()==true)
 		{
 			std::vector<bool>	sels=ls->CTK_getSelections();
@@ -122,7 +127,7 @@ void checkselctCB(void *inst,void *userdata)
 		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
 
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
-	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	resulttextbox->CTK_updateText(buffer);
 	fprintf(stderr,"Gadget type=%i\n",cb->CTK_getGadgetType());
 }
 
@@ -131,12 +136,24 @@ void dropboxCB(void *inst,void *userdata)
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesDropClass	*db=static_cast<CTK_cursesDropClass*>(inst);
 	sprintf(buffer,"Drop box item=%i label=%s",db->selectedItem,db->label.c_str());
-	mainApp->pages[0].textBoxes[1]->CTK_updateText(buffer);
+	resulttextbox->CTK_updateText(buffer);
 	fprintf(stderr,"Gadget type=%i\n",db->CTK_getGadgetType());
 }
 
 int main(int argc, char **argv)
 {
+	CTK_cursesButtonClass			*button;
+	CTK_cursesTextBoxClass			*textbox;
+	CTK_cursesInputClass			*input;
+	CTK_cursesListBoxClass			*list;
+	CTK_cursesCheckBoxClass			*checkbox;
+	CTK_cursesCheckBoxClass			*checkbox1;
+	CTK_cursesEditBoxClass			*editbox;
+	CTK_cursesSourceEditBoxClass	*srceditbox;
+	CTK_cursesLabelClass			*label;
+	CTK_cursesChooserClass			*chooser;
+	CTK_cursesFBImageClass			*fbimage;
+
 	const char	*menuNames[]={"File","Edit","Tabs","Navigation","Functions","Bookmarks","Tools","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 	const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
@@ -176,7 +193,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-	sleep(2);
+//	sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
@@ -237,42 +254,59 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/xxx");
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/manfile");
-	mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
+	resulttextbox=mainApp->CTK_addNewTextBox(3,13,80,1,"Results",false);
+	resulttextbox->CTK_setSelectable(false);
 //just set box type to inbox.
 	cs.textBoxType=INBOX;
-	mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
-	mainApp->pages[0].editBoxes[0]->CTK_setColours(cs);
+	edbox=mainApp->CTK_addNewEditBox(mainApp,101,3,mainApp->maxCols-1-101,8,true,"../ChangeLog");
+	edbox->CTK_setColours(cs);
 
-int 		maxlen=strlen("Toggle Menus");
-std::string	labelstr=cu.CTK_padString(std::string("Select All"),maxlen);
-int			maxwid=80;
-int			startx=1;
+	int 		maxlen=strlen("Toggle Menus");
+	std::string	labelstr=cu.CTK_padString(std::string("Select All"),maxlen);
+	int			maxwid=80;
+	int			startx=1;
 
 //	mainApp->CTK_addNewButton(8,16,30,1,"Select All");
 //	mainApp->CTK_addNewButton(8,16,30,1,labelstr.c_str());
-	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,0),16,30,1,labelstr.c_str());
-	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,(void*)1);
+	button=mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,0),16,30,1,labelstr.c_str());
+//	mainApp->pages[0].buttons[0]->CTK_setSelectCB(buttonselctCB,(void*)1);
+	button->CTK_setSelectCB(buttonselctCB,(void*)1);
 //	mainApp->CTK_addNewButton(32,16,11,1,"Select None");
 	labelstr=cu.CTK_padString(std::string("Select None"),maxlen);
 //	mainApp->CTK_addNewButton(32,16,11,1,labelstr.c_str());
-	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,1),16,11,1,labelstr.c_str());
-	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,(void*)2);
+	button=mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,1),16,11,1,labelstr.c_str());
+//	mainApp->pages[0].buttons[1]->CTK_setSelectCB(buttonselctCB,(void*)2);
+	button->CTK_setSelectCB(buttonselctCB,(void*)2);
 //	mainApp->CTK_addNewButton(56,16,11,1,"Toggle Menus");
 	labelstr=cu.CTK_padString(std::string("Toggle Menus"),maxlen);
 //	mainApp->CTK_addNewButton(56,16,11,1,labelstr.c_str());
-	mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,2),16,11,1,labelstr.c_str());
-	mainApp->pages[0].buttons[2]->CTK_setSelectCB(buttonselctCB,(void*)3);
+	button=mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,2),16,11,1,labelstr.c_str());
+	button->CTK_setSelectCB(buttonselctCB,(void*)3);
 
-	mainApp->CTK_addNewInput(8,19,36,1,"Some input");
-	mainApp->pages[0].inputs[0]->CTK_setColours(cs);
+	input=mainApp->CTK_addNewInput(8,19,36,1,"Some input");
+	input->CTK_setColours(cs);
 
-	mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
-	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 1");
-	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 2");
-	mainApp->pages[0].dropDowns[0]->CTK_addDropItem("item 3");
-	mainApp->pages[0].dropDowns[0]->CTK_setColours(cs);
-	mainApp->pages[0].dropDowns[0]->CTK_setSelectCB(dropboxCB,NULL);
-	mainApp->pages[0].dropDowns[0]->CTK_setItemEnabled(1,false);
+//TODO//???
+//	checkbox=mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
+//	checkbox->CTK_setSelectCB(checkselctCB,(void*)1);
+//	checkbox->CTK_setEnterDeselects(false);
+//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+//	checkbox=mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
+//	checkbox->CTK_setSelectCB(checkselctCB,(void*)2);
+//	checkbox->CTK_setEnterDeselects(false);
+//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+
+
+
+
+	dropdown=mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
+	dropdown->CTK_addDropItem("item 1");
+	dropdown->CTK_addDropItem("item 2");
+	dropdown->CTK_addDropItem("item 3");
+	dropdown->CTK_setColours(cs);
+	dropdown->CTK_setSelectCB(dropboxCB,(void*)0xdeadbeef);
+	dropdown->CTK_setItemEnabled(1,false);
+
 
 //auto add list box to main app
 	CTK_cursesListBoxClass	*lb;
@@ -296,7 +330,7 @@ int			startx=1;
 	lb->CTK_setColours(cs);
 
 //manualy add list box
-	//CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
+//	//CTK_cursesListBoxClass	*lb1=new CTK_cursesListBoxClass();
 	lb1->CTK_newListBox(127,13,20,9);
 	lb1->CTK_addListItem("Item 1");
 	lb1->CTK_addListItem("Item 2");
@@ -317,25 +351,33 @@ int			startx=1;
 
 	lb1->CTK_setColours(cs);
 	lb1->CTK_setMultipleSelect(true);
-	lb1->CTK_setEnterDeselects(false);
+	lb1->CTK_setSelectDeselects(false);
 	lb1->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 	mainApp->CTK_addListBox(lb1);
 
-	mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
-	mainApp->pages[0].checkBoxes[0]->CTK_setSelectCB(checkselctCB,(void*)1);
-	mainApp->pages[0].checkBoxes[0]->CTK_setEnterDeselects(false);
-	mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
-	mainApp->pages[0].checkBoxes[1]->CTK_setSelectCB(checkselctCB,(void*)2);
-	mainApp->pages[0].checkBoxes[1]->CTK_setEnterDeselects(false);
 
-	mainApp->pages[0].checkBoxes[1]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
-	mainApp->pages[0].checkBoxes[0]->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
-	mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
-	mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");
-	mainApp->pages[0].labels[1]->CTK_setJustify(CENTRE);
-	mainApp->CTK_addNewLabel(85,21,40,2,"Right justified non selectable label.\nLine 2 of label.");
-	mainApp->pages[0].labels[2]->CTK_setJustify(RIGHT);
+
+
+	label=mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
+	label=mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");
+	label->CTK_setJustify(CENTRE);
+	label=mainApp->CTK_addNewLabel(85,21,40,2,"Right justified non selectable label.\nLine 2 of label.");
+	label->CTK_setJustify(RIGHT);
+
+//TODO//???
+	checkbox=mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
+	checkbox->CTK_setSelectCB(checkselctCB,(void*)1);
+	//checkbox->CTK_setEnterDeselects(false);
+	checkbox->CTK_setSelectDeselects(false);
+	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+	checkbox=mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
+	checkbox->CTK_setSelectCB(checkselctCB,(void*)2);
+	checkbox->CTK_setSelectDeselects(false);
+	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+
+
+
 
 //mainApp->CTK_setDefaultGadget(CHKBOX,0);
 //	mainApp->CTK_setDefaultGadget(INPUT,0);

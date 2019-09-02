@@ -50,38 +50,6 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 	asprintf(&(this->label),"%s",label);
 }
 
-/**
-*  Set whether to deselect gadget after 'pressing'.
-*/
-void CTK_cursesButtonClass::CTK_setEnterDeselects(bool deselect)
-{
-	this->enterDeselects=deselect;
-}
-
-/**
-* Get whether to deselect gadget after 'pressing'.
-*/
-bool CTK_cursesButtonClass::CTK_getEnterDeselects(void)
-{
-	return(this->enterDeselects);
-}
-
-/**
-*  Set gadget enabled.
-*/
-void CTK_cursesButtonClass::CTK_setEnabled(bool enable)
-{
-	this->enabled=enable;
-}
-
-/**
-* Get gadget enabled.
-*/
-bool CTK_cursesButtonClass::CTK_getEnabled(void)
-{
-	return(this->enabled);
-}
-
 //over ridden funcs
 /**
 * Draw button.

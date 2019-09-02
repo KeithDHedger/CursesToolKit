@@ -42,8 +42,6 @@ class CTK_cursesDropClass : public CTK_cursesGadgetClass
 		int							selectedItem=-1;
 
 		void						CTK_newDropButton(int x,int y,int width,int hite,const char *label="");//TODO//?
-		void						CTK_setEnterDeselects(bool deselect);
-		bool						CTK_getEnterDeselects(void);
 		void						CTK_setItemEnabled(int item,bool enable);
 		bool						CTK_getItemEnabled(int item);
 		void						CTK_addDropItem(const char *name);
@@ -53,13 +51,12 @@ class CTK_cursesDropClass : public CTK_cursesGadgetClass
 		void						CTK_drawList(int selection);
 
 //over ridden virtual funcs
-		void						CTK_drawGadget(bool hilite=false);
+		void						CTK_drawGadget(bool hilite=false);//TODO//?
 
 	private:
 		std::vector<dropDownStruct>	items;
 		int							maxWidth=0;
 		TermKey						*tk;
-		bool						enterDeselects=true;
 		std::string					holdLabel;
 	protected:
 };

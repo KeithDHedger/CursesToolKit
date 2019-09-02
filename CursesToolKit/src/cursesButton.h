@@ -32,17 +32,11 @@ class CTK_cursesButtonClass : public CTK_cursesGadgetClass
 		char			*label=NULL;
 
 		void			CTK_newButton(int x,int y,int width,int hite,const char *label="");
-		void			CTK_setEnterDeselects(bool deselect);
-		bool			CTK_getEnterDeselects(void);
-		void			CTK_setEnabled(bool enable);
-		bool			CTK_getEnabled(void);
 
 //over ridden virtual funcs
 		void			CTK_drawGadget(bool hilite=false);
 
 	private:
-		bool			enterDeselects=true;
-		bool			enabled=true;
 };
 
 #endif

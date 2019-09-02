@@ -45,7 +45,7 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
-	this->canSelect=selectable;
+	//this->canSelect=selectable;
 
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
@@ -166,23 +166,6 @@ void CTK_cursesTextBoxClass::TBscroll(bool scrollup,int numlines)
 				this->startLine=this->txtStrings.size()-this->hite;
 		}
 }
-
-/**
-* Set whether gadget is selectable.
-*/
-void CTK_cursesTextBoxClass::CTK_setSelectable(bool canselect)
-{
-	this->canSelect=canselect;
-}
-
-/**
-* Get whether gadget is selectable.
-*/
-bool CTK_cursesTextBoxClass::CTK_getSelectable(void)
-{
-	return(this->canSelect);
-}
-
 /**
 * Get text of gadget.
 */

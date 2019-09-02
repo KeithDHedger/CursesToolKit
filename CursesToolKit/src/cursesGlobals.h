@@ -94,13 +94,23 @@ struct fileUDStruct
 {
 	CTK_cursesUtilsClass	*inst=NULL;
 	CTK_mainAppClass		*app=NULL;
-	CTK_cursesChooserClass	*chooser=NULL;
+//	CTK_cursesChooserClass	*chooser=NULL;
 	bool					isValid=false;
 	bool					isOpenDialog=false;
 	int						buttonsToShow=YESBUTTON|NOBUTTON;
 	int						buttonPressed=NOBUTTONPRESSED;
 	const char				*licenceFilename=NULL;
 	const char				*credits=NULL;
+
+	CTK_cursesChooserClass		*chooserGadget=NULL;
+	CTK_cursesInputClass		*inputGadget=NULL;
+	CTK_cursesTextBoxClass*		textGadget=NULL;
+	CTK_cursesCheckBoxClass*	checkGadget=NULL;
+	CTK_cursesLabelClass*		labelGadget=NULL;
+	CTK_cursesEditBoxClass*		editGadget=NULL;
+	CTK_cursesButtonClass*		btnOK=NULL;
+	CTK_cursesButtonClass*		btnNo=NULL;
+	CTK_cursesButtonClass*		btnCancel=NULL;
 };
 
 /**
@@ -110,17 +120,19 @@ struct fileUDStruct
 */
 struct pageStruct
 {
-	std::vector<CTK_cursesButtonClass*>			buttons;
-	std::vector<CTK_cursesTextBoxClass*>		textBoxes;
-	std::vector<CTK_cursesInputClass*>			inputs;
-	std::vector<CTK_cursesListBoxClass*>		lists;
-	std::vector<CTK_cursesCheckBoxClass*>		checkBoxes;
-	std::vector<CTK_cursesEditBoxClass*>		editBoxes;
-	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
-	std::vector<CTK_cursesLabelClass*>			labels;
-	std::vector<CTK_cursesChooserClass*>		choosers;
-	std::vector<CTK_cursesDropClass*>			dropDowns;
-	std::vector<CTK_cursesFBImageClass*>		fbImages;
+//	std::vector<CTK_cursesButtonClass*>			buttons;
+//	std::vector<CTK_cursesTextBoxClass*>		textBoxes;
+//	std::vector<CTK_cursesInputClass*>			inputs;
+//	std::vector<CTK_cursesListBoxClass*>		lists;
+//	std::vector<CTK_cursesCheckBoxClass*>		checkBoxes;
+//	std::vector<CTK_cursesEditBoxClass*>		editBoxes;
+//	std::vector<CTK_cursesSourceEditBoxClass*>	srcEditBoxes;
+//	std::vector<CTK_cursesLabelClass*>			labels;
+//	std::vector<CTK_cursesChooserClass*>		choosers;
+//	std::vector<CTK_cursesDropClass*>			dropDowns;
+//	std::vector<CTK_cursesFBImageClass*>		fbImages;
+	std::vector<CTK_cursesGadgetClass*>			gadgets;
+	int											currentGadget=0;
 	void										*userData=NULL;
 	bool										menusActive=true;
 };

@@ -33,6 +33,7 @@ CTK_cursesLabelClass::~CTK_cursesLabelClass()
 CTK_cursesLabelClass::CTK_cursesLabelClass(CTK_mainAppClass *mc)
 {
 	this->CTK_setCommon(mc);
+	this->isSelectable=false;
 	this->type=LABELGADGET;
 }
 

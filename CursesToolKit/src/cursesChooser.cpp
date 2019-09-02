@@ -42,6 +42,7 @@ CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *mc,int x,int y,
 	this->lb=new CTK_cursesListBoxClass(mc);
 	this->lb->CTK_newListBox(this->sx,this->sy,this->wid,this->hite);
 	this->type=CHOOSERGADGET;
+	this->selectDeselects=false;
 }
 
 /**
@@ -143,7 +144,7 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 			this->lb->CTK_addListItem(buffer,NULL);
 		}
 
-	this->lb->CTK_setEnterDeselects(false);
+	this->lb->CTK_setSelectDeselects(false);
 	app->CTK_addListBox(this->lb);
 	this->lb->CTK_setSelectCB(chooserSelectCB,this);
 	this->folderPath=folder;

@@ -156,22 +156,6 @@ void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 }
 
 /**
-* Set whether to deselect list box on 'pressed'.
-*/
-void CTK_cursesListBoxClass::CTK_setEnterDeselects(bool deselect)
-{
-	this->enterDeselects=deselect;
-}
-
-/**
-* Get whether to deselect list box on 'pressed'.
-*/
-bool CTK_cursesListBoxClass::CTK_getEnterDeselects(void)
-{
-	return(this->enterDeselects);
-}
-
-/**
 * Select all items in list.
 */
 void CTK_cursesListBoxClass::CTK_selectAll(void)
@@ -231,19 +215,19 @@ const std::vector<bool> CTK_cursesListBoxClass::CTK_getSelections(void)
 {
 	return(this->selections);
 }
-
-/**
-* Set select key, default=TERMKEY_SYM_ENTER.
-*/
-void CTK_cursesListBoxClass::CTK_setSelectKey(TermKeySym key)
-{
-	this->selectKey=key;
-}
-
-/**
-* Get select key, default=TERMKEY_SYM_ENTER.
-*/
-TermKeySym CTK_cursesListBoxClass::CTK_getSelectKey(void)
-{
-	return(this->selectKey);
-}
+//
+///**
+//* Set select key, default=TERMKEY_SYM_ENTER.
+//*/
+//void CTK_cursesListBoxClass::CTK_setSelectKey(TermKeySym key)
+//{
+//	this->selectKey=key;
+//}
+//
+///**
+//* Get select key, default=TERMKEY_SYM_ENTER.
+//*/
+//TermKeySym CTK_cursesListBoxClass::CTK_getSelectKey(void)
+//{
+//	return(this->selectKey);
+//}

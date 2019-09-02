@@ -43,14 +43,12 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 
 		void							CTK_newListBox(int x,int y,int width,int hite);
 		
-		void							CTK_setSelectKey(TermKeySym key);
-		TermKeySym						CTK_getSelectKey(void);
+//		void							CTK_setSelectKey(TermKeySym key);
+//		TermKeySym						CTK_getSelectKey(void);
 
 		void							CTK_addListItem(const char *label,void *userdata=NULL);
 		void							CTK_clearList(void);
 		void							CTK_keyUpDown(bool doup,bool page=false);
-		void							CTK_setEnterDeselects(bool deselect);
-		bool							CTK_getEnterDeselects(void);
 		void							CTK_selectAll(void);
 		void							CTK_selectNone(void);
 		void							CTK_setMultipleSelect(bool multi);
@@ -63,8 +61,7 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		void							CTK_drawGadget(bool hilite=false);
 
 	private:
-		bool							enterDeselects=true;
-		TermKeySym						selectKey=TERMKEY_SYM_ENTER;
+	//	TermKeySym						selectKey=TERMKEY_SYM_ENTER;
 		std::string						blank;
 		bool							multi=false;
 		std::vector<bool>				selections;

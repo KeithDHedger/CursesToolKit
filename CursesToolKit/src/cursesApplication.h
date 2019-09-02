@@ -99,7 +99,7 @@ class CTK_mainAppClass
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 
-		void									CTK_setDefaultGadget(int type,int num);
+		void									CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget);
 		struct fbData							*CTK_getFBData(void);
 
 		int										x;
@@ -110,6 +110,7 @@ class CTK_mainAppClass
 		const char								*title;
 		bool									useAppWindow=false;
 		void									*userData=NULL;
+		bool									showHilighting=true;
 
 	private:
 		TermKey									*tk;
@@ -123,6 +124,7 @@ class CTK_mainAppClass
 		int										hiliteSourceEditBoxNum=-1;
 		int										hiliteDropBoxNum=-1;
 		int										hiliting=HLNONE;
+		bool									noHiliteChange=false;
 
 		void									setHilite(bool forward);
 		void									setHiliteNone(void);

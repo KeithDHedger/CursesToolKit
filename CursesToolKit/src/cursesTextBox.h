@@ -33,8 +33,6 @@ class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		void						CTK_scrollLine(bool scrollup);
 		void						CTK_scrollPage(bool scrollup);
-		void						CTK_setSelectable(bool canselect);
-		bool						CTK_getSelectable(void);
 		const std::string			CTK_getText(void);
 
 //over ridden virtual funcs and data
@@ -45,7 +43,6 @@ class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 		std::string					text;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
-		bool						canSelect=true;
 
 		void						TBscroll(bool scrollup,int numlines);
 };

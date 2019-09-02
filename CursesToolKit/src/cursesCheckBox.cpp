@@ -43,6 +43,7 @@ CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass(CTK_mainAppClass *mc)
 */
 void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 {
+
 	char	val=' ';
 
 	MOVETO(this->sx,this->sy);
@@ -57,6 +58,8 @@ void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 		printf("%c %s",val,this->label);
 	else
 		printf("[%c] %s",val,this->label);
+
+	fflush(NULL);
 }
 
 /**
@@ -88,35 +91,19 @@ bool CTK_cursesCheckBoxClass::CTK_getValue(void)
 	return(this->value);
 }
 
-/**
-*  Set whether to deselect gadget after 'pressing'.
-*/
-void CTK_cursesCheckBoxClass::CTK_setEnterDeselects(bool deselect)
-{
-	this->enterDeselects=deselect;
-}
-
-/**
-*  Get whether to deselect gadget after 'pressing'.
-*/
-bool CTK_cursesCheckBoxClass::CTK_getEnterDeselects(void)
-{
-	return(this->enterDeselects);
-}
-
-/**
-* Set select key, default=TERMKEY_SYM_ENTER.
-*/
-void CTK_cursesCheckBoxClass::CTK_setSelectKey(TermKeySym key)
-{
-	this->selectKey=key;
-}
-
-/**
-* Get select key, default=TERMKEY_SYM_ENTER.
-*/
-TermKeySym CTK_cursesCheckBoxClass::CTK_getSelectKey(void)
-{
-	return(this->selectKey);
-}
-
+///**
+//* Set select key, default=TERMKEY_SYM_ENTER.
+//*/
+//void CTK_cursesCheckBoxClass::CTK_setSelectKey(TermKeySym key)
+//{
+//	this->selectKey=key;
+//}
+//
+///**
+//* Get select key, default=TERMKEY_SYM_ENTER.
+//*/
+//TermKeySym CTK_cursesCheckBoxClass::CTK_getSelectKey(void)
+//{
+//	return(this->selectKey);
+//}
+//
