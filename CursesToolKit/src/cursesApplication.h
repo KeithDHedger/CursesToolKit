@@ -115,15 +115,6 @@ class CTK_mainAppClass
 	private:
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
-//		int										hiliteBtnNum=-1;
-//		int										hiliteTxtBoxNum=-1;
-//		int										hiliteInputNum=-1;
-//		int										hiliteListNum=-1;
-//		int										hiliteCheckBoxNum=-1;
-//		int										hiliteEditBoxNum=-1;
-//		int										hiliteSourceEditBoxNum=-1;
-//		int										hiliteDropBoxNum=-1;
-//		int										hiliting=HLNONE;
 		bool									noHiliteChange=false;
 
 		void									setHilite(bool forward);
