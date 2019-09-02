@@ -33,14 +33,10 @@ class CTK_cursesCheckBoxClass : public CTK_cursesGadgetClass
 		void			CTK_setValue(bool val);
 		bool			CTK_getValue(void);
 
-//		void			CTK_setSelectKey(TermKeySym key);
-//		TermKeySym		CTK_getSelectKey(void);
-
 //over ridden virtual funcs
 		void			CTK_drawGadget(bool hilite=false);
 
 	private:
-//		TermKeySym		selectKey=TERMKEY_SYM_ENTER;
 		bool			value=false;
 };
 

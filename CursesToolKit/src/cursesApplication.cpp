@@ -125,7 +125,6 @@ CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int widt
 	CTK_cursesTextBoxClass	*txtbox=new CTK_cursesTextBoxClass(this);
 	txtbox->tabWidth=this->tabWidth;
 	txtbox->CTK_newBox(x,y,width,hite,txt,selectable);
-//	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 	this->pages[this->pageNumber].gadgets.push_back(txtbox);
 	return(txtbox);
 }
@@ -141,7 +140,6 @@ CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int widt
 	txtbox->CTK_newBox(x,y,width,hite,"",selectable);
 	txtbox->CTK_updateText(txt,isfilename);
 	txtbox->CTK_setColours(this->colours);
-//	this->pages[this->pageNumber].textBoxes.push_back(txtbox);
 	this->pages[this->pageNumber].gadgets.push_back(txtbox);
 	return(txtbox);
 }
@@ -153,7 +151,6 @@ CTK_cursesButtonClass* CTK_mainAppClass::CTK_addNewButton(int x,int y,int width,
 {
 	CTK_cursesButtonClass	*btn=new CTK_cursesButtonClass(this);
 	btn->CTK_newButton(x,y,width,hite,label);
-//	this->pages[this->pageNumber].buttons.push_back(btn);
 	this->pages[this->pageNumber].gadgets.push_back(btn);
 	return(btn);
 }
@@ -165,7 +162,6 @@ CTK_cursesInputClass* CTK_mainAppClass::CTK_addNewInput(int x,int y,int width,in
 {
 	CTK_cursesInputClass	*inp=new CTK_cursesInputClass(this);
 	inp->CTK_newInput(x,y,width,hite,label);
-	//this->pages[this->pageNumber].inputs.push_back(inp);
 	this->pages[this->pageNumber].gadgets.push_back(inp);
 	return(inp);
 }
@@ -397,77 +393,6 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			else
 				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
 		}
-#if 0
-	for(int j=0;j<app->pages[app->pageNumber].fbImages.size();j++)
-		app->pages[app->pageNumber].fbImages[j]->CTK_drawGadget();
-
-	for(int j=0;j<app->pages[app->pageNumber].dropDowns.size();j++)
-		{
-			if(app->hiliteDropBoxNum==j)
-				app->pages[app->pageNumber].dropDowns[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].dropDowns[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].labels.size();j++)
-		app->pages[app->pageNumber].labels[j]->CTK_drawGadget();
-
-//	for(int j=0;j<app->pages[app->pageNumber].textBoxes.size();j++)
-//		{
-//			if(app->hiliteTxtBoxNum==j)
-//				app->pages[app->pageNumber].textBoxes[j]->CTK_drawGadget(true);
-//			else
-//				app->pages[app->pageNumber].textBoxes[j]->CTK_drawGadget(false);
-//		}
-
-	for(int j=0;j<app->pages[app->pageNumber].buttons.size();j++)
-		{
-			if(app->hiliteBtnNum==j)
-				app->pages[app->pageNumber].buttons[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].buttons[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].inputs.size();j++)
-		{
-			if(app->hiliteInputNum==j)
-				app->pages[app->pageNumber].inputs[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].inputs[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].checkBoxes.size();j++)
-		{
-			if(app->hiliteCheckBoxNum==j)
-				app->pages[app->pageNumber].checkBoxes[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].checkBoxes[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].editBoxes.size();j++)
-		{
-			if(app->hiliteEditBoxNum==j)
-				app->pages[app->pageNumber].editBoxes[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].editBoxes[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].srcEditBoxes.size();j++)
-		{
-			if(app->hiliteSourceEditBoxNum==j)
-				app->pages[app->pageNumber].srcEditBoxes[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].srcEditBoxes[j]->CTK_drawGadget(false);
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].lists.size();j++)
-		{
-			if(app->hiliteListNum==j)
-				app->pages[app->pageNumber].lists[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].lists[j]->CTK_drawGadget(false);
-		}
-#endif
 	SETNORMAL;
 }
 
@@ -489,128 +414,6 @@ void CTK_mainAppClass::setHilite(bool forward)
 				this->pages[this->pageNumber].currentGadget=0;
 		}
 	while(this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->CTK_getSelectable()==false);
-return;
-#if 0
-	switch(this->hiliting)
-		{
-			case HLNONE:
-				this->hiliting+=addit;
-				if(this->hiliting==-2)
-					{
-						this->hiliting=HLNOMORE-1;
-						this->hiliteEditBoxNum=this->pages[this->pageNumber].editBoxes.size();
-					}
-				this->setHilite(forward);
-				break;
-			case HLBUTTONS:
-				this->hiliteBtnNum+=addit;
-				if((this->hiliteBtnNum>=0) && (this->hiliteBtnNum<this->pages[this->pageNumber].buttons.size()))
-					{
-						if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnabled()==false)
-							this->hiliteBtnNum+=addit;
-					}
-
-				if((this->hiliteBtnNum<0) || (this->hiliteBtnNum>=this->pages[this->pageNumber].buttons.size()))
-					{
-						this->hiliteBtnNum=-1;
-						this->hiliting+=addit;
-						if(addit==-1)
-							this->hiliting=HLNONE;
-						else
-							this->setHilite(forward);
-					}
-				break;
-
-			case HLDROPDOWNS:
-				this->hiliteDropBoxNum+=addit;
-				if((this->hiliteDropBoxNum<0) || (this->hiliteDropBoxNum>=this->pages[this->pageNumber].dropDowns.size()))
-					{
-						this->hiliteDropBoxNum=-1;
-						if(addit==-1)
-							this->hiliteBtnNum=this->pages[this->pageNumber].buttons.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-
-			case HLTEXT:
-				this->hiliteTxtBoxNum+=addit;
-				if((this->hiliteTxtBoxNum<0) || (this->hiliteTxtBoxNum>=this->pages[this->pageNumber].textBoxes.size()))
-					{
-						this->hiliteTxtBoxNum=-1;
-						if(addit==-1)
-							this->hiliteDropBoxNum=this->pages[this->pageNumber].dropDowns.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-						break;
-					}
-				else
-					{
-						if(this->pages[this->pageNumber].textBoxes[this->hiliteTxtBoxNum]->CTK_getSelectable()==false)
-							this->setHilite(forward);
-						break;
-					}
-				break;
-			case HLINPUTS:
-				this->hiliteInputNum+=addit;
-				if((this->hiliteInputNum<0) || (this->hiliteInputNum>=this->pages[this->pageNumber].inputs.size()))
-					{
-						this->hiliteInputNum=-1;
-						if(addit==-1)
-							this->hiliteTxtBoxNum=this->pages[this->pageNumber].textBoxes.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-			case HLLISTS:
-				this->hiliteListNum+=addit;
-				if((this->hiliteListNum<0) || (this->hiliteListNum>=this->pages[this->pageNumber].lists.size()))
-					{
-						this->hiliteListNum=-1;
-						if(addit==-1)
-							this->hiliteInputNum=this->pages[this->pageNumber].inputs.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-			case HLCHKBOXS:
-				this->hiliteCheckBoxNum+=addit;
-				if((this->hiliteCheckBoxNum<0) || (this->hiliteCheckBoxNum>=this->pages[this->pageNumber].checkBoxes.size()))
-					{
-						this->hiliteCheckBoxNum=-1;
-						if(addit==-1)
-							this->hiliteListNum=this->pages[this->pageNumber].lists.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-			case HLEDITBOXES:
-				this->hiliteEditBoxNum+=addit;
-				if((this->hiliteEditBoxNum<0) || (this->hiliteEditBoxNum>=this->pages[this->pageNumber].editBoxes.size()))
-					{
-						this->hiliteEditBoxNum=-1;
-						if(addit==-1)
-							this->hiliteCheckBoxNum=this->pages[this->pageNumber].checkBoxes.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-			case HLSRCEDITBOXES:
-				this->hiliteSourceEditBoxNum+=addit;
-				if((this->hiliteSourceEditBoxNum<0) || (this->hiliteSourceEditBoxNum>=this->pages[this->pageNumber].srcEditBoxes.size()))
-					{
-						this->hiliteSourceEditBoxNum=-1;
-						if(addit==-1)
-							this->hiliteEditBoxNum=this->pages[this->pageNumber].editBoxes.size();
-						this->hiliting+=addit;
-						this->setHilite(forward);
-					}
-				break;
-			case HLNOMORE:
-				this->hiliting=HLNONE;
-				break;
-		}
-#endif
 }
 
 /**
@@ -692,35 +495,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 									case TERMKEY_SYM_ESCAPE:
 										if(this->pages[this->pageNumber].menusActive==false)
 											break;
-										this->hiliteBtnNum=-1;
-										this->hiliteTxtBoxNum=-1;
-										this->hiliteInputNum=-1;
-										this->hiliteListNum=-1;
-										this->hiliteCheckBoxNum=-1;
-										this->hiliteTxtBoxNum=-1;
-										this->hiliteSourceEditBoxNum=-1;
-										this->hiliteDropBoxNum=-1;
-										this->hiliting=HLNONE;
 										this->CTK_updateScreen(this,NULL);
 										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
 											{
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
 											}
-										break;
-
-//next group
-									case TERMKEY_SYM_RIGHT:
-										this->hiliting++;
-										this->setHiliteNone();
-										setHilite(true);
-										break;
-//prev group
-									case TERMKEY_SYM_LEFT:
-										this->setHiliteNone();
-										setHilite(false);
-										this->hiliting++;
-										setHilite(false);
 										break;
 //tab select
 									case TERMKEY_SYM_TAB:
@@ -737,30 +517,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
-#if 0
-//prev button/checkbox
-										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1) || (this->hiliteDropBoxNum!=-1))
-											{
-												setHilite(false);
-												break;
-											}
-										if(this->hiliteTxtBoxNum!=-1)
-											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(true);
-										if(this->hiliteListNum!=-1)
-											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true);
-										if(this->hiliteEditBoxNum!=-1)
-											{
-												if(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCurrentY()==0)
-													break;
-												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()-1);
-											}
-										if(this->hiliteSourceEditBoxNum!=-1)
-											{
-												if(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCurrentY()==0)
-													break;
-												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()-1);
-											}
-#else
 										switch(thisgadgettype)
 											{
 												case TEXTGADGET:
@@ -776,26 +532,9 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 												default:
 													break;
 											}
-#endif
 										break;
 
 									case TERMKEY_SYM_DOWN:
-#if 0
-//next button/checkbox
-										if((this->hiliteBtnNum!=-1) || (this->hiliteCheckBoxNum!=-1) || (this->hiliteDropBoxNum!=-1))
-											{
-												setHilite(true);
-												break;
-											}
-										if(this->hiliteTxtBoxNum!=-1)
-											this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollLine(false);
-										if(this->hiliteListNum!=-1)
-											this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false);
-										if(this->hiliteEditBoxNum!=-1)
-											this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()+1);
-										if(this->hiliteSourceEditBoxNum!=-1)
-											this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()+1);
-#else
 										switch(thisgadgettype)
 											{
 												case TEXTGADGET:
@@ -811,37 +550,14 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 												default:
 													break;
 											}
-#endif
 										break;
 
 									case TERMKEY_SYM_PAGEUP:
-#if 0
-										if(this->hiliteEditBoxNum!=-1)
-											{
-												if(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCurrentY()-this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight()<=0)
-													{
-														this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(1);
-														break;
-													}
-												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()-this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight());
-											}
-										if(this->hiliteSourceEditBoxNum!=-1)
-											{
-												if(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCurrentY()-this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight()<=0)
-													{
-														this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(1);
-														break;
-													}
-												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()-this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
-											}
-
-											if(this->hiliteTxtBoxNum!=-1)
-												this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(true);
-											if(this->hiliteListNum!=-1)
-												this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(true,true);
-#else
 										switch(thisgadgettype)
 											{
+												case LISTGADGET:
+													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(true,true);
+													break;
 												case TEXTGADGET:
 													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollPage(true);
 													break;
@@ -852,24 +568,14 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()-static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getHeight());
 													break;
 											}
-#endif
-											break;
+										break;
 
 									case TERMKEY_SYM_PAGEDOWN:
-#if 0
-											if(this->hiliteEditBoxNum!=-1)
-												this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].editBoxes[hiliteEditBoxNum]->CTK_getHeight());
-											
-											if(this->hiliteSourceEditBoxNum!=-1)
-												this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_gotoLine(this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getCursLine()+this->pages[this->pageNumber].srcEditBoxes[hiliteSourceEditBoxNum]->CTK_getHeight());
-
-											if(this->hiliteTxtBoxNum!=-1)
-												this->pages[this->pageNumber].textBoxes[hiliteTxtBoxNum]->CTK_scrollPage(false);
-											if(this->hiliteListNum!=-1)
-												this->pages[this->pageNumber].lists[hiliteListNum]->CTK_keyUpDown(false,true);
-#else
 										switch(thisgadgettype)
 											{
+												case LISTGADGET:
+													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(false,true);
+													break;
 												case TEXTGADGET:
 													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollPage(false);
 													break;
@@ -880,107 +586,18 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()+static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getHeight());
 													break;
 											}
-#endif
-											break;
+										break;
 
-									//case TERMKEY_SYM_ENTER:
+//select key
 									default:
 										if((key.code.sym!=this->selectKey) && (thisgadgetinst->CTK_getSelectKey()==TERMKEY_SYM_NONE))
-											break;
+											continue;
 										if(thisgadgetinst->CTK_getSelectKey()!=TERMKEY_SYM_NONE)
 											{
 												if(key.code.sym!=thisgadgetinst->CTK_getSelectKey())
-													break;
-											}
-#if 0
-										if((key.code.sym!=this->selectKey) && (this->hiliteCheckBoxNum==-1) && (this->hiliteListNum==-1) && (this->hiliteDropBoxNum==-1))
-											break;
-//do drop down events
-										if(this->hiliteDropBoxNum!=-1)
-											{
-												this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_doDropDownEvent();
-												if((this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB!=NULL) && (this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectedItem>-1))
-													this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->selectCB((void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum],(void*)this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_getCBUserData());
-												if(this->pages[this->pageNumber].dropDowns[this->hiliteDropBoxNum]->CTK_getEnterDeselects()==true)
-													this->hiliteDropBoxNum=-1;
-												this->CTK_updateScreen(this,NULL);
+													continue;
 											}
 
-//do src edit events
-										if(this->hiliteSourceEditBoxNum!=-1)
-											{
-												this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_doEvent(true,this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].srcEditBoxes[this->hiliteSourceEditBoxNum]->CTK_getSrcStrings());
-												this->hiliteSourceEditBoxNum=-1;
-												this->CTK_emptyIPBuffer();
-												this->CTK_updateScreen(this,NULL);
-												if(this->eventLoopCBOut!=NULL)
-													this->eventLoopCBOut(this,this->userData);
-												continue;
-											}
-
-//do edit events
-										if(this->hiliteEditBoxNum!=-1)
-											{
-												this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_doEvent(false,this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings(),this->pages[this->pageNumber].editBoxes[this->hiliteEditBoxNum]->CTK_getStrings());
-												this->hiliteEditBoxNum=-1;
-												this->CTK_emptyIPBuffer();
-												this->CTK_updateScreen(this,NULL);
-												if(this->eventLoopCBOut!=NULL)
-													this->eventLoopCBOut(this,this->userData);
-												continue;
-											}
-											
-										if(this->hiliteBtnNum!=-1)
-											{
-												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnabled()==false)
-													{
-														continue;
-													}
-												if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->selectCB((void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum],(void*)this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getCBUserData());
-													}
-												if(this->pages[this->pageNumber].buttons.size()>this->hiliteBtnNum)
-													if(this->pages[this->pageNumber].buttons[this->hiliteBtnNum]->CTK_getEnterDeselects()==true)
-														this->hiliteBtnNum=-1;
-												this->CTK_updateScreen(this,NULL);
-
-										if(this->hiliteInputNum!=-1)
-											{
-												this->pages[this->pageNumber].inputs[this->hiliteInputNum]->CTK_doInput();
-												this->hiliteInputNum=-1;
-												this->CTK_updateScreen(this,NULL);
-											}
-//lists
-										if(this->hiliteListNum!=-1)
-											{
-												if(key.code.sym!=this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getSelectKey())
-													break;
-
-												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getMultipleSelect()==true)
-													{
-														this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_toggleItem(this->pages[this->pageNumber].lists[this->hiliteListNum]->listItemNumber);
-													}
-												if(this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].lists[this->hiliteListNum]->selectCB((void*)this->pages[this->pageNumber].lists[this->hiliteListNum],this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getCBUserData());
-												if(this->pages[this->pageNumber].lists.size()>this->hiliteListNum)
-													if(this->pages[this->pageNumber].lists[this->hiliteListNum]->CTK_getEnterDeselects()==true)
-														this->hiliteListNum=-1;
-												this->CTK_updateScreen(this,NULL);
-											}
-//check boxes
-										if(this->hiliteCheckBoxNum!=-1)
-											{
-												if(key.code.sym!=this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getSelectKey())
-													break;
-												if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB!=NULL)
-													this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->selectCB((void*)this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum],this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getCBUserData());
-												if(this->pages[this->pageNumber].checkBoxes.size()>this->hiliteCheckBoxNum)
-													if(this->pages[this->pageNumber].checkBoxes[this->hiliteCheckBoxNum]->CTK_getEnterDeselects()==true)
-														this->hiliteCheckBoxNum=-1;
-												this->CTK_updateScreen(this,NULL);
-											}
-										break;
-#else
 										switch(thisgadgettype)
 											{
 												case LISTGADGET:
@@ -1024,7 +641,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 										thisgadgetinst->CTK_drawGadget(this->showHilighting);
 										this->noHiliteChange=true;
 										break;
-#endif
 								}
 						}
 
@@ -1074,15 +690,6 @@ int CTK_mainAppClass::CTK_addPage(void)
 	pageStruct	ps;
 
 	ps.gadgets.clear();
-//	ps.buttons.clear();
-//	ps.textBoxes.clear();
-//	ps.inputs.clear();
-//	ps.lists.clear();
-//	ps.checkBoxes.clear();
-//	ps.editBoxes.clear();
-//	ps.srcEditBoxes.clear();
-//	ps.labels.clear();
-
 	this->pages.push_back(ps);
 	this->pageNumber=this->pages.size()-1;
 	return(this->pageNumber);
@@ -1131,18 +738,6 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)//TODO//
 			for(int j=0;j<this->pages[pagenum].gadgets.size();j++)
 				delete this->pages[pagenum].gadgets[j];
 
-//			for(int j=0;j<this->pages[pagenum].labels.size();j++)
-//				delete this->pages[pagenum].labels[j];
-//			for(int j=0;j<this->pages[pagenum].textBoxes.size();j++)
-//				delete this->pages[pagenum].textBoxes[j];
-//			for(int j=0;j<this->pages[pagenum].buttons.size();j++)
-//				delete this->pages[pagenum].buttons[j];
-//			for(int j=0;j<this->pages[j].inputs.size();j++)
-//				delete this->pages[pagenum].inputs[j];
-//			for(int j=0;j<this->pages[j].lists.size();j++)
-//				delete this->pages[pagenum].lists[j];
-//			for(int j=0;j<this->pages[j].checkBoxes.size();j++)
-//				delete this->pages[pagenum].checkBoxes[j];
 			this->pages.erase(this->pages.begin()+pagenum);
 			this->pageNumber=pagenum;
 			if(this->pageNumber>=this->pages.size())
@@ -1213,49 +808,6 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 					return;
 				}
 		}
-//	this->hiliteBtnNum=-1;
-//	this->hiliteTxtBoxNum=-1;
-//	this->hiliteInputNum=-1;
-//	this->hiliteListNum=-1;
-//	this->hiliteCheckBoxNum=-1;
-//	this->hiliteEditBoxNum=-1;
-//	this->hiliteSourceEditBoxNum=-1;
-//	this->hiliting=HLNONE;
-//
-//	switch(type)
-//		{
-//			case BUTTON:
-//				this->hiliteBtnNum=num;
-//				this->hiliting=HLBUTTONS;
-//				break;
-//			case TXTBOX:
-//				this->hiliteTxtBoxNum=num;
-//				this->hiliting=HLTEXT;
-//				break;
-//			case INPUT:
-//				this->hiliteInputNum=num;
-//				this->hiliting=HLINPUTS;
-//				this->CTK_clearScreen();
-//				this->CTK_updateScreen(this,NULL);
-//				static_cast<CTK_cursesInputClass*>(this->pages[this->pageNumber].gadgets[num])->CTK_doInput();
-//				break;
-//			case LIST:
-//				this->hiliteListNum=num;
-//				this->hiliting=HLLISTS;
-//				break;
-//			case CHKBOX:
-//				this->hiliteCheckBoxNum=num;
-//				this->hiliting=HLCHKBOXS;
-//				break;
-//			case EDBOX:
-//				this->hiliteEditBoxNum=num;
-//				this->hiliting=HLEDITBOXES;
-//				break;
-//			case SRCBOX:
-//				this->hiliteSourceEditBoxNum=num;
-//				this->hiliting=HLSRCEDITBOXES;
-//				break;
-//		}
 }
 
 /**
@@ -1264,21 +816,6 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 void CTK_mainAppClass::CTK_setSelectKey(TermKeySym key)
 {
 	this->selectKey=key;
-}
-
-/**
-* Private.
-*/
-void CTK_mainAppClass::setHiliteNone(void)
-{
-	this->hiliteBtnNum=-1;
-	this->hiliteTxtBoxNum=-1;
-	this->hiliteInputNum=-1;
-	this->hiliteListNum=-1;
-	this->hiliteCheckBoxNum=-1;
-	this->hiliteEditBoxNum=-1;
-	this->hiliteSourceEditBoxNum=-1;
-	this->hiliteDropBoxNum=-1;
 }
 
 struct fbData* CTK_mainAppClass::CTK_getFBData(void)//TODO// put in lib, globals ?

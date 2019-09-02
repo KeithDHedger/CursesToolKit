@@ -46,7 +46,6 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
-
 	asprintf(&(this->label),"%s",label);
 }
 

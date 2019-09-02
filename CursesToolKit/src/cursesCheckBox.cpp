@@ -90,20 +90,3 @@ bool CTK_cursesCheckBoxClass::CTK_getValue(void)
 {
 	return(this->value);
 }
-
-///**
-//* Set select key, default=TERMKEY_SYM_ENTER.
-//*/
-//void CTK_cursesCheckBoxClass::CTK_setSelectKey(TermKeySym key)
-//{
-//	this->selectKey=key;
-//}
-//
-///**
-//* Get select key, default=TERMKEY_SYM_ENTER.
-//*/
-//TermKeySym CTK_cursesCheckBoxClass::CTK_getSelectKey(void)
-//{
-//	return(this->selectKey);
-//}
-//

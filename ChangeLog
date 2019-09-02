@@ -1,4 +1,6 @@
 1.1.0
+Removed old code.
+Fixed page up/down in lists.
 Fixed overiding gadget select key.
 Fixed examples to use new super class.
 Fixed querybox button position.
