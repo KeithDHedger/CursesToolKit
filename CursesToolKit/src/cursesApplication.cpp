@@ -823,5 +823,26 @@ struct fbData* CTK_mainAppClass::CTK_getFBData(void)//TODO// put in lib, globals
 	return(&this->frameBufferData);
 }
 
+/**
+* Get gadget.
+* \param int page number.
+* \param gadgetType type.
+* \param int nth gadget of type.
+*/
+CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType type,int nth)
+{
+	int	cntdown=nth;
+
+	for(int j=0;j<this->pages[page].gadgets.size();j++)
+		{
+			if(this->pages[page].gadgets[j]->CTK_getGadgetType()==type)
+				{
+					cntdown--;
+					if(cntdown==0)
+						return(this->pages[page].gadgets[j]);
+				}
+		}
+	return(NULL);
+}
 
 

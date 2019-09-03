@@ -100,6 +100,8 @@ class CTK_mainAppClass
 		void									CTK_setSelectKey(TermKeySym key);
 
 		void									CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget);
+		CTK_cursesGadgetClass*					CTK_getGadgetNum(int page,gadgetType type,int nth);
+
 		struct fbData							*CTK_getFBData(void);
 
 		int										x;

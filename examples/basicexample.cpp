@@ -356,9 +356,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->CTK_addListBox(lb1);
 
 
-
-
-
 	label=mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
 	label=mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");
 	label->CTK_setJustify(CENTRE);
@@ -377,7 +374,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 
-
+//CTK_cursesGadgetClass*  gad=mainApp->CTK_getGadgetNum(mainApp->pageNumber,TEXTGADGET,2);
+////CTK_cursesLabelClass*  lab=static_cast<CTK_cursesLabelClass*>(mainApp->CTK_getGadgetNum(0,LABELGADGET,0));
+//fprintf(stderr,"gadget %i=%p text='%s'\n",1,gad,static_cast<CTK_cursesTextBoxClass*>(gad)->CTK_getText().c_str());
 
 //mainApp->CTK_setDefaultGadget(CHKBOX,0);
 //	mainApp->CTK_setDefaultGadget(INPUT,0);
