@@ -1,4 +1,5 @@
 1.1.0
+Fixed segfault on closing page if gadget deleted.
 Added find nth gadget of gadgettype to main app class.
 Gadget selection is now in creation order, groups have been removed.
 Removed old code.

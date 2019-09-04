@@ -611,10 +611,17 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													if(thisgadgetinst->selectCB!=NULL)
 														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
 													break;
-												case BUTTONGADGET:
+												case BUTTONGADGET://TODO//
 												case CHECKGADGET:
 													if(thisgadgetinst->selectCB!=NULL)
-														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+														{
+															thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+												//			this->CTK_emptyIPBuffer();
+//													this->CTK_updateScreen(this,NULL);
+//													if(this->eventLoopCBOut!=NULL)
+//														this->eventLoopCBOut(this,this->userData);
+//													continue;
+														}
 													break;
 												case INPUTGADGET:
 													static_cast<CTK_cursesInputClass*>(thisgadgetinst)->CTK_doInput();
@@ -637,9 +644,12 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 												default:
 													break;
 											}
+										if(this->pages[this->pageNumber].currentGadget!=-1)
+										{
 										this->showHilighting=!thisgadgetinst->CTK_getSelectDeselects();
 										thisgadgetinst->CTK_drawGadget(this->showHilighting);
 										this->noHiliteChange=true;
+										}
 										break;
 								}
 						}
@@ -736,12 +746,21 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)//TODO//
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		{
 			for(int j=0;j<this->pages[pagenum].gadgets.size();j++)
+			{
+				//fprintf(stderr,"j=%i size=%i\n",j,this->pages[pagenum].gadgets.size());
+				//fprintf(stderr,"gadget =%p\n",this->pages[pagenum].gadgets[j]);
+				//fprintf(stderr,"gadget type=%i\n",this->pages[pagenum].gadgets[j]->CTK_getGadgetType());
+				//if(this->pages[pagenum].gadgets[j]->CTK_getGadgetType()==8)
+				//	fprintf(stderr,"label=>>>%s<<\n",static_cast<CTK_cursesLabelClass*>(this->pages[pagenum].gadgets[j])->text.c_str());
+				//else
 				delete this->pages[pagenum].gadgets[j];
+			}
 
 			this->pages.erase(this->pages.begin()+pagenum);
 			this->pageNumber=pagenum;
 			if(this->pageNumber>=this->pages.size())
 				this->pageNumber=this->pages.size()-1;
+			this->pages[this->pageNumber].currentGadget=-1;
 		}
 	return(this->pageNumber);
 }

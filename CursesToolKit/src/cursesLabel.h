@@ -37,10 +37,10 @@ class CTK_cursesLabelClass : public CTK_cursesGadgetClass
 //over ridden virtual funcs and data
 		void						CTK_drawGadget(bool hilite=false);
 
+		std::string					text;
 	private:
 		int							justify=LEFT;
 		int							centre=0;
-		std::string					text;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
 };
