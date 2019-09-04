@@ -712,7 +712,7 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 {
 	int j;
 
-	if(line==-100)
+	if(line<=0)
 		{
 			this->currentX=0;
 			this->currentY=0;

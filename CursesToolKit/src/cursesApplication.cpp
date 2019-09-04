@@ -698,8 +698,11 @@ void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
-
+	ps.currentGadget=0;
+	ps.userData=NULL;
+	ps.menusActive=true;
 	ps.gadgets.clear();
+
 	this->pages.push_back(ps);
 	this->pageNumber=this->pages.size()-1;
 	return(this->pageNumber);
@@ -752,7 +755,6 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)//TODO//
 				//fprintf(stderr,"gadget type=%i\n",this->pages[pagenum].gadgets[j]->CTK_getGadgetType());
 				//if(this->pages[pagenum].gadgets[j]->CTK_getGadgetType()==8)
 				//	fprintf(stderr,"label=>>>%s<<\n",static_cast<CTK_cursesLabelClass*>(this->pages[pagenum].gadgets[j])->text.c_str());
-				//else
 				delete this->pages[pagenum].gadgets[j];
 			}
 
