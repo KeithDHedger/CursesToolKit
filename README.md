@@ -14,6 +14,8 @@ Source code edit box.<br>
 List box.<br>
 Check box.<br>
 Label.<br>
+Frame buffer image.<br>
+File Chooser.<br>
 
 Convenience functions:<br>
 Entry dialog.<br>
