@@ -616,11 +616,6 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													if(thisgadgetinst->selectCB!=NULL)
 														{
 															thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-												//			this->CTK_emptyIPBuffer();
-//													this->CTK_updateScreen(this,NULL);
-//													if(this->eventLoopCBOut!=NULL)
-//														this->eventLoopCBOut(this,this->userData);
-//													continue;
 														}
 													break;
 												case INPUTGADGET:
@@ -645,11 +640,11 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													break;
 											}
 										if(this->pages[this->pageNumber].currentGadget!=-1)
-										{
-										this->showHilighting=!thisgadgetinst->CTK_getSelectDeselects();
-										thisgadgetinst->CTK_drawGadget(this->showHilighting);
-										this->noHiliteChange=true;
-										}
+											{
+												this->showHilighting=!thisgadgetinst->CTK_getSelectDeselects();
+												thisgadgetinst->CTK_drawGadget(this->showHilighting);
+												this->noHiliteChange=true;
+											}
 										break;
 								}
 						}

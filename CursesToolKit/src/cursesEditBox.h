@@ -40,6 +40,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		int							tabWidth=8;
 		bool						isDirty=false;
 		bool						isSelecting=false;
+		int							selSY=-1;
 		void						*userData=NULL;
 
 		virtual void				CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);

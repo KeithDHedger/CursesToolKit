@@ -222,7 +222,35 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		tclip.pop_back();
 	MOVETO(this->sx,this->sy+hite+1);
 	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+//
+////print cursor
+//	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
+//	switch(this->txtStrings[this->currentY][this->currentX])
+//		{
+//			case '\t':
+//			case '\n':
+//				charundercurs=' ';
+//				break;
+//			default:
+//				charundercurs=this->txtStrings[this->currentY][this->currentX];
+//				break;
+//		}	
+//	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
 
+//higlite selection
+	//if(this->isSelecting==true)
+	if(this->multiLineSels.size()>0)
+		{
+			for(int j=0;j<this->multiLineSels.size();j++)
+				{
+					if((this->startLine<=(this->selSY+j)) && (this->multiLineSels[j].line-this->startLine<this->hite))
+						{
+							MOVETO(getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve),this->sy+this->multiLineSels[j].line-this->startLine);
+							setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+							printf("%s",this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
+						}
+				}
+		}
 //print cursor
 	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
 	switch(this->txtStrings[this->currentY][this->currentX])
@@ -236,17 +264,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				break;
 		}	
 	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
-
-//higlite selection
-	if(this->isSelecting==true)
-		{
-			for(int j=0;j<this->multiLineSels.size();j++)
-				{
-					MOVETO(getColForXpos(this->txtStrings[this->multiLineSels[j].line],this->tabWidth,this->multiLineSels[j].sx,this->sx+this->lineReserve),this->sy+this->multiLineSels[j].line-this->startLine);
-					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-					printf("%s",this->txtStrings[this->multiLineSels[j].line].substr(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx).c_str());
-				}
-		}
 
 	fflush(NULL);
 }
@@ -860,8 +877,11 @@ void CTK_cursesEditBoxClass::CTK_startSelecting(void)
 	if(this->isSelecting==true)
 		return;
 	this->multiLineSels.clear();
+	this->needsRefresh=true;
+	this->updateBuffer();
 	this->multiLineSels.push_back({this->currentY,this->currentX,this->currentX});
-	isSelecting=true;
+	this->selSY=this->currentY;
+	this->isSelecting=true;
 }
 
 /**
@@ -871,7 +891,6 @@ void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
 {
 	if(this->isSelecting==false)
 		return;
-	this->multiLineSels.clear();
 	isSelecting=false;
 	this->needsRefresh=true;
 }
