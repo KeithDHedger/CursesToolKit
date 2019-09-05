@@ -1,4 +1,5 @@
 1.1.0
+Main event loop now returns last key pressed on exit.
 Manual selction now persists until start of next manual selection.
 Fixed cursor up wrapping from line 0 to end of edit/src box.
 Fixed segfault on closing page if gadget deleted.

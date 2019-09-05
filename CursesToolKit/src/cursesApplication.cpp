@@ -423,7 +423,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 * \note runcnt=0 Default, run main loop continously.
 * \note runcnt>0 run main loop runcnt times.
 */
-void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
+int CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 {
 	int						selection=CONT;
 	TermKeyResult			ret;
@@ -680,6 +680,7 @@ void CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 						this->runEventLoop=false;
 				}
 		}
+	return(key.code.codepoint);
 }
 
 /**
