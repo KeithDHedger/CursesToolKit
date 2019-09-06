@@ -44,7 +44,7 @@ class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
 
-		void						TBscroll(bool scrollup,int numlines);
+		void						scrollTBox(bool scrollup,int numlines);
 };
 
 #endif

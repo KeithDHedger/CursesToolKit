@@ -210,35 +210,22 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		}
 	else
 		{
-	//	fprintf(stderr,"short draw\n");
 			this->refreshLine();
 		}
 
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
-	tclip=this->CTK_getCurrentWord();
-	if(tclip.back()=='\n')
-		tclip.pop_back();
-	MOVETO(this->sx,this->sy+hite+1);
-	printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
-//
-////print cursor
-//	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
-//	switch(this->txtStrings[this->currentY][this->currentX])
-//		{
-//			case '\t':
-//			case '\n':
-//				charundercurs=' ';
-//				break;
-//			default:
-//				charundercurs=this->txtStrings[this->currentY][this->currentX];
-//				break;
-//		}	
-//	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
+	if(this->showStatus==true)
+		{
+			tclip=this->CTK_getCurrentWord();
+			if(tclip.back()=='\n')
+				tclip.pop_back();
+			MOVETO(this->sx,this->sy+hite+1);
+			printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+		}
 
 //higlite selection
-	//if(this->isSelecting==true)
 	if(this->multiLineSels.size()>0)
 		{
 			for(int j=0;j<this->multiLineSels.size();j++)
@@ -918,5 +905,23 @@ void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
 	this->currentY=this->multiLineSels[0].line;
 	this->adjustXY();
 	this->CTK_finishSelecting();
+}
+
+/*
+**
+* Show / Hide the status bar.
+*/
+void CTK_cursesEditBoxClass::CTK_setStatusBarVisible(bool show)
+{
+	this->showStatus=show;
+}
+
+/*
+**
+* Get if status bar is visible.
+*/
+bool CTK_cursesEditBoxClass::CTK_getStatusBarVisible(void)
+{
+	return(this->showStatus);
 }
 

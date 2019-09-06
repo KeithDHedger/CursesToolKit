@@ -138,6 +138,19 @@ void dropboxCB(void *inst,void *userdata)
 	sprintf(buffer,"Drop box item=%i label=%s",db->selectedItem,db->label.c_str());
 	resulttextbox->CTK_updateText(buffer);
 	fprintf(stderr,"Gadget type=%i\n",db->CTK_getGadgetType());
+
+	switch(db->selectedItem)
+		{
+			case 0:
+				edbox->CTK_setStatusBarVisible(false);
+				mainApp->CTK_clearScreen();//TODO//Hmmmmm
+				mainApp->CTK_updateScreen(mainApp,NULL);
+				break;
+			case 1:
+				edbox->CTK_setStatusBarVisible(true);
+				mainApp->CTK_updateScreen(mainApp,NULL);
+				break;
+		}
 }
 
 int main(int argc, char **argv)
@@ -193,7 +206,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-//	sleep(2);
+	sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
@@ -300,12 +313,12 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 
 	dropdown=mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
-	dropdown->CTK_addDropItem("item 1");
-	dropdown->CTK_addDropItem("item 2");
+	dropdown->CTK_addDropItem("Hide Status Bar");
+	dropdown->CTK_addDropItem("Show Status Bar");
 	dropdown->CTK_addDropItem("item 3");
 	dropdown->CTK_setColours(cs);
 	dropdown->CTK_setSelectCB(dropboxCB,(void*)0xdeadbeef);
-	dropdown->CTK_setItemEnabled(1,false);
+	dropdown->CTK_setItemEnabled(2,false);
 
 
 //auto add list box to main app

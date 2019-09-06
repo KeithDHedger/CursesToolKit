@@ -136,7 +136,7 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 */
 void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)
 {
-	this->TBscroll(scrollup,1);
+	this->scrollTBox(scrollup,1);
 }
 
 /**
@@ -145,13 +145,13 @@ void CTK_cursesTextBoxClass::CTK_scrollLine(bool scrollup)
 */
 void CTK_cursesTextBoxClass::CTK_scrollPage(bool scrollup)
 {
-	this->TBscroll(scrollup,this->hite);
+	this->scrollTBox(scrollup,this->hite);
 }
 
 /**
 * Private.
 */
-void CTK_cursesTextBoxClass::TBscroll(bool scrollup,int numlines)
+void CTK_cursesTextBoxClass::scrollTBox(bool scrollup,int numlines)
 {
 	if(scrollup==true)
 		{

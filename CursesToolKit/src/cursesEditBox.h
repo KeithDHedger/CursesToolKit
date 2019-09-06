@@ -47,6 +47,8 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 
 //over ridden virtual funcs and data
 		void						CTK_drawGadget(bool hilite=false);
+		void						CTK_setStatusBarVisible(bool show);
+		bool						CTK_getStatusBarVisible(void);
 
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
@@ -90,6 +92,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;
 		bool						canEdit=true;
+		bool						showStatus=true;
 
 		int							currentX;
 		int							currentY;
