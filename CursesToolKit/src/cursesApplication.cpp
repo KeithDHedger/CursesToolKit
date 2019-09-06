@@ -613,6 +613,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 													break;
 												case BUTTONGADGET://TODO//
 												case CHECKGADGET:
+												case IMAGEGADGET:
 													if(thisgadgetinst->selectCB!=NULL)
 														{
 															thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());

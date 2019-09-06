@@ -1,4 +1,7 @@
 1.1.0
+Added 2nd fb image example.
+Made image selectable.
+Made image highlightable.
 Added Hide/Show status bar to edit class.
 Main event loop now returns last key pressed on exit.
 Manual selction now persists until start of next manual selection.

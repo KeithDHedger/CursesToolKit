@@ -57,17 +57,22 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	char	buffer[256];
 	Magick::Image	*limage;
 	Magick::Blob	*lblob;
+	Magick::Blob	*hblob;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 
 	if(this->image!=NULL)
 		delete static_cast<Magick::Image*>(this->image);
 	if(this->blob!=NULL)
 		delete static_cast<Magick::Blob*>(this->blob);
+	if(this->blobHilite!=NULL)
+		delete static_cast<Magick::Blob*>(this->blobHilite);
 
 	limage=new Magick::Image;
 	lblob=new Magick::Blob;
+	hblob=new Magick::Blob;
 	this->image=(void*)limage;
 	this->blob=(void*)lblob;
+	this->blobHilite=(void*)hblob;
 	try
 		{
 			limage->read(filepath);
@@ -83,15 +88,24 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 				}
 
 			limage->write((lblob));
+			limage->strokeColor(this->hiliteColour);
+			limage->fillColor("transparent");
+			limage->strokeWidth(this->hiliteWidth);
+			limage->draw(Magick::DrawableRectangle(0,0,width*fbinfo->charWidth-1,hite*fbinfo->charHeight-1));
+			limage->write((hblob));
 		}
+
 	catch(Magick::Exception &error_)
 		{
 		   	if(this->image!=NULL)
 				delete static_cast<Magick::Image*>(this->image);
 			if(this->blob!=NULL)
 				delete static_cast<Magick::Blob*>(this->blob);
+			if(this->blobHilite!=NULL)
+				delete static_cast<Magick::Blob*>(this->blobHilite);
 		    this->image=NULL;
 		    this->blob=NULL;
+		    this->blobHilite=NULL;
 		    return;
 		}
 
@@ -132,7 +146,40 @@ void CTK_cursesFBImageClass::drawFBImage(void)
 */
 void CTK_cursesFBImageClass::CTK_drawGadget(bool hilite)
 {
-	this->drawFBImage();
+//	this->drawFBImage(hilite);
+#ifdef _IMAGEMAGICK_
+	unsigned char	*datptr;
+	unsigned int	pixoffset;
+	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
+	Magick::Blob	*hblob=static_cast<Magick::Blob*>(this->blobHilite);
+
+if(hilite==false)
+{
+	if(lblob==NULL)
+		return;
+	datptr=(unsigned char *)lblob->data();
+	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
+		{
+			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
+			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+			datptr+=this->wid*4;
+		}
+}
+else
+{
+	if(hblob==NULL)
+		return;
+	datptr=(unsigned char *)hblob->data();
+	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
+		{
+			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
+			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+			datptr+=this->wid*4;
+		}
+}
+
+#endif
 }
 
 
