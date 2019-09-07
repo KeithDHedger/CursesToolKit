@@ -1,4 +1,5 @@
 1.1.0
+Added utils class to main app class.
 Added 2nd fb image example.
 Made image selectable.
 Made image highlightable.

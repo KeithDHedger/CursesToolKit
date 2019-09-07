@@ -52,6 +52,7 @@ class CTK_mainAppClass
 		CTK_cursesMenuClass						*menuBar=NULL;
 		coloursStruct							colours;
 		bool									runEventLoop=false;
+		CTK_cursesUtilsClass					*utils;
 
 		void									CTK_clearScreen(void);
 		void									CTK_setColours(coloursStruct cs);

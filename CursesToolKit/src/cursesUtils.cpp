@@ -722,7 +722,12 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 }
 
 /**
-* Calulate X position for gadget given total width, gadget width, gadget count and gadget number.   
+* Calulate X position for gadget given total width, gadget width, gadget count and gadget number.
+* \param int sx start position of bounding box.
+* \param int wid of bounding box.
+* \param int gadgetcnt total number of gadgets.
+* \param int gadgetwid gadget width.
+* \param int gadgetnum this gadget number ( base 0 ).
 */
 int CTK_cursesUtilsClass::CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum)
 {

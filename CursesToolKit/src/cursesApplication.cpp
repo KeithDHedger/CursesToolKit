@@ -38,6 +38,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	fflush(NULL);
 	Magick::TerminateMagick();//is this needed?
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
+	delete this->utils;
 }
 
 /**
@@ -54,6 +55,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->pages.clear();
 	this->CTK_addPage();
 	this->pageNumber=0;
+	this->utils=new CTK_cursesUtilsClass;
 
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC|TERMKEY_FLAG_SPACESYMBOL);
 	if(!this->tk)
