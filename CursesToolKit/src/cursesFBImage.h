@@ -39,7 +39,7 @@ class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 		const char				*hiliteColour="cyan";
 
 	private:
-		void				drawFBImage(void);
+		void				drawFBImage(bool hilite);
 		void				*image=NULL;
 		void				*blob=NULL;
 		void				*blobHilite=NULL;

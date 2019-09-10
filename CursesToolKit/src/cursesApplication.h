@@ -96,7 +96,7 @@ class CTK_mainAppClass
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
-		int										CTK_mainEventLoop(int runcnt=0);
+		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 

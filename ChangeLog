@@ -1,4 +1,9 @@
+1.1.1
+Fixed minor bugs.
+
 1.1.0
+Fixed hang on NULL/empty pathname string supplied to make ne fb image.
+Removed redundant select in chooser class.
 Added utils class to main app class.
 Added 2nd fb image example.
 Made image selectable.

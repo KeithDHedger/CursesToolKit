@@ -43,6 +43,7 @@ CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *mc,int x,int y,
 	this->lb->CTK_newListBox(this->sx,this->sy,this->wid,this->hite);
 	this->type=CHOOSERGADGET;
 	this->selectDeselects=false;
+	this->isSelectable=false;
 }
 
 /**

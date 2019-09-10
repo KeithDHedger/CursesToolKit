@@ -66,6 +66,17 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 		delete static_cast<Magick::Blob*>(this->blob);
 	if(this->blobHilite!=NULL)
 		delete static_cast<Magick::Blob*>(this->blobHilite);
+//for errors
+    this->image=NULL;
+    this->blob=NULL;
+    this->blobHilite=NULL;
+    this->wid=1;
+	this->hite=1;
+	this->sx=x;
+	this->sy=y;
+
+	if(access(filepath,F_OK|R_OK)!=(F_OK))
+		return;
 
 	limage=new Magick::Image;
 	lblob=new Magick::Blob;
@@ -91,7 +102,7 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 			limage->strokeColor(this->hiliteColour);
 			limage->fillColor("transparent");
 			limage->strokeWidth(this->hiliteWidth);
-			limage->draw(Magick::DrawableRectangle(0,0,width*fbinfo->charWidth-1,hite*fbinfo->charHeight-1));
+			limage->draw(Magick::DrawableRectangle(0,0,limage->columns()-1,limage->rows()-1));
 			limage->write((hblob));
 		}
 
@@ -119,17 +130,21 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 /**
 * Draw image
 */
-void CTK_cursesFBImageClass::drawFBImage(void)
+void CTK_cursesFBImageClass::drawFBImage(bool hilite)
 {
 #ifdef _IMAGEMAGICK_
 	unsigned char	*datptr;
 	unsigned int	pixoffset;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
+	Magick::Blob	*hblob=static_cast<Magick::Blob*>(this->blobHilite);
 
 	if(lblob==NULL)
 		return;
-	datptr=(unsigned char *)lblob->data();
+	if(hilite==false)
+		datptr=(unsigned char *)lblob->data();
+	else
+		datptr=(unsigned char *)hblob->data();
 	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
 		{
 			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
@@ -146,40 +161,7 @@ void CTK_cursesFBImageClass::drawFBImage(void)
 */
 void CTK_cursesFBImageClass::CTK_drawGadget(bool hilite)
 {
-//	this->drawFBImage(hilite);
-#ifdef _IMAGEMAGICK_
-	unsigned char	*datptr;
-	unsigned int	pixoffset;
-	struct fbData	*fbinfo=this->mc->CTK_getFBData();
-	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
-	Magick::Blob	*hblob=static_cast<Magick::Blob*>(this->blobHilite);
-
-if(hilite==false)
-{
-	if(lblob==NULL)
-		return;
-	datptr=(unsigned char *)lblob->data();
-	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
-		{
-			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
-			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
-			datptr+=this->wid*4;
-		}
-}
-else
-{
-	if(hblob==NULL)
-		return;
-	datptr=(unsigned char *)hblob->data();
-	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
-		{
-			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
-			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
-			datptr+=this->wid*4;
-		}
-}
-
-#endif
+	this->drawFBImage(hilite);
 }
 
 

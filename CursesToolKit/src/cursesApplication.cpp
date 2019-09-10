@@ -425,7 +425,7 @@ void CTK_mainAppClass::setHilite(bool forward)
 * \note runcnt=0 Default, run main loop continously.
 * \note runcnt>0 run main loop runcnt times.
 */
-int CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
+int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 {
 	int						selection=CONT;
 	TermKeyResult			ret;
@@ -439,13 +439,15 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 	int						thisgadgettype;
 	CTK_cursesGadgetClass	*thisgadgetinst;
 
-	this->CTK_clearScreen();
+	if(docls==true)
+		this->CTK_clearScreen();
 	this->CTK_updateScreen(this,NULL);
 	this->useAppWindow=false;
 	SETHIDECURS;
 	fflush(NULL);
 	this->runEventLoop=true;
-
+	key.type=TERMKEY_TYPE_UNKNOWN_CSI;
+	key.code.sym=TERMKEY_SYM_NONE;
 	fd.fd=0;/* the file descriptor we passed to termkey_new() */
 	fd.events=POLLIN;
 
@@ -683,6 +685,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt)
 						this->runEventLoop=false;
 				}
 		}
+	//thispage->currentGadget=-1;;
 	return(key.code.codepoint);
 }
 
