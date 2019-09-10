@@ -518,6 +518,23 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										else
 											setHilite(true);
 										break;
+//arrow select
+									case TERMKEY_SYM_RIGHT:
+										if(this->noHiliteChange==true)
+											{
+												this->noHiliteChange=false;
+												break;
+											}
+										setHilite(true);
+										break;
+									case TERMKEY_SYM_LEFT:
+										if(this->noHiliteChange==true)
+											{
+												this->noHiliteChange=false;
+												break;
+											}
+										setHilite(false);
+										break;
 
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:

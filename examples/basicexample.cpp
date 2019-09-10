@@ -299,19 +299,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	input=mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	input->CTK_setColours(cs);
 
-//TODO//???
-//	checkbox=mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");
-//	checkbox->CTK_setSelectCB(checkselctCB,(void*)1);
-//	checkbox->CTK_setEnterDeselects(false);
-//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
-//	checkbox=mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
-//	checkbox->CTK_setSelectCB(checkselctCB,(void*)2);
-//	checkbox->CTK_setEnterDeselects(false);
-//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
-
-
-
-
 	dropdown=mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
 	dropdown->CTK_addDropItem("Hide Status Bar");
 	dropdown->CTK_addDropItem("Show Status Bar");
@@ -330,7 +317,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	lb->CTK_addListItem("Item 4");
 	lb->CTK_addListItem("Item 5");
 	lb->CTK_addListItem("Item 6");
-	lb->CTK_addListItem("Item 7",(void*)7);
+	lb->CTK_addListItem("Item 7 is a really long line and gets truncated",(void*)7);
 	lb->CTK_setSelectCB(listselctCB,(void*)1);
 
 //use some 256 colours
@@ -353,7 +340,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	lb1->CTK_addListItem("Item 6");
 	lb1->CTK_addListItem("Item 7",(void*)17);
 	lb1->CTK_addListItem("Item 8",(void*)18);
-	lb1->CTK_addListItem("Item 9",(void*)19);
+	lb1->CTK_addListItem("Item 9 is a really long line and gets truncated",(void*)19);
 	lb1->CTK_setSelectCB(listselctCB,(void*)2);
 
 	cs.hiliteBackCol=BACK_CYAN;

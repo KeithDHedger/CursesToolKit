@@ -136,7 +136,7 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 void CTK_cursesGraphicsClass::CTK_printLine(const char *line,int sx,int sy,int boxwidth)
 {
 	//printf("\e[%i;%iH%*s\n",sy,sx,boxwidth,line);
-	printf("\e[%i;%iH\e[%iX%s\n",sy,sx,boxwidth,line);
+	printf("\e[%i;%iH\e[%iX%.*s\n",sy,sx,boxwidth,boxwidth,line);
 }
 
 /**
