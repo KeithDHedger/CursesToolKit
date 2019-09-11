@@ -440,12 +440,16 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 	CTK_cursesGadgetClass	*thisgadgetinst;
 
 	if(docls==true)
-		this->CTK_clearScreen();
-	this->CTK_updateScreen(this,NULL);
+		{
+			this->CTK_clearScreen();
+			this->CTK_updateScreen(this,NULL);
+		}
+
 	this->useAppWindow=false;
 	SETHIDECURS;
 	fflush(NULL);
 	this->runEventLoop=true;
+
 	key.type=TERMKEY_TYPE_UNKNOWN_CSI;
 	key.code.sym=TERMKEY_SYM_NONE;
 	fd.fd=0;/* the file descriptor we passed to termkey_new() */
@@ -690,6 +694,9 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 							}
 						break;
 				}
+
+if(key.code.sym!=TERMKEY_SYM_NONE)
+{
 			this->CTK_emptyIPBuffer();
 			this->CTK_updateScreen(this,NULL);
 			this->showHilighting=true;
@@ -702,7 +709,9 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 						this->runEventLoop=false;
 				}
 		}
-	//thispage->currentGadget=-1;;
+}
+	
+//thispage->currentGadget=-1;;
 	return(key.code.codepoint);
 }
 
@@ -884,5 +893,6 @@ CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType ty
 		}
 	return(NULL);
 }
+
 
 

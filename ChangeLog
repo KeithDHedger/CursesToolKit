@@ -1,4 +1,5 @@
 1.1.1
+Selecting no update in mainevent loop now works. 
 Left/Right arrow keys switch between gadgets. 
 Truncates long lines in list box.
 Fixed minor bugs.
