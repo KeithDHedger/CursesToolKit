@@ -47,6 +47,7 @@ void CTK_cursesListBoxClass::CTK_addListItem(const char *label,void *ud)
 	ls->label=label;
 	ls->userData=ud;
 	this->listItems.push_back(ls);
+	this->gadgetDirty=true;
 }
 
 /**
@@ -57,6 +58,9 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 {
 	char	buffer[4096];
 	char	selected;
+
+	if(	this->gadgetDirty==false)
+		return;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,false);
@@ -88,6 +92,7 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 				}
 		}
 	MOVETO(this->sx,this->sy+this->hite);
+	this->gadgetDirty=false;
 }
 
 /**
@@ -104,6 +109,7 @@ void CTK_cursesListBoxClass::CTK_clearList(void)
 	this->listItems.clear();
 	this->listStart=0;
 	this->listItemNumber=0;
+	this->gadgetDirty=true;
 }
 
 /**
@@ -116,6 +122,7 @@ void CTK_cursesListBoxClass::CTK_newListBox(int x,int y,int width,int hite)
 	this->wid=width;
 	this->hite=hite;
 	this->blank.insert(this->blank.begin(),width,' ');
+	this->gadgetDirty=true;
 }
 
 /**
@@ -153,6 +160,7 @@ void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 						this->listItemNumber--;
 				}
 		}
+	this->gadgetDirty=true;
 }
 
 /**
@@ -162,6 +170,7 @@ void CTK_cursesListBoxClass::CTK_selectAll(void)
 {
 	for(int j=0;j<this->listItems.size();j++)
 		this->selections[j]=true;
+	this->gadgetDirty=true;
 }
 
 /**
@@ -171,6 +180,7 @@ void CTK_cursesListBoxClass::CTK_selectNone(void)
 {
 	for(int j=0;j<this->listItems.size();j++)
 		this->selections[j]=false;
+	this->gadgetDirty=true;
 }
 
 /**
@@ -198,6 +208,7 @@ bool CTK_cursesListBoxClass::CTK_getMultipleSelect(void)
 void CTK_cursesListBoxClass::CTK_toggleItem(int item)
 {
 	this->selections[item]=!this->selections[item];
+	this->gadgetDirty=true;
 }
 
 /**
@@ -206,6 +217,7 @@ void CTK_cursesListBoxClass::CTK_toggleItem(int item)
 void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
 {
 	this->selections[item]=set;
+	this->gadgetDirty=true;
 }
 
 /**

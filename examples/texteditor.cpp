@@ -385,7 +385,7 @@ void mainloopCB(void *mainc,void *data)
 //MOVETO(1,2);
 //printf("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 //fprintf(stderr,"sx=%i -> se=%i\n",srcbox->startSelection,srcbox->endSelection);
-fflush(NULL);
+//fflush(NULL);
 }
 
 int main(int argc, char **argv)

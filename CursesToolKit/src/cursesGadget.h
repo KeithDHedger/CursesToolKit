@@ -70,6 +70,7 @@ class CTK_cursesGadgetClass
 		bool					selectDeselects=true;
 		bool					enabled=true;
 		TermKeySym				selectKey=TERMKEY_SYM_NONE;
+		bool					gadgetDirty=false;
 
 	private:	
 };

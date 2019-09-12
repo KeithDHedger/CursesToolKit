@@ -695,22 +695,21 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 						break;
 				}
 
-if(key.code.sym!=TERMKEY_SYM_NONE)
-{
-			this->CTK_emptyIPBuffer();
-			this->CTK_updateScreen(this,NULL);
-			this->showHilighting=true;
-			if(this->eventLoopCBOut!=NULL)
-				this->eventLoopCBOut(this,this->userData);
-			if(runcnt>0)
-				{
-					countdown--;
-					if(countdown==0)
-						this->runEventLoop=false;
-				}
+			//if(key.code.sym!=TERMKEY_SYM_NONE)
+			//	{
+					this->CTK_emptyIPBuffer();
+					this->CTK_updateScreen(this,NULL);
+					this->showHilighting=true;
+					if(this->eventLoopCBOut!=NULL)
+						this->eventLoopCBOut(this,this->userData);
+					if(runcnt>0)
+						{
+							countdown--;
+							if(countdown==0)
+								this->runEventLoop=false;
+						}
+			//	}
 		}
-}
-	
 //thispage->currentGadget=-1;;
 	return(key.code.codepoint);
 }
