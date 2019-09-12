@@ -439,7 +439,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 	int						thisgadgettype;
 	CTK_cursesGadgetClass	*thisgadgetinst;
 
-//	if(docls==true)
+	if(docls==true)
 		{
 			this->CTK_clearScreen();
 			this->CTK_updateScreen(this,NULL);
