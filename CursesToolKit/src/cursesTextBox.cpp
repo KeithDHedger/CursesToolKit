@@ -45,8 +45,7 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
-	//this->canSelect=selectable;
-
+	this->gadgetDirty=true;
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
 }
@@ -67,6 +66,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	bool						flag=true;
 	char						*txtbuffer;
 
+	this->gadgetDirty=true;
 	this->txtStrings.clear();
 	if(isfilename==false)
 		this->text=txt;
@@ -104,6 +104,9 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 	int xcnt=0;
 	int ycnt=0;
 	int j=0;
+
+	if(this->gadgetDirty==false)
+		return;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);

@@ -390,6 +390,8 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 //fprintf(stderr,"updatescreen current gadg=%i\n",app->pages[app->pageNumber].currentGadget);
 	for(int j=0;j<app->pages[app->pageNumber].gadgets.size();j++)
 		{
+			if(userdata!=NULL)
+				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
 			if((app->showHilighting==true) && (app->pages[app->pageNumber].currentGadget==j))
 				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(true);
 			else
@@ -494,6 +496,9 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 					thisgadgetinst=NULL;
 				}
 
+			if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
+				thisgadgetinst->gadgetDirty=true;
+
 			switch(key.type)
 				{
 					case TERMKEY_TYPE_KEYSYM:
@@ -521,15 +526,18 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 											setHilite(false);
 										else
 											setHilite(true);
+										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
 										break;
 //arrow select
 									case TERMKEY_SYM_RIGHT:
+									//	thisgadgetinst->gadgetDirty=true;
 										if(this->noHiliteChange==true)
 											{
 												this->noHiliteChange=false;
 												break;
 											}
 										setHilite(true);
+										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
 										break;
 									case TERMKEY_SYM_LEFT:
 										if(this->noHiliteChange==true)
@@ -538,10 +546,12 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 												break;
 											}
 										setHilite(false);
+										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
 										break;
 
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
+										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
 												case TEXTGADGET:
@@ -560,6 +570,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_DOWN:
+										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
 												case TEXTGADGET:
@@ -578,6 +589,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_PAGEUP:
+										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
 												case LISTGADGET:
@@ -596,6 +608,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_PAGEDOWN:
+										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
 												case LISTGADGET:
@@ -623,6 +636,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 													continue;
 											}
 
+										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
 												case LISTGADGET:
@@ -688,6 +702,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 											{
 												this->menuBar->menuNumber=j;
 												this->menuBar->selectCB(this->menuBar,NULL);//TODO// add menu number as user data?
+												thisgadgetinst->gadgetDirty=true;
 												break;
 											}
 									}
@@ -853,6 +868,7 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 			if(this->pages[this->pageNumber].gadgets[j]==gadget)
 				{
 					this->pages[this->pageNumber].currentGadget=j;
+					gadget->gadgetDirty=true;
 					return;
 				}
 		}

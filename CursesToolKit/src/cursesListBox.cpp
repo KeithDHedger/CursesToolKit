@@ -60,11 +60,13 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 	char	selected;
 
 
+	if(	this->gadgetDirty==false)
+		return;
+
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,false);
 
-	if(	this->gadgetDirty==false)
-		return;
+
 	for(int j=0;j<this->hite;j++)
 		{
 			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
@@ -160,7 +162,7 @@ void CTK_cursesListBoxClass::CTK_keyUpDown(bool doup,bool page)
 						this->listItemNumber--;
 				}
 		}
-	this->gadgetDirty=true;
+	//this->gadgetDirty=true;
 }
 
 /**
@@ -192,6 +194,7 @@ void CTK_cursesListBoxClass::CTK_setMultipleSelect(bool multi)
 	this->selections.clear();
 	for(int j=0;j<this->listItems.size();j++)
 		this->selections.push_back(false);
+	this->gadgetDirty=true;
 }
 
 /**

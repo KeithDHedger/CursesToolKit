@@ -55,6 +55,7 @@ void CTK_cursesDropClass::CTK_newDropButton(int x,int y,int width,int hite,const
 	this->hite=hite;
 	this->label=label;
 	this->holdLabel=label;
+	this->gadgetDirty=true;
 }
 
 /**
@@ -85,7 +86,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 	if(this->items.size()==0)
 		return;
 
-	this->CTK_drawList(selection);
+	this->drawList(selection);
 
 	while(loop==true)
 		{
@@ -139,7 +140,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 										}
 								}
 					}
-			this->CTK_drawList(selection);
+			this->drawList(selection);
 		}
 	if(this->selectedItem>-1)
 		this->label=this->items[this->selectedItem].label;
@@ -147,7 +148,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 	this->mc->CTK_updateScreen(this->mc,NULL);
 }
 
-void CTK_cursesDropClass::CTK_drawList(int selection)
+void CTK_cursesDropClass::drawList(int selection)
 {
 	CTK_cursesGraphicsClass	gc;
 	int						iy=this->sy+this->hite;
@@ -175,11 +176,13 @@ void CTK_cursesDropClass::CTK_clearList(void)
 	this->selectedItem=-1;
 	this->items.clear();
 	this->label=this->holdLabel;
+	this->gadgetDirty=true;
 }
 
 void CTK_cursesDropClass::CTK_setItemEnabled(int item,bool enable)
 {
-	 this->items[item].enabled=enable;
+	this->items[item].enabled=enable;
+	this->gadgetDirty=true;
 }
 
 bool CTK_cursesDropClass::CTK_getItemEnabled(int item)
@@ -196,6 +199,9 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
 {
 	CTK_cursesGraphicsClass	gc;
 	std::string				str=this->label;
+
+	if(this->gadgetDirty==false)
+		return;
 
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)

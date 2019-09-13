@@ -46,6 +46,9 @@ void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 
 	char	val=' ';
 
+	if(this->gadgetDirty==false)
+		return;
+
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -71,7 +74,7 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 	this->sy=y;
 	this->wid=width;
 	this->hite=1;
-
+	this->gadgetDirty=true;
 	asprintf(&(this->label),"%s",label);
 }
 
@@ -81,6 +84,7 @@ void CTK_cursesCheckBoxClass::CTK_newCheckBox(int x,int y,int width,const char *
 void CTK_cursesCheckBoxClass::CTK_setValue(bool val)
 {
 	this->value=val;
+	this->gadgetDirty=true;
 }
 
 /**

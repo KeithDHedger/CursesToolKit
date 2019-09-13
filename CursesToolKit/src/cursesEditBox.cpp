@@ -64,9 +64,9 @@ void CTK_cursesEditBoxClass::CTK_newBox(int x,int y,int width,int hite,bool isfi
 	this->wid=width;
 	this->hite=hite-1;
 	this->canSelect=selectable;
-
 	this->blank.insert(0,width,' ');
 	this->CTK_updateText(txt,isfilename);
+	this->gadgetDirty=true;
 }
 
 /**
@@ -86,8 +86,10 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	bool						flag=true;
 	std::string					buff;
 
+	this->gadgetDirty=true;
 	this->txtStrings.clear();
 	CTK_freeAndNull(&this->txtBuffer);
+
 	if(reset==true)
 		{
 			this->currentX=0;
@@ -165,7 +167,7 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	const char					*mark=INVERSEON "M" INVERSEOFF;
 	char						charundercurs=0;
 	std::vector<std::string>	edstrings;
-
+//TODO//
 	if(this->thisType==EDITBOXCLASS)
 		edstrings=this->CTK_getStrings();
 	else
@@ -260,6 +262,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 */
 void CTK_cursesEditBoxClass::CTK_drawGadget(bool hilite)
 {
+	if(this->gadgetDirty==false)
+		return;
 	this->drawBox(hilite,false);
 }
 
@@ -541,6 +545,8 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 	std::string buff;
 	buff.clear();
 
+	this->gadgetDirty=true;
+
 	for(int j=0;j<this->txtStrings.size();j++)
 		buff.append(this->txtStrings[j]);
 //	buff.append("\n");
@@ -596,6 +602,8 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 	int startchr=this->currentX;
 	int endchr=startchr;
 
+	this->gadgetDirty=true;
+
 	for(int j=this->currentX;j>=0;j--)
 		if(isalnum(this->txtStrings[this->currentY][j])==false)
 			break;
@@ -616,6 +624,7 @@ void CTK_cursesEditBoxClass::CTK_deleteCurrentWord(void)
 */
 void CTK_cursesEditBoxClass::CTK_deleteCurrentLine(void)
 {
+	this->gadgetDirty=true;
 	this->txtStrings.erase(this->txtStrings.begin()+this->currentY);
 	this->isDirty=true;
 	this->updateBuffer();
@@ -629,6 +638,7 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 {
 	if((txt==NULL) || (strlen(txt)==0))
 		return;
+	this->gadgetDirty=true;
 	this->isDirty=true;
 	this->txtStrings[this->currentY].insert(this->currentX,txt);
 	this->updateBuffer();
@@ -651,6 +661,7 @@ void CTK_cursesEditBoxClass::CTK_insertText(const char *txt)
 */
 void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 {
+	this->gadgetDirty=true;
 	this->currentX=x;
 	this->currentY=y;
 	this->startLine=y;
@@ -697,6 +708,7 @@ void CTK_cursesEditBoxClass::CTK_setTabWidth(int width)
 */
 void CTK_cursesEditBoxClass::CTK_setShowLineNumbers(int show)
 {
+	this->gadgetDirty=true;
 	this->showLineNumbers=show;
 	if(show!=0)
 		this->lineReserve=show+2;
@@ -727,7 +739,8 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	for(j=0;j<this->lineNumbers.size();j++)
 		if(this->lineNumbers[j]==line)
 			break;
-	
+
+	this->gadgetDirty=true;
 	this->currentX=0;
 	this->currentY=j;
 	this->startLine=j;
@@ -819,6 +832,7 @@ void CTK_cursesEditBoxClass::CTK_toggleBookMark(int y)
 			if(this->lineNumbers[j]==y)
 				{
 					this->bookMarks[j]=!this->bookMarks[j];
+					this->gadgetDirty=true;
 					return;
 				}
 		}
@@ -834,6 +848,7 @@ void CTK_cursesEditBoxClass::CTK_setBookMark(int y,bool set)
 			if(this->lineNumbers[j]==y)
 				{
 					this->bookMarks[j]=set;
+					this->gadgetDirty=true;
 					return;
 				}
 		}
@@ -852,6 +867,7 @@ int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
 */
 void CTK_cursesEditBoxClass::refreshLine(void)
 {
+	this->gadgetDirty=true;
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }
@@ -863,6 +879,7 @@ void CTK_cursesEditBoxClass::CTK_startSelecting(void)
 {
 	if(this->isSelecting==true)
 		return;
+	this->gadgetDirty=true;
 	this->multiLineSels.clear();
 	this->needsRefresh=true;
 	this->updateBuffer();
@@ -878,6 +895,7 @@ void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
 {
 	if(this->isSelecting==false)
 		return;
+	this->gadgetDirty=true;
 	isSelecting=false;
 	this->needsRefresh=true;
 }
@@ -901,6 +919,7 @@ void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
 	for(int j=this->multiLineSels.size()-1;j>=0;j--)
 		this->txtStrings[this->multiLineSels[j].line].erase(this->multiLineSels[j].sx,this->multiLineSels[j].ex-this->multiLineSels[j].sx+1);
 
+	this->gadgetDirty=true;
 	this->currentX=this->multiLineSels[0].sx;
 	this->currentY=this->multiLineSels[0].line;
 	this->adjustXY();
@@ -913,6 +932,7 @@ void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
 */
 void CTK_cursesEditBoxClass::CTK_setStatusBarVisible(bool show)
 {
+	this->gadgetDirty=true;
 	this->showStatus=show;
 }
 

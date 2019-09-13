@@ -38,6 +38,8 @@ class CTK_cursesGadgetClass
 		CTK_cursesGadgetClass();
 		virtual ~CTK_cursesGadgetClass();
 
+		bool					gadgetDirty=false;
+
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);
 		void					*CTK_getCBUserData(void);
@@ -70,7 +72,6 @@ class CTK_cursesGadgetClass
 		bool					selectDeselects=true;
 		bool					enabled=true;
 		TermKeySym				selectKey=TERMKEY_SYM_NONE;
-		bool					gadgetDirty=false;
 
 	private:	
 };

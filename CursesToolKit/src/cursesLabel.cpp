@@ -47,7 +47,7 @@ void CTK_cursesLabelClass::CTK_newLabel(int x,int y,int width,int hite,const cha
 	this->wid=width;
 	this->hite=hite;
 	this->centre=(this->wid/2)+this->sx;
-
+	this->gadgetDirty=true;
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt);
 }
@@ -67,6 +67,7 @@ void CTK_cursesLabelClass::CTK_updateText(const char *txt)
 
 	this->txtStrings.clear();
 	this->text=txt;
+	this->gadgetDirty=true;
 
 	str=this->text;
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid,this->tabWidth,this->sx,true);
@@ -80,6 +81,9 @@ void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 	int xcnt=0;
 	int ycnt=0;
 	int j=0;
+
+	if(this->gadgetDirty==false)
+		return;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.labelBoxType,true);

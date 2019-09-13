@@ -76,6 +76,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
 	std::string					buff;
 
+	this->gadgetDirty=true;
 	this->txtStrings.clear();
 	CTK_freeAndNull(&this->txtBuffer);
 	if(reset==true)
@@ -185,6 +186,7 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 	for(int j=0;j<this->txtStrings.size();j++)
 		buff.append(this->txtStrings[j]);
 
+	this->gadgetDirty=true;
 	this->CTK_updateText(buff.c_str(),false,false);
 	this->needsRefresh=false;
 }
@@ -220,6 +222,7 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 */
 void CTK_cursesSourceEditBoxClass::refreshLine(void)
 {
+	this->gadgetDirty=true;
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 	this->gc->CTK_printLine(srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }

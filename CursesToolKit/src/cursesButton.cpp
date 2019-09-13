@@ -47,6 +47,7 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 	this->wid=width;
 	this->hite=hite;
 	asprintf(&(this->label),"%s",label);
+	this->gadgetDirty=true;
 }
 
 //over ridden funcs
@@ -56,6 +57,9 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 */
 void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 {
+	if(this->gadgetDirty==false)
+		return;
+
 	MOVETO(this->sx,this->sy);
 	if(this->enabled==false)
 		{
