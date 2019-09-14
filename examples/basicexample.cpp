@@ -206,7 +206,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-	sleep(2);
+	//sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
@@ -263,7 +263,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
 
-	mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
+	textbox=mainApp->CTK_addNewTextBox(3,3,80,8,sampletxt);
 
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/xxx");
 //	mainApp->CTK_addNewTextBox(3,3,80,8,true,"/tmp/manfile");
@@ -378,7 +378,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 ////CTK_cursesLabelClass*  lab=static_cast<CTK_cursesLabelClass*>(mainApp->CTK_getGadgetNum(0,LABELGADGET,0));
 //fprintf(stderr,"gadget %i=%p text='%s'\n",1,gad,static_cast<CTK_cursesTextBoxClass*>(gad)->CTK_getText().c_str());
 
-//mainApp->CTK_setDefaultGadget(CHKBOX,0);
+	mainApp->CTK_setDefaultGadget(textbox);
 //	mainApp->CTK_setDefaultGadget(INPUT,0);
 	mainApp->menuBar->CTK_setMenuShortCut(0,5,'Q');
 	mainApp->eventLoopCBIn=mainloopCBIn;

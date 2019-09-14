@@ -491,6 +491,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 				{
 					thisgadgetinst=thispage->gadgets[thisgadget];
 					thisgadgettype=thispage->gadgets[thisgadget]->CTK_getGadgetType();
+					if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
+						thisgadgetinst->gadgetDirty=true;
 				}
 			else
 				{
@@ -499,8 +501,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 				}
 			hilite=true;
 
-			if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
-				thisgadgetinst->gadgetDirty=true;
+//			if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
+//				thisgadgetinst->gadgetDirty=true;
 
 			switch(key.type)
 				{
@@ -532,8 +534,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 													hilite=false;
 													break;
 											}
-										
-										thisgadgetinst->hiLited=false;
+										if(thisgadget!=-1)
+											thisgadgetinst->hiLited=false;
 										if(this->noHiliteChange==false)
 											setHilite(hilite);
 										this->noHiliteChange=false;
@@ -543,6 +545,10 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 
 //scroll txt boxes and lists
 									case TERMKEY_SYM_UP:
+										if(thisgadget<0)
+											break;
+										if(thisgadgetinst->hiLited==false)
+												break;
 										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
@@ -562,6 +568,10 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_DOWN:
+										if(thisgadget<0)
+											break;
+										if(thisgadgetinst->hiLited==false)
+											break;
 										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
@@ -586,6 +596,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_PAGEUP:
+										if(thisgadget<0)
+											break;
 										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
@@ -605,6 +617,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 
 									case TERMKEY_SYM_PAGEDOWN:
+										if(thisgadget<0)
+											break;
 										thisgadgetinst->gadgetDirty=true;
 										switch(thisgadgettype)
 											{
@@ -625,6 +639,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 
 //select key
 									default:
+										if(thisgadget<0)
+											break;
 										if((key.code.sym!=this->selectKey) && (thisgadgetinst->CTK_getSelectKey()==TERMKEY_SYM_NONE))
 											continue;
 										if(thisgadgetinst->CTK_getSelectKey()!=TERMKEY_SYM_NONE)
@@ -741,7 +757,7 @@ void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
 int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
-	ps.currentGadget=0;
+	ps.currentGadget=-1;
 	ps.userData=NULL;
 	ps.menusActive=true;
 	ps.gadgets.clear();
@@ -870,6 +886,7 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 				{
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
+					gadget->hiLited=true;
 					return;
 				}
 		}

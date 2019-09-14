@@ -867,7 +867,7 @@ int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
 */
 void CTK_cursesEditBoxClass::refreshLine(void)
 {
-	this->gadgetDirty=true;
+//	this->gadgetDirty=true;
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }

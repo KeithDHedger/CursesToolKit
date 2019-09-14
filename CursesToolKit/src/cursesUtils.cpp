@@ -257,8 +257,8 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
+			fud->app->CTK_setDefaultGadget(fud->btnOK);
 			fud->app->CTK_updateScreen(fud->app,NULL);
-//			fud->btnOK->CTK_drawGadget(true);//TODO//
 			fud->app->useAppWindow=false;
 			return;
 		}
@@ -273,8 +273,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			cs.fancyGadgets=true;
 			selectapp->CTK_setColours(cs);
 
-			subfud->editGadget=selectapp->CTK_addNewEditBox(selectapp,selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,true,(char*)fud->licenceFilename);//TODO//text box
-			subfud->editGadget->CTK_setEditable(false);
+			subfud->textGadget=selectapp->CTK_addNewTextBox(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
 
 			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
 			subfud->app=selectapp;
@@ -285,6 +284,9 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
+			fud->app->CTK_setDefaultGadget(fud->btnOK);
+			//fud->app->pages[fud->app->pageNumber].currentGadget+=-1;
+			//fud->app->noHiliteChange=true;//TODO//
 			fud->app->CTK_updateScreen(fud->app,NULL);
 			fud->app->useAppWindow=false;
 			return;
@@ -398,7 +400,9 @@ bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,b
 	fud->checkGadget->CTK_setSelectCB(checkSelectCB,fud);
 	fud->checkGadget->CTK_setSelectDeselects(false);
 
+	selectapp->CTK_setDefaultGadget(chooser->lb);
 	selectapp->CTK_mainEventLoop();
+
 	if(fud->buttonPressed==CANCELBUTTON)
 		retval=false;
 
@@ -476,6 +480,7 @@ bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wna
 
 	this->isValidFile=true;
 
+	selectapp->CTK_setDefaultGadget(chooser->lb);
 	selectapp->CTK_mainEventLoop();
 
 	if(fud->buttonPressed==CANCELBUTTON)
@@ -579,6 +584,8 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
 
 	selectapp->CTK_setDefaultGadget(fud->inputGadget);
+	selectapp->CTK_updateScreen(selectapp,(void*)1);
+	fud->inputGadget->CTK_doInput();
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
 	this->intResult=fud->buttonPressed;
@@ -595,11 +602,12 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 */
 int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth)
 {
-	fileUDStruct		*fud=new fileUDStruct;
-	coloursStruct		cs;
-	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
-	int					btnnum=0;
-	int					maxbtns=0;
+	CTK_cursesButtonClass*	defhold=NULL;
+	fileUDStruct			*fud=new fileUDStruct;
+	coloursStruct			cs;
+	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
+	int						btnnum=0;
+	int						maxbtns=0;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -628,13 +636,13 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 		maxbtns++;
 	if((buttons&CANCELBUTTON)==CANCELBUTTON)
 		maxbtns++;
-
+	
 	if((buttons&YESBUTTON)==YESBUTTON)
 		{
 			fud->btnOK=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"  OK  ");
 			fud->btnOK->CTK_setColours(cs);
-			selectapp->CTK_setDefaultGadget(fud->btnOK);
 			fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
+			defhold=fud->btnOK;
 			btnnum++;
 		}
 
@@ -642,8 +650,8 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 		{
 			fud->btnNo=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"  NO  ");
 			fud->btnNo->CTK_setColours(cs);
-			selectapp->CTK_setDefaultGadget(fud->btnNo);
 			fud->btnNo->CTK_setSelectCB(buttonSelectCB,fud);
+			defhold=fud->btnNo;
 			btnnum++;
 		}
 
@@ -651,11 +659,12 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 		{
 			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"CANCEL");
 			fud->btnCancel->CTK_setColours(cs);
-			selectapp->CTK_setDefaultGadget(fud->btnCancel);
 			fud->btnCancel->CTK_setSelectCB(buttonSelectCB,fud);
+			defhold=fud->btnCancel;
 			btnnum++;
 		}
 
+	selectapp->CTK_setDefaultGadget(defhold);
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
 	this->intResult=fud->buttonPressed;

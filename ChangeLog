@@ -1,4 +1,7 @@
 1.1.1
+Reset default gadget in about box.
+Changed about box licence gadget to text gadget.
+Fixed default gadget for query box.
 Fixed Hilighting after selecting gadget.
 Code clean.
 Made drop down class draw list private.

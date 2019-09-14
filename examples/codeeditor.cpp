@@ -432,9 +432,12 @@ int main(int argc, char **argv)
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
-	//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setEditable(false);
 	rebuildBMMenu();
-//fprintf(stderr,">%s<\n",typeid(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]).name());
+
+//clear screen etc
+	mainApp->CTK_mainEventLoop(-1);
+	mainApp->CTK_setDefaultGadget(srcbox);
+	srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)

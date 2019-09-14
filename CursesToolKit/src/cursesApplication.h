@@ -53,6 +53,7 @@ class CTK_mainAppClass
 		coloursStruct							colours;
 		bool									runEventLoop=false;
 		CTK_cursesUtilsClass					*utils;
+		bool									noHiliteChange=false;
 
 		void									CTK_clearScreen(void);
 		void									CTK_setColours(coloursStruct cs);
@@ -118,7 +119,7 @@ class CTK_mainAppClass
 	private:
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
-		bool									noHiliteChange=false;
+	//	bool									noHiliteChange=false;
 
 		void									setHilite(bool forward);
 		struct fbData							frameBufferData;
