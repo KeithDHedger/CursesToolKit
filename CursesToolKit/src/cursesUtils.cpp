@@ -257,9 +257,9 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
-			fud->app->CTK_setDefaultGadget(fud->btnOK);
+		//	fud->app->CTK_setDefaultGadget(fud->btnOK);
 			fud->app->CTK_updateScreen(fud->app,NULL);
-			fud->app->useAppWindow=false;
+		//	fud->app->useAppWindow=false;
 			return;
 		}
 
@@ -284,11 +284,17 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 
 			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
-			fud->app->CTK_setDefaultGadget(fud->btnOK);
+			//fud->app->CTK_setDefaultGadget(fud->btnOK);
 			//fud->app->pages[fud->app->pageNumber].currentGadget+=-1;
 			//fud->app->noHiliteChange=true;//TODO//
+			////fud->app->noHiliteChange=true;
+			//fud->app->setHilite(true);
+			//fud->btnNo->hiLited=false;
+			///fud->app->CTK_mainEventLoop(-10);
+			///fud->app->runEventLoop=true;
 			fud->app->CTK_updateScreen(fud->app,NULL);
-			fud->app->useAppWindow=false;
+			///fud->app->useAppWindow=false;
+			//fud->app->pages[fud->app->pageNumber].currentGadget=0;
 			return;
 		}
 

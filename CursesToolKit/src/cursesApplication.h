@@ -116,6 +116,9 @@ class CTK_mainAppClass
 		void									*userData=NULL;
 		bool									showHilighting=true;
 
+
+		//void									setHilite(bool forward);
+
 	private:
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
