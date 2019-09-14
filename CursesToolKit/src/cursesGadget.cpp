@@ -43,6 +43,7 @@ void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 	this->enabled=true;
 	this->selectKey=TERMKEY_SYM_NONE;
 	this->gadgetDirty=true;
+	this->hiLited=false;
 }
 
 const gadgetType CTK_cursesGadgetClass::CTK_getGadgetType(void)

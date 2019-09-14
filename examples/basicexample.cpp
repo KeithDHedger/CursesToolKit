@@ -72,8 +72,8 @@ void buttonselctCB(void *inst,void *userdata)
 	if(ud==2)
 		{
 			dropdown->CTK_clearList();
-			dropdown->CTK_addDropItem("item 100");
-			dropdown->CTK_addDropItem("item 200");
+			dropdown->CTK_addDropItem("Hide Status Bar");
+			dropdown->CTK_addDropItem("Show Status Bar");
 			dropdown->CTK_addDropItem("item 30000");
 			dropdown->CTK_addDropItem("item 50000");
 			lb1->CTK_selectNone();

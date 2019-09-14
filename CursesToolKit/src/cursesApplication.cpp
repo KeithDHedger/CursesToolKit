@@ -392,10 +392,11 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 		{
 			if(userdata!=NULL)
 				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
-			if((app->showHilighting==true) && (app->pages[app->pageNumber].currentGadget==j))
-				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(true);
-			else
-				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
+			app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
+//			if((app->showHilighting==true) && (app->pages[app->pageNumber].currentGadget==j))
+//				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(true);
+//			else
+//				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
 		}
 	SETNORMAL;
 }
@@ -440,6 +441,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 	struct pageStruct		*thispage;
 	int						thisgadgettype;
 	CTK_cursesGadgetClass	*thisgadgetinst;
+	bool					hilite;
 
 	if(docls==true)
 		{
@@ -495,6 +497,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 					thisgadgettype=BASEGADGET;
 					thisgadgetinst=NULL;
 				}
+			hilite=true;
 
 			if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
 				thisgadgetinst->gadgetDirty=true;
@@ -517,36 +520,25 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										break;
 //tab select
 									case TERMKEY_SYM_TAB:
-										if(this->noHiliteChange==true)
-											{
-												this->noHiliteChange=false;
-												break;
-											}
-										if((key.modifiers==1) || (key.modifiers==2))
-											setHilite(false);
-										else
-											setHilite(true);
-										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
-										break;
-//arrow select
 									case TERMKEY_SYM_RIGHT:
-									//	thisgadgetinst->gadgetDirty=true;
-										if(this->noHiliteChange==true)
-											{
-												this->noHiliteChange=false;
-												break;
-											}
-										setHilite(true);
-										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
-										break;
 									case TERMKEY_SYM_LEFT:
-										if(this->noHiliteChange==true)
+										switch(key.code.sym)
 											{
-												this->noHiliteChange=false;
-												break;
+												case TERMKEY_SYM_TAB:
+													if((key.modifiers==1) || (key.modifiers==2))
+														hilite=false;
+													break;
+												case TERMKEY_SYM_LEFT:													
+													hilite=false;
+													break;
 											}
-										setHilite(false);
+										
+										thisgadgetinst->hiLited=false;
+										if(this->noHiliteChange==false)
+											setHilite(hilite);
+										this->noHiliteChange=false;
 										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
+										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->hiLited=true;
 										break;
 
 //scroll txt boxes and lists
@@ -582,6 +574,11 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 												case EDITGADGET:
 												case SRCGADGET:
 													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()+1);
+													break;
+												case DROPGADGET:
+													static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
+													if(thisgadgetinst->selectCB!=NULL)
+														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
 													break;
 												default:
 													break;
@@ -637,53 +634,57 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 											}
 
 										thisgadgetinst->gadgetDirty=true;
-										switch(thisgadgettype)
+										if(thisgadgetinst->hiLited==true)
 											{
-												case LISTGADGET:
-													if(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_getMultipleSelect()==true)
-														static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_toggleItem(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->listItemNumber);
-													if(thisgadgetinst->selectCB!=NULL)
-														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-													break;
-												case DROPGADGET:
-													static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
-													if(thisgadgetinst->selectCB!=NULL)
-														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-													break;
-												case BUTTONGADGET://TODO//
-												case CHECKGADGET:
-												case IMAGEGADGET:
-													if(thisgadgetinst->selectCB!=NULL)
-														{
-															thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-														}
-													break;
-												case INPUTGADGET:
-													static_cast<CTK_cursesInputClass*>(thisgadgetinst)->CTK_doInput();
-													break;
+												switch(thisgadgettype)
+													{
+														case LISTGADGET:
+															if(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_getMultipleSelect()==true)
+																static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_toggleItem(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->listItemNumber);
+															if(thisgadgetinst->selectCB!=NULL)
+																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+															break;
+														case DROPGADGET:
+															static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
+															if(thisgadgetinst->selectCB!=NULL)
+																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+															break;
+														case BUTTONGADGET://TODO//
+														case CHECKGADGET:
+														case IMAGEGADGET:
+															if(thisgadgetinst->selectCB!=NULL)
+																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+															break;
+														case INPUTGADGET:
+															static_cast<CTK_cursesInputClass*>(thisgadgetinst)->CTK_doInput();
+															break;
 
-												case EDITGADGET:
-												case SRCGADGET:
-													if(thisgadgetinst->CTK_getGadgetType()==EDITGADGET)
-														static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_doEvent(false,static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings());
-													else
-														static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getSrcStrings());
+														case EDITGADGET:
+														case SRCGADGET:
+															if(thisgadgetinst->CTK_getGadgetType()==EDITGADGET)
+																static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_doEvent(false,static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings());
+															else
+																static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getSrcStrings());
 													
-													this->CTK_emptyIPBuffer();
-													this->CTK_updateScreen(this,NULL);
-													if(this->eventLoopCBOut!=NULL)
-														this->eventLoopCBOut(this,this->userData);
-													continue;
-													break;
+															this->CTK_emptyIPBuffer();
+															this->CTK_updateScreen(this,NULL);
+															if(this->eventLoopCBOut!=NULL)
+																this->eventLoopCBOut(this,this->userData);
+															continue;
+															break;
 
-												default:
-													break;
-											}
-										if(this->pages[this->pageNumber].currentGadget!=-1)
-											{
-												this->showHilighting=!thisgadgetinst->CTK_getSelectDeselects();
-												thisgadgetinst->CTK_drawGadget(this->showHilighting);
-												this->noHiliteChange=true;
+														default:
+															break;
+													}
+
+												if(this->pages[this->pageNumber].currentGadget!=-1)
+													{
+														if(thisgadgetinst->CTK_getSelectDeselects()==true)
+															this->noHiliteChange=true;
+											
+														thisgadgetinst->hiLited=!thisgadgetinst->CTK_getSelectDeselects();
+														thisgadgetinst->CTK_drawGadget(thisgadgetinst->hiLited);
+													}
 											}
 										break;
 								}

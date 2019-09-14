@@ -1,4 +1,6 @@
 1.1.1
+Fixed Hilighting after selecting gadget.
+Code clean.
 Made drop down class draw list private.
 Set gadget dirty when needing refresh. ( more flickering fixes .)
 Selecting no update in mainevent loop now works. 
