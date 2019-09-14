@@ -73,21 +73,24 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	else
 		{
 			f=fopen(txt,"rb");
-			fseek(f,0,SEEK_END);
-			fsize=ftell(f);
-			if(fsize==0)
+			if(f!=NULL)
 				{
-					txtbuffer=(char*)malloc(2);
-					sprintf(txtbuffer,"\n");
+					fseek(f,0,SEEK_END);
+					fsize=ftell(f);
+					if(fsize==0)
+						asprintf(&txtbuffer,"\n");
+					else
+						{
+							fseek(f,0,SEEK_SET);
+							txtbuffer=(char*)malloc(fsize+1);
+							fread(txtbuffer,1,fsize,f);
+							txtbuffer[fsize]=0;
+						}
+					fclose(f);
 				}
 			else
-				{
-					fseek(f,0,SEEK_SET);
-					txtbuffer=(char*)malloc(fsize+1);
-					fread(txtbuffer,1,fsize,f);
-					txtbuffer[fsize]=0;
-				}
-			fclose(f);
+				asprintf(&txtbuffer,"%s",txt);
+
 			this->text=txtbuffer;
 			free(txtbuffer);
 		}

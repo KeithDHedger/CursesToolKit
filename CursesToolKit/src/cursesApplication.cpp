@@ -524,6 +524,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 									case TERMKEY_SYM_TAB:
 									case TERMKEY_SYM_RIGHT:
 									case TERMKEY_SYM_LEFT:
+									//fprintf(stderr,"000000000000000000000\n");
 										switch(key.code.sym)
 											{
 												case TERMKEY_SYM_TAB:
@@ -534,10 +535,12 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 													hilite=false;
 													break;
 											}
+									//fprintf(stderr,"555555555555555555555\n");
 										if(thisgadget!=-1)
 											thisgadgetinst->hiLited=false;
 										if(this->noHiliteChange==false)
 											setHilite(hilite);
+									//fprintf(stderr,"999999999999999999999\n");
 										this->noHiliteChange=false;
 										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
 										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->hiLited=true;
