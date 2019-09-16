@@ -94,7 +94,7 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 				}
 		}
 	MOVETO(this->sx,this->sy+this->hite);
-	this->gadgetDirty=false;
+//	this->gadgetDirty=false;
 }
 
 /**

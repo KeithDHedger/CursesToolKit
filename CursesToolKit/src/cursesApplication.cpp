@@ -387,16 +387,13 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 					printf("%s",app->title);
 				}
 		}
-//fprintf(stderr,"updatescreen current gadg=%i\n",app->pages[app->pageNumber].currentGadget);
+
 	for(int j=0;j<app->pages[app->pageNumber].gadgets.size();j++)
 		{
 			if(userdata!=NULL)
 				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
 			app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
-//			if((app->showHilighting==true) && (app->pages[app->pageNumber].currentGadget==j))
-//				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(true);
-//			else
-//				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
+			app->pages[app->pageNumber].gadgets[j]->gadgetDirty=false;
 		}
 	SETNORMAL;
 }

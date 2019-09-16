@@ -97,6 +97,7 @@ class CTK_mainAppClass
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
+		void									CTK_setTermKeyRun(bool start);
 		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
@@ -116,7 +117,6 @@ class CTK_mainAppClass
 		void									*userData=NULL;
 		bool									showHilighting=true;
 
-		void									CTK_setTermKeyRun(bool start);
 
 	private:
 		TermKey									*tk;
