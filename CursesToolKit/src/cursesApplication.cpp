@@ -422,6 +422,19 @@ void CTK_mainAppClass::setHilite(bool forward)
 }
 
 /**
+* Switch Termkey instance on/off.
+* \note Termkey should be switched off before running external programs.
+* \note Switch back on after extenal app exits.
+*/
+void CTK_mainAppClass::CTK_setTermKeyRun(bool start)
+{
+	if(start==true)
+		termkey_start(this->tk);
+	else
+		termkey_stop(this->tk);
+}
+
+/**
 * Main event loop.
 * \note Handles highlighting selecting etc etc.
 * \note runcnt<0 Wait upto abs(runcnt) ms for a keypress, run 1 main loop if timeout.

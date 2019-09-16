@@ -116,8 +116,7 @@ class CTK_mainAppClass
 		void									*userData=NULL;
 		bool									showHilighting=true;
 
-
-		//void									setHilite(bool forward);
+		void									CTK_setTermKeyRun(bool start);
 
 	private:
 		TermKey									*tk;
