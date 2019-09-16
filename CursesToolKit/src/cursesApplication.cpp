@@ -902,8 +902,10 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
 					gadget->hiLited=true;
-					return;
+					//return;
 				}
+			else
+				gadget->hiLited=false;
 		}
 }
 
