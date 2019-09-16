@@ -905,7 +905,11 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 					//return;
 				}
 			else
-				gadget->hiLited=false;
+				{
+					if(gadget->hiLited==true)
+						gadget->gadgetDirty=true;
+					gadget->hiLited=false;
+				}
 		}
 }
 
