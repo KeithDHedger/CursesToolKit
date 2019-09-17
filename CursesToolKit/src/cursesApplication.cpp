@@ -895,6 +895,16 @@ void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 */
 void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 {
+//un hilite all gadgets
+	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+		{
+			gadget->gadgetDirty=true;
+			gadget->hiLited=false;
+			gadget->CTK_drawGadget(false);
+			gadget->gadgetDirty=false;
+		}
+
+//hilight default
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 		{
 			if(this->pages[this->pageNumber].gadgets[j]==gadget)
@@ -902,13 +912,7 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget)
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
 					gadget->hiLited=true;
-					//return;
-				}
-			else
-				{
-					if(gadget->hiLited==true)
-						gadget->gadgetDirty=true;
-					gadget->hiLited=false;
+					return;
 				}
 		}
 }
