@@ -1,4 +1,5 @@
 1.1.1
+Fixed entry dialog bug.
 Fixed setting default gadget from callback.
 Added turn termkey on/off.
 Fixed trying to load non existant file into text box.

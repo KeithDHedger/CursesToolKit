@@ -589,9 +589,10 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		}
 	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
 
-	selectapp->CTK_setDefaultGadget(fud->inputGadget);
-	selectapp->CTK_updateScreen(selectapp,(void*)1);
-	fud->inputGadget->CTK_doInput();
+	selectapp->CTK_setDefaultGadget(fud->btnOK);
+	//selectapp->CTK_setDefaultGadget(fud->inputGadget);
+	//selectapp->CTK_updateScreen(selectapp,NULL);
+	//fud->inputGadget->CTK_doInput();
 	selectapp->CTK_mainEventLoop();
 	app->CTK_clearScreen();
 	this->intResult=fud->buttonPressed;
