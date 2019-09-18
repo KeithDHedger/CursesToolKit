@@ -892,20 +892,21 @@ void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 
 /**
 * Set the gadget to immediately highlight.
+\note unlite default=true, set to false to NOT unhilite existant gadgets.
 */
 void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool unhilite)
 {
 //un hilite all gadgets
-if(unhilite==true)
-{
-	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
-		{
-			gadget->gadgetDirty=true;
-			gadget->hiLited=false;
-			gadget->CTK_drawGadget(false);
-			gadget->gadgetDirty=false;
-		}
-}
+	if(unhilite==true)
+	{
+		for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+			{
+				gadget->gadgetDirty=true;
+				gadget->hiLited=false;
+				gadget->CTK_drawGadget(false);
+				gadget->gadgetDirty=false;
+			}
+	}
 //hilight default
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 		{
