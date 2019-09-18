@@ -102,7 +102,7 @@ class CTK_mainAppClass
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 
-		void									CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget);
+		void									CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool unhilite=true);
 		CTK_cursesGadgetClass*					CTK_getGadgetNum(int page,gadgetType type,int nth);
 
 		struct fbData							*CTK_getFBData(void);
