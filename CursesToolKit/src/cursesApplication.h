@@ -36,6 +36,18 @@ class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
 class CTK_cursesFBImageClass;
 
+//union { int a; float b; char c;} union_var=97;
+enum  varType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
+
+struct varsStruct
+{
+	std::string	varName="";
+	int			vType=BADTYPE;
+	bool		boolVar=false;
+	int			intVar=-1;
+	std::string	charVar="";	
+};
+
 enum {HLNONE=-1,HLBUTTONS,HLDROPDOWNS,HLTEXT,HLINPUTS,HLLISTS,HLCHKBOXS,HLEDITBOXES,HLSRCEDITBOXES,HLNOMORE};
 
 class CTK_mainAppClass
@@ -65,6 +77,10 @@ class CTK_mainAppClass
 		void									CTK_setPageUserData(int pagenum,void *userdata);
 		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
 		void									CTK_setTabWidth(int width);
+
+//prefs
+		void									CTK_saveVars(const char *filepath,std::vector<varsStruct> vs);
+		std::vector<varsStruct>					CTK_loadVars(const char *filepath);
 
 		void									(*eventLoopCBIn)(void*,void*)=NULL;
 		void									(*eventLoopCBOut)(void*,void*)=NULL;

@@ -1,4 +1,6 @@
 1.1.1
+Added write/read vars example.
+Added save/load variables to main app class.
 Set entry box as default gadget in entry dialog.
 Fixed entry dialog bug.
 Fixed setting default gadget from callback.
