@@ -21,6 +21,8 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
+static const char	*osKLine[2][5]={{"1234567890","qwertyuiop","asdfghjkl","zxcvbnm","S< >._/-BF"},{":;+={}£$%^","QWERTYUIOP","ASDFGHJKL","ZXCVBNM","S< >[]~@BF"}};
+
 class CTK_cursesInputClass : public CTK_cursesGadgetClass
 {
 	public:
@@ -36,6 +38,7 @@ class CTK_cursesInputClass : public CTK_cursesGadgetClass
 		void					CTK_drawGadget(bool hilite);
 
 	private:
+		bool					osKeyboard=false;
 		int						curs=0;
 		int						startChar=0;
 		std::string				text;

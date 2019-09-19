@@ -554,6 +554,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
 	int					maxbtns=1;
 	int					btnnum=0;
+	int					sy=(selectapp->maxRows/2)-6+2;
 
 	fud->app=selectapp;
 	fud->inst=this;
@@ -565,25 +566,24 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	cs.fancyGadgets=true;
 	selectapp->CTK_setColours(cs);
 
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+
-1,10,name,title);
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,sy,dialogwidth+1,10,name,title);
 	cs.labelBoxType=NOBOX;	
-	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,5,bodytxt);
+	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),sy+1,dialogwidth,5,bodytxt);
 	fud->labelGadget->CTK_setJustify(CENTRE);
 	fud->labelGadget->CTK_setColours(cs);
 
-	fud->inputGadget=selectapp->CTK_addNewInput((selectapp->maxCols/2)-(dialogwidth/2)+1,(selectapp->maxRows/2)+1,dialogwidth-2,1,defaulttxt);
+	fud->inputGadget=selectapp->CTK_addNewInput((selectapp->maxCols/2)-(dialogwidth/2)+1,sy+7,dialogwidth-2,1,defaulttxt);
 
 	if(hascancel==true)
 		maxbtns=2;
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
-	fud->btnOK=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum++),(selectapp->maxRows/2)+3,6,1,"  OK  ");
+	fud->btnOK=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum++),sy+9,6,1,"  OK  ");
 	fud->btnOK->CTK_setColours(cs);
 	if(hascancel==true)
 		{
-			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),(selectapp->maxRows/2)+3,6,1,"CANCEL");
+			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),sy+9,6,1,"CANCEL");
 			fud->btnCancel->CTK_setColours(cs);
 			fud->btnCancel->CTK_setSelectCB(buttonSelectCB,fud);
 		}

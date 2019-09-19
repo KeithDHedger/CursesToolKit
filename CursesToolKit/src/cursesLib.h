@@ -188,19 +188,6 @@ static inline void CTK_freeAndNull(char **data)
 		}
 }
 
-///**
-//* Delete an object and set to NULL
-//*/
-//static inline void CTK_deleteAndNull(void **data)
-//{
-//	if((data!=NULL) && (*data!=NULL))
-//		{
-//			delete (*data);
-//			*data=NULL;
-//		}
-//}
-
-
 /**
 * Check if line will fit into len
 * \note tabwidth should match terminal/console tabwidth.

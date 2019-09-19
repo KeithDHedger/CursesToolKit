@@ -1,4 +1,5 @@
 1.1.1
+Corrected placment of entry dialog for short windows.
 Added write/read vars example.
 Added save/load variables to main app class.
 Set entry box as default gadget in entry dialog.
