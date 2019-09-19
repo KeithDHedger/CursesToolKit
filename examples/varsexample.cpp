@@ -80,6 +80,8 @@ int main(int argc, char **argv)
 	
 	SETSHOWCURS;
 	delete mainApp;
+	outvs.clear(); 
+	invs.clear(); 
 	printf("\n");
 	return 0;
 

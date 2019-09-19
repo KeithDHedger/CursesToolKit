@@ -34,8 +34,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 		}
 
 	this->pages.clear();
-	termkey_destroy(this->tk);
 	fflush(NULL);
+	termkey_destroy(this->tk);
 	Magick::TerminateMagick();//is this needed?
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 	delete this->utils;
