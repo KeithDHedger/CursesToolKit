@@ -22,7 +22,7 @@
 
 
 /**
-* Input box class destroy.
+* Keyboard box class destroy.
 */
 CTK_cursesKeyboardClass::~CTK_cursesKeyboardClass()
 {
@@ -30,7 +30,7 @@ CTK_cursesKeyboardClass::~CTK_cursesKeyboardClass()
 }
 
 /**
-* Input box class.
+* Keyboard box class.
 */
 CTK_cursesKeyboardClass::CTK_cursesKeyboardClass(CTK_mainAppClass *mc)
 {
@@ -66,7 +66,7 @@ void CTK_cursesKeyboardClass::updateText(const char *txt)
 }
 
 /**
-* New input gadget.
+* New Keyboard gadget.
 */
 void CTK_cursesKeyboardClass::CTK_newKeyboard(int x,int y, int w,int h,const char *txt)
 {
@@ -79,7 +79,7 @@ void CTK_cursesKeyboardClass::CTK_newKeyboard(int x,int y, int w,int h,const cha
 }
 
 /**
-* Draw input gadget.
+* Draw Keyboard gadget.
 */
 void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 {
@@ -89,10 +89,7 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
 
-//	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-//	else
-//	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+	setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
 	MOVETO(this->sx,this->sy);
 	printf("%s",this->blank.c_str());
@@ -109,15 +106,13 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 		}
 	MOVETO(this->sx+this->cx,this->sy+this->cy+1);
 	setBothColours(FORE_GREEN,BACK_BLACK,this->colours.use256Colours);
-//this->cx=3;
-//this->cy=2;
 
 	printf("%c",osKLine[this->cPage][this->cy][this->cx]);
 	MOVETO(this->sx+this->curs,this->sy);
 }
 
 /**
-* Event loop for input gadget.
+* Event loop for Keyboard gadget.
 */
 void CTK_cursesKeyboardClass::CTK_doInput(void)
 {
