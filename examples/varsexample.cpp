@@ -77,7 +77,17 @@ int main(int argc, char **argv)
 						break;
 				}					
 		}
-	
+
+	fprintf(stderr,"\n>>>>>\n");
+	vsitem=mainApp->CTK_findVar(invs,"firstvar");
+	if(vsitem.vType!=BADTYPE)
+		fprintf(stderr,"abool=%i\n",vsitem.boolVar);
+
+	vsitem=mainApp->CTK_findVar(invs,"3rdvar");
+	if(vsitem.vType!=BADTYPE)
+		fprintf(stderr,"3rdvar=%s\n",vsitem.charVar.c_str());
+	fprintf(stderr,">>>>>\n");
+
 	SETSHOWCURS;
 	delete mainApp;
 	outvs.clear(); 

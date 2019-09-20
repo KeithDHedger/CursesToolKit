@@ -81,6 +81,7 @@ class CTK_mainAppClass
 //prefs
 		void									CTK_saveVars(const char *filepath,std::vector<varsStruct> vs);
 		std::vector<varsStruct>					CTK_loadVars(const char *filepath);
+		varsStruct								CTK_findVar(std::vector<varsStruct> vs,const char *varname);
 
 		void									(*eventLoopCBIn)(void*,void*)=NULL;
 		void									(*eventLoopCBOut)(void*,void*)=NULL;

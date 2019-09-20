@@ -1,4 +1,5 @@
 1.1.1
+Added find variable to main class.
 Fixed updating gadgets under menus.
 Fixed updating window.
 Added dropdown on screen keyboard to input class.

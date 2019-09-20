@@ -1040,3 +1040,21 @@ void CTK_mainAppClass::CTK_saveVars(const char *filepath,std::vector<varsStruct>
 }
 
 
+/**
+* find variable from vector of varsStructs.
+* \param const char *varname.
+* \param std::vector<varsStruct>.
+* \note On return varsStruct.vType is set to type of var found.
+* \note A type of BADTYPE indicates var not found.
+*/
+varsStruct CTK_mainAppClass::CTK_findVar(std::vector<varsStruct> vs,const char *varname)
+{
+	varsStruct retvs;
+
+	for(unsigned j=0;j<vs.size();j++)
+		{
+			if(varname,vs[j].varName.compare(varname)==0)
+				return(vs[j]);
+		}
+	return(retvs);
+}
