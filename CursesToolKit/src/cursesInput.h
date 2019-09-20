@@ -21,7 +21,7 @@
 #ifndef _CURSESINPUT_
 #define _CURSESINPUT_
 
-static const char	*osKLine[2][5]={{"1234567890","qwertyuiop","asdfghjkl","zxcvbnm","S< >._/-BF"},{":;+={}£$%^","QWERTYUIOP","ASDFGHJKL","ZXCVBNM","S< >[]~@BF"}};
+static const char	*osKLine[][5]={{"1234567890","qwertyuiop","asdfghjkl","zxcvbnm","S< >._/-BF"},{":;+={}£$%^","QWERTYUIOP","ASDFGHJKL","ZXCVBNM","S< >[]~@BF"}};
 
 class CTK_cursesInputClass : public CTK_cursesGadgetClass
 {
