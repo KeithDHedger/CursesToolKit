@@ -1,8 +1,8 @@
 /*
  *
- * ©K. D. Hedger. Sat 30 Mar 16:51:40 GMT 2019 keithdhedger@gmail.com
+ * ©K. D. Hedger. Fri 20 Sep 11:25:12 BST 2019 keithdhedger@gmail.com
 
- * This file (cursesInput.h) is part of CursesToolKit.
+ * This file (cursesKeyboard.h) is part of CursesToolKit.
 
  * CursesToolKit is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CURSESINPUT_
-#define _CURSESINPUT_
+#ifndef _CURSESKEYBOARD_
+#define _CURSESKEYBOARD_
 
-class CTK_cursesInputClass : public CTK_cursesGadgetClass
+static const char	*osKLine[][5]={{"1234567890","qwertyuiop","asdfghjkl;","\\zxcvbnm,.","S <   > BF"},{"+=-_{}^#@/","QWERTYUIOP","ASDFGHJKL:","|ZXCVBNM<>","S <   > BF"}};
+
+class CTK_cursesKeyboardClass : public CTK_cursesGadgetClass
 {
 	public:
-		CTK_cursesInputClass(CTK_mainAppClass *mc);
-		~CTK_cursesInputClass();
+		CTK_cursesKeyboardClass(CTK_mainAppClass *mc);
+		~CTK_cursesKeyboardClass();
 
-		bool					redrawAppWindow=true;//TODO/horrible hack!
-
-		void					CTK_newInput(int x,int y, int w,int h,const char *txt="");
+		void					CTK_newKeyboard(int x,int y, int w,int h,const char *txt="");
 		void					CTK_doInput(void);
 		void					CTK_setText(const char *txt);
 		const char				*CTK_getText(void);
@@ -38,13 +38,17 @@ class CTK_cursesInputClass : public CTK_cursesGadgetClass
 		void					CTK_drawGadget(bool hilite);
 
 	private:
+		bool					osKeyboard=false;
 		int						curs=0;
 		int						startChar=0;
 		std::string				text;
 		std::string				blank;
 		TermKey					*tk;
-
+		int						cx=0;
+		int						cy=0;
+		int						cPage=0;
 		void					updateText(const char *txt);
 };
+
 
 #endif

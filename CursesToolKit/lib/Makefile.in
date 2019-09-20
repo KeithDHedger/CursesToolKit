@@ -137,10 +137,10 @@ am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
 	../src/cursesDropDown.lo ../src/cursesEditBox.lo \
 	../src/cursesFBImage.lo ../src/cursesGadget.lo \
 	../src/cursesGraphics.lo ../src/cursesInput.lo \
-	../src/cursesLabel.lo ../src/cursesListBox.lo \
-	../src/cursesMenus.lo ../src/cursesSourceEditBox.lo \
-	../src/cursesTextBox.lo ../src/cursesUtils.lo \
-	../src/LFSTKFindClass.lo
+	../src/cursesKeyboard.lo ../src/cursesLabel.lo \
+	../src/cursesListBox.lo ../src/cursesMenus.lo \
+	../src/cursesSourceEditBox.lo ../src/cursesTextBox.lo \
+	../src/cursesUtils.lo ../src/LFSTKFindClass.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -360,7 +360,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			$(IMAGEMAGICK_CFLAGS) \
 			$(TERMKEY_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -463,6 +463,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesInput.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/cursesKeyboard.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesLabel.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesListBox.lo: ../src/$(am__dirstamp) \
@@ -500,6 +502,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesGadget.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesGraphics.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesInput.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesKeyboard.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesLabel.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesListBox.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesMenus.Plo@am__quote@

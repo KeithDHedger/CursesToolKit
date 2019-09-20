@@ -77,6 +77,7 @@ struct fbData
 #include "cursesChooser.h"
 #include "cursesDropDown.h"
 #include "cursesFBImage.h"
+#include "cursesKeyboard.h"
 
 #include "cursesApplication.h"
 

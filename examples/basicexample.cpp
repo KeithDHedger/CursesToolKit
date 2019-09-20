@@ -298,6 +298,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	input=mainApp->CTK_addNewInput(8,19,36,1,"Some input");
 	input->CTK_setColours(cs);
+	input->redrawAppWindow=false;
 
 	dropdown=mainApp->CTK_addNewDropDownBox(mainApp,56,19,15,1,"Drop Label    ");
 	dropdown->CTK_addDropItem("Hide Status Bar");
@@ -383,6 +384,14 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->menuBar->CTK_setMenuShortCut(0,5,'Q');
 	mainApp->eventLoopCBIn=mainloopCBIn;
 	mainApp->eventLoopCBOut=mainloopCBOut;
+
+
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=OUTBOX;
+	cs.fancyGadgets=true;
+	mainApp->CTK_setColours(cs);
+
+
 	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
 

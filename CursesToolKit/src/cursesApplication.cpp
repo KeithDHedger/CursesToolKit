@@ -358,7 +358,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			return;
 		}
 
-	if(app->useAppWindow==true)
+	if((app->useAppWindow==true) || ((long)userdata==2))
 		{
 			int	yadj=0;
 			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
@@ -528,10 +528,11 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 											{
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
+												this->CTK_updateScreen(this,(void*)1);
 											}
 										break;
 //tab select
-									case TERMKEY_SYM_TAB:
+									case TERMKEY_SYM_TAB://TODO//no gadgets
 									case TERMKEY_SYM_RIGHT:
 									case TERMKEY_SYM_LEFT:
 								//	fprintf(stderr,"000000000000000000000%i\n",this->pages[0].currentGadget);

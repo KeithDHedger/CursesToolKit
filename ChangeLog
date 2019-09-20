@@ -1,4 +1,7 @@
 1.1.1
+Fixed updating gadgets under menus.
+Fixed updating window.
+Added dropdown on screen keyboard to input class.
 Corrected placment of entry dialog for short windows.
 Added write/read vars example.
 Added save/load variables to main app class.
