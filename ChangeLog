@@ -1,3 +1,6 @@
+1.1.2
+Moved save/load/find prefs to utils class.
+
 1.1.1
 Added find variable to main class.
 Fixed updating gadgets under menus.

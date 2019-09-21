@@ -33,6 +33,17 @@
 
 class CTK_mainAppClass;
 
+enum  varType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
+
+struct varsStruct
+{
+	std::string	varName="";
+	int			vType=BADTYPE;
+	bool		boolVar=false;
+	int			intVar=-1;
+	std::string	charVar="";	
+};
+
 class CTK_cursesUtilsClass
 {
 	public:
@@ -58,6 +69,10 @@ class CTK_cursesUtilsClass
 
 		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);
 		std::string					CTK_padString(std::string label,int maxlen);
+//prefs
+		void						CTK_saveVars(const char *filepath,std::vector<varsStruct> vs);
+		std::vector<varsStruct>		CTK_loadVars(const char *filepath);
+		varsStruct					CTK_findVar(std::vector<varsStruct> vs,const char *varname);
 
 	private:
 		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes);

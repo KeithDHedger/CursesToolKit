@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
 //bool
 	vsitem.vType=BOOLVAR;
-	vsitem.boolVar=true;
+	vsitem.boolVar=false;
 	vsitem.varName="firstvar";
 	outvs.push_back(vsitem);
 //int
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 	outvs.push_back(vsitem);
 //bool
 	vsitem.vType=BOOLVAR;
-	vsitem.boolVar=false;
+	vsitem.boolVar=true;
 	vsitem.varName="abool";
 	outvs.push_back(vsitem);
 
@@ -57,8 +57,8 @@ int main(int argc, char **argv)
 	vsitem.varName="4thvar";
 	outvs.push_back(vsitem);
 
-	mainApp->CTK_saveVars(filepath,outvs);
-	invs=mainApp->CTK_loadVars(filepath);
+	mainApp->utils->CTK_saveVars(filepath,outvs);
+	invs=mainApp->utils->CTK_loadVars(filepath);
 
 	for(unsigned j=0;j<invs.size();j++)
 		{
@@ -79,11 +79,11 @@ int main(int argc, char **argv)
 		}
 
 	fprintf(stderr,"\n>>>>>\n");
-	vsitem=mainApp->CTK_findVar(invs,"firstvar");
+	vsitem=mainApp->utils->CTK_findVar(invs,"firstvar");
 	if(vsitem.vType!=BADTYPE)
-		fprintf(stderr,"abool=%i\n",vsitem.boolVar);
+		fprintf(stderr,"firstvar=%i\n",vsitem.boolVar);
 
-	vsitem=mainApp->CTK_findVar(invs,"3rdvar");
+	vsitem=mainApp->utils->CTK_findVar(invs,"3rdvar");
 	if(vsitem.vType!=BADTYPE)
 		fprintf(stderr,"3rdvar=%s\n",vsitem.charVar.c_str());
 	fprintf(stderr,">>>>>\n");

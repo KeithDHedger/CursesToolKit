@@ -798,3 +798,106 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 	fflush(NULL);
 }
 
+
+/**
+* Load variables into vector of varsStructs.
+* \param const char *filepath.
+* \returns std::vector<varsStruct>.
+*/
+std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
+{
+	std::vector<varsStruct>	invs;
+	FILE					*fp;
+	char					buffer[PATH_MAX];
+	char					*ptr;
+	char					*bufferstart;
+	varsStruct				vs;
+
+	invs.clear();
+
+	fp=fopen(filepath,"r");
+	if(fp!=NULL)
+		{
+			while(fgets(buffer,PATH_MAX,fp))
+				{
+					bufferstart=&buffer[0];
+					ptr=strchr(bufferstart,' ');
+					*ptr=0;
+					ptr++;
+					vs.varName=bufferstart;
+					bufferstart=ptr;
+					vs.vType=atoi(bufferstart);
+					ptr=strchr(bufferstart,' ');
+					ptr++;
+					bufferstart=ptr;
+					switch(vs.vType)
+						{
+							case BOOLVAR:
+								vs.boolVar=atoi(bufferstart);
+								break;
+							case INTVAR:
+								vs.intVar=atoi(bufferstart);
+								break;
+							case CHARVAR:
+								if(bufferstart[strlen(bufferstart)-1]=='\n')
+									bufferstart[strlen(bufferstart)-1]=0;
+								vs.charVar=bufferstart;
+								break;
+						}					
+					invs.push_back(vs);
+				}
+			fclose(fp);
+		}
+	return(invs);
+}
+
+/**
+* Save variables into file from vector of varsStructs.
+* \param const char *filepath.
+* \param std::vector<varsStruct>.
+*/
+void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStruct> vs)
+{
+	FILE	*fp;
+
+	fp=fopen(filepath,"w+");
+	if(fp!=NULL)
+		{
+			for(int j=0;j<vs.size();j++)
+				{
+					switch(vs[j].vType)
+						{
+							case BOOLVAR:
+								fprintf(fp,"%s %i %i\n",vs[j].varName.c_str(),vs[j].vType,vs[j].boolVar);
+								break;
+							case INTVAR:
+								fprintf(fp,"%s %i %i\n",vs[j].varName.c_str(),vs[j].vType,vs[j].intVar);
+								break;
+							case CHARVAR:
+								fprintf(fp,"%s %i %s\n",vs[j].varName.c_str(),vs[j].vType,vs[j].charVar.c_str());
+								break;
+						}
+				}
+			fclose(fp);
+		}
+}
+
+
+/**
+* find variable from vector of varsStructs.
+* \param const char *varname.
+* \param std::vector<varsStruct>.
+* \note On return varsStruct.vType is set to type of var found.
+* \note A type of BADTYPE indicates var not found.
+*/
+varsStruct CTK_cursesUtilsClass::CTK_findVar(std::vector<varsStruct> vs,const char *varname)
+{
+	varsStruct retvs;
+
+	for(unsigned j=0;j<vs.size();j++)
+		{
+			if(varname,vs[j].varName==varname)
+				return(vs[j]);
+		}
+	return(retvs);
+}
