@@ -99,15 +99,38 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 	MOVETO(this->sx,this->sy+1);
 	setBothColours(FORE_BLACK,BACK_GREEN,this->colours.use256Colours);
 
-	for(int j=0;j<5;j++)
+	for(int j=0;j<4;j++)
 		{
 			MOVETO(this->sx,this->sy+j+1);
 			printf("%s",osKLine[this->cPage][j]);
 		}
+
+	MOVETO(this->sx,this->sy+5);
+	printf("%.8s\e(0yk\e(B",osKLine[this->cPage][4]);
+
 	MOVETO(this->sx+this->cx,this->sy+this->cy+1);
 	setBothColours(FORE_GREEN,BACK_BLACK,this->colours.use256Colours);
 
-	printf("%c",osKLine[this->cPage][this->cy][this->cx]);
+	switch (this->cy)
+		{
+			case 4:
+				switch (this->cx)
+					{
+						case 8:
+							printf("\e(0y\e(B");
+							break;
+						case 9:
+							printf("\e(0k\e(B");
+							break;
+						default:
+							printf("%c",osKLine[this->cPage][this->cy][this->cx]);
+							break;
+					}
+				break;
+			default:
+				printf("%c",osKLine[this->cPage][this->cy][this->cx]);
+				break;
+		}
 	MOVETO(this->sx+this->curs,this->sy);
 }
 
@@ -134,53 +157,60 @@ void CTK_cursesKeyboardClass::CTK_doInput(void)
 								case TERMKEY_SYM_ENTER:
 									if(this->cy==4)
 										{
-											switch(osKLine[this->cPage][this->cy][this->cx])
+											if(this->cx==8)
 												{
-													case 'S':
-														if(this->cPage==0)
-															this->cPage=1;
-														else
-															this->cPage=0;
-														break;
-													case '<':
-														this->curs--;
-														if(this->curs<0)
-															{
-																this->curs=0;
-																if(this->startChar>0)
-																	this->startChar--;
-															}
-														break;
-														
-													case '>':
-														if(1+this->curs+this->startChar>this->text.length())
+													this->curs--;
+													if(this->curs<0)
+														this->curs=0;
+													else
+														this->text.erase(this->startChar+this->curs,1);
+												}
+											else if(this->cx==9)
+												{
+													loop=false;
+												}
+											else
+												{
+												switch(osKLine[this->cPage][this->cy][this->cx])
+													{
+														case '^':
+															if(this->cPage==0)
+																this->cPage=1;
+															else
+																this->cPage=0;
 															break;
-														this->curs++;
-														if(this->curs>this->wid)
-															{
-																this->curs=this->wid;
-																if(this->text.length()-this->startChar>this->wid)
-																	this->startChar++;
-															}
-														break;
-													case ' ':
-														this->text.insert(this->startChar+this->curs,1,' ');
-														this->curs++;
+														case '<':
+															this->curs--;
+															if(this->curs<0)
+																{
+																	this->curs=0;
+																	if(this->startChar>0)
+																		this->startChar--;
+																}
+															break;
+														
+														case '>':
+															if(1+this->curs+this->startChar>this->text.length())
+																break;
+															this->curs++;
+															if(this->curs>this->wid)
+																{
+																	this->curs=this->wid;
+																	if(this->text.length()-this->startChar>this->wid)
+																		this->startChar++;
+																}
+															break;
+
+														case ' ':
+															this->text.insert(this->startChar+this->curs,1,' ');
+															this->curs++;
 															if(this->curs>this->wid)
 																{
 																	this->curs=this->wid;
 																	this->startChar++;
 																}
-														break;
-													case 'B':
-														this->curs--;
-														if(this->curs<0)
-															this->curs=0;
-														else
-															this->text.erase(this->startChar+this->curs,1);
-														break;
-													case 'F':
-														loop=false;
+															break;
+													}
 												}
 											break;
 										}

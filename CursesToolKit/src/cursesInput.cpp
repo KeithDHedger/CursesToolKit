@@ -131,26 +131,31 @@ void CTK_cursesInputClass::CTK_doInput(void)
 									break;
 								case TERMKEY_SYM_DOWN:
 									{
-											int syy=this->sy;
-											CTK_cursesKeyboardClass	*oskb=new CTK_cursesKeyboardClass(this->mc);
-											while(this->mc->maxRows-(syy+5)<1)
-												syy--;
-											oskb->CTK_newKeyboard(this->sx,syy,this->wid,6,this->CTK_getText());
+										int syy=this->sy;
+										CTK_cursesKeyboardClass	*oskb=new CTK_cursesKeyboardClass(this->mc);
+										while(this->mc->maxRows-(syy+5)<1)
+											syy--;
+										oskb->CTK_newKeyboard(this->sx,syy,this->wid,6,this->CTK_getText());
 
-											oskb->CTK_drawGadget(false);
-											oskb->CTK_doInput();
-											this->CTK_setText(oskb->CTK_getText());
-											delete oskb;
-											SETSHOWCURS;
-											fflush(NULL);
-											if(this->redrawAppWindow==true)
-												this->mc->CTK_updateScreen(this->mc,(void*)2);
-											else
-												{
-													this->mc->CTK_clearScreen();
-													this->mc->CTK_updateScreen(this->mc,(void*)1);
-												}
-											break;
+										oskb->CTK_drawGadget(false);
+										oskb->CTK_doInput();
+										this->CTK_setText(oskb->CTK_getText());
+										delete oskb;
+										//SETSHOWCURS;
+										//fflush(NULL);
+										if(this->redrawAppWindow==true)
+											this->mc->CTK_updateScreen(this->mc,(void*)2);
+										else
+											{
+												this->mc->CTK_clearScreen();
+												this->mc->CTK_updateScreen(this->mc,(void*)1);
+											}
+										if(this->selectCB!=NULL)
+											this->selectCB(this,this->selectCBUserData);
+										SETHIDECURS;
+										fflush(NULL);
+										return;
+										break;
 									}
 									break;
 								case TERMKEY_SYM_LEFT:

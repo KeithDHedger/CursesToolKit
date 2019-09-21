@@ -21,7 +21,7 @@
 #ifndef _CURSESKEYBOARD_
 #define _CURSESKEYBOARD_
 
-static const char	*osKLine[][5]={{"1234567890","qwertyuiop","asdfghjkl;","\\zxcvbnm,.","S <   > BF"},{"+=-_{}^#@/","QWERTYUIOP","ASDFGHJKL:","|ZXCVBNM<>","S <   > BF"}};
+static const char	*osKLine[][5]={{"1234567890","qwertyuiop","asdfghjkl;","\\zxcvbnm,.","^<     >yk"},{"+=-_{}^#@/","QWERTYUIOP","ASDFGHJKL:","|ZXCVBNM<>","^<     >yk"}};
 
 class CTK_cursesKeyboardClass : public CTK_cursesGadgetClass
 {
