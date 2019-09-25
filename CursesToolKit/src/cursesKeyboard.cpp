@@ -106,8 +106,8 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 		}
 
 	MOVETO(this->sx,this->sy+5);
-	printf("%.8s\e(0yk\e(B",osKLine[this->cPage][4]);
-
+	printf("%.8s\e(0%c%c\e(B",osKLine[this->cPage][4],0xab,0xac);
+	
 	MOVETO(this->sx+this->cx,this->sy+this->cy+1);
 	setBothColours(FORE_GREEN,BACK_BLACK,this->colours.use256Colours);
 
@@ -117,10 +117,10 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 				switch (this->cx)
 					{
 						case 8:
-							printf("\e(0y\e(B");
+							printf("\e(0%c\e(B",0xab);
 							break;
 						case 9:
-							printf("\e(0k\e(B");
+							printf("\e(0%c\e(B",0xac);
 							break;
 						default:
 							printf("%c",osKLine[this->cPage][this->cy][this->cx]);
