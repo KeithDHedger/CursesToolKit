@@ -149,3 +149,19 @@ void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blnk,in
 	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
 }
 
+/**
+* Print a single line, remainder of line.
+*/
+void CTK_cursesGraphicsClass::CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth)
+{
+	char	*bline=strdup(line);
+	if((strstr(bline,"e\[")==NULL) && (strstr(bline,"e\(")==NULL))
+		printf("\e[%i;%iH%-*s\n",sy,sx,boxwidth,line);
+//	fprintf(stderr,">>>%-*s<<<<\n",boxwidth,line);
+//	else
+//	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth,blnk,sy,sx,line);
+//	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
+//		printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
+	free(bline);
+}
+

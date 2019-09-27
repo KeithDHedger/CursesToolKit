@@ -209,10 +209,12 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
 	else
 		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
 
-	gc.CTK_printLine(str.c_str(),this->sx,sy,this->wid);
+	//gc.CTK_printLine(str.c_str(),this->sx,sy,this->wid);
+	gc.CTK_printLinePostBlanks(str.c_str(),this->sx,sy,this->wid);
 
 	if(this->colours.fancyGadgets==true)
-		gc.CTK_printLine(">",this->sx+this->wid,sy,1);
+//		gc.CTK_printLine(">",this->sx+this->wid,sy,1);
+		gc.CTK_printLinePostBlanks(">",this->sx+this->wid,sy,1);
 
 	fflush(NULL);
 }

@@ -21,6 +21,10 @@
 
 #include "cursesFBImage.h"
 
+#ifdef _IMAGEMAGICK_
+#include <Magick++.h>
+#endif
+
 /**
 * FB Image class destroy.
 */

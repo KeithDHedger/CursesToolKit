@@ -33,6 +33,7 @@ class CTK_cursesGraphicsClass
 		//void	CTK_printLine(const char *line,int boxwidth);
 		void	CTK_printLine(const char *line,int sx,int sy,int boxwidth);
 		void	CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth);
+		void	CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth);
 	private:
 		coloursStruct	colours;
 };

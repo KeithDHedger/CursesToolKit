@@ -21,6 +21,10 @@
 #include <poll.h>
 #include "cursesGlobals.h"
 
+#ifdef _IMAGEMAGICK_
+#include <Magick++.h>
+#endif
+
 /**
 *  \brief Main app class destroy.
 */
@@ -36,7 +40,9 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	this->pages.clear();
 	fflush(NULL);
 	termkey_destroy(this->tk);
+#ifdef _IMAGEMAGICK_
 	Magick::TerminateMagick();//is this needed?
+#endif
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 	delete this->utils;
 }

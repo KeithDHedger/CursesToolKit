@@ -35,17 +35,11 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 
-#include "config.h"
-
 #include <linux/fb.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#ifdef _IMAGEMAGICK_
-#include <Magick++.h>
-#endif
 
 struct fbData
 {
