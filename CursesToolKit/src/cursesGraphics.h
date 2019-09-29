@@ -21,6 +21,8 @@
 #ifndef _CURSESGRAPHICS_
 #define _CURSESGRAPHICS_
 
+enum {LEFTJUSTIFY=0,CENTREJUSTIFY,RIGHTJUSTIFY};
+
 class CTK_cursesGraphicsClass
 {
 	public:
@@ -34,6 +36,7 @@ class CTK_cursesGraphicsClass
 		void	CTK_printLine(const char *line,int sx,int sy,int boxwidth);
 		void	CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth);
 		void	CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth);
+		void	CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just=LEFTJUSTIFY);
 	private:
 		coloursStruct	colours;
 };

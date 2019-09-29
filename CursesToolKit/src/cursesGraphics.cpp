@@ -165,3 +165,54 @@ void CTK_cursesGraphicsClass::CTK_printLinePostBlanks(const char *line,int sx,in
 	free(bline);
 }
 
+/**
+* Print a single line, justified.
+* \param const char *line to print.
+
+*/
+void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just)
+{
+	char	*buffer=(char*)alloca(boxwidth+1);
+	int		slen=strlen(line);
+	int		virtlen=slen;
+	char	*linecpy=strdup(line);
+
+	if(strchr(linecpy,'\e')!=NULL)
+		{
+			virtlen=0;
+			for(int j=0;j<slen;j++)
+				{
+					if(linecpy[j]=='\e')
+						{
+							while(linecpy[j]!='m')
+								j++;
+							j++;
+						}
+					else
+						virtlen++;
+				}
+			slen=virtlen+1;
+		}
+
+	sprintf(buffer,"%*s",boxwidth," ");
+	if(linecpy[strlen(linecpy)-1]=='\n')
+		linecpy[strlen(linecpy)-1]=0;
+
+	switch(just)
+		{
+			case LEFTJUSTIFY:
+				sprintf(buffer,"%-*s",boxwidth,linecpy);
+				break;
+			case CENTREJUSTIFY:
+				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2),linecpy);
+				break;
+			case RIGHTJUSTIFY:
+				sprintf(buffer,"%*s",boxwidth,linecpy);
+				break;
+		}
+
+
+	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
+	free(linecpy);
+}
+

@@ -143,7 +143,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 					buff="";
 				}
 
-			if(s[j]!=c)
+			if(s[j]!=c)//TODO//
 				{
 					buff+=s[j];
 				}
@@ -235,34 +235,6 @@ static void buttonSelectCB(void *inst,void *ud)
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 
-	if(strcmp(bc->label,"Credits")==0)
-		{
-			fileUDStruct		*subfud=new fileUDStruct;
-			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
-
-			coloursStruct		cs;
-			cs.labelBoxType=INBOX;
-			cs.fancyGadgets=true;
-			selectapp->CTK_setColours(cs);
-
-			subfud->labelGadget=selectapp->CTK_addNewLabel(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,(char*)fud->credits);
-			subfud->labelGadget->CTK_setJustify(CENTRE);
-
-			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
-			subfud->app=selectapp;
-			subfud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
-
-			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Credits ...",NULL);
-			selectapp->CTK_setDefaultGadget(subfud->btnOK);
-			selectapp->CTK_mainEventLoop();
-
-			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
-		//	fud->app->CTK_setDefaultGadget(fud->btnOK);
-			fud->app->CTK_updateScreen(fud->app,NULL);
-		//	fud->app->useAppWindow=false;
-			return;
-		}
-
 	if(strcmp(bc->label,"Licence")==0)
 		{
 			fileUDStruct		*subfud=new fileUDStruct;
@@ -282,19 +254,35 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Licence ...",NULL);
 			selectapp->CTK_setDefaultGadget(subfud->btnOK);
 			selectapp->CTK_mainEventLoop();
+			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
+			fud->app->CTK_clearScreen();
+			fud->app->CTK_updateScreen(fud->app,(void*)2);
+			return;
+		}
 
-			fud->app->CTK_appWindow((fud->app->maxCols/2)-(ABOUTWIDTH/2),(fud->app->maxRows/2)-6,ABOUTWIDTH,10,"About ...",NULL);
-			//fud->app->CTK_setDefaultGadget(fud->btnOK);
-			//fud->app->pages[fud->app->pageNumber].currentGadget+=-1;
-			//fud->app->noHiliteChange=true;//TODO//
-			////fud->app->noHiliteChange=true;
-			//fud->app->setHilite(true);
-			//fud->btnNo->hiLited=false;
-			///fud->app->CTK_mainEventLoop(-10);
-			///fud->app->runEventLoop=true;
-			fud->app->CTK_updateScreen(fud->app,NULL);
-			///fud->app->useAppWindow=false;
-			//fud->app->pages[fud->app->pageNumber].currentGadget=0;
+
+	if(strcmp(bc->label,"Credits")==0)
+		{
+			fileUDStruct		*subfud=new fileUDStruct;
+			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+			coloursStruct		cs;
+	
+			cs.textBoxType=INBOX;
+			cs.fancyGadgets=true;
+			selectapp->CTK_setColours(cs);
+
+			subfud->textGadget=selectapp->CTK_addNewTextBox(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,false,(char*)fud->credits);
+subfud->textGadget->CTK_setSelectable(false);
+			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
+			subfud->app=selectapp;
+			subfud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
+
+			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Licence ...",NULL);
+			selectapp->CTK_setDefaultGadget(subfud->btnOK);
+			selectapp->CTK_mainEventLoop();
+			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
+			fud->app->CTK_clearScreen();
+			fud->app->CTK_updateScreen(fud->app,(void*)2);
 			return;
 		}
 
@@ -703,7 +691,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 	selectapp->CTK_setColours(cs);
 
 	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+1,ABOUTHITE,"About ...",NULL);
-	fud->app=selectapp;
+	//fud->app=selectapp;
 
 //body
 	asprintf(&aboutbuffer,"%s\n\n%s\n%s\n%s\n%s\n",appname,appinfo,copyright,email,website);
@@ -730,6 +718,9 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum),(selectapp->maxRows/2)+2,6,1,"Licence");//buttoncancel
 			fud->btnCancel->CTK_setSelectCB(buttonSelectCB,(void*)fud);
 		}
+
+	
+//selectapp->CTK_addPage();
 
 	selectapp->CTK_setDefaultGadget(fud->btnOK);
 	selectapp->CTK_mainEventLoop();

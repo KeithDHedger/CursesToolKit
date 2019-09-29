@@ -93,13 +93,7 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-//	MOVETO(this->sx,this->sy);
-//	printf("%s",this->blank.c_str());
-//	MOVETO(this->sx,this->sy);
-//	printf("%s",this->text.substr(this->startChar,this->wid).c_str());
-//CTK_cursesGraphicsClass::CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth)
-	this->gc->CTK_printLinePostBlanks(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid);
-//	printf("%s",this->text.substr(this->startChar,this->wid).c_str());
+	this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
 	MOVETO(this->sx+this->curs,this->sy);
 }
 

@@ -146,6 +146,8 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 		this->label=this->items[this->selectedItem].label;
 	this->mc->CTK_clearScreen();
 	this->mc->CTK_updateScreen(this->mc,NULL);
+	if(this->selectDeselects==true)
+		this->hiLited=false;
 }
 
 void CTK_cursesDropClass::drawList(int selection)

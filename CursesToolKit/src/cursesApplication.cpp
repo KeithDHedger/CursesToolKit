@@ -541,7 +541,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 									case TERMKEY_SYM_TAB://TODO//no gadgets
 									case TERMKEY_SYM_RIGHT:
 									case TERMKEY_SYM_LEFT:
-								//	fprintf(stderr,"000000000000000000000%i\n",this->pages[0].currentGadget);
+									//fprintf(stderr,"000000000000000000000%i\n",this->pages[0].currentGadget);
 										switch(key.code.sym)
 											{
 												case TERMKEY_SYM_TAB:
@@ -552,15 +552,11 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 													hilite=false;
 													break;
 											}
-								//	fprintf(stderr,"555555555555555555555\n");
 										if(thisgadget!=-1)
 											thisgadgetinst->hiLited=false;
 										if(this->noHiliteChange==false)
-									//	{
 											setHilite(hilite);
-									//fprintf(stderr,"999999999999999999999\n");
-								//	}
-										this->noHiliteChange=false;
+
 										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
 										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->hiLited=true;
 										break;
@@ -718,10 +714,10 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 												if(this->pages[this->pageNumber].currentGadget!=-1)
 													{
 														if(thisgadgetinst->CTK_getSelectDeselects()==true)
-															this->noHiliteChange=true;
-											
-														thisgadgetinst->hiLited=!thisgadgetinst->CTK_getSelectDeselects();
-														thisgadgetinst->CTK_drawGadget(thisgadgetinst->hiLited);
+															{
+																thisgadgetinst->hiLited=!thisgadgetinst->CTK_getSelectDeselects();
+																thisgadgetinst->CTK_drawGadget(thisgadgetinst->hiLited);
+															}
 													}
 											}
 										break;
@@ -904,16 +900,19 @@ void CTK_mainAppClass::CTK_emptyIPBuffer(void)
 void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool unhilite)
 {
 //un hilite all gadgets
+	CTK_cursesGadgetClass *unhigadg;
+
 	if(unhilite==true)
 	{
 		for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 			{
-				gadget->gadgetDirty=true;
-				gadget->hiLited=false;
-				gadget->CTK_drawGadget(false);
-				gadget->gadgetDirty=false;
+				unhigadg=this->pages[this->pageNumber].gadgets[j];
+				unhigadg->gadgetDirty=true;
+				unhigadg->hiLited=false;
+				unhigadg->CTK_drawGadget(false);
 			}
 	}
+
 //hilight default
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 		{

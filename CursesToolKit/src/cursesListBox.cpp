@@ -85,12 +85,14 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 							else
 								selected=' ';
 							sprintf(buffer,"[%c] %s",selected,this->listItems[j+this->listStart]->label.c_str());
-							this->gc->CTK_printLine(buffer,this->sx,this->sy+j,this->wid);
+							//this->gc->CTK_printLine(buffer,this->sx,this->sy+j,this->wid);
+							this->gc->CTK_printJustLine(buffer,this->sx,this->sy+j,this->wid);
 						}
 				}
 			else
 				{
-					this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+					//this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+					this->gc->CTK_printJustLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
 				}
 		}
 	MOVETO(this->sx,this->sy+this->hite);

@@ -96,7 +96,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 		}
 
 	str=this->text;
-	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
+	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);//TODO//
 }
 
 /**
@@ -126,7 +126,8 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 		{
 			if(j<this->txtStrings.size())
 				{
-					this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
+					//this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
+					this->gc->CTK_printJustLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
 					j++;
 				}
 			else

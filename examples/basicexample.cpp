@@ -294,6 +294,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	labelstr=cu.CTK_padString(std::string("Toggle Menus"),maxlen);
 //	mainApp->CTK_addNewButton(56,16,11,1,labelstr.c_str());
 	button=mainApp->CTK_addNewButton(cu.CTK_getGadgetPosX(startx,maxwid,3,maxlen,2),16,11,1,labelstr.c_str());
+	button->CTK_setSelectDeselects(false);
 	button->CTK_setSelectCB(buttonselctCB,(void*)3);
 
 	input=mainApp->CTK_addNewInput(8,19,36,1,"Some input");
@@ -307,6 +308,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	dropdown->CTK_setColours(cs);
 	dropdown->CTK_setSelectCB(dropboxCB,(void*)0xdeadbeef);
 	dropdown->CTK_setItemEnabled(2,false);
+	dropdown->CTK_setSelectDeselects(false);
 
 
 //auto add list box to main app

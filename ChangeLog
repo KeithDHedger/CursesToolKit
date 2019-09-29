@@ -1,4 +1,7 @@
 1.1.2
+UI tweaks.
+Fixed setting select deselects.
+Fixed setting default gadget highlighting.
 Fixed include/define compile errors.
 Tweaking print line.
 Redone onscreen keyboard.
