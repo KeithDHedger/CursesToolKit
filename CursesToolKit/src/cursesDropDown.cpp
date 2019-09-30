@@ -152,8 +152,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 
 void CTK_cursesDropClass::drawList(int selection)
 {
-	CTK_cursesGraphicsClass	gc;
-	int						iy=this->sy+this->hite;
+	int	iy=this->sy+this->hite;
 
 	for(int j=0;j<this->items.size();j++)
 		{
@@ -166,8 +165,9 @@ void CTK_cursesDropClass::drawList(int selection)
 					else
 						setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 				}
-			gc.CTK_printLine(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth);
+			this->gc->CTK_printJustLine(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth);
 		}
+	fflush(NULL);
 }
 
 /**
@@ -197,10 +197,9 @@ bool CTK_cursesDropClass::CTK_getItemEnabled(int item)
 * Draw gadget.
 * \note hilite=true draw in highlight colour.
 */
-void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
+void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
 {
-	CTK_cursesGraphicsClass	gc;
-	std::string				str=this->label;
+	std::string	str=this->label;
 
 	if(this->gadgetDirty==false)
 		return;
@@ -211,12 +210,10 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
 	else
 		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
 
-	//gc.CTK_printLine(str.c_str(),this->sx,sy,this->wid);
-	gc.CTK_printLinePostBlanks(str.c_str(),this->sx,sy,this->wid);
-
 	if(this->colours.fancyGadgets==true)
-//		gc.CTK_printLine(">",this->sx+this->wid,sy,1);
-		gc.CTK_printLinePostBlanks(">",this->sx+this->wid,sy,1);
+		str+=" >>";
+
+	this->gc->CTK_printJustLine(str.c_str(),this->sx,sy,str.length());
 
 	fflush(NULL);
 }

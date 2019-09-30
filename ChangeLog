@@ -1,4 +1,6 @@
 1.1.2
+Fixed de-tabbing line prior to drawing.
+Tweaked Drop down class draw.
 UI tweaks.
 Fixed setting select deselects.
 Fixed setting default gadget highlighting.

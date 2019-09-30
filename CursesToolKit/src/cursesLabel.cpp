@@ -98,41 +98,6 @@ void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 			if(j<this->txtStrings.size())
 				this->gc->CTK_printJustLine(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify);
 		}
-	return;
-//	MOVETO(this->sx,this->sy);
-//	for(int j=0;j<this->hite;j++)
-//		{
-//			MOVETO(this->sx,this->sy+j);
-//			printf("%s",this->blank.c_str());
-//		}
-//
-//	for(int j=0;j<this->hite;j++)
-//		{
-//			if(j<this->txtStrings.size())
-//				{
-//					int offset=0;
-//					if(this->txtStrings[j].back()=='\n')
-//						offset=1;
-//					switch(this->justify)
-//						{
-//							case LEFT:
-//								MOVETO(this->sx,this->sy+j);
-//								break;
-//							case CENTRE:
-//								MOVETO(this->centre-((this->txtStrings[j].length()-offset)/2),this->sy+j);
-//								break;
-//							case RIGHT:
-//								MOVETO(offset+this->sx+this->wid-this->txtStrings[j].length(),this->sy+j);
-//								break;
-//							
-//						}
-//					printf("%s",this->txtStrings[j].c_str());
-//				}
-//			else
-//				return;
-//		}
-//
-//	fflush(NULL);
 }
 
 /**

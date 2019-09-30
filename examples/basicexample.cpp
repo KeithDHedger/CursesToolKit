@@ -361,9 +361,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	label=mainApp->CTK_addNewLabel(85,13,40,2,"Default justified non selectable label.\nLine 2 of label.");
 	label=mainApp->CTK_addNewLabel(85,17,40,2,"Centred non selectable label.\nLine 2 of label.");
-	label->CTK_setJustify(CENTRE);
+	label->CTK_setJustify(CENTREJUSTIFY);
 	label=mainApp->CTK_addNewLabel(85,21,40,2,"Right justified non selectable label.\nLine 2 of label.");
-	label->CTK_setJustify(RIGHT);
+	label->CTK_setJustify(RIGHTJUSTIFY);
 
 //TODO//???
 	checkbox=mainApp->CTK_addNewCheckBox(85,9,10,"Menus Off");

@@ -347,7 +347,7 @@ void CTK_mainAppClass::CTK_addDropBox(CTK_cursesDropClass *dd)
 void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
-	CTK_cursesGraphicsClass	cu;
+	CTK_cursesGraphicsClass	cu(app);
 
 	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
 

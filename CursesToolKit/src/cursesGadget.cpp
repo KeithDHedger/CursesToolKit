@@ -36,7 +36,7 @@ CTK_cursesGadgetClass::CTK_cursesGadgetClass()
 void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 {
 	this->mc=mc;
-	this->gc=new CTK_cursesGraphicsClass;
+	this->gc=new CTK_cursesGraphicsClass(mc);
 	this->CTK_setColours(this->mc->colours);
 	this->isSelectable=true;
 	this->selectDeselects=true;

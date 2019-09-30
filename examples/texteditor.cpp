@@ -188,7 +188,7 @@ void menuSelectCB(void *inst,void *userdata)
 									{
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows,true,cu.stringResult.c_str());
+										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.stringResult.c_str());
 										srcbox->CTK_setShowLineNumbers(showLineNumbers);
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
 										rebuildTabMenu();
@@ -390,10 +390,12 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
-	coloursStruct cs;
+	const char				*ftol="texteditor.cpp";
+	coloursStruct			cs;
+	CTK_cursesEditBoxClass	*srcbox;
+
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=false;
-	CTK_cursesEditBoxClass	*srcbox;
 
 	cs.hiliteBackCol=BACK_BLACK;
 	cs.hiliteForeCol=FORE_GREEN;
@@ -447,13 +449,15 @@ int main(int argc, char **argv)
 	cs.backCol=BACK_WHITE;
 	mainApp->CTK_setColours(cs);
 
+//int bw=32;
+	//srcbox=mainApp->CTK_addNewEditBox(mainApp,101,3,windowCols-1-101,windowRows-1,false,"\n");
 	srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,false,"\n");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
-	mainApp->CTK_setPageUserData(0,(void*)strdup("../ChangeLog"));
-	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../ChangeLog");
+	mainApp->CTK_setPageUserData(0,(void*)strdup(ftol));
+	mainApp->menuBar->CTK_addMenuItem(TABMENU,ftol);
 
 
-	srcbox->CTK_updateText("../ChangeLog",true);
+	srcbox->CTK_updateText(ftol,true);
 	srcbox->CTK_toggleBookMark(10);
 	srcbox->CTK_toggleBookMark(56);
 	rebuildBMMenu();

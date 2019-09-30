@@ -30,8 +30,9 @@ CTK_cursesGraphicsClass::~CTK_cursesGraphicsClass()
 /**
 * Graphics class.
 */
-CTK_cursesGraphicsClass::CTK_cursesGraphicsClass()
+CTK_cursesGraphicsClass::CTK_cursesGraphicsClass(CTK_mainAppClass *mc)
 {
+	this->tabWidth=mc->tabWidth;
 }
 
 /**
@@ -148,27 +149,59 @@ void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blnk,in
 //	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
 	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
 }
-
+//
+///**
+//* Print a single line, remainder of line.
+//*/
+//void CTK_cursesGraphicsClass::CTK_printLinePostBlanksxxx(const char *line,int sx,int sy,int boxwidth)
+//{
+//	char	*bline=strdup(line);
+//	if((strstr(bline,"e\[")==NULL) && (strstr(bline,"e\(")==NULL))
+//		printf("\e[%i;%iH%-*s\n",sy,sx,boxwidth,line);
+////	fprintf(stderr,">>>%-*s<<<<\n",boxwidth,line);
+////	else
+////	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth,blnk,sy,sx,line);
+////	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
+////		printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
+//	free(bline);
+//}
+//
 /**
-* Print a single line, remainder of line.
+* private.
 */
-void CTK_cursesGraphicsClass::CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth)
+void CTK_cursesGraphicsClass::detab(char *in,char *out,int maxlen,int sx)
 {
-	char	*bline=strdup(line);
-	if((strstr(bline,"e\[")==NULL) && (strstr(bline,"e\(")==NULL))
-		printf("\e[%i;%iH%-*s\n",sy,sx,boxwidth,line);
-//	fprintf(stderr,">>>%-*s<<<<\n",boxwidth,line);
-//	else
-//	printf("\e[%i;%iH%*s\n\e[%i;%iH%s\n",sy,sx,boxwidth,blnk,sy,sx,line);
-//	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
-//		printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
-	free(bline);
+	int	i=sx-1;
+	int chr=0;
+
+	while((*in!=0) && (chr<maxlen-1))
+		{
+			if(*in=='\t')
+				{
+					in++;
+					out[chr++]=' ';
+					i++;
+					while((i % this->tabWidth) && (chr<maxlen-1))
+						{
+							out[chr++]=' ';
+							i++;
+						}
+				}
+			else
+				{
+					out[chr++]=*in++;
+					i++;
+				}
+		}
+	out[chr]=0;
 }
 
 /**
 * Print a single line, justified.
 * \param const char *line to print.
-
+* \param int sx,sy print at.
+* \param int max width of line.
+* \param int justification ( default=LEFTJUSTIFY ).
 */
 void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just)
 {
@@ -176,6 +209,8 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 	int		slen=strlen(line);
 	int		virtlen=slen;
 	char	*linecpy=strdup(line);
+
+	char *outp=(char*)malloc(slen*this->tabWidth);
 
 	if(strchr(linecpy,'\e')!=NULL)
 		{
@@ -195,6 +230,61 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 		}
 
 	sprintf(buffer,"%*s",boxwidth," ");
+	
+	if(linecpy[strlen(linecpy)-1]=='\n')
+		linecpy[strlen(linecpy)-1]=0;
+
+	this->detab(linecpy,&outp[0],slen*this->tabWidth,sx);
+	switch(just)
+		{
+			case LEFTJUSTIFY:
+				sprintf(buffer,"%-*s",boxwidth,outp);
+				break;
+			case CENTREJUSTIFY:
+				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2),outp);
+				break;
+			case RIGHTJUSTIFY:
+				sprintf(buffer,"%*s",boxwidth,outp);
+				break;
+		}
+
+	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
+	free(linecpy);
+	free(outp);
+}
+
+#if 0
+void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just)
+{
+	char	*buffer=(char*)alloca(boxwidth+1);
+	int		slen=strlen(line);
+	int		virtlen=slen;
+	char	*linecpy=strdup(line);
+
+	if(strchr(linecpy,'\e')!=NULL)
+		{
+			virtlen=0;
+			for(int j=0;j<slen;j++)
+				{
+					if(linecpy[j]=='\e')
+						{
+							while(linecpy[j]!='m')
+								j++;
+							j++;
+						}
+					//else if(linecpy[j]=='\t')
+					//	virtlen+=4;
+					else
+						virtlen++;
+				}
+			slen=virtlen+1;
+		}
+
+	sprintf(buffer,"%*s",boxwidth," ");
+	//for(int j=0;j<boxwidth;j++)
+	//	buffer[j]='X';
+	
+	
 	if(linecpy[strlen(linecpy)-1]=='\n')
 		linecpy[strlen(linecpy)-1]=0;
 
@@ -202,6 +292,7 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 		{
 			case LEFTJUSTIFY:
 				sprintf(buffer,"%-*s",boxwidth,linecpy);
+				//sprintf(buffer,"%s",linecpy);
 				break;
 			case CENTREJUSTIFY:
 				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2),linecpy);
@@ -211,8 +302,103 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 				break;
 		}
 
-
-	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
+//	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
+	printf("\e[%i;%iH%s",sy,sx,buffer);
 	free(linecpy);
 }
 
+#endif
+#if 0
+void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just)
+{
+	char	*buffer=(char*)alloca(boxwidth+1);
+	char	*rawstr=(char*)alloca(boxwidth+1);
+	int		slen=strlen(line);
+	int		virtlen=slen;
+	char	*linecpy=strdup(line);
+	int		column=1;
+	int		columnreal=1;
+	int tabwidth=4;
+	
+	if(strchr(linecpy,'\e')!=NULL)
+		{
+			virtlen=0;
+			for(int j=0;j<slen;j++)
+				{
+					if(linecpy[j]=='\e')
+						{
+							while(linecpy[j]!='m')
+								j++;
+							j++;
+						}
+//					else if(linecpy[j]=='\t')
+//						{
+//							column=((column-1+tabwidth)/tabwidth)*tabwidth;
+//							
+//						}
+					//	virtlen+=4;
+					else
+					{
+				rawstr[virtlen]=linecpy[j];
+						virtlen++;
+						}
+//				columnreal++;
+				}
+			slen=virtlen+1;
+		}
+	else
+		{
+		int currentcol=sx+6;
+		int		column=1;
+		int tabwidth=4;
+		int strc=0;
+			for(int j=0;j<slen;j++)
+				{
+					if(linecpy[j]=='\t')
+					{
+						column=((column-1+tabwidth)/tabwidth)*tabwidth;
+						fprintf(stderr,"currentcol=%i column=%i\n",currentcol,column);
+						for(int k=0;k<(currentcol-column);k++)
+						{
+							rawstr[strc]=' ';
+							strc++;
+						}
+					}
+					else
+					{
+					rawstr[strc]=linecpy[j];
+					currentcol++;
+					strc++;
+					}
+				}
+			rawstr[strc]=0;
+		}
+//rawstr[virtlen]=0;
+	sprintf(buffer,"%*s",boxwidth," ");
+	//for(int j=0;j<boxwidth;j++)
+	//	buffer[j]='X';
+	
+	//fprintf(stderr,"1>%i %i %s<\n",virtlen,strlen(rawstr),rawstr);
+	if(linecpy[strlen(linecpy)-1]=='\n')
+		linecpy[strlen(linecpy)-1]=0;
+
+	switch(just)
+		{
+			case LEFTJUSTIFY:
+				sprintf(buffer,"%-*s",boxwidth,rawstr);
+				//sprintf(buffer,"%s",linecpy);
+				break;
+			case CENTREJUSTIFY:
+				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2),linecpy);
+				break;
+			case RIGHTJUSTIFY:
+				sprintf(buffer,"%*s",boxwidth,linecpy);
+				break;
+		}
+
+//	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
+	//fprintf(stderr,"2>%s<\n",buffer);
+	printf("\e[%i;%iH%s",sy,sx,buffer);
+	free(linecpy);
+}
+#endif

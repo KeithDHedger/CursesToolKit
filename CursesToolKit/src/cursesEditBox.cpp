@@ -206,8 +206,14 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-				//	this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+//TODO//
+#if 1
+					//MOVETO)his->sx+this->lineReserve,this->sy+boxline
 					this->gc->CTK_printJustLine(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+					//fflush(NULL);
+#else
+					this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+#endif
 					boxline++;
 				}
 		}
@@ -228,8 +234,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 			this->gc->CTK_printJustLine(statline,this->sx,this->sy+hite+1,this->wid);
 			free(statline);
-			//MOVETO(this->sx,this->sy+hite+1);
-			//printf("\e[%iXCOL %.*i, LINE %.*i, MODE %s SELECTION %s",this->wid,this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
 		}
 
 //higlite selection
@@ -246,21 +250,25 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				}
 		}
 //print cursor
+//if(showcursor==true)
+//{
 	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
 	switch(this->txtStrings[this->currentY][this->currentX])
 		{
 			case '\t':
 			case '\n':
 				charundercurs=' ';
+				//printf("%s%c",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),' ');
 				break;
 			default:
 				charundercurs=this->txtStrings[this->currentY][this->currentX];
 				break;
 		}	
 	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
-
+//}
 	fflush(NULL);
 }
+
 
 /**
 * Draw edit box.
@@ -875,6 +883,7 @@ void CTK_cursesEditBoxClass::refreshLine(void)
 //	this->gadgetDirty=true;
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+//	this->gc->CTK_printJustLine(txtStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }
 
 /**

@@ -557,7 +557,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,sy,dialogwidth+1,10,name,title);
 	cs.labelBoxType=NOBOX;	
 	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),sy+1,dialogwidth,5,bodytxt);
-	fud->labelGadget->CTK_setJustify(CENTRE);
+	fud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
 	fud->labelGadget->CTK_setColours(cs);
 
 	fud->inputGadget=selectapp->CTK_addNewInput((selectapp->maxCols/2)-(dialogwidth/2)+1,sy+7,dialogwidth-2,1,defaulttxt);
@@ -620,7 +620,7 @@ int CTK_cursesUtilsClass::CTK_queryDialog(CTK_mainAppClass *app,const char *body
 	cs.labelBoxType=NOBOX;	
 	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-3,dialogwidth,5,bodytxt);
 	fud->labelGadget->CTK_setColours(cs);
-	fud->labelGadget->CTK_setJustify(CENTRE);
+	fud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
 
 	cs.foreCol=FORE_WHITE;
 	cs.backCol=BACK_BLUE;
@@ -696,7 +696,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *app
 //body
 	asprintf(&aboutbuffer,"%s\n\n%s\n%s\n%s\n%s\n",appname,appinfo,copyright,email,website);
 	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,6,aboutbuffer);
-	fud->labelGadget->CTK_setJustify(CENTRE);
+	fud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
 
 	if(credits!=NULL)
 		maxbtns++;
@@ -764,7 +764,7 @@ std::string CTK_cursesUtilsClass::CTK_padString(std::string label,int maxlen)
 */
 void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *text)
 {
-	CTK_cursesGraphicsClass 	gc;
+	CTK_cursesGraphicsClass 	gc(app);
 	CTK_cursesUtilsClass		cu;
 	std::string					str=text;
 	std::vector<std::string>	txtStrings;

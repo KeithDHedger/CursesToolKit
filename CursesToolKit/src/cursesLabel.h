@@ -21,7 +21,7 @@
 #ifndef _CURSESLABEL_
 #define _CURSESLABEL_
 
-enum {LEFT=0,CENTRE,RIGHT};
+//enum {LEFT=0,CENTRE,RIGHT};
 
 class CTK_cursesLabelClass : public CTK_cursesGadgetClass
 {
@@ -39,7 +39,7 @@ class CTK_cursesLabelClass : public CTK_cursesGadgetClass
 
 		std::string					text;
 	private:
-		int							justify=LEFT;
+		int							justify=LEFTJUSTIFY;
 		int							centre=0;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
