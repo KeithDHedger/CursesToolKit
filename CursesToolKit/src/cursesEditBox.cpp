@@ -250,22 +250,21 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				}
 		}
 //print cursor
-//if(showcursor==true)
-//{
-	MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
-	switch(this->txtStrings[this->currentY][this->currentX])
+	if(showcursor==true)
 		{
-			case '\t':
-			case '\n':
-				charundercurs=' ';
-				//printf("%s%c",getBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours),' ');
-				break;
-			default:
-				charundercurs=this->txtStrings[this->currentY][this->currentX];
-				break;
-		}	
-	printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
-//}
+			MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
+			switch(this->txtStrings[this->currentY][this->currentX])
+				{
+					case '\t':
+					case '\n':
+						charundercurs=' ';
+						break;
+					default:
+						charundercurs=this->txtStrings[this->currentY][this->currentX];
+						break;
+				}	
+			printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
+		}
 	fflush(NULL);
 }
 

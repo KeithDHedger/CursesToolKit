@@ -210,7 +210,7 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 	int		virtlen=slen;
 	char	*linecpy=strdup(line);
 
-	char *outp=(char*)malloc(slen*this->tabWidth);
+	char *outp=(char*)alloca(slen*this->tabWidth);
 
 	if(strchr(linecpy,'\e')!=NULL)
 		{
@@ -250,7 +250,6 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 
 	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,buffer);
 	free(linecpy);
-	free(outp);
 }
 
 #if 0

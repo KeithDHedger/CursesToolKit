@@ -269,15 +269,17 @@ static void buttonSelectCB(void *inst,void *ud)
 	
 			cs.textBoxType=INBOX;
 			cs.fancyGadgets=true;
+			cs.labelBoxType=INBOX;
 			selectapp->CTK_setColours(cs);
 
-			subfud->textGadget=selectapp->CTK_addNewTextBox(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,false,(char*)fud->credits);
-subfud->textGadget->CTK_setSelectable(false);
+			subfud->labelGadget=selectapp->CTK_addNewLabel(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,(char*)fud->credits);
+			subfud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
+
 			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
 			subfud->app=selectapp;
 			subfud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
 
-			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Licence ...",NULL);
+			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Credits ...",NULL);
 			selectapp->CTK_setDefaultGadget(subfud->btnOK);
 			selectapp->CTK_mainEventLoop();
 			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
