@@ -206,14 +206,9 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//TODO//
-#if 1
-					//MOVETO)his->sx+this->lineReserve,this->sy+boxline
+
 					this->gc->CTK_printJustLine(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
-					//fflush(NULL);
-#else
-					this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
-#endif
+//this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}
 		}
@@ -250,7 +245,7 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				}
 		}
 //print cursor
-	if(showcursor==true)
+//	if(showcursor==true)
 		{
 			MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
 			switch(this->txtStrings[this->currentY][this->currentX])
@@ -881,8 +876,8 @@ void CTK_cursesEditBoxClass::refreshLine(void)
 {
 //	this->gadgetDirty=true;
 	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
-//	this->gc->CTK_printJustLine(txtStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+//	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+	this->gc->CTK_printJustLine(txtStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 }
 
 /**

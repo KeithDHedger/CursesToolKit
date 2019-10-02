@@ -390,7 +390,8 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
-	const char				*ftol="texteditor.cpp";
+//	const char				*ftol="texteditor.cpp";
+	const char				*ftol="/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesSourceEditBox.cpp";
 	coloursStruct			cs;
 	CTK_cursesEditBoxClass	*srcbox;
 

@@ -150,7 +150,7 @@ void menuSelectCB(void *inst,void *userdata)
 										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,cu.stringResult.c_str());
+										srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.stringResult.c_str());
 										//srcbox->CTK_setInputLang(NULL);
 										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setInputLang(NULL);
 										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
@@ -427,7 +427,7 @@ int main(int argc, char **argv)
 	cs.backCol=BACK_BLACK;
 
 	mainApp->CTK_setColours(cs);
-	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
@@ -435,9 +435,9 @@ int main(int argc, char **argv)
 	rebuildBMMenu();
 
 //clear screen etc
-	mainApp->CTK_mainEventLoop(-1);
+	//mainApp->CTK_mainEventLoop(-1);
 	mainApp->CTK_setDefaultGadget(srcbox);
-	srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
+	//srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)
