@@ -203,15 +203,17 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 	int		maxlen=boxwidth;
 	int		printablelen=0;
 
+//TODO//
 	maxlen=strlen(line)*this->tabWidth*boxwidth;
-	buffer=(char*)calloc(1,maxlen+1);
-	outp=(char*)calloc(1,maxlen+1);
+	buffer=(char*)calloc(1,maxlen+boxwidth+1);
+	outp=(char*)calloc(1,maxlen+boxwidth+1);
 
 	if(linecpy[strlen(linecpy)-1]=='\n')
 		linecpy[strlen(linecpy)-1]=0;
 
 	this->detab(linecpy,&outp[0],maxlen,sx);
 	printablelen=strlen(outp);
+
 	if(strchr(outp,'\e')!=NULL)
 		{
 			printablelen=0;

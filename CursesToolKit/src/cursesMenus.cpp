@@ -328,13 +328,15 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 															menuStart--;
 													}
 //skip disabled menu items
-												while( (this->menuNames[this->menuNumber]->menuItem[selection-1+this->menuStart]->menuEnabled==false))
+												while((selection>0) && (this->menuNames[this->menuNumber]->menuItem[selection-1+this->menuStart]->menuEnabled==false))
 													selection--;
 												while(selection<1)
 													{
 														selection++;
 														this->menuStart--;
 													}
+												if(this->menuStart<0)
+													this->menuStart=0;
 												this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
 												continue;
 												break;
