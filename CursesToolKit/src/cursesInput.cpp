@@ -138,14 +138,12 @@ void CTK_cursesInputClass::CTK_doInput(void)
 										oskb->CTK_doInput();
 										this->CTK_setText(oskb->CTK_getText());
 										delete oskb;
-										//SETSHOWCURS;
-										//fflush(NULL);
 										if(this->redrawAppWindow==true)
-											this->mc->CTK_updateScreen(this->mc,(void*)2);
+											this->mc->CTK_updateScreen(this->mc,SCREENUPDATEWINDOW);
 										else
 											{
 												this->mc->CTK_clearScreen();
-												this->mc->CTK_updateScreen(this->mc,(void*)1);
+												this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
 											}
 										if(this->selectCB!=NULL)
 											this->selectCB(this,this->selectCBUserData);

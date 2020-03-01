@@ -364,7 +364,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 			return;
 		}
 
-	if((app->useAppWindow==true) || ((long)userdata==2))
+	if((app->useAppWindow==true) || (userdata==SCREENUPDATEWINDOW))
 		{
 			int	yadj=0;
 			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
@@ -396,7 +396,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 
 	for(int j=0;j<app->pages[app->pageNumber].gadgets.size();j++)
 		{
-			if(userdata!=NULL)
+			if(userdata!=SCREENUPDATEBASIC)
 				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
 			app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
 			app->pages[app->pageNumber].gadgets[j]->gadgetDirty=false;
@@ -462,7 +462,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 	if(docls==true)
 		{
 			this->CTK_clearScreen();
-			this->CTK_updateScreen(this,NULL);
+			this->CTK_updateScreen(this,SCREENUPDATEBASIC);
 		}
 
 	this->useAppWindow=false;
@@ -529,19 +529,18 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 									case TERMKEY_SYM_ESCAPE:
 										if(this->pages[this->pageNumber].menusActive==false)
 											break;
-										this->CTK_updateScreen(this,NULL);
+										this->CTK_updateScreen(this,SCREENUPDATEBASIC);
 										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
 											{
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
-												this->CTK_updateScreen(this,(void*)1);
+												this->CTK_updateScreen(this,SCREENUPDATEALL);
 											}
 										break;
 //tab select
 									case TERMKEY_SYM_TAB://TODO//no gadgets
 									case TERMKEY_SYM_RIGHT:
 									case TERMKEY_SYM_LEFT:
-									//fprintf(stderr,"000000000000000000000%i\n",this->pages[0].currentGadget);
 										switch(key.code.sym)
 											{
 												case TERMKEY_SYM_TAB:
@@ -701,7 +700,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 																static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getSrcStrings());
 													
 															this->CTK_emptyIPBuffer();
-															this->CTK_updateScreen(this,NULL);
+															this->CTK_updateScreen(this,SCREENUPDATEBASIC);
 															if(this->eventLoopCBOut!=NULL)
 																this->eventLoopCBOut(this,this->userData);
 															continue;
@@ -748,7 +747,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 			//if(key.code.sym!=TERMKEY_SYM_NONE)
 			//	{
 					this->CTK_emptyIPBuffer();
-					this->CTK_updateScreen(this,NULL);
+					this->CTK_updateScreen(this,SCREENUPDATEBASIC);
 					this->showHilighting=true;
 					if(this->eventLoopCBOut!=NULL)
 						this->eventLoopCBOut(this,this->userData);

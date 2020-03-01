@@ -84,7 +84,7 @@ void buttonselctCB(void *inst,void *userdata)
 			mbarVis=!mbarVis;
 			mainApp->menuBar->CTK_setMenuBarVisible(mbarVis);
 			mainApp->CTK_clearScreen();
-			mainApp->CTK_updateScreen(mainApp,(void*)1);
+			mainApp->CTK_updateScreen(mainApp,SCREENUPDATEALL);
 		}
 	fprintf(stderr,"Gadget type=%i\n",bc->CTK_getGadgetType());
 }
@@ -145,12 +145,12 @@ void dropboxCB(void *inst,void *userdata)
 			case 0:
 				edbox->CTK_setStatusBarVisible(false);
 				mainApp->CTK_clearScreen();
+				mainApp->CTK_updateScreen(mainApp,SCREENUPDATEALL);
 				break;
 			case 1:
 				edbox->CTK_setStatusBarVisible(true);
 				break;
 		}
-	mainApp->CTK_updateScreen(mainApp,(void*)1);
 }
 
 int main(int argc, char **argv)

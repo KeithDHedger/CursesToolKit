@@ -293,11 +293,11 @@ void menuSelectCB(void *inst,void *userdata)
 								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
 									{
 										srcbox->CTK_gotoLine(atoi(cu.stringResult.c_str()));
-										mainApp->CTK_updateScreen(mainApp,NULL);
+										mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 										srcbox->CTK_doEvent(true,srcbox->CTK_getStrings(),srcbox->CTK_getSrcStrings());
 										break;
 									}
-								mainApp->CTK_updateScreen(mainApp,NULL);
+								mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							}
 							break;
 						case FIND:
@@ -312,15 +312,15 @@ void menuSelectCB(void *inst,void *userdata)
 					{
 						case NEXTTAB:
 							mainApp->CTK_nextPage();
-							mainApp->CTK_updateScreen(mainApp,NULL);
+							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 						case PREVTAB:
 							mainApp->CTK_previousPage();
-							mainApp->CTK_updateScreen(mainApp,NULL);
+							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 						default:
 							mainApp->CTK_setPage(mc->menuItemNumber-2);
-							mainApp->CTK_updateScreen(mainApp,NULL);
+							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 					}
 				}

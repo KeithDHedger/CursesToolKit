@@ -347,7 +347,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 											{
 												this->mc->menuBar->menuNumber=j;
 												this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
-												this->mc->CTK_updateScreen(this->mc,NULL);
+												this->mc->CTK_updateScreen(this->mc,SCREENUPDATEBASIC);
 												
 												break;
 											}

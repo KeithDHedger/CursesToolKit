@@ -145,7 +145,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 	if(this->selectedItem>-1)
 		this->label=this->items[this->selectedItem].label;
 	this->mc->CTK_clearScreen();
-	this->mc->CTK_updateScreen(this->mc,NULL);
+	this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
 	if(this->selectDeselects==true)
 		this->hiLited=false;
 }

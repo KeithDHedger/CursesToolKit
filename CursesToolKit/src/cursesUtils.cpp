@@ -256,7 +256,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
 			fud->app->CTK_clearScreen();
-			fud->app->CTK_updateScreen(fud->app,(void*)2);
+			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
 			return;
 		}
 
@@ -284,7 +284,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			selectapp->CTK_mainEventLoop();
 			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
 			fud->app->CTK_clearScreen();
-			fud->app->CTK_updateScreen(fud->app,(void*)2);
+			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
 			return;
 		}
 
@@ -579,7 +579,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 		}
 	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
 
-	selectapp->CTK_updateScreen(selectapp,NULL);
+	selectapp->CTK_updateScreen(selectapp,SCREENUPDATEBASIC);
 	selectapp->CTK_setDefaultGadget(fud->inputGadget,false);
 
 	fud->inputGadget->CTK_doInput();

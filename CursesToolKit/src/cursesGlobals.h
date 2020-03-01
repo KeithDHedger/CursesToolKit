@@ -80,6 +80,10 @@ struct fbData
  * \brief CTK globals.
  */
 
+#define SCREENUPDATEALL (void*)1
+#define SCREENUPDATEWINDOW (void*)2
+#define SCREENUPDATEBASIC NULL
+
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
 /**

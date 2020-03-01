@@ -303,7 +303,6 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 			loop=true;
 			while(loop==true)
 				{
-					//this->mc->CTK_updateScreen(this->mc,(void*)1);
 					ret=termkey_waitkey(this->tk,&key);
 					termkey_strfkey(this->tk,buffer,32,&key,format);
 
@@ -373,7 +372,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 													this->menuNumber=this->menuCnt-1;
 												loop=false;
 												selection=0;
-												this->mc->CTK_updateScreen(this->mc,(void*)1);
+												this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
 												continue;
 												break;
 											case TERMKEY_SYM_RIGHT:
@@ -386,7 +385,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 													this->menuNumber++;
 												if(this->menuNumber>=this->menuCnt)
 													this->menuNumber=0;
-												this->mc->CTK_updateScreen(this->mc,(void*)1);
+												this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
 												continue;
 												break;
 											case TERMKEY_SYM_HOME:
