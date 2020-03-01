@@ -252,5 +252,7 @@ void CTK_cursesGraphicsClass::CTK_printJustLine(const char *line,int sx,int sy,i
 
 	printf("\e[%i;%iH%s",sy,sx,buffer);
 	free(linecpy);
+	free(buffer);
+	free(outp);
 }
 
