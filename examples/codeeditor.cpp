@@ -427,16 +427,18 @@ int main(int argc, char **argv)
 	cs.backCol=BACK_BLACK;
 
 	mainApp->CTK_setColours(cs);
-	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+//	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
+	//srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"./widgetfactory.cpp");
+	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,3,3,140,20,true,"./widgetfactory.cpp");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
-	rebuildBMMenu();
+//	rebuildBMMenu();
 
 //clear screen etc
 	//mainApp->CTK_mainEventLoop(-1);
-	mainApp->CTK_setDefaultGadget(srcbox);
+//	mainApp->CTK_setDefaultGadget(srcbox);
 	//srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 	mainApp->CTK_mainEventLoop();
 

@@ -89,10 +89,12 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 					printf("%s",this->menuNames[j]->menuName);
 				}
-			setBackColour(this->colours.windowBackCol);
 			printf(" ");
 			x+=strlen(this->menuNames[j]->menuName)+1;
 		}
+	MOVETO(x,1);
+	setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+	printf("%*s",this->mc->maxCols-x+1,"");
 	SETNORMAL;
 }
 
@@ -289,6 +291,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 		return(CONT);
 
 	bool doshortcut=false;
+	this->mc->CTK_updateScreen(this->mc,SCREENUPDATEUNHILITE);
 
 	while(mainloop==true)
 		{

@@ -19,3 +19,5 @@ IGNORE
 CursesToolKit/docs/html
 CursesToolKit/docs/searchdata.xml
 tmpexamples
+examples/html
+examples/searchdata.xml

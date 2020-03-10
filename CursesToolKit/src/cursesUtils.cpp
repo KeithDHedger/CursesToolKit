@@ -788,6 +788,7 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 			MOVETO(centre-((txtStrings[j].length()-offset)/2),11+j);
 			printf("%s",txtStrings[j].c_str());
 		}
+	MOVETO(1,1)
 	fflush(NULL);
 }
 

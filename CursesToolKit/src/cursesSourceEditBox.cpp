@@ -146,7 +146,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 				}
 		}
 	inpstream << std::endl; 
-
+//sourceHighlight.backgroundColor("white");
 	sourceHighlight.setDataDir(SRCDATADIR);
 	std::string lang="";
 	if((this->filePath.compare("")!=0) && (this->forceLang==false))

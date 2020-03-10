@@ -1,0 +1,6 @@
+{
+	ignore_versioned_libscurs
+	Memcheck:Leak
+	...
+	obj:/lib64/libncursesw.so.*
+}

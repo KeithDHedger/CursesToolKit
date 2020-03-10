@@ -398,7 +398,10 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 		{
 			if(userdata!=SCREENUPDATEBASIC)
 				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
-			app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
+			if(userdata!=SCREENUPDATEUNHILITE)
+				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
+			else
+				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
 			app->pages[app->pageNumber].gadgets[j]->gadgetDirty=false;
 		}
 	SETNORMAL;
@@ -532,9 +535,11 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										this->CTK_updateScreen(this,SCREENUPDATEBASIC);
 										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
 											{
+												int hg=this->pages[pageNumber].currentGadget;
 												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
 												this->menuBar->CTK_drawDefaultMenuBar();
-												this->CTK_updateScreen(this,SCREENUPDATEALL);
+												this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
+												this->CTK_setDefaultGadget(this->pages[pageNumber].gadgets[hg]);
 											}
 										break;
 //tab select
@@ -735,8 +740,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										if(this->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
 											{
 												this->menuBar->menuNumber=j;
-												this->menuBar->selectCB(this->menuBar,NULL);//TODO// add menu number as user data?
 												thisgadgetinst->gadgetDirty=true;
+												this->menuBar->selectCB(this->menuBar,NULL);//TODO// add menu number as user data?
 												break;
 											}
 									}
@@ -799,9 +804,11 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 */
 int CTK_mainAppClass::CTK_previousPage(void)
 {
+	this->CTK_clearScreen();
+	this->pages[this->pageNumber].currentGadget=-1;
 	if(this->pageNumber>0)
 		this->pageNumber--;
-	this->CTK_clearScreen();
+	this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
 	return(this->pageNumber);
 }
 
@@ -810,9 +817,10 @@ int CTK_mainAppClass::CTK_previousPage(void)
 */
 int CTK_mainAppClass::CTK_nextPage(void)
 {
+	this->CTK_clearScreen();
 	if(this->pageNumber<this->pages.size()-1)
 		this->pageNumber++;
-	this->CTK_clearScreen();
+	this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
 	return(this->pageNumber);
 }
 

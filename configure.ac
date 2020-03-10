@@ -18,7 +18,7 @@
 m4_define([CURSESTOOLKIT_MAJ_N],[2])
 m4_define([CURSESTOOLKIT_REL_N],[1])
 m4_define([CURSESTOOLKIT_MIN_N],[1])
-m4_define([CURSESTOOLKIT_REV_N],[2])
+m4_define([CURSESTOOLKIT_REV_N],[3])
 
 m4_define([ctk_api_version], [1.0])
 m4_define([ctk_version],[CURSESTOOLKIT_REL_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
