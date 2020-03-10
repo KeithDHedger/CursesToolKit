@@ -530,17 +530,20 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 							switch(key.code.sym)
 								{
 									case TERMKEY_SYM_ESCAPE:
-										if(this->pages[this->pageNumber].menusActive==false)
-											break;
-										this->CTK_updateScreen(this,SCREENUPDATEBASIC);
-										if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
-											{
-												int hg=this->pages[pageNumber].currentGadget;
-												selection=this->menuBar->CTK_doMenuEvent(0,1,true);
-												this->menuBar->CTK_drawDefaultMenuBar();
-												this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
-												this->CTK_setDefaultGadget(this->pages[pageNumber].gadgets[hg]);
-											}
+										{
+											if(this->pages[this->pageNumber].menusActive==false)
+												break;
+											int	hg=this->pages[pageNumber].currentGadget;
+											this->CTK_updateScreen(this,SCREENUPDATEBASIC);
+											if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
+												{
+													selection=this->menuBar->CTK_doMenuEvent(0,1,true);
+													this->menuBar->CTK_drawDefaultMenuBar();
+													this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
+													if(hg!=-1)
+														this->CTK_setDefaultGadget(this->pages[pageNumber].gadgets[hg]);
+												}
+										}
 										break;
 //tab select
 									case TERMKEY_SYM_TAB://TODO//no gadgets
@@ -674,6 +677,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										thisgadgetinst->gadgetDirty=true;
 										if(thisgadgetinst->hiLited==true)
 											{
+												int goff=0;
 												switch(thisgadgettype)
 													{
 														case LISTGADGET:
@@ -687,11 +691,17 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 															if(thisgadgetinst->selectCB!=NULL)
 																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
 															break;
-														case BUTTONGADGET://TODO//
-														case CHECKGADGET:
 														case IMAGEGADGET:
+														case BUTTONGADGET://TODO//horrible hack!!
+															goff=1;
+															this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
+														case CHECKGADGET:
 															if(thisgadgetinst->selectCB!=NULL)
-																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+																{
+																	thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
+																	this->CTK_setDefaultGadget(thisgadgetinst);
+																	this->pages[this->pageNumber].currentGadget=thisgadget-goff;
+																}
 															break;
 														case INPUTGADGET:
 															static_cast<CTK_cursesInputClass*>(thisgadgetinst)->CTK_doInput();
@@ -740,7 +750,8 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 										if(this->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
 											{
 												this->menuBar->menuNumber=j;
-												thisgadgetinst->gadgetDirty=true;
+												if(thisgadgetinst!=NULL)
+													thisgadgetinst->gadgetDirty=true;
 												this->menuBar->selectCB(this->menuBar,NULL);//TODO// add menu number as user data?
 												break;
 											}
