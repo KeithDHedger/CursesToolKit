@@ -1,6 +1,6 @@
 2.0.0
 Switched to dev
-Started new event code to remove termius.
+Started new event code to remove termkey.
 
 1.1.3
 Fixed segfault when selecting CTRL+* when no gadget selected.
