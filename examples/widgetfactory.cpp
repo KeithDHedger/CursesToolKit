@@ -330,7 +330,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"./widgetfactory.cpp");
-	srceditbox->CTK_setShowLineNumbers(true);
+	srceditbox->CTK_setShowLineNumbers(4);
 	cs.backCol=BACK_BLACK;
 	cs.foreCol=FORE_WHITE;
 	cs.textBoxType=NOBOX;

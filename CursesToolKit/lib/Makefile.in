@@ -140,7 +140,8 @@ am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
 	../src/cursesKeyboard.lo ../src/cursesLabel.lo \
 	../src/cursesListBox.lo ../src/cursesMenus.lo \
 	../src/cursesSourceEditBox.lo ../src/cursesTextBox.lo \
-	../src/cursesUtils.lo ../src/LFSTKFindClass.lo
+	../src/cursesUtils.lo ../src/LFSTKFindClass.lo \
+	../src/readKeyClass.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -183,7 +184,8 @@ am__depfiles_remade = ../src/$(DEPDIR)/LFSTKFindClass.Plo \
 	../src/$(DEPDIR)/cursesMenus.Plo \
 	../src/$(DEPDIR)/cursesSourceEditBox.Plo \
 	../src/$(DEPDIR)/cursesTextBox.Plo \
-	../src/$(DEPDIR)/cursesUtils.Plo
+	../src/$(DEPDIR)/cursesUtils.Plo \
+	../src/$(DEPDIR)/readKeyClass.Plo
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -380,7 +382,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			$(IMAGEMAGICK_CFLAGS) \
 			$(TERMKEY_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp ../src/readKeyClass.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -499,6 +501,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/LFSTKFindClass.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/readKeyClass.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 
 libcursestoolkit.la: $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_DEPENDENCIES) $(EXTRA_libcursestoolkit_la_DEPENDENCIES) 
 	$(AM_V_CXXLD)$(libcursestoolkit_la_LINK) -rpath $(libdir) $(libcursestoolkit_la_OBJECTS) $(libcursestoolkit_la_LIBADD) $(LIBS)
@@ -529,6 +533,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesSourceEditBox.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesTextBox.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesUtils.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/readKeyClass.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -736,6 +741,7 @@ distclean: distclean-am
 	-rm -f ../src/$(DEPDIR)/cursesSourceEditBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesTextBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesUtils.Plo
+	-rm -f ../src/$(DEPDIR)/readKeyClass.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -799,6 +805,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ../src/$(DEPDIR)/cursesSourceEditBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesTextBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesUtils.Plo
+	-rm -f ../src/$(DEPDIR)/readKeyClass.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
