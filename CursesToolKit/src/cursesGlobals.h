@@ -41,6 +41,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+//#include <curses.h>
+//#include <term.h>
+
 struct fbData
 {
 	struct fb_fix_screeninfo	frameBufferInfo;
@@ -73,6 +76,8 @@ struct fbData
 #include "cursesFBImage.h"
 #include "cursesKeyboard.h"
 
+
+#include "cursesReadKeyClass.h"
 #include "cursesApplication.h"
 
 /**
@@ -84,6 +89,9 @@ struct fbData
 #define SCREENUPDATEWINDOW (void*)2
 #define SCREENUPDATEUNHILITE (void*)3
 #define SCREENUPDATEBASIC NULL
+
+#define	THISPAGE this->pages[this->pageNumber]
+#define	CURRENTGADGET THISPAGE.gadgets[THISPAGE.currentGadget]
 
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
@@ -123,6 +131,8 @@ struct pageStruct
 	int											currentGadget=0;
 	void										*userData=NULL;
 	bool										menusActive=true;
+	bool										ignoreFirstTab=false;
+	bool										retainHighliting=false;
 };
 
 enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};

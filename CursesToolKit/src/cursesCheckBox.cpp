@@ -85,6 +85,7 @@ void CTK_cursesCheckBoxClass::CTK_setValue(bool val)
 {
 	this->value=val;
 	this->gadgetDirty=true;
+	this->CTK_drawGadget(this->hiLited);
 }
 
 /**

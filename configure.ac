@@ -16,9 +16,9 @@
 #        +- increment if interfaces have been added, removed or changed
 
 m4_define([CURSESTOOLKIT_MAJ_N],[2])
-m4_define([CURSESTOOLKIT_REL_N],[1])
-m4_define([CURSESTOOLKIT_MIN_N],[1])
-m4_define([CURSESTOOLKIT_REV_N],[3])
+m4_define([CURSESTOOLKIT_REL_N],[2])
+m4_define([CURSESTOOLKIT_MIN_N],[0])
+m4_define([CURSESTOOLKIT_REV_N],[0])
 
 m4_define([ctk_api_version], [1.0])
 m4_define([ctk_version],[CURSESTOOLKIT_REL_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
@@ -54,6 +54,11 @@ AC_SUBST(LDFLAGS)
 
 CFLAGS=-Wall
 AC_SUBST(CFLAGS)
+
+NCURSES_MODULES="ncurses >= 6.1"
+PKG_CHECK_MODULES(NCURSES, $NCURSES_MODULES)
+AC_SUBST(NCURSES_CFLAGS)
+AC_SUBST(NCURSES_LIBS)
 
 TERMKEY_MODULES="termkey >= 0.2"
 PKG_CHECK_MODULES(TERMKEY, $TERMKEY_MODULES)

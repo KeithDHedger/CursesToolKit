@@ -35,6 +35,7 @@ class CTK_cursesSourceEditBoxClass;
 class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
 class CTK_cursesFBImageClass;
+class CTK_cursesReadKeyClass;
 
 class CTK_mainAppClass
 {
@@ -96,7 +97,14 @@ class CTK_mainAppClass
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_setTermKeyRun(bool start);
+
+
+
+		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true);
 		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
+
+
+
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 
@@ -116,6 +124,13 @@ class CTK_mainAppClass
 		bool									showHilighting=true;
 
 	private:
+
+		void									scrollGadget(bool pageup,bool lineup);
+		void									activateGadget(void);
+		void									highLiteGadget(bool forward);
+		void									drawAllGadgets(void);
+		CTK_cursesReadKeyClass					*readKey=NULL;
+
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
 	//	bool									noHiliteChange=false;

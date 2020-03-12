@@ -28,6 +28,7 @@ echo "done compiling ..."
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
 retval=$?
 rm $name
+reset
 exit $retval
 
 #endif
@@ -62,7 +63,7 @@ int						b2Cnt=0;
 
 void menuselctCB(void *inst,void *userdata)
 {
-	char				*buffer=(char*)alloca(256);
+//	char				*buffer=(char*)alloca(256);
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
 	if(mc->menuNumber==TABMENU)
@@ -98,10 +99,10 @@ void buttonselctCB(void *inst,void *userdata)
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	long					ud=(long)userdata;
-	int						lastpage=mainApp->pageNumber;
+//	int						lastpage=mainApp->pageNumber;
 	if(userdata!=NULL)
 		{
-			mainApp->pages[mainApp->pageNumber].currentGadget=-1;
+			//mainApp->pages[mainApp->pageNumber].currentGadget=-1;
 			switch(ud)
 				{
 					case NEXTPAGE:
@@ -135,7 +136,7 @@ void listselctCB(void *inst,void *userdata)
 	if(ls->CTK_getMultipleSelect()==true)
 		{
 			std::vector<bool>	sels=ls->CTK_getSelections();
-			for(int j=0;j<sels.size();j++)
+			for(unsigned j=0;j<sels.size();j++)
 				{
 					if(sels[j]==true)
 					{
@@ -183,12 +184,12 @@ int main(int argc, char **argv)
 	CTK_cursesInputClass			*input;
 	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
-	CTK_cursesCheckBoxClass			*checkbox1;
+//	CTK_cursesCheckBoxClass			*checkbox1;
 	CTK_cursesEditBoxClass			*editbox;
 	CTK_cursesSourceEditBoxClass	*srceditbox;
 	CTK_cursesLabelClass			*label;
-	CTK_cursesChooserClass			*chooser;
-	CTK_cursesFBImageClass			*fbimage;
+//	CTK_cursesChooserClass			*chooser;
+//	CTK_cursesFBImageClass			*fbimage;
 
 	const char	*menuNames[]={"File","Edit","Tabs","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
@@ -487,14 +488,19 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
 
-	mainApp->CTK_setPage(0);
+	label=mainApp->CTK_addNewLabel(3,geny-8+genh+2,genw,1,"Test Label");
+//	label->CTK_setJustify(CENTREJUSTIFY);
+
+
+//	mainApp->CTK_setPage(0);
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'Q');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,NEXTTAB,'N');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,PREVTAB,'P');
 	mainApp->eventLoopCBIn=mainloopCBIn;
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
-	mainApp->CTK_mainEventLoop();
+	//mainApp->CTK_mainEventLoop();
+	mainApp->CTK_mainEventLoop_New();
 	SETSHOWCURS;
 
 	delete mainApp;

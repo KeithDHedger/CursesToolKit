@@ -97,6 +97,8 @@ enum COLOUR8 {BLACK=0,RED,GREEN,YELLOW,BLUE,MAGENTA,CYAN,WHITE};
 
 enum {PLAINBOX=0,OUTBOX,INBOX,NOBOX};
 
+//enum	{KEY_NONE=1000,KEY_TAB,KEY_ESC,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT,KEY_HOME,KEY_END,KEY_PAGEUP,KEY_PAGEDOWN,KEY_INSERT,KEY_DELETE,KEY_ENTER,KEY_BACKSPACE,KEY_F1,KEY_F2,KEY_F3,KEY_F4,KEY_F5,KEY_F6,KEY_F7,KEY_F8,KEY_F9,KEY_F10,KEY_F11,KEY_F12};
+
 struct coloursStruct
 {
 	int		foreCol=FORE_BLACK;
@@ -197,7 +199,7 @@ static inline bool willFitLine(std::string str,int tabwidth,int linelen)
 	int	column=0;
 	int	next_tab_column;
 
-	for(int j=0;j<str.length();j++)
+	for(unsigned j=0;j<str.length();j++)
 		{
 			if(str[j]=='\t')
 				{
@@ -221,7 +223,7 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 {
 	int	column=pad;
 
-	for(unsigned int j=0;j<cx;j++)
+	for(int j=0;j<cx;j++)
 		{
 			if(str[j]=='\t')
 				column=((column-1+tabwidth)/tabwidth)*tabwidth;

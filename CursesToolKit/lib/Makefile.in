@@ -281,6 +281,7 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = $(SOURCEHILITE_LIBS) \
 			$(IMAGEMAGICK_LIBS) \
+			$(NCURSES_LIBS) \
 			$(TERMKEY_LIBS)
 
 LIBTOOL = @LIBTOOL@
@@ -291,6 +292,8 @@ LT_SYS_LIBRARY_PATH = @LT_SYS_LIBRARY_PATH@
 MAKEINFO = @MAKEINFO@
 MANIFEST_TOOL = @MANIFEST_TOOL@
 MKDIR_P = @MKDIR_P@
+NCURSES_CFLAGS = @NCURSES_CFLAGS@
+NCURSES_LIBS = @NCURSES_LIBS@
 NM = @NM@
 NMEDIT = @NMEDIT@
 OBJDUMP = @OBJDUMP@
@@ -380,6 +383,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			$(SOURCEHILITE_CFLAGS) \
 			$(GOTIMIAGEMAGIC) \
 			$(IMAGEMAGICK_CFLAGS) \
+			$(NCURSES_CFLAGS) \
 			$(TERMKEY_CFLAGS)
 
 COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesReadKeyClass.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
