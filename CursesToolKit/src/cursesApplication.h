@@ -125,7 +125,8 @@ class CTK_mainAppClass
 
 	private:
 
-		void									scrollGadget(bool pageup,bool lineup);
+		void									scrollGadget(bool pagescrill,bool lineup);
+		void									runMenus(void);
 		void									activateGadget(void);
 		void									highLiteGadget(bool forward);
 		void									drawAllGadgets(void);

@@ -466,7 +466,7 @@ void CTK_mainAppClass::drawAllGadgets(void)
 * \param bool line up
 * \note private
 */
-void CTK_mainAppClass::scrollGadget(bool pageup,bool lineup)
+void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 {
 	gadgetType	gt;
 
@@ -480,7 +480,10 @@ void CTK_mainAppClass::scrollGadget(bool pageup,bool lineup)
 	switch(gt)
 		{
 			case TEXTGADGET:
-				static_cast<CTK_cursesTextBoxClass*>(CURRENTGADGET)->CTK_scrollLine(lineup);
+				if(pagescroll==true)
+					static_cast<CTK_cursesTextBoxClass*>(CURRENTGADGET)->CTK_scrollPage(lineup);
+				else
+					static_cast<CTK_cursesTextBoxClass*>(CURRENTGADGET)->CTK_scrollLine(lineup);
 				break;
 			case LISTGADGET:
 				static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_keyUpDown(lineup);
@@ -488,34 +491,60 @@ void CTK_mainAppClass::scrollGadget(bool pageup,bool lineup)
 			case DROPGADGET:
 				if(lineup==true)
 					return;
-
 				static_cast<CTK_cursesDropClass*>(CURRENTGADGET)->CTK_doDropDownEvent();
 				if(CURRENTGADGET->selectCB!=NULL)
 					CURRENTGADGET->selectCB((void*)CURRENTGADGET,(void*)CURRENTGADGET->CTK_getCBUserData());
 				this->drawAllGadgets();
 				break;
+			case EDITGADGET:
+			case SRCGADGET:
+				if(pagescroll==true)
+					{
+						if(lineup==false)
+							static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getCursLine()+static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getHeight());
+						else
+							static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getCursLine()-static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getHeight());
+					}
+				else
+					if(lineup==false)
+						static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getCursLine()+1);
+					else
+						static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getCursLine()-1);
+				break;
 		}
 	CURRENTGADGET->CTK_drawGadget(true);
-/*
-												case TEXTGADGET:
-													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollLine(false);
-													break;
-												case LISTGADGET:
-													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(false);
-													break;
-												case EDITGADGET:
-												case SRCGADGET:
-													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()+1);
-													break;
-												case DROPGADGET:
-													static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
-													if(thisgadgetinst->selectCB!=NULL)
-														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-													break;
-												default:
-													break;
+}
 
+/**
+* Run menu events
+* \note Private.
 */
+void CTK_mainAppClass::runMenus(void)
+{
+	if(THISPAGE.menusActive==false)
+		return;
+	this->drawAllGadgets();
+	
+	int	hg=THISPAGE.currentGadget;
+	int hp=this->pageNumber;
+	if(hg!=-1)//TODO//
+		CURRENTGADGET->hiLited=false;
+	THISPAGE.currentGadget=-1;
+	if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
+		{
+			this->menuBar->CTK_doMenuEvent(0,1,true);
+			this->menuBar->CTK_drawDefaultMenuBar();
+			this->CTK_clearScreen();
+			this->drawAllGadgets();
+		}
+
+	if((hg!=-1) && (this->pageNumber==hp))
+		{
+			this->CTK_setDefaultGadget(THISPAGE.gadgets[hg]);
+			CURRENTGADGET->gadgetDirty=true;
+			CURRENTGADGET->hiLited=true;
+			CURRENTGADGET->CTK_drawGadget(true);
+		}
 }
 
 /**
@@ -556,7 +585,7 @@ void CTK_mainAppClass::activateGadget(void)
 					CURRENTGADGET->selectCB((void*)CURRENTGADGET,(void*)CURRENTGADGET->CTK_getCBUserData());
 				CURRENTGADGET->CTK_drawGadget(true);
 				break;
-
+//drop gadget
 			case DROPGADGET:
 				THISPAGE.retainHighliting=true;
 				THISPAGE.ignoreFirstTab=false;
@@ -566,6 +595,27 @@ void CTK_mainAppClass::activateGadget(void)
 				this->drawAllGadgets();
 				CURRENTGADGET->gadgetDirty=true;
 				CURRENTGADGET->CTK_drawGadget(true);
+				break;
+//input
+			case INPUTGADGET:
+				static_cast<CTK_cursesInputClass*>(CURRENTGADGET)->CTK_doInput();
+				break;
+//edit boxes
+			case EDITGADGET:
+			case SRCGADGET:
+				THISPAGE.ignoreFirstTab=false;
+				THISPAGE.retainHighliting=true;
+				if(CURRENTGADGET->CTK_getGadgetType()==EDITGADGET)
+					static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_doEvent(false,static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getStrings(),static_cast<CTK_cursesEditBoxClass*>(CURRENTGADGET)->CTK_getStrings());
+				else
+					static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_getSrcStrings());
+
+				this->CTK_emptyIPBuffer();
+				CURRENTGADGET->gadgetDirty=true;
+				CURRENTGADGET->CTK_drawGadget(true);
+
+				if(this->eventLoopCBOut!=NULL)
+					this->eventLoopCBOut(this,this->userData);
 				break;
 		}
 
@@ -735,9 +785,11 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 							fprintf(stderr,"CTK_KEY_END\n");
 							break;
 						case CTK_KEY_PAGEUP:
+							this->scrollGadget(true,true);
 							fprintf(stderr,"CTK_KEY_PAGEUP\n");
 							break;
 						case CTK_KEY_PAGEDOWN:
+							this->scrollGadget(true,false);
 							fprintf(stderr,"CTK_KEY_PAGEDOWN\n");
 							break;
 						case CTK_KEY_INSERT:
@@ -761,6 +813,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 							fprintf(stderr,"CTK_KEY_BACKTAB\n");
 							break;
 						case CTK_KEY_ESC:
+							this->runMenus();
 							fprintf(stderr,"CTK_KEY_ESC\n");
 							break;
 						case CTK_KEY_F1:

@@ -165,6 +165,7 @@ void checkselctCB(void *inst,void *userdata)
 		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
 
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
+	mainApp->menuBar->CTK_drawDefaultMenuBar();
 	resultbuttonstextbox->CTK_updateText(buffer);
 }
 
@@ -492,7 +493,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //	label->CTK_setJustify(CENTREJUSTIFY);
 
 
-//	mainApp->CTK_setPage(0);
+	mainApp->CTK_setPage(0);
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'Q');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,NEXTTAB,'N');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,PREVTAB,'P');
