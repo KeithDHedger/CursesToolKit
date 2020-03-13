@@ -336,7 +336,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 					case TERMKEY_TYPE_UNICODE:
 						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
 							{
-								if(this->mc->menuBar->enableShortcuts==false)
+								if(this->mc->menuBar->enableShortcuts==false)//TODO//what to do?
 									break;
 								tstr[1]=toupper(key.code.codepoint);
 								//tstr[1]=key.code.codepoint;

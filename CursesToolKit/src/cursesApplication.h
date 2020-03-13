@@ -52,6 +52,7 @@ class CTK_mainAppClass
 		coloursStruct							colours;
 		bool									runEventLoop=false;
 		CTK_cursesUtilsClass					*utils;
+		CTK_cursesGraphicsClass					*gc;
 		bool									noHiliteChange=false;
 
 		void									CTK_clearScreen(void);
@@ -63,6 +64,9 @@ class CTK_mainAppClass
 		int										CTK_nextPage(void);
 		void									CTK_setPageUserData(int pagenum,void *userdata);
 		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
+//////////
+		void									CTK_setDialogWindow(const char *windowname,const char *dialogname,int dialogwidth=-1,int dialoghite=-1);
+//////////////////
 		void									CTK_setTabWidth(int width);
 
 		void									(*eventLoopCBIn)(void*,void*)=NULL;
@@ -97,14 +101,10 @@ class CTK_mainAppClass
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 		void									CTK_setTermKeyRun(bool start);
-
-
-
+//////////////////
 		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true);
 		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
-
-
-
+//////////////////
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(TermKeySym key);
 
@@ -124,17 +124,15 @@ class CTK_mainAppClass
 		bool									showHilighting=true;
 
 	private:
-
 		void									scrollGadget(bool pagescrill,bool lineup);
 		void									runMenus(void);
 		void									activateGadget(void);
 		void									highLiteGadget(bool forward);
-		void									drawAllGadgets(void);
+		void									resetAllGadgets(void);
 		CTK_cursesReadKeyClass					*readKey=NULL;
 
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
-	//	bool									noHiliteChange=false;
 
 		void									setHilite(bool forward);
 		struct fbData							frameBufferData;

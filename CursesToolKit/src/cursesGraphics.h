@@ -29,20 +29,23 @@ class CTK_cursesGraphicsClass
 		CTK_cursesGraphicsClass(CTK_mainAppClass *mc);
 		~CTK_cursesGraphicsClass();
 
-		void			CTK_setColours(coloursStruct cs);
-		void			CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
+		void				CTK_setColours(coloursStruct cs);
+		void				CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
+		void				CTK_drawDialogWindow(int boxx,int boxy,int boxw,int boxh,bool shadow=true);
+
 		//void	CTK_printLine(const char *line,const char *blank,int width);
 		//void	CTK_printLine(const char *line,int boxwidth);
-		void			CTK_printLine(const char *line,int sx,int sy,int boxwidth);
-		void			CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth);
+		void				CTK_printLine(const char *line,int sx,int sy,int boxwidth);
+		void				CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth);
 		//void	CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth);
-		void			CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just=LEFTJUSTIFY);
+		void				CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just=LEFTJUSTIFY);
 
 	private:
-		void			detab(char *in,char *out,int maxlen,int sx);
-		coloursStruct	colours;
-		int				tabWidth;
-		int				reservedSpace;
+		void				detab(char *in,char *out,int maxlen,int sx);
+		coloursStruct		colours;
+		int					tabWidth;
+		int					reservedSpace;
+		CTK_mainAppClass	*mc=NULL;
 };
 
 #endif

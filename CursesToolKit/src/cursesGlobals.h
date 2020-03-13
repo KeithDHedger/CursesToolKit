@@ -127,12 +127,22 @@ struct fileUDStruct
 */
 struct pageStruct
 {
-	std::vector<CTK_cursesGadgetClass*>			gadgets;
-	int											currentGadget=0;
-	void										*userData=NULL;
-	bool										menusActive=true;
-	bool										ignoreFirstTab=false;
-	bool										retainHighliting=false;
+	std::vector<CTK_cursesGadgetClass*>		gadgets;
+	int										currentGadget=0;
+	void									*userData=NULL;
+	bool									menusActive=true;
+	bool									menuBarVisible=true;
+	bool									ignoreFirstTab=false;
+	bool									retainHighliting=false;
+	bool									fancyWindow=false;
+	std::string								windowName;
+	std::string								dialogName;
+	int										boxX;
+	int										boxY;
+	int										boxW;
+	int										boxH;
+	int										boxWM;
+	int										boxHM;
 };
 
 enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};

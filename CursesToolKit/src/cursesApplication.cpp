@@ -45,6 +45,7 @@ CTK_mainAppClass::~CTK_mainAppClass()
 #endif
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 	delete this->utils;
+	delete this->gc;
 	delete this->readKey;
 }
 
@@ -63,6 +64,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->CTK_addPage();
 	this->pageNumber=0;
 	this->utils=new CTK_cursesUtilsClass;
+	this->gc=new CTK_cursesGraphicsClass(this);
 
 	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC|TERMKEY_FLAG_SPACESYMBOL);
 	if(!this->tk)
@@ -115,6 +117,17 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	printf("\e[2J\e[H");
+
+	if(THISPAGE.fancyWindow==true)
+		{
+			this->gc->CTK_drawDialogWindow(0,0,0,0,true);
+		}
+
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
 	fflush(NULL);
 }
 
@@ -446,7 +459,7 @@ void CTK_mainAppClass::CTK_setTermKeyRun(bool start)
 /**
 * Draw all gdagets unhilted.
 */
-void CTK_mainAppClass::drawAllGadgets(void)
+void CTK_mainAppClass::resetAllGadgets(void)
 {
 
 	if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarVisible()==true))
@@ -494,7 +507,7 @@ void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 				static_cast<CTK_cursesDropClass*>(CURRENTGADGET)->CTK_doDropDownEvent();
 				if(CURRENTGADGET->selectCB!=NULL)
 					CURRENTGADGET->selectCB((void*)CURRENTGADGET,(void*)CURRENTGADGET->CTK_getCBUserData());
-				this->drawAllGadgets();
+				this->resetAllGadgets();
 				break;
 			case EDITGADGET:
 			case SRCGADGET:
@@ -523,7 +536,7 @@ void CTK_mainAppClass::runMenus(void)
 {
 	if(THISPAGE.menusActive==false)
 		return;
-	this->drawAllGadgets();
+	this->resetAllGadgets();
 	
 	int	hg=THISPAGE.currentGadget;
 	int hp=this->pageNumber;
@@ -535,7 +548,7 @@ void CTK_mainAppClass::runMenus(void)
 			this->menuBar->CTK_doMenuEvent(0,1,true);
 			this->menuBar->CTK_drawDefaultMenuBar();
 			this->CTK_clearScreen();
-			this->drawAllGadgets();
+			this->resetAllGadgets();
 		}
 
 	if((hg!=-1) && (this->pageNumber==hp))
@@ -592,7 +605,7 @@ void CTK_mainAppClass::activateGadget(void)
 				static_cast<CTK_cursesDropClass*>(CURRENTGADGET)->CTK_doDropDownEvent();
 				if(CURRENTGADGET->selectCB!=NULL)
 					CURRENTGADGET->selectCB((void*)CURRENTGADGET,(void*)CURRENTGADGET->CTK_getCBUserData());
-				this->drawAllGadgets();
+				this->resetAllGadgets();
 				CURRENTGADGET->gadgetDirty=true;
 				CURRENTGADGET->CTK_drawGadget(true);
 				break;
@@ -616,6 +629,7 @@ void CTK_mainAppClass::activateGadget(void)
 
 				if(this->eventLoopCBOut!=NULL)
 					this->eventLoopCBOut(this,this->userData);
+
 				break;
 		}
 
@@ -635,6 +649,30 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 	int		maxgadgets=this->pages[this->pageNumber].gadgets.size();
 	int		newgadget=thisgadget;
 	int		holdgadget=thisgadget;
+	int		numselectables=0;
+	int		selctable=0;
+
+//special cases
+	if(maxgadgets>0)
+		{
+			for(int j=0;j<maxgadgets;j++)
+				{
+					if(this->pages[this->pageNumber].gadgets[j]->CTK_getSelectable()==true)
+						{
+							numselectables++;
+							selctable=j;
+						}
+				}
+		}
+
+	if(numselectables==0)
+		return;
+	if(numselectables==1)
+		{
+			newgadget=selctable;
+			goto DRAWGADGET;
+		}
+//special cases end
 
 //fprintf(stderr,">>>>current gadget=%i current page=%i\n",THISPAGE.currentGadget,this->pageNumber);
 	if(THISPAGE.ignoreFirstTab==true)
@@ -749,7 +787,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 	if(docls==true)
 		{
 			this->CTK_clearScreen();
-			this->drawAllGadgets();
+			this->resetAllGadgets();
 			this->pages[this->pageNumber].currentGadget=-1;
 		}
 
@@ -1259,6 +1297,11 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
 	this->CTK_clearScreen();
@@ -1269,14 +1312,19 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 */
 int CTK_mainAppClass::CTK_previousPage(void)
 {
-	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
 	if(this->pageNumber>0)
 		this->pageNumber--;
+	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
-	this->drawAllGadgets();
+	this->resetAllGadgets();
 	return(this->pageNumber);
 }
 
@@ -1285,14 +1333,19 @@ int CTK_mainAppClass::CTK_previousPage(void)
 */
 int CTK_mainAppClass::CTK_nextPage(void)
 {
-	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
 	if(this->pageNumber<this->pages.size()-1)
 		this->pageNumber++;
+	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
-	this->drawAllGadgets();
+	this->resetAllGadgets();
 	return(this->pageNumber);
 }
 
@@ -1344,6 +1397,37 @@ void CTK_mainAppClass::CTK_appWindow(int x,int y,int w,int h,const char *windown
 	this->windowName=windowname;
 	this->title=title;
 	this->useAppWindow=true;
+}
+
+/**
+* Set page to be a dialog window.
+* \note see the utility dialogs.
+*/
+void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *dialogname,int dialogwidth,int dialoghite)
+{
+	THISPAGE.windowName=windowname;
+	THISPAGE.dialogName=dialogname;
+	THISPAGE.fancyWindow=true;
+
+	if(dialogwidth==-1)
+		{
+			THISPAGE.boxW=this->maxCols-9;
+			THISPAGE.boxX=5;
+			THISPAGE.boxWM=this->maxCols/2;
+		}
+	else
+		{
+			THISPAGE.boxW=dialogwidth;
+			THISPAGE.boxX=(this->maxCols/2)-(dialogwidth/2);
+			THISPAGE.boxWM=this->maxCols/2;
+		}
+
+	if(dialoghite==-1)
+		{
+			THISPAGE.boxH=this->maxRows-8;
+			THISPAGE.boxY=5;
+			THISPAGE.boxHM=(this->maxRows/2);
+		}
 }
 
 /**

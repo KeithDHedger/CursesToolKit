@@ -51,8 +51,8 @@ int						b2Cnt=0;
 #define FILEMENU 0
 #define QUITITEM 5
 #define TABMENU 2
-#define NEXTTAB 7
-#define PREVTAB 8
+#define NEXTTAB 8
+#define PREVTAB 9
 #define TABWIDTH 4
 #define	NEXTPAGE 2000
 #define	PREVPAGE 2001
@@ -98,10 +98,9 @@ void buttonselctCB(void *inst,void *userdata)
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	long					ud=(long)userdata;
-//	int						lastpage=mainApp->pageNumber;
+
 	if(userdata!=NULL)
 		{
-			//mainApp->pages[mainApp->pageNumber].currentGadget=-1;
 			switch(ud)
 				{
 					case NEXTPAGE:
@@ -184,7 +183,6 @@ int main(int argc, char **argv)
 	CTK_cursesInputClass			*input;
 	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
-//	CTK_cursesCheckBoxClass			*checkbox1;
 	CTK_cursesEditBoxClass			*editbox;
 	CTK_cursesSourceEditBoxClass	*srceditbox;
 	CTK_cursesLabelClass			*label;
@@ -194,7 +192,7 @@ int main(int argc, char **argv)
 	const char	*menuNames[]={"File","Edit","Tabs","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 	const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
-	const char	*tabMenuNames[]={" Instructions "," Edit Box"," Code Box"," Lists"," Labels"," Input Box"," Buttons"," _Next Tab"," _Prev Tab",NULL};
+	const char	*tabMenuNames[]={" Instructions "," Edit Box"," Code Box"," Lists"," Labels"," Input Box"," Buttons"," Dialogs"," _Next Tab"," _Prev Tab",NULL};
 	const char	*helpMenuNames[]={" _Help"," A_bout",NULL};
 	
 	const char	*sampletxt="Press 'ESC' to activate/deactivate menus.\nUse 'LEFT/RIGHT/IP/DOWN' arrow keys to navigate menus.\n\
@@ -484,13 +482,45 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	resultbuttonstextbox->CTK_setColours(cs);
 
 	geny=6;
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,1);
+	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Next Page");
+	button->CTK_setSelectCB(buttonselctCB,(void*)NEXTPAGE);
 
-	label=mainApp->CTK_addNewLabel(3,geny-8+genh+2,genw,1,"Test Label");
+//	label=mainApp->CTK_addNewLabel(3,geny-8+genh+2,genw,1,"Test Label");
 //	label->CTK_setJustify(CENTREJUSTIFY);
 
+//page 6
+//dialogs with back window
+	mainApp->CTK_addPage();
+
+	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",100);
+	mainApp->pages[mainApp->pageNumber].fancyWindow=true;
+	mainApp->pages[mainApp->pageNumber].windowName="Fancy Window";
+	mainApp->pages[mainApp->pageNumber].dialogName="Dialog  Name";
+	geny=3;
+	genx=3;
+//	this->CTK_drawBox(5,5,this->mc->maxCols-9,this->mc->maxRows-8,OUTBOX,true,shadow);
+//			MOVETO((this->mc->maxCols/2)-(this->mc->pages[this->mc->pageNumber].dialogName.length()/2),5)
+
+	genx=7;
+	geny=7;
+	genw=mainApp->maxCols-12;
+	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Dialog  Name");
+	label->CTK_setJustify(CENTREJUSTIFY);
+
+	geny=7;
+	genh=mainApp->maxRows-8;
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
+	button=mainApp->CTK_addNewButton(genx,geny+genh-4,13,1,"Prev Page");
+	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
+
+	//button=mainApp->CTK_addNewButton(genx+40,geny+genh-4,13,1,"Prev Page");
+	//button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
+
+//	geny+=3;
 
 	mainApp->CTK_setPage(0);
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'Q');
