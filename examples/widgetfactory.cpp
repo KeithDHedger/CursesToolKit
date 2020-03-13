@@ -63,7 +63,6 @@ int						b2Cnt=0;
 
 void menuselctCB(void *inst,void *userdata)
 {
-//	char				*buffer=(char*)alloca(256);
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
 	if(mc->menuNumber==TABMENU)

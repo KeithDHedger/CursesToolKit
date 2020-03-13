@@ -753,7 +753,8 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 			this->pages[this->pageNumber].currentGadget=-1;
 		}
 
-	while(this->readKey->inputBuffer.c_str()[0]!='q')
+	this->runEventLoop=true;
+	while(this->runEventLoop==true)
 		{
 			this->readKey->tabIsSpecial=true;
 			this->readKey->getInput();
@@ -860,14 +861,30 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 				}
 			else
 				{
+//control keys
 					if(this->readKey->isControlKey==true)
 						switch(this->readKey->controlKeyNumber)
 							{
+//^M
 								case CTK_KEY_RETURN:
 									this->activateGadget();
 									break;
 								default:
+//check menu ctrl keys
 									fprintf(stderr,"Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
+									if((this->menuBar!=NULL) && (this->menuBar->enableShortcuts==true) && (this->menuBar->CTK_getMenuBarEnable()==true))
+										{
+											for(int j=0;j<this->menuBar->menuNames.size();j++)
+												{
+													if(this->menuBar->CTK_doShortCutKey(this->readKey->inputBuffer.c_str()[0],j)==true)
+														{
+															this->menuBar->menuNumber=j;
+															this->menuBar->selectCB(this->menuBar,NULL);
+															fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
+															break;
+														}
+												}
+										}
 							}
 					else
 						fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
