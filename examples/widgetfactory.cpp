@@ -495,8 +495,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //page 6
 //dialogs with back window
 	mainApp->CTK_addPage();
-
-	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",100);
+	pageStruct	page=mainApp->pages[mainApp->pageNumber];
+	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",100,10);
 	mainApp->pages[mainApp->pageNumber].fancyWindow=true;
 	mainApp->pages[mainApp->pageNumber].windowName="Fancy Window";
 	mainApp->pages[mainApp->pageNumber].dialogName="Dialog  Name";
@@ -508,13 +508,18 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=7;
 	geny=7;
 	genw=mainApp->maxCols-12;
+	page=mainApp->pages[mainApp->pageNumber];
+	genx=page.boxX+2;
+	geny=page.boxY+2;
+	genw=page.boxW-3;
+	genh=page.boxH;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Dialog  Name");
 	label->CTK_setJustify(CENTREJUSTIFY);
 
 	geny=7;
 	genh=mainApp->maxRows-8;
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
-	button=mainApp->CTK_addNewButton(genx,geny+genh-4,13,1,"Prev Page");
+	button=mainApp->CTK_addNewButton(genx,page.boxY+page.boxH-1,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
 
 	//button=mainApp->CTK_addNewButton(genx+40,geny+genh-4,13,1,"Prev Page");

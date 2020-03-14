@@ -1420,6 +1420,7 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 			THISPAGE.boxW=dialogwidth;
 			THISPAGE.boxX=(this->maxCols/2)-(dialogwidth/2);
 			THISPAGE.boxWM=this->maxCols/2;
+			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 
 	if(dialoghite==-1)
@@ -1427,6 +1428,14 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 			THISPAGE.boxH=this->maxRows-8;
 			THISPAGE.boxY=5;
 			THISPAGE.boxHM=(this->maxRows/2);
+			fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
+		}
+	else
+		{
+			THISPAGE.boxH=dialoghite;
+			THISPAGE.boxY=(this->maxRows/2)-(dialoghite/2);
+			THISPAGE.boxHM=this->maxRows/2;
+			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 }
 
