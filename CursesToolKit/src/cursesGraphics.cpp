@@ -55,7 +55,6 @@ void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct cs)
 #if 1
 void CTK_cursesGraphicsClass::CTK_drawDialogWindow(int boxx,int boxy,int boxw,int boxh,bool shadow)
 {
-return;
 	pageStruct	page=this->mc->pages[this->mc->pageNumber];
 	if(this->mc->menuBar!=NULL)
 		{
