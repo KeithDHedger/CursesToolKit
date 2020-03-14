@@ -496,7 +496,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //dialogs with back window
 	mainApp->CTK_addPage();
 	pageStruct	page=mainApp->pages[mainApp->pageNumber];
-	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",100,10);
+	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",140,10);
 	mainApp->pages[mainApp->pageNumber].fancyWindow=true;
 	mainApp->pages[mainApp->pageNumber].windowName="Fancy Window";
 	mainApp->pages[mainApp->pageNumber].dialogName="Dialog  Name";
