@@ -30,9 +30,7 @@ class CTK_cursesReadKeyClass
 	public:
 														CTK_cursesReadKeyClass(CTK_mainAppClass *mc);
 														~CTK_cursesReadKeyClass();
-		void											setTerminal(void);
-		void											restoreTerminal(void);
-		void											getInput(void);
+		void											CTK_getInput(void);
 
 		std::string										inputBuffer;
 		int												specialKeyName=CTK_KEY_NONE;
@@ -41,11 +39,14 @@ class CTK_cursesReadKeyClass
 		bool											tabIsSpecial=false;
 		bool											isControlKey=false;
 
-		void											getKeyCodes(void);
-		void											setSpecialKeyName(void);
 
 	protected:
 	private:
+		void											restoreTerminal(void);
+		void											setTerminal(void);
+		void											getKeyCodes(void);
+		void											setSpecialKeyName(void);
+
 		struct termios									ttyOldAttr;
 		const char										*thisTerm="xterm";
 		static const char								*keyNames[];

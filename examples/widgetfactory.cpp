@@ -18,7 +18,7 @@
 #
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s --show-error-list=yes --gen-suppressions="
-#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 name=$(basename $0 .cpp)
 

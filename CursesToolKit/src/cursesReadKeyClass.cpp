@@ -94,7 +94,7 @@ void CTK_cursesReadKeyClass::restoreTerminal(void)
 * \note If tabIsSpecial=true ^I is reported as CTK_KEY_TAB
 * \note Else ^I is normal tab char, ^I is never reported as Control I
 */
-void CTK_cursesReadKeyClass::getInput(void)
+void CTK_cursesReadKeyClass::CTK_getInput(void)
 {
 	char	buffer[1];
 	int		result;

@@ -816,7 +816,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 	while(this->runEventLoop==true)
 		{
 			this->readKey->tabIsSpecial=true;
-			this->readKey->getInput();
+			this->readKey->CTK_getInput();
 			fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 			if(this->readKey->isHexString==true)
 				{
