@@ -92,6 +92,7 @@ struct fbData
 
 #define	THISPAGE this->pages[this->pageNumber]
 #define	CURRENTGADGET THISPAGE.gadgets[THISPAGE.currentGadget]
+#define CURRENTPAGE(x) x->pages[x->pageNumber]
 
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 

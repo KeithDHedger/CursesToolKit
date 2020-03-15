@@ -455,7 +455,6 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 								break;
 						}
 				}
-			//this->updateCB((void*)this->mainApp,NULL);
 			this->updateCB((void*)this->mc,NULL);
 		}
 	SETNORMAL;

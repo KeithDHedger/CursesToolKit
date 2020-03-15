@@ -37,10 +37,13 @@ CTK_cursesReadKeyClass::~CTK_cursesReadKeyClass()
 /**
 * CTK_cursesReadKeyClass.
 */
-CTK_cursesReadKeyClass::CTK_cursesReadKeyClass()
+CTK_cursesReadKeyClass::CTK_cursesReadKeyClass(CTK_mainAppClass *mc)
 {
+	this->mc=mc;
 	this->setTerminal();
 	this->getKeyCodes();
+	setupterm(NULL,STDOUT_FILENO,NULL);
+	this->mc->clearScreenCode=tigetstr("clear");
 }
 
 /**
@@ -200,7 +203,7 @@ void CTK_cursesReadKeyClass::getKeyCodes(void)
 				}
 			entnames++;
 		}
-//
+
 //	entnames=0;
 //	while(termInfoNames[entnames]!=NULL)
 //		{

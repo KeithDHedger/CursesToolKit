@@ -28,7 +28,7 @@ enum	{CTK_KEY_NONE=1000,CTK_KEY_TAB,CTK_KEY_ESC,CTK_KEY_UP,CTK_KEY_DOWN,CTK_KEY_
 class CTK_cursesReadKeyClass
 {
 	public:
-														CTK_cursesReadKeyClass();
+														CTK_cursesReadKeyClass(CTK_mainAppClass *mc);
 														~CTK_cursesReadKeyClass();
 		void											setTerminal(void);
 		void											restoreTerminal(void);
@@ -51,6 +51,7 @@ class CTK_cursesReadKeyClass
 		static const char								*keyNames[];
 		static const char								*termInfoNames[];
 		std::map<const char*,std::map<int,std::string>>	allCodes;
+		CTK_mainAppClass								*mc;
 };
 
 #endif

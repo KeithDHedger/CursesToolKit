@@ -122,12 +122,14 @@ class CTK_mainAppClass
 		bool									useAppWindow=false;
 		void									*userData=NULL;
 		bool									showHilighting=true;
+		std::string								clearScreenCode="\e[H\e[2J";
 
 	private:
 		void									scrollGadget(bool pagescrill,bool lineup);
 		void									runMenus(void);
 		void									activateGadget(void);
 		void									highLiteGadget(bool forward);
+		void									drawAllGadgets(void);
 		void									resetAllGadgets(void);
 		CTK_cursesReadKeyClass					*readKey=NULL;
 

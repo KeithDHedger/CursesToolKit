@@ -227,13 +227,14 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	int genw;
 	int	genh;
 
+	mainApp->CTK_setTabWidth(TABWIDTH);
 	coloursStruct cs;
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=true;
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-	//sleep(2);
+	sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
@@ -247,7 +248,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.menuBackCol=BACK_RED;
 	cs.disabledForeCol=FORE_BOLD_RED;
 
-	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
@@ -495,38 +495,23 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //page 6
 //dialogs with back window
 	mainApp->CTK_addPage();
-	pageStruct	page=mainApp->pages[mainApp->pageNumber];
 	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",140,10);
-	mainApp->pages[mainApp->pageNumber].fancyWindow=true;
-	mainApp->pages[mainApp->pageNumber].windowName="Fancy Window";
-	mainApp->pages[mainApp->pageNumber].dialogName="Dialog  Name";
-	geny=3;
-	genx=3;
-//	this->CTK_drawBox(5,5,this->mc->maxCols-9,this->mc->maxRows-8,OUTBOX,true,shadow);
-//			MOVETO((this->mc->maxCols/2)-(this->mc->pages[this->mc->pageNumber].dialogName.length()/2),5)
+	CURRENTPAGE(mainApp).fancyWindow=true;
+	CURRENTPAGE(mainApp).windowName="Fancy Window";
+	CURRENTPAGE(mainApp).dialogName="Dialog  Name";
 
-	genx=7;
-	geny=7;
-	genw=mainApp->maxCols-12;
-	page=mainApp->pages[mainApp->pageNumber];
-	genx=page.boxX+2;
-	geny=page.boxY+2;
-	genw=page.boxW-3;
-	genh=page.boxH;
-	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Dialog  Name");
+	genx=CURRENTPAGE(mainApp).boxX+2;
+	geny=CURRENTPAGE(mainApp).boxY+2;
+	genw=CURRENTPAGE(mainApp).boxW-3;
+	genh=CURRENTPAGE(mainApp).boxH;
+
+	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Dialog Information ...");
 	label->CTK_setJustify(CENTREJUSTIFY);
 
-	geny=7;
-	genh=mainApp->maxRows-8;
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
-	button=mainApp->CTK_addNewButton(genx,page.boxY+page.boxH-1,13,1,"Prev Page");
+	genx=mainApp->utils->CTK_getGadgetPosX(CURRENTPAGE(mainApp).boxX,CURRENTPAGE(mainApp).boxW,1,13,0);
+	button=mainApp->CTK_addNewButton(genx,CURRENTPAGE(mainApp).boxY+CURRENTPAGE(mainApp).boxH-1,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
-
-	//button=mainApp->CTK_addNewButton(genx+40,geny+genh-4,13,1,"Prev Page");
-	//button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
-
-//	geny+=3;
-
+//fin
 	mainApp->CTK_setPage(0);
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'Q');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,NEXTTAB,'N');

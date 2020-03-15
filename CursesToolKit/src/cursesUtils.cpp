@@ -779,9 +779,9 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 	txtStrings.clear();
 
 	SETHIDECURS;
+	app->CTK_clearScreen();
 	txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',app->maxCols-24,app->tabWidth,24,false);
 
-	app->CTK_clearScreen();
 	gc.CTK_drawBox(boxx,boxy,boxw,boxh,PLAINBOX,true,false);
 	for(int j=0;j<txtStrings.size();j++)
 		{

@@ -52,8 +52,7 @@ void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct cs)
 * \param int boxh=Height of internal box. 
 * \param int shadow=Draw drop shadow ( default draw ).
 */
-#if 1
-void CTK_cursesGraphicsClass::CTK_drawDialogWindow(int boxx,int boxy,int boxw,int boxh,bool shadow)
+void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 {
 	pageStruct	page=this->mc->pages[this->mc->pageNumber];
 	if(this->mc->menuBar!=NULL)
@@ -64,7 +63,7 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(int boxx,int boxy,int boxw,in
 	MOVETO(1,1)
 	setBothColours(FORE_WHITE,BACK_BLUE,false);
 	printf("%s",CLEARTOEOS);
-	this->CTK_drawBox(page.boxX,page.boxY,page.boxW,page.boxH,OUTBOX,true,shadow);
+	this->CTK_drawBox(page.boxX,page.boxY,page.boxW,page.boxH,OUTBOX,true,true);
 
 	MOVETO(1,1)
 	setBothColours(FORE_WHITE,BACK_BLUE,false);
@@ -86,39 +85,6 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(int boxx,int boxy,int boxw,in
 		}
 }
 
-#else
-void CTK_cursesGraphicsClass::CTK_drawDialogWindow(int boxx,int boxy,int boxw,int boxh,bool shadow)
-{
-	if(this->mc->menuBar!=NULL)
-		{
-			this->mc->pages[this->mc->pageNumber].menuBarVisible=false;
-			this->mc->menuBar->CTK_setMenuBarVisible(false);
-		}
-	MOVETO(1,1)
-	setBothColours(FORE_WHITE,BACK_BLUE,false);
-	printf("%s",CLEARTOEOS);
-	this->CTK_drawBox(5,5,this->mc->maxCols-9,this->mc->maxRows-8,OUTBOX,true,shadow);
-
-	MOVETO(1,1)
-	setBothColours(FORE_WHITE,BACK_BLUE,false);
-	if(this->mc->pages[this->mc->pageNumber].windowName.length()>0)
-		{
-			printf("%s",this->mc->pages[this->mc->pageNumber].windowName.c_str());
-			SETALTCHARSET;
-			MOVETO(1,2)
-			for(int j=0;j<this->mc->maxCols;j++)
-				printf(HBAR);
-			SETNORMCHARSET;
-		}
-
-	if(this->mc->pages[this->mc->pageNumber].dialogName.length()>0)
-		{
-			MOVETO((this->mc->maxCols/2)-(this->mc->pages[this->mc->pageNumber].dialogName.length()/2)+1,5)
-			setBothColours(FORE_BLUE,this->mc->colours.backCol,false);//TODO//
-			printf("%s",this->mc->pages[this->mc->pageNumber].dialogName.c_str());
-		}
-}
-#endif
 /**
 * Draw a box a la dialog.
 */

@@ -107,7 +107,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 			//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
 
-	this->readKey=new CTK_cursesReadKeyClass;
+	this->readKey=new CTK_cursesReadKeyClass(this);
 }
 
 /**
@@ -116,12 +116,12 @@ CTK_mainAppClass::CTK_mainAppClass()
 void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
-	printf("\e[2J\e[H");
+	MOVETO(1,1)
+	printf("%s",this->clearScreenCode.c_str());
+	fflush(NULL);
 
 	if(THISPAGE.fancyWindow==true)
-		{
-			this->gc->CTK_drawDialogWindow(0,0,0,0,true);
-		}
+		this->gc->CTK_drawDialogWindow();
 
 	if(this->menuBar!=NULL)
 		{
@@ -364,7 +364,11 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
 {
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
 	CTK_cursesGraphicsClass	cu(app);
-
+//TODO//
+MOVETO(1,1)
+//app->CTK_clearScreen();
+app->drawAllGadgets();
+return;
 	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
 
 	if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
@@ -469,6 +473,23 @@ void CTK_mainAppClass::resetAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(false);
+		}
+	fflush(NULL);
+}
+
+/**
+* Draw all gdagets keeping highlight.
+*/
+void CTK_mainAppClass::drawAllGadgets(void)
+{
+
+	if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarVisible()==true))
+		this->menuBar->CTK_drawGadget();
+
+	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+		{
+			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
+			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
 		}
 	fflush(NULL);
 }
@@ -1297,6 +1318,8 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
+	printf("%s",this->clearScreenCode.c_str());
+
 	if(this->menuBar!=NULL)
 		{
 			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
@@ -1304,7 +1327,6 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 		}
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
-	this->CTK_clearScreen();
 }
 
 /**
