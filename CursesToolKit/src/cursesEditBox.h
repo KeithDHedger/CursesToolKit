@@ -108,7 +108,6 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		std::string					blank;
 		std::string					status;
 		const char					*editStatus="Normal";
-		TermKey						*tk;
 
 		virtual void				updateBuffer(void);
 		void						adjustXY(void);

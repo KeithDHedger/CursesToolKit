@@ -43,13 +43,6 @@ CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 */
 CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc)
 {
-	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
-
 	this->CTK_setCommon(mc);
 	this->thisType=SRCBOXCLASS;
 	this->type=SRCGADGET;

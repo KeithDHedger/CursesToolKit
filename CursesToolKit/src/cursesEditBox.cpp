@@ -26,7 +26,6 @@
 CTK_cursesEditBoxClass::~CTK_cursesEditBoxClass()
 {
 	free(this->txtBuffer);
-	termkey_destroy(this->tk);
 }
 
 /**
@@ -41,12 +40,6 @@ CTK_cursesEditBoxClass::CTK_cursesEditBoxClass()
 */
 CTK_cursesEditBoxClass::CTK_cursesEditBoxClass(CTK_mainAppClass *mc)
 {
-	this->tk = termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 	this->CTK_setCommon(mc);
 	this->bookMarks.clear();
 	this->thisType=EDITBOXCLASS;
@@ -311,11 +304,8 @@ void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
 */
 void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
 {
-	TermKeyResult	ret;
-	TermKeyKey		key;
 	int				lineadd=1;
 	bool			shortdraw=false;
-	char			tstr[3]={'_',0,0};
 
 	if(this->canEdit==false)
 		return;
@@ -326,205 +316,207 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 	while(this->runLoop==true)
 		{
-			ret=termkey_waitkey(this->tk,&key);
+			this->mc->readKey->CTK_getInput();
+
 			if(this->mc->eventLoopCBIn!=NULL)
 				this->mc->eventLoopCBIn(this->mc,this->userData);
 
 			lineadd=1;
-			switch(key.type)
+			if(this->mc->readKey->isHexString==true)
 				{
-					case TERMKEY_TYPE_UNICODE:
-						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
-							{
-								if(this->mc->menuBar->enableShortcuts==false)//TODO//what to do?
-									break;
-								tstr[1]=toupper(key.code.codepoint);
-								//tstr[1]=key.code.codepoint;
-								//fprintf(stderr,"key=%c\n",tstr[1]);
-								for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
-									{
-										if(this->mc->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
-											{
-												this->mc->menuBar->menuNumber=j;
-												this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
-												this->mc->CTK_updateScreen(this->mc,SCREENUPDATEBASIC);
-												
-												break;
-											}
-									}
-								break;
-							}
-
-						this->CTK_insertChar(lines[this->currentY],key.code.codepoint);
-						if(usesrc==true)
-							srclines[this->currentY]=lines[this->currentY];
-						this->isDirty=true;
-						this->needsRefresh=true;
-						break;
-					case TERMKEY_TYPE_KEYSYM:
+					switch(this->mc->readKey->specialKeyName)
 						{
-							switch(key.code.sym)
+							case  CTK_KEY_DELETE:
 								{
-									case TERMKEY_SYM_BACKSPACE:
-									case TERMKEY_SYM_DEL:
-										if((this->currentY==0) && (this->currentX==0))
-											break;
-										this->isDirty=true;
-										if(this->currentX>0)
-											{
-												lines[this->currentY].erase(this->currentX-1,1);
-												if(usesrc==true)
-													srclines[this->currentY]=lines[this->currentY];
-												this->currentX--;
-												this->needsRefresh=true;
-												break;
-											}				
-
-										if(this->currentY>0)
-											{
-												shortdraw=false;
-												lines[this->currentY-1].erase(lines[this->currentY-1].length()-1,1);
-												if(lines[this->currentY-1].length()>0)
-													this->currentX=lines[this->currentY-1].length();
-
-												lines[this->currentY-1].append(lines[this->currentY]);
-												lines.erase(lines.begin()+this->currentY);
-												this->currentY--;
-												this->updateBuffer();
-												this->needsRefresh=true;
-												break;
-											}
-										break;
-									case  TERMKEY_SYM_DELETE:
+									char hold=lines[this->currentY][this->currentX];
+									lines[this->currentY].erase(this->currentX,1);
+									if(usesrc==true)
+										srclines[this->currentY]=lines[this->currentY];
+									this->isDirty=true;
+									this->needsRefresh=true;
+									if(hold=='\n')
 										{
-											char	hold=lines[this->currentY][this->currentX];
-											lines[this->currentY].erase(this->currentX,1);
-											if(usesrc==true)
-												srclines[this->currentY]=lines[this->currentY];
-											this->isDirty=true;
-											this->needsRefresh=true;
-											if(hold=='\n')
-												{
-													shortdraw=false;
-													this->updateBuffer();
-												}
+											shortdraw=false;
+											this->updateBuffer();
 										}
-										break;
-									case TERMKEY_SYM_ENTER:
-										lines[this->currentY].insert(this->currentX,1,'\n');
-										shortdraw=false;
-										this->currentX=0;
-										this->currentY++;
+								}
+								break;
 
-										if((this->currentY-this->startLine)>=this->hite)
-											this->startLine++;
-
-										this->updateBuffer();
-										this->isDirty=true;
-										break;
-									case TERMKEY_SYM_TAB:
-										this->CTK_insertChar(lines[this->currentY],'\t');
+							case CTK_KEY_BACKSPACE:
+								if((this->currentY==0) && (this->currentX==0))
+									break;
+								this->isDirty=true;
+								if(this->currentX>0)
+									{
+										lines[this->currentY].erase(this->currentX-1,1);
 										if(usesrc==true)
 											srclines[this->currentY]=lines[this->currentY];
-										break;
-//exit loop
-									case TERMKEY_SYM_ESCAPE:
-										this->runLoop=false;
-										shortdraw=false;
-										this->updateBuffer();
-										continue;
-										break;
-//start selecting
-									case TERMKEY_SYM_INSERT:
-										if(this->isSelecting==false)
-											this->CTK_startSelecting();
-										else
-											this->CTK_finishSelecting();
-										break;
-
-									case TERMKEY_SYM_HOME:
-									case TERMKEY_SYM_FIND://console?
-										this->currentX=0;
-										break;
-									case TERMKEY_SYM_END:
-									case TERMKEY_SYM_SELECT://console?
-										this->currentX=lines[this->currentY].length()-1;
-										break;
-
-									case TERMKEY_SYM_PAGEUP:
-										shortdraw=false;
-										lineadd=this->hite;
-									case TERMKEY_SYM_UP:
-										this->CTK_finishSelecting();
-										this->refreshLine();
-										if(this->needsRefresh==true)
-											this->updateBuffer();
-										this->currentY-=lineadd;
-										if(currentY<this->startLine)
-											{
-												this->startLine-=lineadd;
-												shortdraw=false;
-											}
-										if((this->currentY<0) || (this->startLine<0))
-											{
-												this->currentY=0;
-												this->startLine=0;
-											}
-										if(this->currentX>=lines[this->currentY].length())
-											this->currentX=lines[this->currentY].length()-1;
-										break;
-									case TERMKEY_SYM_PAGEDOWN:
-										this->CTK_finishSelecting();
-										shortdraw=false;
-										lineadd=this->hite;
-									case TERMKEY_SYM_DOWN:
-										this->refreshLine();
-										if(this->needsRefresh==true)
-											this->updateBuffer();
-										this->currentY+=lineadd;
-										if(this->currentY>=lines.size())
-											this->currentY=lines.size()-1;
-										if((this->currentY-this->startLine)>=this->hite)
-											{
-												shortdraw=false;
-												this->startLine+=lineadd;
-											}
-										if(this->currentX>=lines[this->currentY].length())
-											this->currentX=lines[this->currentY].length()-1;
-										break;
-									case TERMKEY_SYM_LEFT:
 										this->currentX--;
-										if(this->currentX<0)
-											{
-												if(this->currentY>0)
-													{
-														this->refreshLine();
-														this->currentY--;
-														this->currentX=lines[this->currentY].size()-1;
-													}
-												else
-													this->currentX=0;
-											}
+										this->needsRefresh=true;
 										break;
+									}				
 
-									case TERMKEY_SYM_RIGHT:
-										this->currentX++;
-										if(this->currentX>=lines[currentY].length())
+								if(this->currentY>0)
+									{
+										shortdraw=false;
+										lines[this->currentY-1].erase(lines[this->currentY-1].length()-1,1);
+										if(lines[this->currentY-1].length()>0)
+											this->currentX=lines[this->currentY-1].length();
+
+										lines[this->currentY-1].append(lines[this->currentY]);
+										lines.erase(lines.begin()+this->currentY);
+										this->currentY--;
+										this->updateBuffer();
+										this->needsRefresh=true;
+									}
+								break;
+
+							case CTK_KEY_ENTER:
+							case CTK_KEY_RETURN:
+								lines[this->currentY].insert(this->currentX,1,'\n');
+								shortdraw=false;
+								this->currentX=0;
+								this->currentY++;
+
+								if((this->currentY-this->startLine)>=this->hite)
+									this->startLine++;
+
+								this->updateBuffer();
+								this->isDirty=true;
+								break;
+
+							case CTK_KEY_TAB:
+								this->CTK_insertChar(lines[this->currentY],'\t');
+								if(usesrc==true)
+									srclines[this->currentY]=lines[this->currentY];
+								break;
+//exit loop
+							case CTK_KEY_ESC:
+								this->runLoop=false;
+								shortdraw=false;
+								this->updateBuffer();
+								continue;
+								break;
+//start selecting
+							case CTK_KEY_INSERT:
+								if(this->isSelecting==false)
+									this->CTK_startSelecting();
+								else
+									this->CTK_finishSelecting();
+								break;
+
+							case CTK_KEY_HOME:
+								this->currentX=0;
+								break;
+
+							case CTK_KEY_END:
+								this->currentX=lines[this->currentY].length()-1;
+								break;
+
+							case CTK_KEY_PAGEUP:
+								shortdraw=false;
+								lineadd=this->hite;
+							case CTK_KEY_UP:
+								this->CTK_finishSelecting();
+								this->refreshLine();
+								if(this->needsRefresh==true)
+									this->updateBuffer();
+								this->currentY-=lineadd;
+								if(currentY<this->startLine)
+									{
+										this->startLine-=lineadd;
+										shortdraw=false;
+									}
+								if((this->currentY<0) || (this->startLine<0))
+									{
+										this->currentY=0;
+										this->startLine=0;
+									}
+								if(this->currentX>=lines[this->currentY].length())
+									this->currentX=lines[this->currentY].length()-1;
+								break;
+
+							case CTK_KEY_PAGEDOWN:
+								this->CTK_finishSelecting();
+								shortdraw=false;
+								lineadd=this->hite;
+							case CTK_KEY_DOWN:
+								this->refreshLine();
+								if(this->needsRefresh==true)
+									this->updateBuffer();
+								this->currentY+=lineadd;
+								if(this->currentY>=lines.size())
+									this->currentY=lines.size()-1;
+								if((this->currentY-this->startLine)>=this->hite)
+									{
+										shortdraw=false;
+										this->startLine+=lineadd;
+									}
+								if(this->currentX>=lines[this->currentY].length())
+									this->currentX=lines[this->currentY].length()-1;
+								break;
+
+							case CTK_KEY_LEFT:
+								this->currentX--;
+								if(this->currentX<0)
+									{
+										if(this->currentY>0)
 											{
-												if(this->currentY<lines.size()-1)
-													{
-														this->refreshLine();
-														this->currentY++;
-														this->currentX=0;
-													}
-												else
-													this->currentX=lines[currentY].length()-1;
+												this->refreshLine();
+												this->currentY--;
+												this->currentX=lines[this->currentY].size()-1;
 											}
-										break;
-								}
+										else
+											this->currentX=0;
+									}
+								break;
+
+							case CTK_KEY_RIGHT:
+								this->currentX++;
+								if(this->currentX>=lines[currentY].length())
+									{
+										if(this->currentY<lines.size()-1)
+											{
+												this->refreshLine();
+												this->currentY++;
+												this->currentX=0;
+											}
+										else
+											this->currentX=lines[currentY].length()-1;
+									}
+								break;
 						}
 				}
+			else
+				{
+					if(this->mc->readKey->isControlKey==true)//TODO//changing pages?
+						{
+//check menu ctrl keys
+							fprintf(stderr,"Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
+							if((this->mc->menuBar!=NULL) && (this->mc->menuBar->enableShortcuts==true) && (this->mc->menuBar->CTK_getMenuBarEnable()==true))
+								{
+									for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
+										{
+											if(this->mc->menuBar->CTK_doShortCutKey(this->mc->readKey->inputBuffer.c_str()[0],j)==true)
+												{
+													this->mc->menuBar->menuNumber=j;
+													this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
+													fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
+													break;
+												}
+										}
+								}
+						}
+					else
+						{
+							this->CTK_insertText(this->mc->readKey->inputBuffer.c_str());
+							if(usesrc==true)
+								srclines[this->currentY]=lines[this->currentY];
+							this->isDirty=true;
+							this->needsRefresh=true;
+						}
 
+				}
 			if(this->isSelecting==true)
 				{
 					if(this->multiLineSels.back().line!=this->currentY)
@@ -539,7 +531,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 			this->mc->CTK_emptyIPBuffer();
 			if(this->mc->eventLoopCBOut!=NULL)
 				this->mc->eventLoopCBOut(this->mc,this->userData);
-			shortdraw=true;
+			shortdraw=true;	
 		}
 	this->editStatus="Normal";
 }
