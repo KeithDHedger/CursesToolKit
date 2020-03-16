@@ -123,6 +123,7 @@ class CTK_mainAppClass
 		void									*userData=NULL;
 		bool									showHilighting=true;
 		std::string								clearScreenCode="\e[H\e[2J";
+		CTK_cursesReadKeyClass					*readKey=NULL;
 
 	private:
 		void									scrollGadget(bool pagescrill,bool lineup);
@@ -131,7 +132,6 @@ class CTK_mainAppClass
 		void									highLiteGadget(bool forward);
 		void									drawAllGadgets(void);
 		void									resetAllGadgets(void);
-		CTK_cursesReadKeyClass					*readKey=NULL;
 
 		TermKey									*tk;
 		TermKeySym								selectKey=TERMKEY_SYM_ENTER;

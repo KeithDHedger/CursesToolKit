@@ -18,7 +18,7 @@
 #
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s --show-error-list=yes --gen-suppressions="
-USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 name=$(basename $0 .cpp)
 
@@ -64,6 +64,8 @@ int						b2Cnt=0;
 void menuselctCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
+
+	fprintf(stderr,"Menu=%i Item=%i\n",mc->menuNumber,mc->menuItemNumber);
 
 	if(mc->menuNumber==TABMENU)
 		{
@@ -234,7 +236,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-	sleep(2);
+//	sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours

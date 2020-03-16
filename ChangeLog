@@ -1,4 +1,9 @@
 2.0.0
+Redone menu events.
+Enter key now streated same as Return key.
+Return key now reports as normal key, not ^M.
+Added dialog window.
+Done main event loop.
 Switched to dev
 Started new event code to remove termkey.
 

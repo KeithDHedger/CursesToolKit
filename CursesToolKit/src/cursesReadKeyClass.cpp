@@ -113,6 +113,14 @@ void CTK_cursesReadKeyClass::CTK_getInput(void)
 				break;
 		}
 
+	if(buffer[0]=='\r')
+		{
+			this->isHexString=true;
+			this->specialKeyName=CTK_KEY_RETURN;
+			this->inputBuffer="";
+			return;
+		}
+
 	if(buffer[0]!='\t')
 		{
 			if((iscntrl(buffer[0])) && (buffer[0]<27) && (buffer[0]>0))

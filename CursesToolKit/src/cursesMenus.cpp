@@ -31,7 +31,6 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 			delete this->menuNames[j];
 		}
 	this->menuNames.clear();
-	termkey_destroy(this->tk);
 }
 
 /**
@@ -40,17 +39,11 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 CTK_cursesMenuClass::CTK_cursesMenuClass(CTK_mainAppClass *mc)
 {
 	winsize	w;
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
-	rows=w.ws_row;
-	maxRows=rows-mBarHite+1;
-	menuHite=rows-mBarHite;
+	this->rows=w.ws_row;
+	this->maxRows=this->rows-mBarHite+1;
+	this->menuHite=this->rows-mBarHite;
 	this->menuNames.clear();
 	this->CTK_setCommon(mc);
 	this->type=MENUGADGET;
@@ -273,6 +266,203 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 /**
 * Handle menu events.
 */
+#if 1
+int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
+{
+	bool			loop=true;
+	bool			mainloop=true;
+	int				selection=0;
+	int				maxitems;
+	int				cnt=0;
+
+	if(this->menuNumber<0)
+		return(CONT);
+
+	bool doshortcut=false;
+	this->mc->CTK_updateScreen(this->mc,SCREENUPDATEUNHILITE);
+
+	while(mainloop==true)
+		{
+			this->menuShowing=true;
+			doshortcut=this->menuNames[this->menuNumber]->itemsHaveKey;
+			this->menuStart=0;
+			if(this->menuNames[this->menuStart]!=NULL)
+				maxitems=this->drawMenuWindow(this->menuNumber,sx,1,-1,doshortcut);
+			this->CTK_drawGadget();
+			SETHIDECURS;
+			fflush(NULL);
+			loop=true;
+
+			while(loop==true)
+				{
+					this->mc->readKey->CTK_getInput();
+					fprintf(stderr,"Key scancode %s\n",this->mc->readKey->inputBuffer.c_str());
+					if(this->mc->readKey->isHexString==true)
+						{
+							switch(this->mc->readKey->specialKeyName)
+								{
+									case CTK_KEY_UP:
+										fprintf(stderr,"CTK_KEY_UP\n");
+										selection--;
+										if(selection<1)
+											{
+												selection=1;
+												if(menuStart>0)
+													menuStart--;
+											}
+//skip disabled menu items
+										while((selection>0) && (this->menuNames[this->menuNumber]->menuItem[selection-1+this->menuStart]->menuEnabled==false))
+											selection--;
+										while(selection<1)
+											{
+												selection++;
+												this->menuStart--;
+											}
+										if(this->menuStart<0)
+											this->menuStart=0;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_DOWN:
+//skip disabled menu items
+										fprintf(stderr,"CTK_KEY_DOWN\n");
+										while((selection<maxitems) && (this->menuNames[this->menuNumber]->menuItem[selection]->menuEnabled==false))
+											selection++;
+										selection++;
+										if((selection>maxitems) || (selection>menuHite))
+											selection=menuHite-mBarHite;
+										if(selection>maxitems)
+											selection=maxitems;
+
+										if(selection+menuStart<=maxitems)
+											{
+												if(selection>menuHite-mBarHite)
+													{
+														selection=menuHite-mBarHite;
+														menuStart++;
+													}
+											}
+										else
+											selection--;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_LEFT:
+										fprintf(stderr,"CTK_KEY_LEFT\n");
+										menuStart=0;
+										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										this->menuNumber--;
+										while((this->menuNumber>-1) && (this->menuNames[this->menuNumber]->menuEnabled==false))
+											this->menuNumber--;
+										if(this->menuNumber<0)
+											this->menuNumber=this->menuCnt-1;
+										loop=false;
+										selection=0;
+										this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
+										continue;
+										break;
+
+									case CTK_KEY_RIGHT:
+										fprintf(stderr,"CTK_KEY_RIGHT\n");
+										menuStart=0;
+										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										selection=0;
+										loop=false;
+										this->menuNumber++;
+										while((this->menuNumber<this->menuCnt) && (this->menuNames[this->menuNumber]->menuEnabled==false))
+											this->menuNumber++;
+										if(this->menuNumber>=this->menuCnt)
+											this->menuNumber=0;
+										this->mc->CTK_updateScreen(this->mc,SCREENUPDATEALL);
+										continue;
+										break;
+
+									case CTK_KEY_HOME:
+										fprintf(stderr,"CTK_KEY_HOME\n");
+										selection=1;
+										menuStart=0;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_END:
+										fprintf(stderr,"CTK_KEY_END\n");
+										if(maxitems>rows-2)
+											{
+												selection=rows-2;
+												menuStart=maxitems-rows+2;
+												if((menuStart+rows-2)>maxitems)
+													menuStart=maxitems-rows+2;
+											}
+										else
+											selection=maxitems;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_PAGEUP:
+										fprintf(stderr,"CTK_KEY_PAGEUP\n");
+										menuStart-=menuHite;
+										if(menuStart<0)
+											menuStart=0;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_PAGEDOWN:
+										fprintf(stderr,"CTK_KEY_PAGEDOWN\n");
+										if(maxitems<menuHite)
+											continue;
+										menuStart+=menuHite-1;
+										if((menuStart+menuHite)>maxitems)
+											menuStart=maxitems-menuHite+1;
+										this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										continue;
+										break;
+
+									case CTK_KEY_ENTER:
+									case CTK_KEY_RETURN:
+										fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
+										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										this->menuItemNumber=selection+this->menuStart-1;
+										if(this->menuItemNumber>-1)
+											this->selectCB(this,NULL);
+										return(SELECTED);
+										break;
+
+									case CTK_KEY_ESC:
+										fprintf(stderr,"CTK_KEY_ESC\n");
+										loop=false;
+										selection=BRAKE;
+										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										return(selection);
+										break;
+
+									default:
+										break;
+								}
+						}
+					else
+						{
+							fprintf(stderr,"Unknown Key ... ");
+							fprintf(stderr,"%s\n",this->mc->readKey->inputBuffer.c_str());
+							this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+							if(this->CTK_doMenuKey(toupper(this->mc->readKey->inputBuffer.c_str()[0]),this->menuNumber)==true)
+								{
+									this->selectCB(this,NULL);
+									return(SELECTED);
+								}
+						}
+				}
+			this->updateCB((void*)this->mc,NULL);
+		}
+	SETNORMAL;
+	return(selection);
+}
+
+#else
 int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 {
 	bool			loop=true;
@@ -460,6 +650,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	SETNORMAL;
 	return(selection);
 }
+#endif
 
 /**
 * Clear all menu items from menu.

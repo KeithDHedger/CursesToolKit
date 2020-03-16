@@ -859,7 +859,10 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 							fprintf(stderr,"CTK_KEY_DELETE\n");
 							break;
 						case CTK_KEY_ENTER:
-							fprintf(stderr,"CTK_KEY_ENTER\n");
+						case CTK_KEY_RETURN:
+							fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
+							this->activateGadget();
+							break;
 							break;
 						case CTK_KEY_BACKSPACE:
 							fprintf(stderr,"CTK_KEY_BACKSPACE\n");
