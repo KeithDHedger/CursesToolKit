@@ -97,7 +97,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 
 	str=this->text;
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
-//	this->CTK_drawGadget();
+	this->CTK_drawGadget();
 }
 
 /**
