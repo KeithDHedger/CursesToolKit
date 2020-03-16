@@ -42,7 +42,6 @@ class CTK_cursesInputClass : public CTK_cursesGadgetClass
 		int						startChar=0;
 		std::string				text;
 		std::string				blank;
-		TermKey					*tk;
 
 		void					updateText(const char *txt);
 };

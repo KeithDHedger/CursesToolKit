@@ -43,7 +43,6 @@ class CTK_cursesKeyboardClass : public CTK_cursesGadgetClass
 		int						startChar=0;
 		std::string				text;
 		std::string				blank;
-		TermKey					*tk;
 		int						cx=0;
 		int						cy=0;
 		int						cPage=0;

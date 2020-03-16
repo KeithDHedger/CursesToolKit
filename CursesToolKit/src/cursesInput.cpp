@@ -25,7 +25,6 @@
 */
 CTK_cursesInputClass::~CTK_cursesInputClass()
 {
-	termkey_destroy(this->tk);
 }
 
 /**
@@ -33,12 +32,6 @@ CTK_cursesInputClass::~CTK_cursesInputClass()
 */
 CTK_cursesInputClass::CTK_cursesInputClass(CTK_mainAppClass *mc)
 {
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 	this->CTK_setCommon(mc);
 	this->type=INPUTGADGET;
 }
@@ -93,8 +86,21 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-	this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
-	MOVETO(this->sx+this->curs,this->sy);
+	if(this->curs>=this->wid)//TODO//
+		{
+			while(this->curs>=this->wid)
+				{
+					this->startChar++;
+					this->curs--;
+				}
+			this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
+			MOVETO(this->sx+this->curs,this->sy);
+		}
+	else
+		{
+			this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
+			MOVETO(this->sx+this->curs,this->sy);
+		}
 }
 
 /**
@@ -103,30 +109,28 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 void CTK_cursesInputClass::CTK_doInput(void)
 {
 	bool			loop=true;
-	TermKeyResult	ret;
-	TermKeyKey		key;
 
 	this->CTK_drawGadget(true);
 	SETSHOWCURS;
 	fflush(NULL);
 	while(loop==true)
 		{
-			ret=termkey_waitkey(this->tk,&key);
-			switch(key.type)
+			this->mc->readKey->CTK_getInput();
+			if(this->mc->readKey->isHexString==true)
 				{
-					case TERMKEY_TYPE_KEYSYM:
-						switch(key.code.sym)
-							{
-								case TERMKEY_SYM_ENTER:
+					switch(this->mc->readKey->specialKeyName)
+						{
+							case CTK_KEY_ENTER:
+							case CTK_KEY_RETURN:
 									if(this->selectCB!=NULL)
 										this->selectCB(this,this->selectCBUserData);
-								case TERMKEY_SYM_TAB:
-								case TERMKEY_SYM_ESCAPE:
+								case CTK_KEY_TAB:
+								case CTK_KEY_ESC:
 									SETHIDECURS;
 									fflush(NULL);
 									return;
 									break;
-								case TERMKEY_SYM_DOWN:
+								case CTK_KEY_DOWN:
 									{
 										int syy=this->sy;
 										CTK_cursesKeyboardClass	*oskb=new CTK_cursesKeyboardClass(this->mc);
@@ -153,7 +157,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 										break;
 									}
 									break;
-								case TERMKEY_SYM_LEFT:
+								case CTK_KEY_LEFT:
 									this->curs--;
 									if(this->curs<0)
 										{
@@ -162,7 +166,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 												this->startChar--;
 										}
 									break;
-								case TERMKEY_SYM_RIGHT:
+								case CTK_KEY_RIGHT:
 									if(1+this->curs+this->startChar>this->text.length())
 										continue;
 									this->curs++;
@@ -173,11 +177,11 @@ void CTK_cursesInputClass::CTK_doInput(void)
 												this->startChar++;
 										}
 									break;
-								case TERMKEY_SYM_HOME:
+								case CTK_KEY_HOME:
 									this->curs=0;
 									this->startChar=0;
 									break;
-								case TERMKEY_SYM_END:
+								case CTK_KEY_END:
 									if(this->text.length()>this->wid)
 										{
 											this->curs=this->wid;
@@ -186,33 +190,30 @@ void CTK_cursesInputClass::CTK_doInput(void)
 									else
 										this->curs=this->text.length();
 									break;
-								case TERMKEY_SYM_BACKSPACE:
-								case TERMKEY_SYM_DEL:
+								case CTK_KEY_BACKSPACE:
 									this->curs--;
 									if(this->curs<0)
 										this->curs=0;
 									else
 										this->text.erase(this->startChar+this->curs,1);
 									break;
-								case  TERMKEY_SYM_DELETE:
+								case  CTK_KEY_DELETE:
 									this->text.erase(this->startChar+this->curs,1);
 									break;
-							}
-						MOVETO(this->sx+this->curs,this->sy);
-						this->CTK_drawGadget(true);
-						break;
-	
-					case TERMKEY_TYPE_UNICODE:
-						this->text.insert(this->startChar+this->curs,1,key.code.codepoint);
-						this->curs++;
-						if(this->curs>this->wid)
-							{
-								this->curs=this->wid;
-								this->startChar++;
-							}
-						this->CTK_drawGadget(true);
-						MOVETO(this->sx+this->curs,this->sy);
-						break;
+						}
+					MOVETO(this->sx+this->curs,this->sy);
+					this->CTK_drawGadget(true);
+				}
+			else
+				{
+					this->text.insert(this->startChar+this->curs,this->mc->readKey->inputBuffer.c_str());
+					this->curs+=this->mc->readKey->inputBuffer.length();
+					if(this->curs>=this->wid)
+						{
+							this->curs=this->wid;
+							this->startChar=this->text.length()-this->wid;
+						}
+					this->CTK_drawGadget(true);
 				}
 		}
 	SETHIDECURS;

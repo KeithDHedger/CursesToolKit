@@ -26,7 +26,6 @@
 */
 CTK_cursesKeyboardClass::~CTK_cursesKeyboardClass()
 {
-	termkey_destroy(this->tk);
 }
 
 /**
@@ -34,12 +33,6 @@ CTK_cursesKeyboardClass::~CTK_cursesKeyboardClass()
 */
 CTK_cursesKeyboardClass::CTK_cursesKeyboardClass(CTK_mainAppClass *mc)
 {
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 	this->CTK_setCommon(mc);
 	this->type=OSKEYBOARD;
 }
@@ -140,37 +133,35 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 void CTK_cursesKeyboardClass::CTK_doInput(void)
 {
 	bool			loop=true;
-	TermKeyResult	ret;
-	TermKeyKey		key;
 
 	SETSHOWCURS;
 	this->CTK_drawGadget(true);
 
 	while(loop==true)
 		{
-			ret=termkey_waitkey(this->tk,&key);
-			switch(key.type)
+			this->mc->readKey->CTK_getInput();
+			if(this->mc->readKey->isHexString==true)
 				{
-					case TERMKEY_TYPE_KEYSYM:
-						switch(key.code.sym)
-							{
-								case TERMKEY_SYM_ENTER:
-									if(this->cy==4)
-										{
-											if(this->cx==8)
-												{
-													this->curs--;
-													if(this->curs<0)
-														this->curs=0;
-													else
-														this->text.erase(this->startChar+this->curs,1);
-												}
-											else if(this->cx==9)
-												{
-													loop=false;
-												}
-											else
-												{
+					switch(this->mc->readKey->specialKeyName)
+						{
+							case CTK_KEY_ENTER:
+							case CTK_KEY_RETURN:
+								if(this->cy==4)
+									{
+										if(this->cx==8)
+											{
+												this->curs--;
+												if(this->curs<0)
+													this->curs=0;
+												else
+													this->text.erase(this->startChar+this->curs,1);
+											}
+										else if(this->cx==9)
+											{
+												loop=false;
+											}
+										else
+											{
 												switch(osKLine[this->cPage][this->cy][this->cx])
 													{
 														case '^':
@@ -211,46 +202,45 @@ void CTK_cursesKeyboardClass::CTK_doInput(void)
 																}
 															break;
 													}
-												}
-											break;
-										}
-									else
-										{
-											this->text.insert(this->startChar+this->curs,1,osKLine[this->cPage][this->cy][this->cx]);
-										}
+											}
+										break;
+									}
+								else
+									{
+										this->text.insert(this->startChar+this->curs,1,osKLine[this->cPage][this->cy][this->cx]);
+									}
 
-									this->curs++;
-									if(this->curs>this->wid)
-										{
-											this->curs=this->wid;
-											this->startChar++;
-										}
+								this->curs++;
+								if(this->curs>this->wid)
+									{
+										this->curs=this->wid;
+										this->startChar++;
+									}
+								break;
 
-									break;
+							case CTK_KEY_UP:
+								this->cy--;
+								if(this->cy<0)
+									this->cy=4;
+								break;
+							case CTK_KEY_DOWN:
+								this->cy++;
+								if(this->cy>4)
+									this->cy=0;
+								break;
 
-								case TERMKEY_SYM_UP:
-									this->cy--;
-									if(this->cy<0)
-										this->cy=4;
-									break;
-								case TERMKEY_SYM_DOWN:
-									this->cy++;
-									if(this->cy>4)
-										this->cy=0;
-									break;
-
-								case TERMKEY_SYM_LEFT:
-									this->cx--;
-									if(this->cx<0)
-										this->cx=9;
-									break;
-								case TERMKEY_SYM_RIGHT:
-									this->cx++;
-									if(this->cx>9)
-										this->cx=0;
-									break;
-							}
-						this->CTK_drawGadget(true);
+							case CTK_KEY_LEFT:
+								this->cx--;
+								if(this->cx<0)
+									this->cx=9;
+								break;
+							case CTK_KEY_RIGHT:
+								this->cx++;
+								if(this->cx>9)
+									this->cx=0;
+								break;
+						}
+					this->CTK_drawGadget(true);
 				}
 		}
 	SETHIDECURS;

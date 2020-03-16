@@ -78,7 +78,7 @@ class CTK_cursesMenuClass : public CTK_cursesGadgetClass
 		void						drawMenuStyle(int menunum,int menuitem,int x,int y,int style,bool doshortcut,bool dopad);
 		int							drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut);
 		char						setShortCut(const char *name);
-//termkey
+
 		int							mBarHite=1;
 		int							menuHite=1;
 		int							rows=0;

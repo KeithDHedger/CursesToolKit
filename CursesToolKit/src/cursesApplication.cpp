@@ -360,7 +360,7 @@ void CTK_mainAppClass::CTK_addDropBox(CTK_cursesDropClass *dd)
 * \note object=ptr to main class object
 * \note sets highlight if needed.
 */
-void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)
+void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)//TODO//
 {
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
 	CTK_cursesGraphicsClass	cu(app);

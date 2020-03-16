@@ -1,4 +1,6 @@
 2.0.0
+Redone OSK events.
+Redone input gadget events.
 Redone menu events.
 Enter key now streated same as Return key.
 Return key now reports as normal key, not ^M.
