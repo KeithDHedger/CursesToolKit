@@ -587,7 +587,10 @@ void CTK_mainAppClass::runMenus(void)
 */
 void CTK_mainAppClass::activateGadget(void)
 {
-	fprintf(stderr,"gadget num=%i\n",THISPAGE.currentGadget);
+//	fprintf(stderr,"gadget num=%i\n",THISPAGE.currentGadget);
+	int	thispnum=-1;
+	int	newpn=-1;
+	
 	if(THISPAGE.currentGadget==-1)
 		return;
 
@@ -637,6 +640,8 @@ void CTK_mainAppClass::activateGadget(void)
 //edit boxes
 			case EDITGADGET:
 			case SRCGADGET:
+				thispnum=this->pageNumber;
+				newpn=-1;
 				THISPAGE.ignoreFirstTab=false;
 				THISPAGE.retainHighliting=true;
 				if(CURRENTGADGET->CTK_getGadgetType()==EDITGADGET)
@@ -644,13 +649,15 @@ void CTK_mainAppClass::activateGadget(void)
 				else
 					static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(CURRENTGADGET)->CTK_getSrcStrings());
 
-				this->CTK_emptyIPBuffer();
-				CURRENTGADGET->gadgetDirty=true;
-				CURRENTGADGET->CTK_drawGadget(true);
-
+				newpn=this->pageNumber;
+				if(newpn==thispnum)
+					{
+						this->CTK_emptyIPBuffer();
+						CURRENTGADGET->gadgetDirty=true;
+						CURRENTGADGET->CTK_drawGadget(true);
+					}
 				if(this->eventLoopCBOut!=NULL)
 					this->eventLoopCBOut(this,this->userData);
-
 				break;
 		}
 
@@ -862,7 +869,6 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 						case CTK_KEY_RETURN:
 							fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
 							this->activateGadget();
-							break;
 							break;
 						case CTK_KEY_BACKSPACE:
 							fprintf(stderr,"CTK_KEY_BACKSPACE\n");
@@ -1364,8 +1370,10 @@ int CTK_mainAppClass::CTK_nextPage(void)
 			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
 			this->menuBar->CTK_drawDefaultMenuBar();
 		}
+
 	if(this->pageNumber<this->pages.size()-1)
 		this->pageNumber++;
+
 	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;

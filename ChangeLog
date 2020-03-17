@@ -1,5 +1,6 @@
 2.0.0
-redine Edit/Source box events.
+Fixed switching pages whilst editing test/src box.
+Redone Edit/Source box events.
 Redone OSK events.
 Redone input gadget events.
 Redone menu events.

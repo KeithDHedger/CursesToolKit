@@ -83,7 +83,7 @@ void menuselctCB(void *inst,void *userdata)
 				}
 		}
 
-	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))
+	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))//TODO//exit edit box;
 		mainApp->runEventLoop=false;
 }
 

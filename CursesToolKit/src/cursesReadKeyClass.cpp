@@ -232,20 +232,14 @@ void CTK_cursesReadKeyClass::setSpecialKeyName(void)
 {
 	int			keycode=0;
 	int			entnames=0;
-//fprintf(stderr,">>>>>>>>>>>>>>>>>>\n");
+
 	while(termInfoNames[entnames]!=NULL)
 		{
-//fprintf(stderr,">>>>>>>>>%s>>>>>>>>>\n",termInfoNames[entnames]);
 			keycode=0;
 			while(keyNames[keycode]!=NULL)
 				{
-//				fprintf(stderr,">>>>>>>>>%s>>>>>>>>>\n",keyNames[keycode]);
-//					fprintf(stderr,"key=%s,inp=%s keycode=%i\n",this->allCodes[keyNames[keycode]][entnames].c_str(),this->inputBuffer.c_str(),keycode);
-//					fprintf(stderr,"--->%s %s<---\n",this->allCodes[keyNames[keycode]][entnames].c_str(),this->inputBuffer.c_str());
 					if(this->allCodes[keyNames[keycode]][entnames].compare(this->inputBuffer)==0)
 						{
-//							fprintf(stderr,"--------term=%s key %s=%s\n",this->termInfoNames[entnames],this->keyNames[keycode],this->allCodes[keyNames[keycode]][entnames].c_str());
-//							fprintf(stderr,"keycode=%i keyup=%i\n",keycode,CTK_KEY_UP);
 							this->specialKeyName=keycode+CTK_KEY_UP;
 							return;
 						}

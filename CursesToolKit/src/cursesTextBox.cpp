@@ -45,9 +45,9 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->sy=y;
 	this->wid=width;
 	this->hite=hite;
-	this->gadgetDirty=true;
 	this->blank.insert(this->blank.begin(),width,' ');
-	this->CTK_updateText(txt);
+	this->CTK_updateText(txt,false,false);
+	this->gadgetDirty=true;
 }
 
 /**
@@ -66,6 +66,7 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	bool						flag=true;
 	char						*txtbuffer;
 
+fprintf(stderr,"reset=%i\n",reset);
 	this->gadgetDirty=true;
 	this->txtStrings.clear();
 	if(isfilename==false)
@@ -97,7 +98,8 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 
 	str=this->text;
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1,this->tabWidth);
-	this->CTK_drawGadget();
+	if(reset==true)
+		this->CTK_drawGadget();
 }
 
 /**

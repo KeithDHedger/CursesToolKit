@@ -489,19 +489,25 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 				}
 			else
 				{
-					if(this->mc->readKey->isControlKey==true)//TODO//changing pages?
+					if(this->mc->readKey->isControlKey==true)
 						{
 //check menu ctrl keys
 							fprintf(stderr,"Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
 							if((this->mc->menuBar!=NULL) && (this->mc->menuBar->enableShortcuts==true) && (this->mc->menuBar->CTK_getMenuBarEnable()==true))
 								{
+									int	pagenum=this->mc->pageNumber;
 									for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
 										{
 											if(this->mc->menuBar->CTK_doShortCutKey(this->mc->readKey->inputBuffer.c_str()[0],j)==true)
 												{
 													this->mc->menuBar->menuNumber=j;
 													this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
-													fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
+													//fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
+													if(pagenum!=this->mc->pageNumber)
+														{
+															this->runLoop=false;
+															return;
+														}
 													break;
 												}
 										}
