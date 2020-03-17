@@ -54,9 +54,9 @@ class CTK_cursesDropClass : public CTK_cursesGadgetClass
 
 	private:
 		void						drawList(int selection);
+
 		std::vector<dropDownStruct>	items;
 		int							maxWidth=0;
-		TermKey						*tk;
 		std::string					holdLabel;
 	protected:
 };

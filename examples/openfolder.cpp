@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ../;make -j4);./openfolder.cpp ~
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++) -lcursestoolkit "$0"  -o folderselect ||exit 1
+g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o folderselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./folderselect "$@"
 retval=$?
 rm folderselect

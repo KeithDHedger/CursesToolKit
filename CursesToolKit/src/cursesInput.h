@@ -38,12 +38,12 @@ class CTK_cursesInputClass : public CTK_cursesGadgetClass
 		void					CTK_drawGadget(bool hilite);
 
 	private:
+		void					updateText(const char *txt);
+
 		int						curs=0;
 		int						startChar=0;
 		std::string				text;
 		std::string				blank;
-
-		void					updateText(const char *txt);
 };
 
 #endif

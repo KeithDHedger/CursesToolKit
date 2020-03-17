@@ -44,7 +44,6 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 CTK_cursesFBImageClass::CTK_cursesFBImageClass(CTK_mainAppClass *mc)
 {
 	this->CTK_setCommon(mc);
-//	this->hite=-1;//TODO//
 	this->type=IMAGEGADGET;
 }
 

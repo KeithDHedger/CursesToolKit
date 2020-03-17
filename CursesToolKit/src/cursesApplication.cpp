@@ -39,7 +39,6 @@ CTK_mainAppClass::~CTK_mainAppClass()
 
 	this->pages.clear();
 	fflush(NULL);
-	termkey_destroy(this->tk);
 #ifdef _IMAGEMAGICK_
 	Magick::TerminateMagick();//is this needed?
 #endif
@@ -63,15 +62,8 @@ CTK_mainAppClass::CTK_mainAppClass()
 	this->pages.clear();
 	this->CTK_addPage();
 	this->pageNumber=0;
-	this->utils=new CTK_cursesUtilsClass;
+	this->utils=new CTK_cursesUtilsClass(this);
 	this->gc=new CTK_cursesGraphicsClass(this);
-
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC|TERMKEY_FLAG_SPACESYMBOL);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 
 	if(frameBufferData.fbIsMapped==false)
 		{
@@ -448,19 +440,6 @@ void CTK_mainAppClass::setHilite(bool forward)
 }
 
 /**
-* Switch Termkey instance on/off.
-* \note Termkey should be switched off before running external programs.
-* \note Switch back on after extenal app exits.
-*/
-void CTK_mainAppClass::CTK_setTermKeyRun(bool start)
-{
-	if(start==true)
-		termkey_start(this->tk);
-	else
-		termkey_stop(this->tk);
-}
-
-/**
 * Draw all gdagets unhilted.
 */
 void CTK_mainAppClass::resetAllGadgets(void)
@@ -825,6 +804,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
 			fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
+
 			if(this->readKey->isHexString==true)
 				{
 					switch(this->readKey->specialKeyName)
@@ -867,8 +847,12 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 							break;
 						case CTK_KEY_ENTER:
 						case CTK_KEY_RETURN:
-							fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
-							this->activateGadget();
+							if(THISPAGE.currentGadget!=-1)
+								if(CURRENTGADGET->CTK_getSelectKey()==CTK_KEY_NONE)
+									{
+										fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
+										this->activateGadget();
+									}
 							break;
 						case CTK_KEY_BACKSPACE:
 							fprintf(stderr,"CTK_KEY_BACKSPACE\n");
@@ -955,12 +939,18 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 										}
 							}
 					else
-						fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
+						{
+							if((CURRENTGADGET->CTK_getSelectKey()==this->readKey->inputBuffer.c_str()[0]) && (this->readKey->inputBuffer.length()==1))
+								{
+									fprintf(stderr,"CURRENTGADGET->selectKey\n");
+									this->activateGadget();
+								}
+							fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
+						}
 				}
 		}
 	return 0;
 }
-
 
 /**
 * Main event loop.
@@ -971,6 +961,8 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 {
+this->CTK_mainEventLoop_New(runcnt,docls);
+#if 0
 	int						selection=CONT;
 	TermKeyResult			ret;
 	TermKeyKey				key;
@@ -1299,6 +1291,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 		}
 //thispage->currentGadget=-1;;
 	return(key.code.codepoint);
+#endif
 }
 
 /**
@@ -1532,9 +1525,9 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 }
 
 /**
-* Set select key, default=TERMKEY_SYM_ENTER.
+* Set select key, default=CTK_KEY_RETURN.
 */
-void CTK_mainAppClass::CTK_setSelectKey(TermKeySym key)
+void CTK_mainAppClass::CTK_setSelectKey(int key)
 {
 	this->selectKey=key;
 }

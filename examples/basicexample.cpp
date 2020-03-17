@@ -4,7 +4,7 @@
 
 #USEVALGRIND="valgrind --leak-check=full"
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++) -lcursestoolkit "$0" -o basicexample ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0" -o basicexample ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./basicexample "$@"
 retval=$?
 rm basicexample
@@ -223,7 +223,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->CTK_setTabWidth(TABWIDTH);
 	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
-//	mainApp->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);//0
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[1]);//1
@@ -355,7 +354,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	lb1->CTK_setColours(cs);
 	lb1->CTK_setMultipleSelect(true);
 	lb1->CTK_setSelectDeselects(false);
-	lb1->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+//	lb1->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 	mainApp->CTK_addListBox(lb1);
 
 
@@ -370,11 +369,11 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)1);
 	//checkbox->CTK_setEnterDeselects(false);
 	checkbox->CTK_setSelectDeselects(false);
-	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 	checkbox=mainApp->CTK_addNewCheckBox(85,11,10,"Edit Off");
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)2);
 	checkbox->CTK_setSelectDeselects(false);
-	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+//	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 
 //CTK_cursesGadgetClass*  gad=mainApp->CTK_getGadgetNum(mainApp->pageNumber,TEXTGADGET,2);

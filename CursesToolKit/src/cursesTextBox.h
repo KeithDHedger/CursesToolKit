@@ -39,12 +39,12 @@ class CTK_cursesTextBoxClass : public CTK_cursesGadgetClass
 		void						CTK_drawGadget(bool hilite=false);
 
 	private:
+		void						scrollTBox(bool scrollup,int numlines);
+
 		int							startLine=0;
 		std::string					text;
 		std::string					blank;
 		std::vector<std::string>	txtStrings;
-
-		void						scrollTBox(bool scrollup,int numlines);
 };
 
 #endif

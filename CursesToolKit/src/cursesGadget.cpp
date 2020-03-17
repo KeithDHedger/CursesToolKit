@@ -41,7 +41,7 @@ void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 	this->isSelectable=true;
 	this->selectDeselects=true;
 	this->enabled=true;
-	this->selectKey=TERMKEY_SYM_NONE;
+	this->selectKey=CTK_KEY_NONE;
 	this->gadgetDirty=true;
 	this->hiLited=false;
 }
@@ -63,7 +63,7 @@ void CTK_cursesGadgetClass::CTK_drawGadget(bool hilite)
 /**
 * Set gadget 'selected' callback.
 */
-void CTK_cursesGadgetClass::CTK_setSelectCB(void (*select)(void *,void *),void *userdata)
+void CTK_cursesGadgetClass::CTK_setSelectCB(bool (*select)(void *,void *),void *userdata)
 {
 	this->selectCB=select;
 	this->selectCBUserData=userdata;
@@ -136,17 +136,17 @@ bool CTK_cursesGadgetClass::CTK_getSelectable(void)
 }
 
 /**
-* Set select key, default=TERMKEY_SYM_ENTER.
+* Set select key, default=CTK_KEY_RETURN.
 */
-void CTK_cursesGadgetClass::CTK_setSelectKey(TermKeySym key)
+void CTK_cursesGadgetClass::CTK_setSelectKey(int key)
 {
 	this->selectKey=key;
 }
 
 /**
-* Get select key, default=TERMKEY_SYM_ENTER.
+* Get select key, default=CTK_KEY_RETURN.
 */
-TermKeySym CTK_cursesGadgetClass::CTK_getSelectKey(void)
+int CTK_cursesGadgetClass::CTK_getSelectKey(void)
 {
 	return(this->selectKey);
 }

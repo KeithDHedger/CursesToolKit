@@ -26,7 +26,6 @@
 CTK_cursesDropClass::~CTK_cursesDropClass()
 {
 	this->items.clear();
-	termkey_destroy(this->tk);
 }
 
 /**
@@ -34,12 +33,6 @@ CTK_cursesDropClass::~CTK_cursesDropClass()
 */
 CTK_cursesDropClass::CTK_cursesDropClass(CTK_mainAppClass *mc)
 {
-	this->tk=termkey_new(0,TERMKEY_FLAG_CTRLC);
-	if(!this->tk)
-		{
-			fprintf(stderr, "Cannot allocate termkey instance\n");
-			exit(1);
-		}
 	this->CTK_setCommon(mc);
 	this->type=DROPGADGET;
 }
@@ -76,12 +69,9 @@ void CTK_cursesDropClass::CTK_addDropItem(const char *name)
 */
 void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 {
-	int						iy=this->sy+this->hite;
-	bool					loop=true;
-	TermKeyResult			ret;
-	TermKeyKey				key;
-	TermKeyFormat			format=TERMKEY_FORMAT_VIM;
-	int						selection=this->selectedItem;
+	int		iy=this->sy+this->hite;
+	bool	loop=true;
+	int		selection=this->selectedItem;
 
 	if(this->items.size()==0)
 		return;
@@ -90,58 +80,57 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 
 	while(loop==true)
 		{
-			ret=termkey_waitkey(this->tk,&key);
-
-			switch(key.type)
+			this->mc->readKey->CTK_getInput();
+			if(this->mc->readKey->isHexString==true)
 				{
-					case TERMKEY_TYPE_KEYSYM:
+					switch(this->mc->readKey->specialKeyName)
 						{
-							switch(key.code.sym)
-								{
-									case TERMKEY_SYM_ESCAPE:
-										loop=false;
-										continue;
-										break;
+							case CTK_KEY_ESC:
+								loop=false;
+								continue;
+								break;
 
-									case TERMKEY_SYM_UP:
-										selection--;
+							case CTK_KEY_UP:
+								selection--;
 //skip disabled menu items
-										while((selection>-1) && (this->items[selection].enabled==false))
-											selection--;
-										if(selection<0)
-											selection=0;
-										break;
-									case TERMKEY_SYM_DOWN:
-										selection++;
+								while((selection>-1) && (this->items[selection].enabled==false))
+									selection--;
+								if(selection<0)
+									selection=0;
+								break;
+
+							case CTK_KEY_DOWN:
+								selection++;
 //skip disabled menu items
-										while((selection<this->items.size()) && (this->items[selection].enabled==false))
-											selection++;
-										if(selection==this->items.size())
-											selection=this->items.size()-1;
-										break;
+								while((selection<this->items.size()) && (this->items[selection].enabled==false))
+									selection++;
+								if(selection==this->items.size())
+									selection=this->items.size()-1;
+								break;
 
-									case TERMKEY_SYM_HOME:
-										selection=0;
-										break;
+							case CTK_KEY_HOME:
+								selection=0;
+								break;
 
-									case TERMKEY_SYM_END:
-										selection=this->items.size()-1;
-										break;
+							case CTK_KEY_END:
+								selection=this->items.size()-1;
+								break;
 
-									case TERMKEY_SYM_ENTER:
-										if(selection>-1)
-											this->selectedItem=selection;
-										loop=false;
-										continue;
-										break;
+							case CTK_KEY_ENTER:
+							case CTK_KEY_RETURN:
+								if(selection>-1)
+									this->selectedItem=selection;
+								loop=false;
+								continue;
+								break;
 
-									default:
-										break;
-										}
-								}
+							default:
+								break;
+						}
 					}
 			this->drawList(selection);
 		}
+
 	if(this->selectedItem>-1)
 		this->label=this->items[this->selectedItem].label;
 	this->mc->CTK_clearScreen();

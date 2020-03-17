@@ -29,7 +29,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <termkey.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -40,9 +39,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-//#include <curses.h>
-//#include <term.h>
 
 struct fbData
 {
@@ -59,6 +55,7 @@ struct fbData
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
 #include "cursesUtils.h"
+#include "cursesReadKeyClass.h"
 #include "cursesGraphics.h"
 #include "cursesGadget.h"
 
@@ -76,8 +73,6 @@ struct fbData
 #include "cursesFBImage.h"
 #include "cursesKeyboard.h"
 
-
-#include "cursesReadKeyClass.h"
 #include "cursesApplication.h"
 
 /**

@@ -7,6 +7,6 @@ Name: CursesToolKit
 Description: Toolkit library for building curses apps.
 URL: https://github.com/KeithDHedger/CursesToolKit
 Version: @VERSION@
-Requires: termkey
+Requires: ncurses
 Libs: -L${libdir} -lcursestoolkit
 Cflags: -I${includedir}/cursestoolkit

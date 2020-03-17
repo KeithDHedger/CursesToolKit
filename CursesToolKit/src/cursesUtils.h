@@ -31,6 +31,8 @@
 #define QUERYBOXWIDTH 60
 #define ENTRYWIDTH 40
 
+enum {CUENTRYOK=5000,CUENTRYCANCEL};
+
 class CTK_mainAppClass;
 
 enum  varType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
@@ -44,16 +46,25 @@ struct varsStruct
 	std::string	charVar="";	
 };
 
+struct entryStruct
+{
+	int		buttonnum=CUENTRYCANCEL;
+	bool	valid=false;
+};
+
 class CTK_cursesUtilsClass
 {
 	public:
 		CTK_cursesUtilsClass();
+		CTK_cursesUtilsClass(CTK_mainAppClass *mc);
 		~CTK_cursesUtilsClass();
 
 		std::string					stringResult="";
 		int							intResult=0;
+		bool						boolResult=false;
 		bool						isValidFile=false;
 		std::string					inFolder=".";
+		static entryStruct			entryData;
 
 		std::vector<std::string>	CTK_explodeWidth(const std::string str,const char termchar,int width,int tabwidth,int offset,bool incdelim);
 
@@ -62,7 +73,14 @@ class CTK_cursesUtilsClass
 
 		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="",const char *filetypes=NULL);
 		void						CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir);
-		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth=ENTRYWIDTH);
+
+
+
+		bool						CTK_entryDialog_New(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
+		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
+
+
+
 		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
 		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
@@ -75,6 +93,7 @@ class CTK_cursesUtilsClass
 		varsStruct					CTK_findVar(std::vector<varsStruct> vs,const char *varname);
 
 	private:
+		CTK_mainAppClass			*mc;
 		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes);
 		bool						runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder);
 };

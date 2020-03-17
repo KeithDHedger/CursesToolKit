@@ -38,6 +38,8 @@ class CTK_cursesKeyboardClass : public CTK_cursesGadgetClass
 		void					CTK_drawGadget(bool hilite);
 
 	private:
+		void					updateText(const char *txt);
+
 		bool					osKeyboard=false;
 		int						curs=0;
 		int						startChar=0;
@@ -46,7 +48,6 @@ class CTK_cursesKeyboardClass : public CTK_cursesGadgetClass
 		int						cx=0;
 		int						cy=0;
 		int						cPage=0;
-		void					updateText(const char *txt);
 };
 
 

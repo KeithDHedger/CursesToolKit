@@ -100,13 +100,12 @@ class CTK_mainAppClass
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
-		void									CTK_setTermKeyRun(bool start);
 //////////////////
 		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true);
 		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
 //////////////////
 		void									CTK_emptyIPBuffer(void);
-		void									CTK_setSelectKey(TermKeySym key);
+		void									CTK_setSelectKey(int key);
 
 		void									CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool unhilite=true);
 		CTK_cursesGadgetClass*					CTK_getGadgetNum(int page,gadgetType type,int nth);
@@ -132,12 +131,10 @@ class CTK_mainAppClass
 		void									highLiteGadget(bool forward);
 		void									drawAllGadgets(void);
 		void									resetAllGadgets(void);
-
-		TermKey									*tk;
-		TermKeySym								selectKey=TERMKEY_SYM_ENTER;
-
 		void									setHilite(bool forward);
+
 		struct fbData							frameBufferData;
+		int										selectKey=CTK_KEY_RETURN;
 };
 
 #endif

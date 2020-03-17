@@ -22,7 +22,7 @@
 
 name=$(basename $0 .cpp)
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++ ncurses) -lcursestoolkit "$0" -o $name ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit "$0" -o $name ||exit 1
 echo "done compiling ..."
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
@@ -383,7 +383,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	list->CTK_setMultipleSelect(true);
 	list->CTK_setSelectDeselects(false);
-	list->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+//	list->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 	cs.textBoxType=INBOX;
 	cs.backCol=BACK_WHITE;
@@ -440,7 +440,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->CTK_addPage();
 	geny=3;
 	genx=3;
-	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons");
+	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons, Space toggles check boxs");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
 
@@ -469,12 +469,12 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	checkbox=mainApp->CTK_addNewCheckBox(genx,geny,10,"Menus Off");
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK1);
 	checkbox->CTK_setSelectDeselects(false);
-	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+	checkbox->CTK_setSelectKey(' ');
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,1);
 	checkbox=mainApp->CTK_addNewCheckBox(genx,geny,10,"Edit Off ");
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK2);
 	checkbox->CTK_setSelectDeselects(false);
-	checkbox->CTK_setSelectKey(TERMKEY_SYM_SPACE);
+	checkbox->CTK_setSelectKey(' ');
 
 //results
 	genx=3;

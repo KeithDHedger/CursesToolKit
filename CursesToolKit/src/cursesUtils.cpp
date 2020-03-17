@@ -35,6 +35,14 @@ CTK_cursesUtilsClass::CTK_cursesUtilsClass()
 }
 
 /**
+* Utils class.
+*/
+CTK_cursesUtilsClass::CTK_cursesUtilsClass(CTK_mainAppClass *mc)
+{
+	this->mc=mc;
+}
+
+/**
 * Explode a <String> splitting on a character.
 */
 std::vector<std::string> CTK_cursesUtilsClass::CTK_explode(const std::string s,const char c)
@@ -170,7 +178,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 /**
 * Private internal callback
 */
-static void folderSelectCB(void *inst,void *ud)
+static bool folderSelectCB(void *inst,void *ud)
 {
 	char					*buffer=(char*)alloca(PATH_MAX);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
@@ -179,12 +187,13 @@ static void folderSelectCB(void *inst,void *ud)
 	sprintf(buffer,"Folder: %s",ch->folderPath.c_str());
 	fud->textGadget->CTK_updateText(buffer);
 	fud->inst->isValidFile=true;
+return true;
 }
 
 /**
 * Private internal callback
 */
-static void inputCB(void *inst,void *ud)
+static bool inputCB(void *inst,void *ud)
 {
 	fileUDStruct	*fud=static_cast<fileUDStruct*>(ud);
 	CTK_cursesInputClass	*inp=static_cast<CTK_cursesInputClass*>(inst);
@@ -193,12 +202,14 @@ static void inputCB(void *inst,void *ud)
 		fud->btnOK->CTK_setEnabled(true);
 	else
 		fud->btnOK->CTK_setEnabled(false);
+
+return true;
 }
 
 /**
 * Private internal callback
 */
-static void fileSelectCB(void *inst,void *ud)
+static bool fileSelectCB(void *inst,void *ud)
 {
 
 	char					*buffer=(char*)alloca(PATH_MAX);
@@ -225,12 +236,13 @@ static void fileSelectCB(void *inst,void *ud)
 		}
 	if(fud->inst->isValidFile==true)
 		fud->btnOK->CTK_setEnabled(true);
+return true;
 }
 
 /**
 * Private internal callback
 */
-static void buttonSelectCB(void *inst,void *ud)
+static bool buttonSelectCB(void *inst,void *ud)
 {
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
@@ -257,7 +269,7 @@ static void buttonSelectCB(void *inst,void *ud)
 			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
 			fud->app->CTK_clearScreen();
 			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
-			return;
+			return true;
 		}
 
 
@@ -285,13 +297,13 @@ static void buttonSelectCB(void *inst,void *ud)
 			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
 			fud->app->CTK_clearScreen();
 			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
-			return;
+			return true;
 		}
 
 	if(strcmp(bc->label," Done ")==0)
 		{
 			fud->app->runEventLoop=false;
-			return;
+			return true;
 		}
 
 	if(strcmp(bc->label,"CANCEL")==0)
@@ -312,7 +324,7 @@ static void buttonSelectCB(void *inst,void *ud)
 /**
 * Private internal callback
 */
-void checkSelectCB(void *inst,void *ud)
+bool checkSelectCB(void *inst,void *ud)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
@@ -324,8 +336,9 @@ void checkSelectCB(void *inst,void *ud)
 		{
 			fud->chooserGadget->CTK_setShowHidden(cb->CTK_getValue());
 			fud->chooserGadget->CTK_updateList();
-			return;
+			return true;
 		}
+return true;
 }
 
 /**
@@ -534,9 +547,165 @@ void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,
 	CTK_freeAndNull(&folder);
 }
 
+entryStruct CTK_cursesUtilsClass::entryData;
+
+/**
+* Private internal callback for entry.
+*/
+static bool buttonSelectEntryCB(void *inst,void *button)
+{
+	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
+	CTK_cursesUtilsClass::entryData.buttonnum=(int)(long)(void*)button;
+	if(button==(void*)CUENTRYOK)
+		{
+			fprintf(stderr,">>YES<<\n");
+		}
+	else
+		{
+			fprintf(stderr,">>CANCEL<<\n");
+		}
+
+//	bc->mc->CTK_removePage(bc->mc->pageNumber);
+bc->mc->runEventLoop=false;
+	return true;
+}
+
 /**
 * Get user entry convenience dialog.
 */
+bool CTK_cursesUtilsClass::CTK_entryDialog_New(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth)
+{
+	int						genx;
+	CTK_cursesButtonClass	*button;
+	coloursStruct			cs;
+	cs.fancyGadgets=true;
+
+	CTK_mainAppClass		*app=new CTK_mainAppClass;
+
+	app->CTK_setColours(cs);
+	app->CTK_addPage();
+	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,-1);
+	CURRENTPAGE(app).fancyWindow=true;
+
+	if(hascancel==false)
+		{
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,11,0);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"   OK  ");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYOK);
+		}
+	else
+		{
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,0);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"  OK  ");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYOK);
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,1);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"Cancel");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYCANCEL);
+		}
+	//button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
+	SETHIDECURS;
+	app->CTK_mainEventLoop_New(0,true);
+	fprintf(stderr,">>>>>>>>>>%i\n",this->entryData.buttonnum);
+	//SETSHOWCURS;
+return(true);
+	return(false);
+}
+
+/**
+* Get user entry convenience dialog.
+*/
+#if 1
+bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth)
+{
+	int						genx;
+	CTK_cursesButtonClass	*button;
+	coloursStruct			cs;
+//	cs.windowBackCol=BACK_WHITE;
+	cs.fancyGadgets=true;
+
+	app->CTK_setColours(cs);
+	app->CTK_addPage();
+	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,-1);
+	CURRENTPAGE(app).fancyWindow=true;
+
+	if(hascancel==false)
+		{
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,11,0);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"   OK  ");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYOK);
+		}
+	else
+		{
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,0);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"   OK  ");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYOK);
+			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,1);
+			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"Cancel ");
+			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)CUENTRYCANCEL);
+		}
+	//button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
+	SETHIDECURS;
+	app->CTK_mainEventLoop_New(0,true);
+	fprintf(stderr,">>>>>>>>>>%i\n",this->entryData.buttonnum);
+	//SETSHOWCURS;
+return(true);
+#if 0
+	fileUDStruct		*fud=new fileUDStruct;
+	coloursStruct		cs;
+	CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
+	int					maxbtns=1;
+	int					btnnum=0;
+	int					sy=(selectapp->maxRows/2)-6+2;
+
+	fud->app=selectapp;
+	fud->inst=this;
+	fud->isValid=false;
+	fud->isOpenDialog=false;
+
+	cs.windowBackCol=BACK_WHITE;
+	cs.textBoxType=OUTBOX;
+	cs.fancyGadgets=true;
+	selectapp->CTK_setColours(cs);
+
+	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,sy,dialogwidth+1,10,name,title);
+	cs.labelBoxType=NOBOX;	
+	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),sy+1,dialogwidth,5,bodytxt);
+	fud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
+	fud->labelGadget->CTK_setColours(cs);
+
+	fud->inputGadget=selectapp->CTK_addNewInput((selectapp->maxCols/2)-(dialogwidth/2)+1,sy+7,dialogwidth-2,1,defaulttxt);
+
+	if(hascancel==true)
+		maxbtns=2;
+
+	cs.foreCol=FORE_WHITE;
+	cs.backCol=BACK_BLUE;
+	fud->btnOK=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum++),sy+9,6,1,"  OK  ");
+	fud->btnOK->CTK_setColours(cs);
+	if(hascancel==true)
+		{
+			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,10,btnnum),sy+9,6,1,"CANCEL");
+			fud->btnCancel->CTK_setColours(cs);
+			fud->btnCancel->CTK_setSelectCB(buttonSelectCB,fud);
+		}
+	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
+
+	selectapp->CTK_updateScreen(selectapp,SCREENUPDATEBASIC);
+	selectapp->CTK_setDefaultGadget(fud->inputGadget,false);
+
+	fud->inputGadget->CTK_doInput();
+	selectapp->CTK_mainEventLoop(0,false);
+	app->CTK_clearScreen();
+	this->intResult=fud->buttonPressed;
+	this->stringResult=fud->inputGadget->CTK_getText();
+
+	if(fud->buttonPressed==CANCELBUTTON)
+		return(false);
+	else
+		return(true);
+#endif
+}
+#else
 bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *name,const char *title,bool hascancel,int dialogwidth)
 {
 	fileUDStruct		*fud=new fileUDStruct;
@@ -593,6 +762,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(CTK_mainAppClass *app,const char *bod
 	else
 		return(true);
 }
+#endif
 
 /**
 * User notification convenience dialog.

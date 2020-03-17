@@ -642,8 +642,6 @@ HAVE_DOXYGEN_TRUE
 DOXYGEN
 SOURCEHILITE_LIBS
 SOURCEHILITE_CFLAGS
-TERMKEY_LIBS
-TERMKEY_CFLAGS
 NCURSES_LIBS
 NCURSES_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -805,8 +803,6 @@ PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
 NCURSES_CFLAGS
 NCURSES_LIBS
-TERMKEY_CFLAGS
-TERMKEY_LIBS
 SOURCEHILITE_CFLAGS
 SOURCEHILITE_LIBS
 IMAGEMAGICK_CFLAGS
@@ -1477,10 +1473,6 @@ Some influential environment variables:
               C compiler flags for NCURSES, overriding pkg-config
   NCURSES_LIBS
               linker flags for NCURSES, overriding pkg-config
-  TERMKEY_CFLAGS
-              C compiler flags for TERMKEY, overriding pkg-config
-  TERMKEY_LIBS
-              linker flags for TERMKEY, overriding pkg-config
   SOURCEHILITE_CFLAGS
               C compiler flags for SOURCEHILITE, overriding pkg-config
   SOURCEHILITE_LIBS
@@ -15949,101 +15941,6 @@ See \`config.log' for more details" "$LINENO" 5; }
 else
 	NCURSES_CFLAGS=$pkg_cv_NCURSES_CFLAGS
 	NCURSES_LIBS=$pkg_cv_NCURSES_LIBS
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-fi
-
-
-
-TERMKEY_MODULES="termkey >= 0.2"
-
-pkg_failed=no
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $TERMKEY_MODULES" >&5
-$as_echo_n "checking for $TERMKEY_MODULES... " >&6; }
-
-if test -n "$TERMKEY_CFLAGS"; then
-    pkg_cv_TERMKEY_CFLAGS="$TERMKEY_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$TERMKEY_MODULES\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "$TERMKEY_MODULES") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TERMKEY_CFLAGS=`$PKG_CONFIG --cflags "$TERMKEY_MODULES" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$TERMKEY_LIBS"; then
-    pkg_cv_TERMKEY_LIBS="$TERMKEY_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\$TERMKEY_MODULES\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "$TERMKEY_MODULES") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_TERMKEY_LIBS=`$PKG_CONFIG --libs "$TERMKEY_MODULES" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        TERMKEY_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "$TERMKEY_MODULES" 2>&1`
-        else
-	        TERMKEY_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "$TERMKEY_MODULES" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$TERMKEY_PKG_ERRORS" >&5
-
-	as_fn_error $? "Package requirements ($TERMKEY_MODULES) were not met:
-
-$TERMKEY_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables TERMKEY_CFLAGS
-and TERMKEY_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details." "$LINENO" 5
-elif test $pkg_failed = untried; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables TERMKEY_CFLAGS
-and TERMKEY_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details" "$LINENO" 5; }
-else
-	TERMKEY_CFLAGS=$pkg_cv_TERMKEY_CFLAGS
-	TERMKEY_LIBS=$pkg_cv_TERMKEY_LIBS
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 

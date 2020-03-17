@@ -40,31 +40,31 @@ class CTK_cursesGadgetClass
 
 		bool					gadgetDirty=false;
 		bool					hiLited=false;
+		CTK_mainAppClass		*mc=NULL;
 
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);
 		void					*CTK_getCBUserData(void);
-		void					(*selectCB)(void *,void *)=NULL;
+		bool					(*selectCB)(void *,void *)=NULL;
 		void					CTK_setSelectDeselects(bool deselect);
 		bool					CTK_getSelectDeselects(void);
 		void					CTK_setEnabled(bool enable);
 		bool					CTK_getEnabled(void);
 		void					CTK_setSelectable(bool enable);
 		bool					CTK_getSelectable(void);
-		void					CTK_setSelectKey(TermKeySym key);
-		TermKeySym				CTK_getSelectKey(void);
+		void					CTK_setSelectKey(int key);
+		int						CTK_getSelectKey(void);
 
 //virtual functions
 		virtual void			CTK_setColours(coloursStruct cs);
 		virtual void			CTK_drawGadget(bool hilite=false);
-		virtual void			CTK_setSelectCB(void (*select)(void *,void *),void *userdata=NULL);
+		virtual void			CTK_setSelectCB(bool (*select)(void *,void *),void *userdata=NULL);
 
 	protected:
 		int						sx=1;
 		int						sy=1;
 		int						wid=1;
 		int						hite=1;
-		CTK_mainAppClass		*mc=NULL;
 		void					*selectCBUserData=NULL;
 		gadgetType				type=BASEGADGET;
 		coloursStruct			colours;
@@ -72,7 +72,7 @@ class CTK_cursesGadgetClass
 		bool					isSelectable=true;
 		bool					selectDeselects=true;
 		bool					enabled=true;
-		TermKeySym				selectKey=TERMKEY_SYM_NONE;
+		int						selectKey=CTK_KEY_NONE;
 	private:	
 };
 

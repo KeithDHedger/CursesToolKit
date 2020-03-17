@@ -29,22 +29,21 @@ class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 		CTK_cursesFBImageClass(CTK_mainAppClass *mc);
 		~CTK_cursesFBImageClass();
 
-		void	CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
-		void	CTK_drawGadget(bool hilite=false);
+		void		CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
+		void		CTK_drawGadget(bool hilite=false);
 
-		int		sx=0;
-		int		sy=0;
-		int		wid=-1;
-		int		hite=-1;//TODO//
-		const char				*hiliteColour="cyan";
+		int			sx=0;
+		int			sy=0;
+		int			wid=-1;
+		int			hite=-1;//TODO//
+		const char	*hiliteColour="cyan";
 
 	private:
-		void				drawFBImage(bool hilite);
-		void				*image=NULL;
-		void				*blob=NULL;
-		void				*blobHilite=NULL;
-		int					hiliteWidth=4;
+		void		drawFBImage(bool hilite);
+		void		*image=NULL;
+		void		*blob=NULL;
+		void		*blobHilite=NULL;
+		int			hiliteWidth=4;
 };
-
 
 #endif

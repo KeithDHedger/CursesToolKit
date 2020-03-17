@@ -7,7 +7,7 @@
 #Run eg:
 #(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs termkey Magick++ ) -lcursestoolkit "$0" -o fbimageexample ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ) -lcursestoolkit "$0" -o fbimageexample ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimageexample "$@"
 retval=$?
 rm fbimageexample

@@ -49,7 +49,7 @@ CTK_cursesChooserClass::CTK_cursesChooserClass(CTK_mainAppClass *mc,int x,int y,
 /**
 * Private internal callback.
 */
-static void chooserSelectCB(void *inst,void *ud)
+static bool chooserSelectCB(void *inst,void *ud)
 {
 	char						*buffer=(char*)alloca(PATH_MAX);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
