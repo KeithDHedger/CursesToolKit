@@ -24,6 +24,8 @@
 enum gadgetType {BASEGADGET=0,BUTTONGADGET,CHECKGADGET,CHOOSERGADGET,DROPGADGET,EDITGADGET,IMAGEGADGET,INPUTGADGET,LABELGADGET,LISTGADGET,MENUGADGET,SRCGADGET,TEXTGADGET,OSKEYBOARD};
 
 class CTK_mainAppClass;
+class CTK_cursesInputClass;
+
 /**
  *
  * \brief Base class for CTK_curses gadgets.
@@ -31,7 +33,6 @@ class CTK_mainAppClass;
  * Base class for CTK_curses gadgets.
  *
  */
-
 class CTK_cursesGadgetClass
 {
 	public:
@@ -41,6 +42,7 @@ class CTK_cursesGadgetClass
 		bool					gadgetDirty=false;
 		bool					hiLited=false;
 		CTK_mainAppClass		*mc=NULL;
+		void					*userData=NULL;
 
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);

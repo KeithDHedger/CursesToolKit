@@ -31,11 +31,10 @@
 #define QUERYBOXWIDTH 60
 #define ENTRYWIDTH 40
 
-enum {CUENTRYOK=5000,CUENTRYCANCEL};
+enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO};
 
 class CTK_mainAppClass;
-
-enum  varType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
+class CTK_cursesInputClass;
 
 struct varsStruct
 {
@@ -46,10 +45,15 @@ struct varsStruct
 	std::string	charVar="";	
 };
 
-struct entryStruct
+struct utilDialogStruct
 {
-	int		buttonnum=CUENTRYCANCEL;
-	bool	valid=false;
+	CTK_mainAppClass		*mc;
+	CTK_cursesInputClass	*input;
+	bool					boolValue=false;
+	int						intValue=-1;
+	std::string				stringValue="";
+	bool					isValidData=false;
+	utilVarType				varType=BADTYPE;
 };
 
 class CTK_cursesUtilsClass
@@ -59,12 +63,15 @@ class CTK_cursesUtilsClass
 		CTK_cursesUtilsClass(CTK_mainAppClass *mc);
 		~CTK_cursesUtilsClass();
 
+////////////////
+		utilDialogStruct			dialogReturnData;
+
+
 		std::string					stringResult="";
 		int							intResult=0;
 		bool						boolResult=false;
 		bool						isValidFile=false;
 		std::string					inFolder=".";
-		static entryStruct			entryData;
 
 		std::vector<std::string>	CTK_explodeWidth(const std::string str,const char termchar,int width,int tabwidth,int offset,bool incdelim);
 
@@ -75,14 +82,13 @@ class CTK_cursesUtilsClass
 		void						CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir);
 
 
+//////////////
+		bool						CTK_entryDialog(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
+		bool						CTK_queryDialog(const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
+		void						CTK_aboutDialog(const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 
-		bool						CTK_entryDialog_New(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
-		bool						CTK_entryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
 
-
-
-		int							CTK_queryDialog(CTK_mainAppClass *app,const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
-		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
+//		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 
 		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);

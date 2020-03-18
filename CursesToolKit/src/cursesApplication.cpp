@@ -789,13 +789,18 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 * \note runcnt=0 Default, run main loop continously.
 * \note runcnt>0 run main loop runcnt times.
 */
-int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
+int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehilited)
 {
 	if(docls==true)
 		{
 			this->CTK_clearScreen();
-			this->resetAllGadgets();
-			this->pages[this->pageNumber].currentGadget=-1;
+			if(leavehilited==false)
+				{
+					this->resetAllGadgets();
+					this->pages[this->pageNumber].currentGadget=-1;
+				}
+			else
+				this->drawAllGadgets();
 		}
 
 	this->runEventLoop=true;
@@ -942,7 +947,6 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls)
 						{
 							if((CURRENTGADGET->CTK_getSelectKey()==this->readKey->inputBuffer.c_str()[0]) && (this->readKey->inputBuffer.length()==1))
 								{
-									fprintf(stderr,"CURRENTGADGET->selectKey\n");
 									this->activateGadget();
 								}
 							fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
@@ -1519,6 +1523,7 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
 					gadget->hiLited=true;
+					gadget->CTK_drawGadget(true);
 					return;
 				}
 		}

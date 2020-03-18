@@ -66,7 +66,6 @@ void CTK_cursesTextBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	bool						flag=true;
 	char						*txtbuffer;
 
-fprintf(stderr,"reset=%i\n",reset);
 	this->gadgetDirty=true;
 	this->txtStrings.clear();
 	if(isfilename==false)

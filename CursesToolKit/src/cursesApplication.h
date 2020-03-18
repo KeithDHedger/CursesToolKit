@@ -101,7 +101,7 @@ class CTK_mainAppClass
 
 		static void								CTK_updateScreen(void *object,void* userdata);
 //////////////////
-		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true);
+		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true,bool leavehilited=false);
 		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
 //////////////////
 		void									CTK_emptyIPBuffer(void);

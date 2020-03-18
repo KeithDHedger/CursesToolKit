@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	mainApp=new CTK_mainAppClass();
 	cu=new CTK_cursesUtilsClass();
 
-	cu->CTK_aboutDialog(mainApp,argv[INFOAPPNAME],argv[INFOAPPINFO],argv[INFOCOPYRITE],argv[INFOEMAIL],argv[INFOWEBSITE],argv[INFOCREDITS],argv[INFOLICENCE]);
+	cu->CTK_aboutDialog(argv[INFOAPPNAME],argv[INFOAPPINFO],argv[INFOCOPYRITE],argv[INFOEMAIL],argv[INFOWEBSITE],argv[INFOCREDITS],argv[INFOLICENCE]);
 
 	SETSHOWCURS;
 	delete mainApp;

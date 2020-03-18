@@ -28,7 +28,7 @@ echo "done compiling ..."
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
 retval=$?
 rm $name
-reset
+#reset
 exit $retval
 
 #endif
@@ -61,7 +61,7 @@ int						b2Cnt=0;
 #define CHECK1 5000
 #define CHECK2 5001
 
-void menuselctCB(void *inst,void *userdata)
+bool menuselctCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
@@ -95,7 +95,7 @@ void mainloopCBOut(void *mainc,void *data)
 {
 }
 
-void buttonselctCB(void *inst,void *userdata)
+bool buttonselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
@@ -125,7 +125,7 @@ void buttonselctCB(void *inst,void *userdata)
 		}
 }
 
-void listselctCB(void *inst,void *userdata)
+bool listselctCB(void *inst,void *userdata)
 {
 	char						*buffer=(char*)alloca(256);
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
@@ -149,7 +149,7 @@ void listselctCB(void *inst,void *userdata)
 	resulttextbox->CTK_updateText(buffer);
 }
 
-void checkselctCB(void *inst,void *userdata)
+bool checkselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
@@ -169,7 +169,7 @@ void checkselctCB(void *inst,void *userdata)
 	resultbuttonstextbox->CTK_updateText(buffer);
 }
 
-void dropboxCB(void *inst,void *userdata)
+bool dropboxCB(void *inst,void *userdata)
 {
 	char				*buffer=(char*)alloca(256);
 	CTK_cursesDropClass	*db=static_cast<CTK_cursesDropClass*>(inst);

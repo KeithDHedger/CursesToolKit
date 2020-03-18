@@ -52,6 +52,8 @@ struct fbData
 	int							screenHeight=1;
 };
 
+enum  utilVarType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
+
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
 #include "cursesUtils.h"
@@ -79,7 +81,6 @@ struct fbData
  *
  * \brief CTK globals.
  */
-
 #define SCREENUPDATEALL (void*)1
 #define SCREENUPDATEWINDOW (void*)2
 #define SCREENUPDATEUNHILITE (void*)3
