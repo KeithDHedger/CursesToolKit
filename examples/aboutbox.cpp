@@ -14,7 +14,7 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-enum {INFOAPPNAME=1,INFOAPPINFO,INFOCOPYRITE,INFOEMAIL,INFOWEBSITE,INFOCREDITS,INFOLICENCE};
+enum {INFOAPPNAME=1,INFOAPPINFO,INFOCOPYRITE,INFOEMAIL,INFOWEBSITE,INFOCREDITS,INFOLICENCE,DIALOGWIDTH};
 
 int main(int argc, char **argv)
 {
@@ -23,14 +23,14 @@ int main(int argc, char **argv)
 
 	if(argc<8)
 		{
-			printf("USAGE:\naboutbox \"App name\" \"App info\" \"Copyright\" \"Email\" \"Website\" \"Credits\" \"Licence File\".\n");
+			printf("USAGE:\naboutbox \"App name\" \"App info\" \"Copyright\" \"Email\" \"Website\" \"Credits\" \"Licence File\" Width.\n");
 			exit(1);
 		}
 
 	mainApp=new CTK_mainAppClass();
 	cu=new CTK_cursesUtilsClass();
 
-	cu->CTK_aboutDialog(argv[INFOAPPNAME],argv[INFOAPPINFO],argv[INFOCOPYRITE],argv[INFOEMAIL],argv[INFOWEBSITE],argv[INFOCREDITS],argv[INFOLICENCE]);
+	cu->CTK_aboutDialog(argv[INFOAPPNAME],argv[INFOAPPINFO],argv[INFOCOPYRITE],argv[INFOEMAIL],argv[INFOWEBSITE],argv[INFOCREDITS],argv[INFOLICENCE],atoi(argv[DIALOGWIDTH]));
 
 	SETSHOWCURS;
 	delete mainApp;

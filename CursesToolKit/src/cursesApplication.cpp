@@ -1324,6 +1324,25 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
+
+//	THISPAGE.currentGadget=-1;
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
+	if((pagenum>=0) && (pagenum<this->pages.size()))
+		this->pageNumber=pagenum;
+	this->CTK_clearScreen();
+//	THISPAGE.currentGadget=-1;
+//	THISPAGE.ignoreFirstTab=false;
+//	THISPAGE.retainHighliting=false;
+//	this->resetAllGadgets();
+	this->drawAllGadgets();
+	return;
+
+
+
 	printf("%s",this->clearScreenCode.c_str());
 
 	if(this->menuBar!=NULL)
@@ -1520,6 +1539,8 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 		{
 			if(this->pages[this->pageNumber].gadgets[j]==gadget)
 				{
+					THISPAGE.retainHighliting=true;
+					THISPAGE.ignoreFirstTab=false;
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
 					gadget->hiLited=true;

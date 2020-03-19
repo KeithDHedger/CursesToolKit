@@ -578,6 +578,24 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 				ud->varType=INTVAR;
 				ud->stringValue="";
 				break;
+//about box
+			case CUABOUTCLOSE:
+				break;
+			case CUABOUTCREDITS:
+				ud->mc->CTK_setPage(1);
+				ud->mc->CTK_setDefaultGadget(CURRENTPAGE(ud->mc).gadgets[1]);
+				return(true);
+				break;
+			case CUABOUTLICENCE:
+				ud->mc->CTK_setPage(2);
+				ud->mc->CTK_setDefaultGadget(CURRENTPAGE(ud->mc).gadgets[1]);
+				return(true);
+				break;
+			case CUABOUTDONE:
+				ud->mc->CTK_setPage(0);
+				ud->mc->CTK_setDefaultGadget(ud->defaultGadget);
+				return(true);
+				break;
 		}
 
 	ud->mc->runEventLoop=false;
@@ -729,12 +747,12 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	coloursStruct			cs;
 	CTK_mainAppClass		*app=new CTK_mainAppClass;
 	CTK_cursesLabelClass	*label;
+	CTK_cursesTextBoxClass	*textbox;
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
 	app->CTK_setColours(cs);
-	app->CTK_addPage();
-	app->CTK_setDialogWindow("About ...","",dialogwidth,-1);
+	app->CTK_setDialogWindow("About ...","",ABOUTWIDTH,ABOUTHITE);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
 	this->dialogReturnData.mc=app;
@@ -743,99 +761,74 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	geny=CURRENTPAGE(app).boxY+1;
 	genw=CURRENTPAGE(app).boxW-3;
 
-//	label=app->CTK_addNewLabel(genx,geny,genw,4,bodytxt);
-//	label->CTK_setJustify(CENTREJUSTIFY);
-//
-//	geny=CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3;
-//	this->dialogReturnData.input=app->CTK_addNewInput(CURRENTPAGE(app).boxX+2,geny,CURRENTPAGE(app).boxW-3,1,defaulttxt);
-//	this->dialogReturnData.input->redrawAppWindow=false;
+//page 0 main
+	label=app->CTK_addNewLabel(genx,geny,genw,4,appname);
+	label->CTK_setJustify(CENTREJUSTIFY);
+	geny+=2;
+	label=app->CTK_addNewLabel(genx,geny,genw,4,appinfo);
+	label->CTK_setJustify(CENTREJUSTIFY);
+	geny++;
+	label=app->CTK_addNewLabel(genx,geny,genw,4,copyright);
+	label->CTK_setJustify(CENTREJUSTIFY);
+	geny++;
+	label=app->CTK_addNewLabel(genx,geny,genw,4,email);
+	label->CTK_setJustify(CENTREJUSTIFY);
+	geny++;
+	label=app->CTK_addNewLabel(genx,geny,genw,4,website);
+	label->CTK_setJustify(CENTREJUSTIFY);
 
-	if(hascancel==false)
-		{
-			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,11,0);
-			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"   OK  ");
-			button->userData=(void*)CUENTRYOK;
-			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
-		}
-	else
-		{
-			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,0);
-			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"  OK  ");
-			button->userData=(void*)CUENTRYOK;
-			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
-			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,2,11,1);
-			button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"Cancel");
-			button->userData=(void*)CUENTRYCANCEL;
-			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
-		}
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,3,11,0);
+	this->dialogReturnData.defaultGadget=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1," Close ");
+	this->dialogReturnData.defaultGadget->userData=(void*)CUABOUTCLOSE;
+	this->dialogReturnData.defaultGadget->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 
-	app->CTK_setDefaultGadget(this->dialogReturnData.input);
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,3,11,1);
+	button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"Credits");
+	button->userData=(void*)CUABOUTCREDITS;
+	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,3,11,2);
+	button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,11,1,"Licence");
+	button->userData=(void*)CUABOUTLICENCE;
+	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+//page 1 credits
+	cs.labelBoxType=INBOX;
+	app->CTK_setColours(cs);
+	app->CTK_addPage();
+	app->CTK_setDialogWindow("Credits ...","",dialogwidth,-1);
+	CURRENTPAGE(app).fancyWindow=true;
+	genx=CURRENTPAGE(app).boxX+2;
+	geny=CURRENTPAGE(app).boxY+2;
+	genw=CURRENTPAGE(app).boxW-3;
+	label=app->CTK_addNewLabel(genx,geny,genw,CURRENTPAGE(app).boxH-4,credits);
+	label->CTK_setJustify(CENTREJUSTIFY);
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,8,0);
+	button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,8,1,"Done");
+	button->userData=(void*)CUABOUTDONE;
+	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+
+//page 2 licence
+	cs.textBoxType=INBOX;
+	app->CTK_setColours(cs);
+	app->CTK_addPage();
+	app->CTK_setDialogWindow("Licence ...","",dialogwidth,-1);
+	CURRENTPAGE(app).fancyWindow=true;
+	genx=CURRENTPAGE(app).boxX+2;
+	geny=CURRENTPAGE(app).boxY+2;
+	genw=CURRENTPAGE(app).boxW-3;
+	textbox=app->CTK_addNewTextBox(genx,geny,genw,CURRENTPAGE(app).boxH-4,true,licence,true);
+	
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,8,0);
+	button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,8,1,"Done");
+	button->userData=(void*)CUABOUTDONE;
+	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+
+	app->CTK_setPage(0);
+	app->CTK_setDefaultGadget(this->dialogReturnData.defaultGadget);
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop_New(0,true,true);
-	return(this->dialogReturnData.isValidData);
 }
-
-#if 0
-void CTK_cursesUtilsClass::CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth)
-{
-	char				*aboutbuffer;
-	fileUDStruct		*fud=new fileUDStruct;
-	CTK_mainAppClass	*selectapp;
-	coloursStruct		cs;
-	int					btnnum=0;
-	int					maxbtns=1;
-
-	fud->inst=this;
-	fud->credits=credits;
-	fud->licenceFilename=licence;
-
-	selectapp=new CTK_mainAppClass();
-	fud->app=selectapp;
-	cs.windowBackCol=BACK_WHITE;
-	cs.textBoxType=OUTBOX;
-	cs.labelBoxType=NOBOX;
-	cs.fancyGadgets=true;
-	selectapp->CTK_setColours(cs);
-
-	selectapp->CTK_appWindow((selectapp->maxCols/2)-(dialogwidth/2)-1,(selectapp->maxRows/2)-6,dialogwidth+1,ABOUTHITE,"About ...",NULL);
-	//fud->app=selectapp;
-
-//body
-	asprintf(&aboutbuffer,"%s\n\n%s\n%s\n%s\n%s\n",appname,appinfo,copyright,email,website);
-	fud->labelGadget=selectapp->CTK_addNewLabel((selectapp->maxCols/2)-(dialogwidth/2),(selectapp->maxRows/2)-5,dialogwidth,6,aboutbuffer);
-	fud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
-
-	if(credits!=NULL)
-		maxbtns++;
-	if(licence!=NULL)
-		maxbtns++;
-
-	fud->btnOK=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum++),(selectapp->maxRows/2)+2,6,1," Close ");//btnok
-	fud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)fud);
-
-	if(credits!=NULL)
-		{
-			fud->btnNo=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum),(selectapp->maxRows/2)+2,6,1,"Credits");//buttonno
-			fud->btnNo->CTK_setSelectCB(buttonSelectCB,(void*)fud);
-			btnnum++;
-		}
-
-	if(licence!=NULL)
-		{
-			fud->btnCancel=selectapp->CTK_addNewButton(CTK_getGadgetPosX((selectapp->maxCols/2)-(dialogwidth/2),dialogwidth,maxbtns,11,btnnum),(selectapp->maxRows/2)+2,6,1,"Licence");//buttoncancel
-			fud->btnCancel->CTK_setSelectCB(buttonSelectCB,(void*)fud);
-		}
-
-	
-//selectapp->CTK_addPage();
-
-	selectapp->CTK_setDefaultGadget(fud->btnOK);
-	selectapp->CTK_mainEventLoop();
-	app->CTK_clearScreen();
-	free(aboutbuffer);
-}
-#endif
 
 /**
 * Calulate X position for gadget given total width, gadget width, gadget count and gadget number.

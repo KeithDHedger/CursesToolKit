@@ -31,10 +31,11 @@
 #define QUERYBOXWIDTH 60
 #define ENTRYWIDTH 40
 
-enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO};
+enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO,CUABOUTCLOSE,CUABOUTCREDITS,CUABOUTLICENCE,CUABOUTDONE};
 
 class CTK_mainAppClass;
 class CTK_cursesInputClass;
+class CTK_cursesGadgetClass;
 
 struct varsStruct
 {
@@ -49,6 +50,7 @@ struct utilDialogStruct
 {
 	CTK_mainAppClass		*mc;
 	CTK_cursesInputClass	*input;
+	CTK_cursesGadgetClass	*defaultGadget=NULL;
 	bool					boolValue=false;
 	int						intValue=-1;
 	std::string				stringValue="";
@@ -88,7 +90,6 @@ class CTK_cursesUtilsClass
 		void						CTK_aboutDialog(const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 
 
-//		void						CTK_aboutDialog(CTK_mainAppClass *app,const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 
 		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);

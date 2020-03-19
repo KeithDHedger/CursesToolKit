@@ -1,4 +1,5 @@
 2.0.0
+Fixed setting default gadget from call back.
 Removed all references for termkey.
 Fixed switching pages whilst editing test/src box.
 Redone Edit/Source box events.
