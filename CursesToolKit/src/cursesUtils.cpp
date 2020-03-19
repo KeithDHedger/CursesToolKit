@@ -211,7 +211,7 @@ return true;
 */
 static bool fileSelectCB(void *inst,void *ud)
 {
-
+return true;
 	char					*buffer=(char*)alloca(PATH_MAX);
 	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
 	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
@@ -526,7 +526,6 @@ void CTK_cursesUtilsClass::CTK_selectFolder(CTK_mainAppClass *app,const char *wn
 	CTK_freeAndNull(&folder);
 }
 
-
 /**
 * Open file convenience dialog.
 */
@@ -603,6 +602,60 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 }
 
 /**
+* Open file convenience dialog.
+*/
+bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool open,const char *filename,const char *filetypes)
+{
+
+	int						genx,geny,genw,genh;
+	CTK_cursesButtonClass	*button;
+	coloursStruct			cs;
+	CTK_mainAppClass		*app=new CTK_mainAppClass;
+	CTK_cursesLabelClass	*label;
+	CTK_cursesChooserClass	*chooser;
+	char					*folder;
+
+	cs.fancyGadgets=true;
+	cs.labelBoxType=NOBOX;
+	app->CTK_setColours(cs);
+	app->CTK_setDialogWindow("Open file ...","",-1,-1);
+	CURRENTPAGE(app).fancyWindow=true;
+	this->dialogReturnData.isValidData=false;
+	this->dialogReturnData.mc=app;
+
+	if(startdir==NULL)
+		{
+			folder=get_current_dir_name();
+			this->inFolder=folder;
+		}
+	else
+		this->inFolder=startdir;	
+
+	genx=CURRENTPAGE(app).boxX+2;
+	geny=CURRENTPAGE(app).boxY+2;
+	genw=CURRENTPAGE(app).boxW-3;
+	genh=CURRENTPAGE(app).boxH-6;
+
+	chooser=new CTK_cursesChooserClass(app,genx,geny,genw,genh);
+	chooser->CTK_setShowTypes(ANYTYPE);
+	chooser->CTK_setShowFileTypes(filetypes);
+	chooser->CTK_setShowHidden(false);
+	chooser->CTK_selectFolder(app,this->inFolder.c_str());
+	app->CTK_addChooserBox(chooser);
+	chooser->CTK_setSelectCB(fileSelectCB,NULL);
+
+	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,1,9,0);
+	button=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,9,1,"CLOSE");
+	button->userData=(void*)CUABOUTCLOSE;
+	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+
+	SETHIDECURS;
+	app->CTK_mainEventLoop_New(0,true,true);
+	return(this->dialogReturnData.isValidData);
+}
+
+
+/**
 * Get user entry convenience dialog.
 */
 bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth)
@@ -616,7 +669,6 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
 	app->CTK_setColours(cs);
-	app->CTK_addPage();
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,9);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -676,7 +728,6 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
 	app->CTK_setColours(cs);
-	app->CTK_addPage();
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,7);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;

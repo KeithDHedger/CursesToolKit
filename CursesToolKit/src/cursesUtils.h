@@ -89,6 +89,8 @@ class CTK_cursesUtilsClass
 		bool						CTK_queryDialog(const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
 		void						CTK_aboutDialog(const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
 
+		bool						CTK_fileChooserDialog(const char *startdir,bool open=true,const char *filename="",const char *filetypes=NULL);
+//////////////
 
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 

@@ -1,4 +1,7 @@
 2.0.0
+Finished about dialog.
+Finished entry dialog.
+Finished query dialog.
 Fixed setting default gadget from call back.
 Removed all references for termkey.
 Fixed switching pages whilst editing test/src box.
