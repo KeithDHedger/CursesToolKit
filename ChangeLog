@@ -1,4 +1,5 @@
 2.0.0
+Fixed leaks in dialogs.
 Fixed skiping disabled buttons.
 Fixed pageup/down in lists.
 Finished about dialog.

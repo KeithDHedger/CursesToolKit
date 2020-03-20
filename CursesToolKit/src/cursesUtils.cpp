@@ -730,6 +730,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop_New(0,true,true);
+	delete app;
 	return(this->dialogReturnData.isValidData);
 }
 
