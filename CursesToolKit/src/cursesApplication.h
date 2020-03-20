@@ -64,9 +64,7 @@ class CTK_mainAppClass
 		int										CTK_nextPage(void);
 		void									CTK_setPageUserData(int pagenum,void *userdata);
 		void									CTK_appWindow(int x,int y,int w,int h,const char *windowname,const char *title);
-//////////
 		void									CTK_setDialogWindow(const char *windowname,const char *dialogname,int dialogwidth=-1,int dialoghite=-1);
-//////////////////
 		void									CTK_setTabWidth(int width);
 
 		void									(*eventLoopCBIn)(void*,void*)=NULL;
@@ -100,10 +98,7 @@ class CTK_mainAppClass
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);
 
 		static void								CTK_updateScreen(void *object,void* userdata);
-//////////////////
-		int										CTK_mainEventLoop_New(int runcnt=0,bool docls=true,bool leavehilited=false);
-		int										CTK_mainEventLoop(int runcnt=0,bool docls=true);
-//////////////////
+		int										CTK_mainEventLoop(int runcnt=0,bool docls=true,bool leavehilited=false);
 		void									CTK_emptyIPBuffer(void);
 		void									CTK_setSelectKey(int key);
 

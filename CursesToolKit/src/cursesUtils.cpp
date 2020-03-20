@@ -416,7 +416,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 
 	SETHIDECURS;
-	app->CTK_mainEventLoop_New(0,true,true);
+	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
@@ -473,7 +473,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 	app->CTK_setDefaultGadget(this->dialogReturnData.input);
 
 	SETHIDECURS;
-	app->CTK_mainEventLoop_New(0,true,true);
+	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
@@ -521,7 +521,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	if((buttons&YESBUTTON)==YESBUTTON)
 		{
 			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,maxbtns,10,btnnum);
-			button=app->CTK_addNewButton(genx,geny,10,1,"  OK  ");
+			button=app->CTK_addNewButton(genx,geny,10,1," Yes  ");
 			button->userData=(void*)CUQUERYOK;
 			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			defhold=button;
@@ -551,7 +551,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	app->CTK_setDefaultGadget(defhold);
 
 	SETHIDECURS;
-	app->CTK_mainEventLoop_New(0,true,true);
+	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
@@ -646,7 +646,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	app->CTK_setDefaultGadget(this->dialogReturnData.defaultGadget);
 
 	SETHIDECURS;
-	app->CTK_mainEventLoop_New(0,true,true);
+	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 }
 

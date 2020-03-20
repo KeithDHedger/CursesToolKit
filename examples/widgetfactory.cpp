@@ -522,7 +522,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
 	//mainApp->CTK_mainEventLoop();
-	mainApp->CTK_mainEventLoop_New();
+	mainApp->CTK_mainEventLoop();
 	SETSHOWCURS;
 
 	delete mainApp;

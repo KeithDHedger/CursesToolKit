@@ -789,7 +789,7 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 * \note runcnt=0 Default, run main loop continously.
 * \note runcnt>0 run main loop runcnt times.
 */
-int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehilited)
+int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 {
 	if(docls==true)
 		{
@@ -954,18 +954,6 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 				}
 		}
 	return 0;
-}
-
-/**
-* Main event loop.
-* \note Handles highlighting selecting etc etc.
-* \note runcnt<0 Wait upto abs(runcnt) ms for a keypress, run 1 main loop if timeout.
-* \note runcnt=0 Default, run main loop continously.
-* \note runcnt>0 run main loop runcnt times.
-*/
-int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
-{
-	return(this->CTK_mainEventLoop_New(runcnt,docls));
 }
 
 /**
