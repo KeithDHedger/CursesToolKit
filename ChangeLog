@@ -1,6 +1,6 @@
 2.0.0
 Cleaned examples.
-Removed redndant basic example.
+Removed redundant basic example.
 Code clean.
 Finished open/save file/folder dialogs.
 Fixed leaks in dialogs.
