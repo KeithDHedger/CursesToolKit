@@ -492,7 +492,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 					if(this->mc->readKey->isControlKey==true)
 						{
 //check menu ctrl keys
-							fprintf(stderr,"Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
+							//fprintf(stderr,"Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
 							if((this->mc->menuBar!=NULL) && (this->mc->menuBar->enableShortcuts==true) && (this->mc->menuBar->CTK_getMenuBarEnable()==true))
 								{
 									int	pagenum=this->mc->pageNumber;

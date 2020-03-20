@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ../;make -j4);./aboutbox.cpp  "About Example" "An example about box" "Copyright 2019 K.D.Hedger" "keithdhedger@gmail.com" "http://keithhedger.freeddns.org" "$(echo -e "K.D.Hedger\nJoe Bloggs")" "/media/LinuxData/Development64/Projects/CursesToolKit/LICENSE"
 
-USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o aboutbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./aboutbox "$@"

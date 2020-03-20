@@ -808,7 +808,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 		{
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
-			fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
+			//fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 
 			if(this->readKey->isHexString==true)
 				{
@@ -816,103 +816,103 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 						{
 						case CTK_KEY_UP:
 							this->scrollGadget(false,true);
-							fprintf(stderr,"CTK_KEY_UP\n");
+							//fprintf(stderr,"CTK_KEY_UP\n");
 							break;
 						case CTK_KEY_DOWN:
 							this->scrollGadget(false,false);
-							fprintf(stderr,"CTK_KEY_DOWN\n");
+							//fprintf(stderr,"CTK_KEY_DOWN\n");
 							break;
 						case CTK_KEY_LEFT:
 							this->highLiteGadget(false);
-							fprintf(stderr,"CTK_KEY_LEFT\n");
+							//fprintf(stderr,"CTK_KEY_LEFT\n");
 							break;
 						case CTK_KEY_RIGHT:
 							this->highLiteGadget(true);
-							fprintf(stderr,"CTK_KEY_RIGHT\n");
+							//fprintf(stderr,"CTK_KEY_RIGHT\n");
 							break;
 						case CTK_KEY_HOME:
-							fprintf(stderr,"CTK_KEY_HOME\n");
+							//fprintf(stderr,"CTK_KEY_HOME\n");
 							break;
 						case CTK_KEY_END:
-							fprintf(stderr,"CTK_KEY_END\n");
+							//fprintf(stderr,"CTK_KEY_END\n");
 							break;
 						case CTK_KEY_PAGEUP://TODO//lists
 							this->scrollGadget(true,true);
-							fprintf(stderr,"CTK_KEY_PAGEUP\n");
+							//fprintf(stderr,"CTK_KEY_PAGEUP\n");
 							break;
 						case CTK_KEY_PAGEDOWN:
 							this->scrollGadget(true,false);
-							fprintf(stderr,"CTK_KEY_PAGEDOWN\n");
+							//fprintf(stderr,"CTK_KEY_PAGEDOWN\n");
 							break;
 						case CTK_KEY_INSERT:
-							fprintf(stderr,"CTK_KEY_INSERT\n");
+							//fprintf(stderr,"CTK_KEY_INSERT\n");
 							break;
 						case CTK_KEY_DELETE:
-							fprintf(stderr,"CTK_KEY_DELETE\n");
+							//fprintf(stderr,"CTK_KEY_DELETE\n");
 							break;
 						case CTK_KEY_ENTER:
 						case CTK_KEY_RETURN:
 							if(THISPAGE.currentGadget!=-1)
 								if(CURRENTGADGET->CTK_getSelectKey()==CTK_KEY_NONE)
 									{
-										fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
+										//fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
 										this->activateGadget();
 									}
 							break;
 						case CTK_KEY_BACKSPACE:
-							fprintf(stderr,"CTK_KEY_BACKSPACE\n");
+							//fprintf(stderr,"CTK_KEY_BACKSPACE\n");
 							break;
 						case CTK_KEY_TAB:
 							this->highLiteGadget(true);
-							fprintf(stderr,"CTK_KEY_TAB\n");
+							//fprintf(stderr,"CTK_KEY_TAB\n");
 							break;
 						case CTK_KEY_BACKTAB:
 							this->highLiteGadget(false);
-							fprintf(stderr,"CTK_KEY_BACKTAB\n");
+							//fprintf(stderr,"CTK_KEY_BACKTAB\n");
 							break;
 						case CTK_KEY_ESC:
 							this->runMenus();
-							fprintf(stderr,"CTK_KEY_ESC\n");
+							//fprintf(stderr,"CTK_KEY_ESC\n");
 							break;
 						case CTK_KEY_F1:
-							fprintf(stderr,"CTK_KEY_F1\n");
+							//fprintf(stderr,"CTK_KEY_F1\n");
 							break;
 						case CTK_KEY_F2:
-							fprintf(stderr,"CTK_KEY_F2\n");
+							//fprintf(stderr,"CTK_KEY_F2\n");
 							break;
 						case CTK_KEY_F3:
-							fprintf(stderr,"CTK_KEY_F3\n");
+							//fprintf(stderr,"CTK_KEY_F3\n");
 							break;
 						case CTK_KEY_F4:
-							fprintf(stderr,"CTK_KEY_F4\n");
+							//fprintf(stderr,"CTK_KEY_F4\n");
 							break;
 						case CTK_KEY_F5:
-							fprintf(stderr,"CTK_KEY_F5\n");
+							//fprintf(stderr,"CTK_KEY_F5\n");
 							break;
 						case CTK_KEY_F6:
-							fprintf(stderr,"CTK_KEY_F6\n");
+							//fprintf(stderr,"CTK_KEY_F6\n");
 							break;
 						case CTK_KEY_F7:
-							fprintf(stderr,"CTK_KEY_F7\n");
+							//fprintf(stderr,"CTK_KEY_F7\n");
 							break;
 						case CTK_KEY_F8:
-							fprintf(stderr,"CTK_KEY_F8\n");
+							//fprintf(stderr,"CTK_KEY_F8\n");
 							break;
 						case CTK_KEY_F9:
-							fprintf(stderr,"CTK_KEY_F9\n");
+							//fprintf(stderr,"CTK_KEY_F9\n");
 							break;
 						case CTK_KEY_F10:
-							fprintf(stderr,"CTK_KEY_F10\n");
+							//fprintf(stderr,"CTK_KEY_F10\n");
 							break;
 						case CTK_KEY_F11:
-							fprintf(stderr,"CTK_KEY_F11\n");
+							//fprintf(stderr,"CTK_KEY_F11\n");
 							break;
 						case CTK_KEY_F12:
-							fprintf(stderr,"CTK_KEY_F12\n");
+							//fprintf(stderr,"CTK_KEY_F12\n");
 							break;
 						default:
-							fprintf(stderr,"Unknown Key ... ");
-							fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
+							//fprintf(stderr,"Unknown Key ... ");
+							//fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
 							break;
 						}
 				}
@@ -928,7 +928,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 									break;
 								default:
 //check menu ctrl keys
-									fprintf(stderr,"Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
+									//fprintf(stderr,"Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
 									if((this->menuBar!=NULL) && (this->menuBar->enableShortcuts==true) && (this->menuBar->CTK_getMenuBarEnable()==true))
 										{
 											for(int j=0;j<this->menuBar->menuNames.size();j++)
@@ -937,7 +937,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 														{
 															this->menuBar->menuNumber=j;
 															this->menuBar->selectCB(this->menuBar,NULL);
-															fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
+															//fprintf(stderr,"Got Menu Control %s Key number=%i\n",this->readKey->inputBuffer.c_str(),this->readKey->controlKeyNumber);
 															break;
 														}
 												}
@@ -949,7 +949,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 								{
 									this->activateGadget();
 								}
-							fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
+							//fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
 						}
 				}
 		}
@@ -965,337 +965,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls)
 {
-this->CTK_mainEventLoop_New(runcnt,docls);
-#if 0
-	int						selection=CONT;
-	TermKeyResult			ret;
-	TermKeyKey				key;
-	char					tstr[3]={'_',0,0};
-	int						tab=1;
-	int						countdown=runcnt;
-	struct pollfd			fd;
-	int						thisgadget;
-	struct pageStruct		*thispage;
-	int						thisgadgettype;
-	CTK_cursesGadgetClass	*thisgadgetinst;
-	bool					hilite;
-
-	if(docls==true)
-		{
-			this->CTK_clearScreen();
-			this->CTK_updateScreen(this,SCREENUPDATEBASIC);
-		}
-
-	this->useAppWindow=false;
-	SETHIDECURS;
-	fflush(NULL);
-	this->runEventLoop=true;
-
-	key.type=TERMKEY_TYPE_UNKNOWN_CSI;
-	key.code.sym=TERMKEY_SYM_NONE;
-	fd.fd=0;/* the file descriptor we passed to termkey_new() */
-	fd.events=POLLIN;
-
-	while(this->runEventLoop==true)
-		{
-			if(runcnt<0)
-				{
-					poll(&fd,1,runcnt*-1);
-					this->runEventLoop=false;// Timed out
-					if(fd.revents&(POLLIN|POLLHUP|POLLERR))
-						termkey_advisereadable(tk);
-
-					while((ret=termkey_getkey(tk,&key))==TERMKEY_RES_KEY);
-				}
-			else
-				{
-					ret=termkey_waitkey(this->tk,&key);
-				}
-			if(this->eventLoopCBIn!=NULL)
-				this->eventLoopCBIn(this,this->userData);
-
-//fprintf(stderr,"key.code.sym=%i<<\n",key.code.sym);
-//fprintf(stderr,"key.code.codepoint=%i<<\n",key.code.codepoint);
-//fprintf(stderr,"key.modifiers=%i<<\n",key.modifiers);
-//char	*buffer=(char*)alloca(256);;
-//termkey_strfkey(tk, buffer, 255, &key, format);
-//fprintf(stderr,"buffer=%s<<\n",buffer);
-//fprintf(stderr,"keymod=%i key=%i =%c\n",key.modifiers,key.code.codepoint,key.code.codepoint);
-//										switch(this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->CTK_getGadgetType())
-			thispage=&this->pages[this->pageNumber];
-			thisgadget=thispage->currentGadget;
-			if(thisgadget!=-1)
-				{
-					thisgadgetinst=thispage->gadgets[thisgadget];
-					thisgadgettype=thispage->gadgets[thisgadget]->CTK_getGadgetType();
-					if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
-						thisgadgetinst->gadgetDirty=true;
-				}
-			else
-				{
-					thisgadgettype=BASEGADGET;
-					thisgadgetinst=NULL;
-				}
-			hilite=true;
-
-//			if((key.code.sym!=TERMKEY_SYM_NONE) || (key.type!=TERMKEY_TYPE_UNKNOWN_CSI))
-//				thisgadgetinst->gadgetDirty=true;
-
-			switch(key.type)
-				{
-					case TERMKEY_TYPE_KEYSYM:
-						{
-							switch(key.code.sym)
-								{
-									case TERMKEY_SYM_ESCAPE:
-										{
-											if(this->pages[this->pageNumber].menusActive==false)
-												break;
-											int	hg=this->pages[pageNumber].currentGadget;
-											this->CTK_updateScreen(this,SCREENUPDATEBASIC);
-											if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
-												{
-													selection=this->menuBar->CTK_doMenuEvent(0,1,true);
-													this->menuBar->CTK_drawDefaultMenuBar();
-													this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
-													if(hg!=-1)
-														this->CTK_setDefaultGadget(this->pages[pageNumber].gadgets[hg]);
-												}
-										}
-										break;
-//tab select
-									case TERMKEY_SYM_TAB://TODO//no gadgets
-									case TERMKEY_SYM_RIGHT:
-									case TERMKEY_SYM_LEFT:
-										switch(key.code.sym)
-											{
-												case TERMKEY_SYM_TAB:
-													if((key.modifiers==1) || (key.modifiers==2))
-														hilite=false;
-													break;
-												case TERMKEY_SYM_LEFT:													
-													hilite=false;
-													break;
-											}
-										if(thisgadget!=-1)
-											thisgadgetinst->hiLited=false;
-										if(this->noHiliteChange==false)
-											setHilite(hilite);
-
-										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->gadgetDirty=true;
-										this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->hiLited=true;
-										break;
-
-//scroll txt boxes and lists
-									case TERMKEY_SYM_UP:
-										if(thisgadget<0)
-											break;
-										if(thisgadgetinst->hiLited==false)
-												break;
-										thisgadgetinst->gadgetDirty=true;
-										switch(thisgadgettype)
-											{
-												case TEXTGADGET:
-													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollLine(true);
-													break;
-												case LISTGADGET:
-													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(true);
-													break;
-												case EDITGADGET:
-												case SRCGADGET:
-													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()-1);
-													break;
-												default:
-													break;
-											}
-										break;
-
-									case TERMKEY_SYM_DOWN:
-										if(thisgadget<0)
-											break;
-										if(thisgadgetinst->hiLited==false)
-											break;
-										thisgadgetinst->gadgetDirty=true;
-										switch(thisgadgettype)
-											{
-												case TEXTGADGET:
-													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollLine(false);
-													break;
-												case LISTGADGET:
-													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(false);
-													break;
-												case EDITGADGET:
-												case SRCGADGET:
-													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()+1);
-													break;
-												case DROPGADGET:
-													static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
-													if(thisgadgetinst->selectCB!=NULL)
-														thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-													break;
-												default:
-													break;
-											}
-										break;
-
-									case TERMKEY_SYM_PAGEUP:
-										if(thisgadget<0)
-											break;
-										thisgadgetinst->gadgetDirty=true;
-										switch(thisgadgettype)
-											{
-												case LISTGADGET:
-													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(true,true);
-													break;
-												case TEXTGADGET:
-													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollPage(true);
-													break;
-												default:
-													break;
-												case EDITGADGET:
-												case SRCGADGET:
-													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()-static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getHeight());
-													break;
-											}
-										break;
-
-									case TERMKEY_SYM_PAGEDOWN:
-										if(thisgadget<0)
-											break;
-										thisgadgetinst->gadgetDirty=true;
-										switch(thisgadgettype)
-											{
-												case LISTGADGET:
-													static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_keyUpDown(false,true);
-													break;
-												case TEXTGADGET:
-													static_cast<CTK_cursesTextBoxClass*>(thisgadgetinst)->CTK_scrollPage(false);
-													break;
-												default:
-													break;
-												case EDITGADGET:
-												case SRCGADGET:
-													static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_gotoLine(static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getCursLine()+static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getHeight());
-													break;
-											}
-										break;
-
-//select key
-									default:
-										if(thisgadget<0)
-											break;
-										if((key.code.sym!=this->selectKey) && (thisgadgetinst->CTK_getSelectKey()==TERMKEY_SYM_NONE))
-											continue;
-										if(thisgadgetinst->CTK_getSelectKey()!=TERMKEY_SYM_NONE)
-											{
-												if(key.code.sym!=thisgadgetinst->CTK_getSelectKey())
-													continue;
-											}
-
-										thisgadgetinst->gadgetDirty=true;
-										if(thisgadgetinst->hiLited==true)
-											{
-												int goff=0;
-												switch(thisgadgettype)
-													{
-														case LISTGADGET:
-															if(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_getMultipleSelect()==true)
-																static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->CTK_toggleItem(static_cast<CTK_cursesListBoxClass*>(thisgadgetinst)->listItemNumber);
-															if(thisgadgetinst->selectCB!=NULL)
-																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-															break;
-														case DROPGADGET:
-															static_cast<CTK_cursesDropClass*>(thisgadgetinst)->CTK_doDropDownEvent();
-															if(thisgadgetinst->selectCB!=NULL)
-																thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-															break;
-														case IMAGEGADGET:
-														case BUTTONGADGET://TODO//horrible hack!!
-															goff=1;
-															this->CTK_updateScreen(this,SCREENUPDATEUNHILITE);
-														case CHECKGADGET:
-															if(thisgadgetinst->selectCB!=NULL)
-																{
-																	thisgadgetinst->selectCB((void*)thisgadgetinst,(void*)thisgadgetinst->CTK_getCBUserData());
-																	this->CTK_setDefaultGadget(thisgadgetinst);
-																	this->pages[this->pageNumber].currentGadget=thisgadget-goff;
-																}
-															break;
-														case INPUTGADGET:
-															static_cast<CTK_cursesInputClass*>(thisgadgetinst)->CTK_doInput();
-															break;
-
-														case EDITGADGET:
-														case SRCGADGET:
-															if(thisgadgetinst->CTK_getGadgetType()==EDITGADGET)
-																static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_doEvent(false,static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesEditBoxClass*>(thisgadgetinst)->CTK_getStrings());
-															else
-																static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_doEvent(true,static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getStrings(),static_cast<CTK_cursesSourceEditBoxClass*>(thisgadgetinst)->CTK_getSrcStrings());
-													
-															this->CTK_emptyIPBuffer();
-															this->CTK_updateScreen(this,SCREENUPDATEBASIC);
-															if(this->eventLoopCBOut!=NULL)
-																this->eventLoopCBOut(this,this->userData);
-															continue;
-															break;
-
-														default:
-															break;
-													}
-
-												if(this->pages[this->pageNumber].currentGadget!=-1)
-													{
-														if(thisgadgetinst->CTK_getSelectDeselects()==true)
-															{
-																thisgadgetinst->hiLited=!thisgadgetinst->CTK_getSelectDeselects();
-																thisgadgetinst->CTK_drawGadget(thisgadgetinst->hiLited);
-															}
-													}
-											}
-										break;
-								}
-						}
-
-					case TERMKEY_TYPE_UNICODE:
-						if((this->menuBar==NULL) || (this->menuBar->enableShortcuts==false))
-							break;
-						if(key.modifiers==TERMKEY_KEYMOD_CTRL)
-							{
-								tstr[1]=toupper(key.code.codepoint);
-								//tstr[1]=key.code.codepoint;
-								for(int j=0;j<this->menuBar->menuNames.size();j++)
-									{
-										if(this->menuBar->CTK_doShortCutKey(tstr[1],j)==true)
-											{
-												this->menuBar->menuNumber=j;
-												if(thisgadgetinst!=NULL)
-													thisgadgetinst->gadgetDirty=true;
-												this->menuBar->selectCB(this->menuBar,NULL);//TODO// add menu number as user data?
-												break;
-											}
-									}
-							}
-						break;
-				}
-
-			//if(key.code.sym!=TERMKEY_SYM_NONE)
-			//	{
-					this->CTK_emptyIPBuffer();
-					this->CTK_updateScreen(this,SCREENUPDATEBASIC);
-					this->showHilighting=true;
-					if(this->eventLoopCBOut!=NULL)
-						this->eventLoopCBOut(this,this->userData);
-					if(runcnt>0)
-						{
-							countdown--;
-							if(countdown==0)
-								this->runEventLoop=false;
-						}
-			//	}
-		}
-//thispage->currentGadget=-1;;
-	return(key.code.codepoint);
-#endif
+	return(this->CTK_mainEventLoop_New(runcnt,docls));
 }
 
 /**
@@ -1407,14 +1077,7 @@ int CTK_mainAppClass::CTK_removePage(int pagenum)//TODO//
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		{
 			for(int j=0;j<this->pages[pagenum].gadgets.size();j++)
-			{
-				//fprintf(stderr,"j=%i size=%i\n",j,this->pages[pagenum].gadgets.size());
-				//fprintf(stderr,"gadget =%p\n",this->pages[pagenum].gadgets[j]);
-				//fprintf(stderr,"gadget type=%i\n",this->pages[pagenum].gadgets[j]->CTK_getGadgetType());
-				//if(this->pages[pagenum].gadgets[j]->CTK_getGadgetType()==8)
-				//	fprintf(stderr,"label=>>>%s<<\n",static_cast<CTK_cursesLabelClass*>(this->pages[pagenum].gadgets[j])->text.c_str());
 				delete this->pages[pagenum].gadgets[j];
-			}
 
 			this->pages.erase(this->pages.begin()+pagenum);
 			this->pageNumber=pagenum;

@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ../;make -j4);./openfile.cpp ~
 
-USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o fileselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fileselect "$@"
@@ -19,22 +19,15 @@ exit $retval
 
 int main(int argc, char **argv)
 {
-	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-	std::string				str;
 	CTK_cursesUtilsClass	cu;
-	char					*folder=NULL;
-
-	if(argc>1)
-		folder=argv[1];
 
 //just pics
-//bool CTK_fileChooserDialog(const char *startdir,bool open,const char *filename,const char *filetypes)
-	//cu.CTK_openFile(mainApp,"Open File Example",folder,true,NULL,".png;.tiff;");
-	cu.CTK_fileChooserDialog(getenv("HOME"),true);
+//	cu.CTK_fileChooserDialog(getenv("HOME"),CUOPENFILE,".png;.tiff;.jpeg;.jpg;");
+//all
+	cu.CTK_fileChooserDialog(getenv("HOME"),CUOPENFILE);
 	if(cu.dialogReturnData.isValidData==true)
 		fprintf(stderr,"%s\n",cu.dialogReturnData.stringValue.c_str());
 
 	SETSHOWCURS;
-	delete mainApp;
 	return(0);
 }

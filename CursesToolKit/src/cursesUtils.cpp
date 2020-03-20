@@ -178,37 +178,6 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 /**
 * Private internal callback
 */
-static bool folderSelectCB(void *inst,void *ud)
-{
-	char					*buffer=(char*)alloca(PATH_MAX);
-	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
-	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
-
-	sprintf(buffer,"Folder: %s",ch->folderPath.c_str());
-	fud->textGadget->CTK_updateText(buffer);
-	fud->inst->isValidFile=true;
-return true;
-}
-
-/**
-* Private internal callback
-*/
-static bool inputCB(void *inst,void *ud)
-{
-	fileUDStruct	*fud=static_cast<fileUDStruct*>(ud);
-	CTK_cursesInputClass	*inp=static_cast<CTK_cursesInputClass*>(inst);
-
-	if(strlen(inp->CTK_getText())>0)
-		fud->btnOK->CTK_setEnabled(true);
-	else
-		fud->btnOK->CTK_setEnabled(false);
-
-return true;
-}
-
-/**
-* Private internal callback
-*/
 static bool fileSelectCB(void *inst,void *data)
 {
 	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
@@ -232,346 +201,15 @@ static bool fileSelectCB(void *inst,void *data)
 				return(true);
 				break;
 			case CUSAVEFILE:
+				if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
+					{
+						ud->input->CTK_setText(ch->fileName.c_str());
+						ud->input->CTK_drawGadget(false);
+					}
 				break;
 		}
-return true;
-#if 0
-	char					*buffer=(char*)alloca(PATH_MAX);
-	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
-	CTK_cursesChooserClass	*ch=static_cast<CTK_cursesChooserClass*>(inst);
-
-	if((fud->isOpenDialog==true) )
-		{
-			if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
-				{
-					sprintf(buffer,"File: %s",ch->filePath.c_str());
-					fud->textGadget->CTK_updateText(buffer);
-					fud->btnOK->CTK_setEnabled(true);
-					fud->inst->isValidFile=true;
-				}
-		}
-	else
-		{
-			if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
-				{
-					fud->inputGadget->CTK_setText(ch->fileName.c_str());
-					fud->inst->isValidFile=true;
-				}
-		}
-	if(fud->inst->isValidFile==true)
-		fud->btnOK->CTK_setEnabled(true);
-return true;
-#endif
+	return true;
 }
-
-/**
-* Private internal callback
-*/
-static bool buttonSelectCB(void *inst,void *ud)
-{
-	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
-	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
-
-	if(strcmp(bc->label,"Licence")==0)
-		{
-			fileUDStruct		*subfud=new fileUDStruct;
-			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
-			coloursStruct		cs;
-	
-			cs.textBoxType=INBOX;
-			cs.fancyGadgets=true;
-			selectapp->CTK_setColours(cs);
-
-			subfud->textGadget=selectapp->CTK_addNewTextBox(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,true,(char*)fud->licenceFilename);
-
-			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
-			subfud->app=selectapp;
-			subfud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
-
-			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Licence ...",NULL);
-			selectapp->CTK_setDefaultGadget(subfud->btnOK);
-			selectapp->CTK_mainEventLoop();
-			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
-			fud->app->CTK_clearScreen();
-			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
-			return true;
-		}
-
-
-	if(strcmp(bc->label,"Credits")==0)
-		{
-			fileUDStruct		*subfud=new fileUDStruct;
-			CTK_mainAppClass	*selectapp=new CTK_mainAppClass();
-			coloursStruct		cs;
-	
-			cs.textBoxType=INBOX;
-			cs.fancyGadgets=true;
-			cs.labelBoxType=INBOX;
-			selectapp->CTK_setColours(cs);
-
-			subfud->labelGadget=selectapp->CTK_addNewLabel(selectapp->maxCols/4,5,selectapp->maxCols/2,selectapp->maxRows-9,(char*)fud->credits);
-			subfud->labelGadget->CTK_setJustify(CENTREJUSTIFY);
-
-			subfud->btnOK=selectapp->CTK_addNewButton(fud->inst->CTK_getGadgetPosX(selectapp->maxCols/4,selectapp->maxCols/2,1,strlen("<  Done  >"),0),selectapp->maxRows-3,6,1," Done ");//btnok
-			subfud->app=selectapp;
-			subfud->btnOK->CTK_setSelectCB(buttonSelectCB,(void*)subfud);
-
-			selectapp->CTK_appWindow(selectapp->maxCols/4-2,3,selectapp->maxCols/2+3,selectapp->maxRows-5,"Credits ...",NULL);
-			selectapp->CTK_setDefaultGadget(subfud->btnOK);
-			selectapp->CTK_mainEventLoop();
-			fud->app->CTK_setDefaultGadget(fud->btnOK,true);
-			fud->app->CTK_clearScreen();
-			fud->app->CTK_updateScreen(fud->app,SCREENUPDATEWINDOW);
-			return true;
-		}
-
-	if(strcmp(bc->label," Done ")==0)
-		{
-			fud->app->runEventLoop=false;
-			return true;
-		}
-
-	if(strcmp(bc->label,"CANCEL")==0)
-		{
-			fud->buttonPressed=CANCELBUTTON;
-		}
-	if(strcmp(bc->label,"  OK  ")==0)
-		{
-			fud->buttonPressed=YESBUTTON;
-		}
-	if(strcmp(bc->label,"  NO  ")==0)
-		{
-			fud->buttonPressed=NOBUTTON;
-		}
-	fud->app->runEventLoop=false;
-}
-
-/**
-* Private internal callback
-*/
-bool checkSelectCB(void *inst,void *ud)
-{
-	char					*buffer=(char*)alloca(256);
-	CTK_cursesCheckBoxClass	*cb=static_cast<CTK_cursesCheckBoxClass*>(inst);
-	fileUDStruct			*fud=static_cast<fileUDStruct*>(ud);
-
-	cb->CTK_setValue(!cb->CTK_getValue());
-
-	if(fud->chooserGadget!=NULL)
-		{
-			fud->chooserGadget->CTK_setShowHidden(cb->CTK_getValue());
-			fud->chooserGadget->CTK_updateList();
-			return true;
-		}
-return true;
-}
-
-/**
-* Private
-*/
-bool CTK_cursesUtilsClass::runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes)
-{
-	CTK_cursesChooserClass	*chooser;
-	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
-	char					*buffer=(char*)alloca(256);
-	fileUDStruct			*fud=new fileUDStruct;
-	bool					retval=false;
-	coloursStruct			cs;
-	int						x=6;
-	int						y=4;
-	int						w=selectapp->maxCols-10;
-	int						h=selectapp->maxRows-6;
-	int						lx=x+2;
-	int						ly=y+2;
-	int						lw=w-3;
-	int						lh=h-7;
-	int						ty=y+h-3;
-	int						by=y+h-1;
-	const char				*title="Open File ...";
-
-	cs.fancyGadgets=true;
-	cs.textBoxType=INBOX;
-	selectapp->CTK_setColours(cs);
-	selectapp->CTK_clearScreen();
-
-	fud->app=selectapp;
-	fud->inst=this;
-	fud->isValid=false;
-	fud->isOpenDialog=open;
-
-	if(open==false)
-		title="Save File ...";
-	selectapp->CTK_appWindow(x,y,w,h,wname,title);
-
-	chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
-	fud->chooserGadget=chooser;
-	chooser->CTK_setShowTypes(ANYTYPE);
-	chooser->CTK_setShowFileTypes(filetypes);
-	chooser->CTK_setShowHidden(false);
-	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
-	selectapp->CTK_addChooserBox(chooser);
-	chooser->CTK_setSelectCB(fileSelectCB,fud);
-
-	if(open==true)
-		{
-			sprintf(buffer,"File: %s",filename);
-			fud->textGadget=selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
-		}
-	else
-		{
-			fud->inputGadget=selectapp->CTK_addNewInput(lx,ty,lw,1,filename);
-			fud->inputGadget->CTK_setSelectCB(inputCB,fud);
-		}
-
-	fud->btnOK=selectapp->CTK_addNewButton(lx,by,1,1,"  OK  ");
-	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
-	if((filename==NULL) || (strcmp(filename,"")==0))
-		fud->btnOK->CTK_setEnabled(false);
-	fud->btnCancel=selectapp->CTK_addNewButton(lx+lw-10,by,11,1,"CANCEL");
-	fud->btnCancel->CTK_setSelectCB(buttonSelectCB,fud);
-
-	fud->checkGadget=selectapp->CTK_addNewCheckBox(lx+(lw/2)-8,by,14,"Show Hidden");
-	fud->checkGadget->CTK_setSelectCB(checkSelectCB,fud);
-	fud->checkGadget->CTK_setSelectDeselects(false);
-
-	selectapp->CTK_setDefaultGadget(chooser->lb);
-	selectapp->CTK_mainEventLoop();
-
-	if(fud->buttonPressed==CANCELBUTTON)
-		retval=false;
-
-	if((fud->buttonPressed==YESBUTTON) && (this->isValidFile==true) && (open==true))
-		{
-			this->stringResult=fud->textGadget->CTK_getText().substr(6);
-			retval=true;
-		}
-
-	if((open==false) && (fud->buttonPressed==YESBUTTON) && (strlen(fud->inputGadget->CTK_getText())>0))
-		{
-			this->inFolder=chooser->folderPath;
-			this->stringResult=fud->inputGadget->CTK_getText();
-			retval=true;
-		}
-
-	delete fud;
-	delete selectapp;
-	return(retval);
-}
-
-/**
-* Private
-*/
-bool CTK_cursesUtilsClass::runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder)
-{
-	CTK_mainAppClass		*selectapp=new CTK_mainAppClass();
-	CTK_cursesChooserClass	*chooser;
-	char					*buffer=(char*)alloca(PATH_MAX);
-	fileUDStruct			*fud=new fileUDStruct;
-	bool					retval=false;
-	coloursStruct			cs;
-	int						x=6;
-	int						y=4;
-	int						w=app->maxCols-10;
-	int						h=selectapp->maxRows-6;
-	int						lx=x+2;
-	int						ly=y+2;
-	int						lw=w-3;
-	int						lh=h-7;
-	int						ty=y+h-3;
-	int						by=y+h-1;
-	const char				*title="Select Folder ...";
-
-	cs.fancyGadgets=true;
-	cs.textBoxType=INBOX;
-	selectapp->CTK_setColours(cs);
-	selectapp->CTK_clearScreen();
-
-	fud->app=selectapp;
-	fud->inst=this;
-	fud->isValid=true;
-
-	selectapp->CTK_appWindow(x,y,w,h,wname,title);
-
-	chooser=new CTK_cursesChooserClass(selectapp,lx,ly,lw,lh);
-	fud->chooserGadget=chooser;
-	chooser->CTK_setShowTypes(FOLDERTYPE);
-	chooser->CTK_setShowHidden(false);
-	chooser->CTK_selectFolder(selectapp,this->inFolder.c_str());
-	selectapp->CTK_addChooserBox(chooser);
-	chooser->CTK_setSelectCB(folderSelectCB,fud);
-
-	sprintf(buffer,"Folder: %s",folder);
-	fud->textGadget=selectapp->CTK_addNewTextBox(lx,ty,lw,1,buffer,false);
-
-	fud->btnOK=selectapp->CTK_addNewButton(lx,by,1,1,"  OK  ");
-	fud->btnOK->CTK_setSelectCB(buttonSelectCB,fud);
-	fud->btnCancel=selectapp->CTK_addNewButton(lx+lw-10,by,11,1,"CANCEL");
-	fud->btnCancel->CTK_setSelectCB(buttonSelectCB,fud);
-
-	fud->checkGadget=selectapp->CTK_addNewCheckBox(lx+(lw/2)-8,by,14,"Show Hidden");
-	fud->checkGadget->CTK_setSelectCB(checkSelectCB,fud);
-	fud->checkGadget->CTK_setSelectDeselects(false);
-
-	this->isValidFile=true;
-
-	selectapp->CTK_setDefaultGadget(chooser->lb);
-	selectapp->CTK_mainEventLoop();
-
-	if(fud->buttonPressed==CANCELBUTTON)
-		retval=false;
-
-	if((fud->buttonPressed==YESBUTTON) && (this->isValidFile==true) )
-		{
-			this->stringResult=fud->textGadget->CTK_getText().substr(8);
-			retval=true;
-		}
-
-	delete fud;
-	delete selectapp;
-	return(retval);
-}
-
-/**
-* Select folder convenience dialog.
-*/
-void CTK_cursesUtilsClass::CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir)
-{
-	char	*folder=NULL;
-
-	app->CTK_clearScreen();
-	if(startdir==NULL)
-		{
-			folder=get_current_dir_name();
-			this->inFolder=folder;
-		}
-	else
-		this->inFolder=startdir;	
-	this->isValidFile=this->runSelectFolder(app,wname,this->inFolder.c_str());
-	app->CTK_clearScreen();
-	CTK_freeAndNull(&folder);
-}
-
-/**
-* Open file convenience dialog.
-*/
-void CTK_cursesUtilsClass::CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open,const char *filename,const char *filetypes)
-{
-	char	*folder=NULL;
-
-	app->CTK_clearScreen();
-	if(startdir==NULL)
-		{
-			folder=get_current_dir_name();
-			this->inFolder=folder;
-		}
-	else
-		this->inFolder=startdir;	
-	this->isValidFile=this->runOpenFile(app,wname,open,filename,filetypes);
-	app->CTK_clearScreen();
-	CTK_freeAndNull(&folder);
-}
-
-//entryStruct CTK_cursesUtilsClass::entryData;
 
 /**
 * Private internal callback for entry.
@@ -585,6 +223,12 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 	switch(btnud)
 		{
 //entry/query
+			case CUQUERYOK:
+				ud->isValidData=true;
+				ud->intValue=CUQUERYOK;
+				ud->stringValue="";
+				ud->varType=INTVAR;
+				break;
 			case CUENTRYOK:
 				ud->isValidData=true;
 				ud->intValue=CUENTRYOK;
@@ -625,7 +269,14 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 			case CUCHOOSEROK:
 				ud->isValidData=true;
 				ud->intValue=CUCHOOSEROK;
-				ud->stringValue=ud->results->CTK_getText();
+				if(ud->results!=NULL)
+					ud->stringValue=ud->results->CTK_getText();
+				else
+					{
+						ud->stringValue=ud->chooser->folderPath;
+						ud->stringValue+="/";
+						ud->stringValue+=ud->input->CTK_getText();
+					}
 				if(ud->stringValue.length()==0)
 					ud->isValidData=false;
 				ud->varType=CHARVAR;
@@ -650,11 +301,16 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 }
 
 /**
-* Open file convenience dialog.
+* Open/save file/folder convenience dialog.
+* \param const char *startdir, default start in current dir.
+* \param int choosertype, CUOPENFILE, CUOPENFOLDER or CUSAVEFILE.
+* \param const char *filetypes file types to show.
+* \param const char *savename default save file name, ignored for open.
+* \note Default is to show all file types in open dialog,
+* \note filetypes is ';' delimited string eg ".png;.tiff;"
 */
-bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files,const char *filename,const char *filetypes)
+bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choosertype,const char *filetypes,const char *savename)
 {
-
 	int						genx,geny,genw,genh;
 	CTK_cursesButtonClass	*button;
 	coloursStruct			cs;
@@ -668,10 +324,19 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files
 	cs.labelBoxType=NOBOX;
 	cs.textBoxType=INBOX;
 	app->CTK_setColours(cs);
-	if(files==true)
-		app->CTK_setDialogWindow("Open file ...","",-1,-1);
-	else
-		app->CTK_setDialogWindow("Open folder ...","",-1,-1);
+
+	switch(choosertype)
+		{
+			case CUOPENFILE:
+				app->CTK_setDialogWindow("Open file ...","",-1,-1);
+				break;
+			case CUOPENFOLDER:
+				app->CTK_setDialogWindow("Open folder ...","",-1,-1);
+				break;
+			case CUSAVEFILE:
+				app->CTK_setDialogWindow("Save file ...","",-1,-1);
+				break;
+		}
 		
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -691,30 +356,52 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files
 	genh=CURRENTPAGE(app).boxH-7;
 
 	this->dialogReturnData.chooser=new CTK_cursesChooserClass(app,genx,geny,genw,genh);
-	if(files==true)
+
+	switch(choosertype)
 		{
-			this->dialogReturnData.chooser->CTK_setShowTypes(ANYTYPE);
-			this->dialogReturnData.chooser->userData=(void*)CUOPENFILE;
+			case CUSAVEFILE:
+				this->dialogReturnData.chooser->userData=(void*)CUSAVEFILE;
+				this->dialogReturnData.chooser->CTK_setShowTypes(ANYTYPE);
+				break;
+			case CUOPENFILE:
+				this->dialogReturnData.chooser->userData=(void*)CUOPENFILE;
+				this->dialogReturnData.chooser->CTK_setShowTypes(ANYTYPE);
+				break;
+			case CUOPENFOLDER:
+				this->dialogReturnData.chooser->CTK_setShowTypes(FOLDERTYPE);
+				this->dialogReturnData.chooser->userData=(void*)CUOPENFOLDER;
+				break;
 		}
-	else
-		{
-			this->dialogReturnData.chooser->CTK_setShowTypes(FOLDERTYPE);
-			this->dialogReturnData.chooser->userData=(void*)CUOPENFOLDER;
-		}
+
 	this->dialogReturnData.chooser->CTK_setShowFileTypes(filetypes);
 	this->dialogReturnData.chooser->CTK_setShowHidden(false);
 	this->dialogReturnData.chooser->CTK_selectFolder(app,this->inFolder.c_str());
 	app->CTK_addChooserBox(this->dialogReturnData.chooser);
 	this->dialogReturnData.chooser->CTK_setSelectCB(fileSelectCB,(void*)&this->dialogReturnData);
 
-	this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
+	if(choosertype==CUSAVEFILE)
+		{
+			this->dialogReturnData.input=app->CTK_addNewInput(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,savename);
+			this->dialogReturnData.input->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
+			this->dialogReturnData.input->userData=(void*)CUCHOOSERINPUT;
+			this->dialogReturnData.input->redrawAppWindow=false;
+		}
+	else
+		{
+			if(choosertype==CUOPENFOLDER)
+				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,startdir,false);
+			else
+				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
+		}
 
 	labelstr=this->CTK_padString("OK",CHOOSERBTNWIDTH);
 	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,3,CHOOSERBTNWIDTH,0);
 	this->dialogReturnData.defaultGadget=app->CTK_addNewButton(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1,CHOOSERBTNWIDTH,1,labelstr.c_str());
 	this->dialogReturnData.defaultGadget->userData=(void*)CUCHOOSEROK;
 	this->dialogReturnData.defaultGadget->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
-	this->dialogReturnData.defaultGadget->CTK_setEnabled(false);
+
+	if(choosertype==CUOPENFILE)
+		this->dialogReturnData.defaultGadget->CTK_setEnabled(false);
 
 	labelstr=this->CTK_padString("Show Hidden",CHOOSERBTNWIDTH);
 	genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,3,CHOOSERBTNWIDTH,1);
@@ -733,7 +420,6 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
-
 
 /**
 * Get user entry convenience dialog.
@@ -836,7 +522,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 		{
 			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,maxbtns,10,btnnum);
 			button=app->CTK_addNewButton(genx,geny,10,1,"  OK  ");
-			button->userData=(void*)CUENTRYOK;
+			button->userData=(void*)CUQUERYOK;
 			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			defhold=button;
 			btnnum++;
@@ -1025,7 +711,6 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 	MOVETO(1,1)
 	fflush(NULL);
 }
-
 
 /**
 * Load variables into vector of varsStructs.

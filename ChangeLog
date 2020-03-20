@@ -1,4 +1,8 @@
 2.0.0
+Cleaned examples.
+Removed redndant basic example.
+Code clean.
+Finished open/save file/folder dialogs.
 Fixed leaks in dialogs.
 Fixed skiping disabled buttons.
 Fixed pageup/down in lists.

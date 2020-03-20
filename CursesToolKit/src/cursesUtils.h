@@ -32,7 +32,7 @@
 #define ENTRYWIDTH 40
 #define CHOOSERBTNWIDTH 12
 
-enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO,CUABOUTCLOSE,CUABOUTCREDITS,CUABOUTLICENCE,CUABOUTDONE,CUCHOOSEROK,CUCHOOSERSHOW,CUCHOOSERCANCEL};
+enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO,CUABOUTCLOSE,CUABOUTCREDITS,CUABOUTLICENCE,CUABOUTDONE,CUCHOOSEROK,CUCHOOSERSHOW,CUCHOOSERCANCEL,CUCHOOSERINPUT,CUQUERYOK};
 enum {CUOPENFILE,CUOPENFOLDER,CUSAVEFILE};
 
 class CTK_mainAppClass;
@@ -72,14 +72,7 @@ class CTK_cursesUtilsClass
 		CTK_cursesUtilsClass(CTK_mainAppClass *mc);
 		~CTK_cursesUtilsClass();
 
-////////////////
 		utilDialogStruct			dialogReturnData;
-
-
-		std::string					stringResult="";
-		int							intResult=0;
-		bool						boolResult=false;
-		bool						isValidFile=false;
 		std::string					inFolder=".";
 
 		std::vector<std::string>	CTK_explodeWidth(const std::string str,const char termchar,int width,int tabwidth,int offset,bool incdelim);
@@ -87,17 +80,10 @@ class CTK_cursesUtilsClass
 		std::vector<std::string>	CTK_explodeWidth(const std::string s,const char c,int width,int tw,bool incdelim=true);
 		std::vector<std::string>	CTK_explode(const std::string s,const char c);
 
-		void						CTK_openFile(CTK_mainAppClass *app,const char *wname,const char *startdir,bool open=true,const char *filename="",const char *filetypes=NULL);
-		void						CTK_selectFolder(CTK_mainAppClass *app,const char *wname,const char *startdir);
-
-
-//////////////
 		bool						CTK_entryDialog(const char *bodytxt,const char *defaulttxt,const char *windowname,const char *dialogtitle,bool hascancel,int dialogwidth=ENTRYWIDTH);
 		bool						CTK_queryDialog(const char *bodytxt,const char *name,const char *title,int buttons,int dialogwidth=QUERYBOXWIDTH);
 		void						CTK_aboutDialog(const char *appname,const char *appinfo,const char *copyright,const char *email,const char *website,const char *credits,const char *licence,int dialogwidth=ABOUTWIDTH);
-
-		bool						CTK_fileChooserDialog(const char *startdir,bool files=true,const char *filename="",const char *filetypes=NULL);
-//////////////
+		bool						CTK_fileChooserDialog(const char *startdir,int choosertype=CUOPENFILE,const char *filetypes=NULL,const char *savename="");
 
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 
@@ -110,8 +96,6 @@ class CTK_cursesUtilsClass
 
 	private:
 		CTK_mainAppClass			*mc;
-		bool						runOpenFile(CTK_mainAppClass *app,const char *wname,bool open,const char *filename,const char *filetypes);
-		bool						runSelectFolder(CTK_mainAppClass *app,const char *wname,const char *folder);
 };
 
 #endif

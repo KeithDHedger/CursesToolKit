@@ -93,31 +93,6 @@ enum  utilVarType {BOOLVAR,INTVAR,CHARVAR,MULTVAR,BADTYPE};
 enum {BUTTON=0,TXTBOX,INPUT,LIST,CHKBOX,EDBOX,SRCBOX};
 
 /**
-* Private structure for util dialogs.
-*/
-struct fileUDStruct
-{
-	CTK_cursesUtilsClass		*inst=NULL;
-	CTK_mainAppClass			*app=NULL;
-	bool						isValid=false;
-	bool						isOpenDialog=false;
-	int							buttonsToShow=YESBUTTON|NOBUTTON;
-	int							buttonPressed=NOBUTTONPRESSED;
-	const char					*licenceFilename=NULL;
-	const char					*credits=NULL;
-
-	CTK_cursesChooserClass		*chooserGadget=NULL;
-	CTK_cursesInputClass		*inputGadget=NULL;
-	CTK_cursesTextBoxClass*		textGadget=NULL;
-	CTK_cursesCheckBoxClass*	checkGadget=NULL;
-	CTK_cursesLabelClass*		labelGadget=NULL;
-	CTK_cursesEditBoxClass*		editGadget=NULL;
-	CTK_cursesButtonClass*		btnOK=NULL;
-	CTK_cursesButtonClass*		btnNo=NULL;
-	CTK_cursesButtonClass*		btnCancel=NULL;
-};
-
-/**
 * Page struct
 * \note Caller is responsible for allocating/freeing userData.
 * \note Other objects are handled by application class.
