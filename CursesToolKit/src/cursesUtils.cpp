@@ -226,6 +226,10 @@ static bool fileSelectCB(void *inst,void *data)
 					}
 				break;
 			case CUOPENFOLDER:
+				ud->results->CTK_updateText(ch->filePath.c_str());
+				ud->defaultGadget->CTK_setEnabled(true);
+				ud->defaultGadget->CTK_drawGadget(false);
+				return(true);
 				break;
 			case CUSAVEFILE:
 				break;
@@ -648,7 +652,7 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 /**
 * Open file convenience dialog.
 */
-bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool open,const char *filename,const char *filetypes)
+bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool files,const char *filename,const char *filetypes)
 {
 
 	int						genx,geny,genw,genh;
@@ -664,7 +668,11 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool open,
 	cs.labelBoxType=NOBOX;
 	cs.textBoxType=INBOX;
 	app->CTK_setColours(cs);
-	app->CTK_setDialogWindow("Open file ...","",-1,-1);
+	if(files==true)
+		app->CTK_setDialogWindow("Open file ...","",-1,-1);
+	else
+		app->CTK_setDialogWindow("Open folder ...","",-1,-1);
+		
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
 	this->dialogReturnData.mc=app;
@@ -683,12 +691,20 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,bool open,
 	genh=CURRENTPAGE(app).boxH-7;
 
 	this->dialogReturnData.chooser=new CTK_cursesChooserClass(app,genx,geny,genw,genh);
-	this->dialogReturnData.chooser->CTK_setShowTypes(ANYTYPE);
+	if(files==true)
+		{
+			this->dialogReturnData.chooser->CTK_setShowTypes(ANYTYPE);
+			this->dialogReturnData.chooser->userData=(void*)CUOPENFILE;
+		}
+	else
+		{
+			this->dialogReturnData.chooser->CTK_setShowTypes(FOLDERTYPE);
+			this->dialogReturnData.chooser->userData=(void*)CUOPENFOLDER;
+		}
 	this->dialogReturnData.chooser->CTK_setShowFileTypes(filetypes);
 	this->dialogReturnData.chooser->CTK_setShowHidden(false);
 	this->dialogReturnData.chooser->CTK_selectFolder(app,this->inFolder.c_str());
 	app->CTK_addChooserBox(this->dialogReturnData.chooser);
-	this->dialogReturnData.chooser->userData=(void*)CUOPENFILE;
 	this->dialogReturnData.chooser->CTK_setSelectCB(fileSelectCB,(void*)&this->dialogReturnData);
 
 	this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
@@ -771,6 +787,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop_New(0,true,true);
+	delete app;
 	return(this->dialogReturnData.isValidData);
 }
 
@@ -848,6 +865,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop_New(0,true,true);
+	delete app;
 	return(this->dialogReturnData.isValidData);
 }
 
@@ -942,6 +960,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop_New(0,true,true);
+	delete app;
 }
 
 /**

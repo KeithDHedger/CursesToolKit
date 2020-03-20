@@ -26,9 +26,12 @@ int main(int argc, char **argv)
 		folder=argv[1];
 
 //fprintf(stderr,"folder=%s\n",folder);
-	cu.CTK_selectFolder(mainApp,"Select Folder Example",folder);
-	if(cu.isValidFile==true)
-		fprintf(stderr,"%s\n",cu.stringResult.c_str());
+//	cu.CTK_selectFolder(mainApp,"Select Folder Example",folder);
+//	if(cu.isValidFile==true)
+//		fprintf(stderr,"%s\n",cu.stringResult.c_str());
+	cu.CTK_fileChooserDialog(getenv("HOME"),false);
+	if(cu.dialogReturnData.isValidData==true)
+		fprintf(stderr,"%s\n",cu.dialogReturnData.stringValue.c_str());
 
 	SETSHOWCURS;
 	delete mainApp;

@@ -4,8 +4,10 @@
 #Run eg:
 #(cd ../;make -j4);./openfile.cpp ~
 
+USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o fileselect ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs ./fileselect "$@"
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fileselect "$@"
 retval=$?
 rm fileselect
 reset
