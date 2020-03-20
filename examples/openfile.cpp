@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 //bool CTK_fileChooserDialog(const char *startdir,bool open,const char *filename,const char *filetypes)
 	//cu.CTK_openFile(mainApp,"Open File Example",folder,true,NULL,".png;.tiff;");
 	cu.CTK_fileChooserDialog(getenv("HOME"),true);
-	if(cu.isValidFile==true)
-		fprintf(stderr,"%s\n",cu.stringResult.c_str());
+	if(cu.dialogReturnData.isValidData==true)
+		fprintf(stderr,"%s\n",cu.dialogReturnData.stringValue.c_str());
 
 	SETSHOWCURS;
 	delete mainApp;

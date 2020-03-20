@@ -1,4 +1,6 @@
 2.0.0
+Fixed skiping disabled buttons.
+Fixed pageup/down in lists.
 Finished about dialog.
 Finished entry dialog.
 Finished query dialog.

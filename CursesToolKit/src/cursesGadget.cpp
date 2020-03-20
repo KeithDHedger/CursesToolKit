@@ -108,6 +108,7 @@ bool CTK_cursesGadgetClass::CTK_getSelectDeselects(void)
 void CTK_cursesGadgetClass::CTK_setEnabled(bool enable)
 {
 	this->enabled=enable;
+	this->isSelectable=enable;
 	this->gadgetDirty=true;
 }
 

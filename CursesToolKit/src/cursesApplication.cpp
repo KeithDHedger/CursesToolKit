@@ -492,14 +492,14 @@ void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 
 	switch(gt)
 		{
+			case LISTGADGET:
+				static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_keyUpDown(lineup,pagescroll);
+				break;
 			case TEXTGADGET:
 				if(pagescroll==true)
 					static_cast<CTK_cursesTextBoxClass*>(CURRENTGADGET)->CTK_scrollPage(lineup);
 				else
 					static_cast<CTK_cursesTextBoxClass*>(CURRENTGADGET)->CTK_scrollLine(lineup);
-				break;
-			case LISTGADGET:
-				static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_keyUpDown(lineup);
 				break;
 			case DROPGADGET:
 				if(lineup==true)
@@ -836,7 +836,7 @@ int CTK_mainAppClass::CTK_mainEventLoop_New(int runcnt,bool docls,bool leavehili
 						case CTK_KEY_END:
 							fprintf(stderr,"CTK_KEY_END\n");
 							break;
-						case CTK_KEY_PAGEUP:
+						case CTK_KEY_PAGEUP://TODO//lists
 							this->scrollGadget(true,true);
 							fprintf(stderr,"CTK_KEY_PAGEUP\n");
 							break;

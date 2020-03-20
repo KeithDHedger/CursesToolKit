@@ -48,6 +48,7 @@ void CTK_cursesTextBoxClass::CTK_newBox(int x,int y,int width,int hite,const cha
 	this->blank.insert(this->blank.begin(),width,' ');
 	this->CTK_updateText(txt,false,false);
 	this->gadgetDirty=true;
+	this->isSelectable=selectable;
 }
 
 /**

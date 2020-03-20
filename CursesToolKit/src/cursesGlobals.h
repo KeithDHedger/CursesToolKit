@@ -52,7 +52,7 @@ struct fbData
 	int							screenHeight=1;
 };
 
-enum  utilVarType {BOOLVAR,INTVAR,CHARVAR,BADTYPE};
+enum  utilVarType {BOOLVAR,INTVAR,CHARVAR,MULTVAR,BADTYPE};
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"

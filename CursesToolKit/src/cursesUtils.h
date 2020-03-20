@@ -30,12 +30,16 @@
 #define ABOUTHITE 10
 #define QUERYBOXWIDTH 60
 #define ENTRYWIDTH 40
+#define CHOOSERBTNWIDTH 12
 
-enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO,CUABOUTCLOSE,CUABOUTCREDITS,CUABOUTLICENCE,CUABOUTDONE};
+enum {CUENTRYOK=5000,CUENTRYCANCEL,CUENTRYNO,CUABOUTCLOSE,CUABOUTCREDITS,CUABOUTLICENCE,CUABOUTDONE,CUCHOOSEROK,CUCHOOSERSHOW,CUCHOOSERCANCEL};
+enum {CUOPENFILE,CUOPENFOLDER,CUSAVEFILE};
 
 class CTK_mainAppClass;
 class CTK_cursesInputClass;
 class CTK_cursesGadgetClass;
+class CTK_cursesChooserClass;
+class CTK_cursesTextBoxClass;
 
 struct varsStruct
 {
@@ -48,9 +52,12 @@ struct varsStruct
 
 struct utilDialogStruct
 {
-	CTK_mainAppClass		*mc;
-	CTK_cursesInputClass	*input;
+	CTK_mainAppClass		*mc=NULL;
+	CTK_cursesInputClass	*input=NULL;
 	CTK_cursesGadgetClass	*defaultGadget=NULL;
+	CTK_cursesChooserClass	*chooser=NULL;
+	CTK_cursesTextBoxClass	*results=NULL;
+
 	bool					boolValue=false;
 	int						intValue=-1;
 	std::string				stringValue="";
