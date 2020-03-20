@@ -235,14 +235,15 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 				ud->stringValue=ud->input->CTK_getText();
 				ud->varType=INTVAR;
 				break;
-			case CUENTRYNO:
+			case CUQUERYNO:
 				ud->isValidData=true;
-				ud->intValue=CUENTRYNO;
+				ud->intValue=CUQUERYNO;
 				ud->varType=INTVAR;
 				ud->stringValue="";
 				break;
+			case CUQUERYCANCEL:
 			case CUENTRYCANCEL:
-				ud->isValidData=true;
+				ud->isValidData=false;
 				ud->intValue=CUENTRYCANCEL;
 				ud->varType=INTVAR;
 				ud->stringValue="";
@@ -532,7 +533,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 		{
 			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,maxbtns,10,btnnum);
 			button=app->CTK_addNewButton(genx,geny,10,1,"  NO  ");
-			button->userData=(void*)CUENTRYNO;
+			button->userData=(void*)CUQUERYNO;
 			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			defhold=button;
 			btnnum++;
@@ -542,7 +543,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 		{
 			genx=this->CTK_getGadgetPosX(CURRENTPAGE(app).boxX,CURRENTPAGE(app).boxW,maxbtns,10,btnnum);
 			button=app->CTK_addNewButton(genx,geny,10,1,"CANCEL");
-			button->userData=(void*)CUENTRYCANCEL;
+			button->userData=(void*)CUQUERYCANCEL;
 			button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			defhold=button;
 			btnnum++;
