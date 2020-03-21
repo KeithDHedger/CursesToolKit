@@ -78,6 +78,7 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 	FILE						*f;
 	bool						flag=true;
 	std::string					buff;
+	bool						noeol=false;
 
 	this->gadgetDirty=true;
 	this->txtStrings.clear();
@@ -115,16 +116,34 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 			else
 				{
 					fseek(f,0,SEEK_SET);
-					this->txtBuffer=(char*)malloc(fsize+2);
+					this->txtBuffer=(char*)malloc(fsize+1);
 					fread(this->txtBuffer,1,fsize,f);
-					this->txtBuffer[fsize]='\n';
-					this->txtBuffer[fsize+1]=0;
+					this->txtBuffer[fsize]=0;
 				}
 			fclose(f);
 		}
 
 	str=this->txtBuffer;
+
+	if(str.back()!=0xa)
+		noeol=true;
+
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-this->lineReserve,this->tabWidth,this->sx+this->lineReserve,true);
+
+	if(this->addedNL==false)
+		{
+			this->addedNL=true;
+			if(noeol==true)
+				{
+					this->txtStrings.push_back("\n\n");
+					realAddedNL=true;
+				}
+			else
+				{
+					realAddedNL=false;
+					this->txtStrings.push_back("\n");
+				}
+		}
 
 	this->lineNumbers.clear();
 	this->startLineNumber=1;
@@ -561,11 +580,21 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 
 /**
 * Get the current text buffer.
+* \return char*
+* \note Returns a copy of the buffer, caller should free.
 */
-const char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
+char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
 {
-	this->updateBuffer();
-	return(this->txtBuffer);
+	char	*retdata;
+
+	asprintf(&retdata,"%s",this->txtBuffer);
+	if(this->realAddedNL==true)
+		retdata[strlen(retdata)-2]=0;
+	return(retdata);
+
+
+//	this->updateBuffer();
+//	return(this->txtBuffer);
 }
 
 /**

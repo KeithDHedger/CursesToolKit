@@ -684,10 +684,13 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 //fprintf(stderr,">>>>current gadget=%i current page=%i\n",THISPAGE.currentGadget,this->pageNumber);
 	if(THISPAGE.ignoreFirstTab==true)
 		{
-			THISPAGE.ignoreFirstTab=false;
-			CURRENTGADGET->CTK_drawGadget(true);
-			CURRENTGADGET->hiLited=true;
-			return;
+			if((THISPAGE.currentGadget!=-1))
+				{
+					THISPAGE.ignoreFirstTab=false;
+					CURRENTGADGET->CTK_drawGadget(true);
+					CURRENTGADGET->hiLited=true;
+					return;
+				}
 		}
 
 	if((THISPAGE.currentGadget!=-1))

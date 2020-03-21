@@ -1,4 +1,5 @@
 2.0.0
+Fixed displaying files with no nl at end of file.
 Changed OK to Yes in query dialog.
 Deleted dev branch.
 Merged dev.

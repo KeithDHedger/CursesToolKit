@@ -46,6 +46,7 @@ CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc)
 	this->CTK_setCommon(mc);
 	this->thisType=SRCBOXCLASS;
 	this->type=SRCGADGET;
+	this->addedNL=false;
 }
 
 /**
@@ -68,6 +69,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	srchilite::SourceHighlight	sourceHighlight("esc.outlang");
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
 	std::string					buff;
+	bool						noeol=false;
 
 	this->gadgetDirty=true;
 	this->txtStrings.clear();
@@ -105,17 +107,34 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			else
 				{
 					fseek(f,0,SEEK_SET);
-					this->txtBuffer=(char*)malloc(fsize+2);
+					this->txtBuffer=(char*)malloc(fsize+1);
 					fread(this->txtBuffer,1,fsize,f);
-					this->txtBuffer[fsize]='\n';
-					this->txtBuffer[fsize+1]=0;
+					this->txtBuffer[fsize]=0;
 				}
 			fclose(f);
 		}
 
 //code
 	str=this->txtBuffer;
+	if(str.back()!=0xa)
+		noeol=true;
 	this->txtStrings=cu.CTK_cursesUtilsClass::CTK_explodeWidth(str,'\n',this->wid-1-this->lineReserve,this->tabWidth);
+
+	if(this->addedNL==false)//TODO//nasty hack!
+		{
+			this->addedNL=true;
+			if(noeol==true)
+				{
+					this->txtStrings.push_back("\n\n");
+					realAddedNL=true;
+				}
+			else
+				{
+					realAddedNL=false;
+					this->txtStrings.push_back("\n");
+				}
+		}
+
 	bool	flag=true;
 	this->lineNumbers.clear();
 	this->startLineNumber=1;
@@ -138,6 +157,11 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 					flag=false;
 				}
 		}
+//	if(noeol==true)
+//	{
+//	this->srcStrings.push_back("\n\n");
+//inpstream << '\n' << "printf" << '\n' << '\n' << '\n';
+//	}
 	inpstream << std::endl; 
 //sourceHighlight.backgroundColor("white");
 	sourceHighlight.setDataDir(SRCDATADIR);
@@ -167,6 +191,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
+
 }
 
 /**
@@ -178,7 +203,6 @@ void CTK_cursesSourceEditBoxClass::updateBuffer(void)
 	buff.clear();
 	for(int j=0;j<this->txtStrings.size();j++)
 		buff.append(this->txtStrings[j]);
-
 	this->gadgetDirty=true;
 	this->CTK_updateText(buff.c_str(),false,false);
 	this->needsRefresh=false;
@@ -223,10 +247,16 @@ void CTK_cursesSourceEditBoxClass::refreshLine(void)
 
 /**
 * Get the current text buffer.
+* \return char*
+* \note Returns a copy of the buffer, caller should free.
 */
-const char *CTK_cursesSourceEditBoxClass::CTK_getBuffer(void)
+char *CTK_cursesSourceEditBoxClass::CTK_getBuffer(void)
 {
-	this->updateBuffer();
-	return(this->txtBuffer);
+	char	*retdata;
+
+	asprintf(&retdata,"%s",this->txtBuffer);
+	if(this->realAddedNL==true)
+		retdata[strlen(retdata)-2]=0;
+	return(retdata);
 }
 

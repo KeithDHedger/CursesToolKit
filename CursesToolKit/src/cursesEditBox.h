@@ -53,7 +53,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
 
-		virtual const char			*CTK_getBuffer(void);
+		virtual char				*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
 		const std::string			CTK_getCurrentWord(void);
 		void						CTK_startSelecting(void);
@@ -85,6 +85,8 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 	private:
 		bool						needsRefresh=false;
 		void						drawBox(bool hilite=false,bool showcursor=false,bool shortupdate=false);
+		bool						addedNL=false;
+		bool						realAddedNL=false;
 
 	protected:
 		int							thisType;

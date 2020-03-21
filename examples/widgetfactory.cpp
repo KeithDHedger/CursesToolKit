@@ -39,14 +39,16 @@ exit $retval
 
 #include <cursesGlobals.h>
 
-CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-CTK_cursesTextBoxClass	*resulttextbox;
-CTK_cursesTextBoxClass	*resultbuttonstextbox;
-CTK_cursesDropClass		*dropdown;
+CTK_mainAppClass				*mainApp=new CTK_mainAppClass();
+CTK_cursesTextBoxClass			*resulttextbox;
+CTK_cursesTextBoxClass			*resultbuttonstextbox;
+CTK_cursesDropClass				*dropdown;
+CTK_cursesSourceEditBoxClass	*srceditbox;
+	CTK_cursesEditBoxClass		*editbox;
 
-bool					mbarVis=true;
-int						b1Cnt=0;
-int						b2Cnt=0;
+bool							mbarVis=true;
+int								b1Cnt=0;
+int								b2Cnt=0;
 
 #define FILEMENU 0
 #define QUITITEM 5
@@ -100,6 +102,7 @@ bool buttonselctCB(void *inst,void *userdata)
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	long					ud=(long)userdata;
+	char					*srcbuffercopy;
 
 	if(userdata!=NULL)
 		{
@@ -115,11 +118,17 @@ bool buttonselctCB(void *inst,void *userdata)
 						b1Cnt++;
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b1Cnt);
 						resultbuttonstextbox->CTK_updateText(buffer);
+						srcbuffercopy=srceditbox->CTK_getBuffer();
+						fprintf(stderr,">>%s<<",srcbuffercopy);
+						free(srcbuffercopy);
 						break;
 					case BUTTON2:
 						b2Cnt++;
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b2Cnt);
 						resultbuttonstextbox->CTK_updateText(buffer);
+						srcbuffercopy=editbox->CTK_getBuffer();
+						fprintf(stderr,">>%s<<",srcbuffercopy);
+						free(srcbuffercopy);
 						break;
 				}
 		}
@@ -185,8 +194,8 @@ int main(int argc, char **argv)
 	CTK_cursesInputClass			*input;
 	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
-	CTK_cursesEditBoxClass			*editbox;
-	CTK_cursesSourceEditBoxClass	*srceditbox;
+//	CTK_cursesEditBoxClass			*editbox;
+//	CTK_cursesSourceEditBoxClass	*srceditbox;
 	CTK_cursesLabelClass			*label;
 //	CTK_cursesChooserClass			*chooser;
 //	CTK_cursesFBImageClass			*fbimage;
@@ -330,7 +339,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Code Editor Box");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
-	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"./widgetfactory.cpp");
+	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"/tmp/CPPScript.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
 	cs.backCol=BACK_BLACK;
 	cs.foreCol=FORE_WHITE;
