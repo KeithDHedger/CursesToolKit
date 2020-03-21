@@ -4,7 +4,7 @@
 #Run eg:
 #(cd ..;make -j4);./inputbox.cpp "$(echo -ne "Body String line 1\nLine 2\nLine 3\nLine 4")" "Default Input String" "Window name" "Dialog title"  1 40
 
-#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o inputbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./inputbox "$@"

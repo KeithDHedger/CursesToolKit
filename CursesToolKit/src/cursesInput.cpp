@@ -81,10 +81,17 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
 
+
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+
+//	if(this->text.length()==0)
+//		{
+//			MOVETO(this->sx,this->sy);
+//			return;
+//		}
 
 	if(this->curs>=this->wid)//TODO//
 		{
@@ -98,8 +105,16 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 		}
 	else
 		{
-			this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
-			MOVETO(this->sx+this->curs,this->sy);
+			if(this->text.length()>0)
+				{
+					this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
+					MOVETO(this->sx+this->curs,this->sy);
+				}
+			else
+				{
+					this->gc->CTK_printJustLine(" ",this->sx,this->sy,this->wid,LEFTJUSTIFY);
+					MOVETO(this->sx,this->sy);
+				}
 		}
 }
 
