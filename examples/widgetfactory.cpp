@@ -194,16 +194,12 @@ int main(int argc, char **argv)
 	CTK_cursesInputClass			*input;
 	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
-//	CTK_cursesEditBoxClass			*editbox;
-//	CTK_cursesSourceEditBoxClass	*srceditbox;
 	CTK_cursesLabelClass			*label;
-//	CTK_cursesChooserClass			*chooser;
-//	CTK_cursesFBImageClass			*fbimage;
 
 	const char	*menuNames[]={"File","Edit","Tabs","Help",NULL};
 	const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
 	const char	*editMenuNames[]={" _Copy Word"," C_ut Word"," Copy _Line"," Cut L_ine"," _Paste",NULL};
-	const char	*tabMenuNames[]={" Instructions "," Edit Box"," Code Box"," Lists"," Labels"," Input Box"," Buttons"," Dialogs"," _Next Tab"," _Prev Tab",NULL};
+	const char	*tabMenuNames[]={" _Instructions "," _Edit Box"," _Code Box"," _Lists"," L_abels"," _Input Box"," _Buttons"," _Dialogs"," _Next Tab"," _Prev Tab",NULL};
 	const char	*helpMenuNames[]={" _Help"," A_bout",NULL};
 	
 	const char	*sampletxt="Press 'ESC' to activate/deactivate menus.\nUse 'LEFT/RIGHT/IP/DOWN' arrow keys to navigate menus.\n\
@@ -339,7 +335,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Code Editor Box");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
-	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"/tmp/CPPScript.cpp");
+	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"./widgetfactory.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
 	cs.backCol=BACK_BLACK;
 	cs.foreCol=FORE_WHITE;
@@ -392,7 +388,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	list->CTK_setMultipleSelect(true);
 	list->CTK_setSelectDeselects(false);
-//	list->CTK_setSelectKey(TERMKEY_SYM_SPACE);
 
 	cs.textBoxType=INBOX;
 	cs.backCol=BACK_WHITE;
@@ -415,9 +410,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,2,"Default justified non selectable label.\nLine 2 of label.");
-	label=mainApp->CTK_addNewLabel(genx,geny+=6,genw,2,"Centred non selectable label.\nLine 2 of label.");
+	label=mainApp->CTK_addNewLabel(genx,geny+=4,genw,2,"Centred non selectable label.\nLine 2 of label.");
 	label->CTK_setJustify(CENTREJUSTIFY);
-	label=mainApp->CTK_addNewLabel(genx,geny+=6,genw,2,"Right justified non selectable label.\nLine 2 of label.");
+	label=mainApp->CTK_addNewLabel(genx,geny+=4,genw,2,"Right justified non selectable label.\nLine 2 of label.");
 	label->CTK_setJustify(RIGHTJUSTIFY);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	geny=6;
@@ -506,7 +501,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //page 6
 //dialogs with back window
 	mainApp->CTK_addPage();
-	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",140,10);
+	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",-1,20);
 	CURRENTPAGE(mainApp).fancyWindow=true;
 	CURRENTPAGE(mainApp).windowName="Fancy Window";
 	CURRENTPAGE(mainApp).dialogName="Dialog  Name";
@@ -530,10 +525,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->eventLoopCBIn=mainloopCBIn;
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
-	//mainApp->CTK_mainEventLoop();
 	mainApp->CTK_mainEventLoop();
-	SETSHOWCURS;
 
 	delete mainApp;
+	SETSHOWCURS;
 	return 0;
 }

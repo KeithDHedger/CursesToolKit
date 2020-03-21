@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	if(cu->CTK_entryDialog(argv[1],argv[2],argv[3],argv[4],atoi(argv[5]),atoi(argv[6]))==true)
 		fprintf(stderr,"Input box=%s, Button pressed=%i\n",cu->dialogReturnData.stringValue.c_str(),cu->dialogReturnData.intValue);
 
-	SETSHOWCURS;
 	delete cu;
+	SETSHOWCURS;
 	return(0);
 }

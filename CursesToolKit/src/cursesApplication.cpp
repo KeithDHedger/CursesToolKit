@@ -786,7 +786,7 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 }
 
 /**
-* New Main event loop.
+* Main event loop.
 * \note Handles highlighting selecting etc etc.
 * \note runcnt<0 Wait upto abs(runcnt) ms for a keypress, run 1 main loop if timeout.
 * \note runcnt=0 Default, run main loop continously.
@@ -794,6 +794,8 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 {
+	SETHIDECURS;
+
 	if(docls==true)
 		{
 			this->CTK_clearScreen();
@@ -1112,10 +1114,10 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 	THISPAGE.dialogName=dialogname;
 	THISPAGE.fancyWindow=true;
 
-	if(dialogwidth==-1)
+	if((dialogwidth==-1) || (dialogwidth>this->maxCols-7))
 		{
-			THISPAGE.boxW=this->maxCols-9;
-			THISPAGE.boxX=5;
+			THISPAGE.boxW=this->maxCols-7;
+			THISPAGE.boxX=4;
 			THISPAGE.boxWM=this->maxCols/2;
 		}
 	else
@@ -1126,17 +1128,17 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 
-	if(dialoghite==-1)
+	if((dialoghite==-1) || (dialoghite>this->maxRows-6))
 		{
-			THISPAGE.boxH=this->maxRows-8;
-			THISPAGE.boxY=5;
-			THISPAGE.boxHM=(this->maxRows/2);
+			THISPAGE.boxH=this->maxRows-6;
+			THISPAGE.boxY=4;
+			THISPAGE.boxHM=((this->maxRows)/2);
 		//	fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 	else
 		{
 			THISPAGE.boxH=dialoghite;
-			THISPAGE.boxY=(this->maxRows/2)-(dialoghite/2);
+			THISPAGE.boxY=(this->maxRows/2)-(dialoghite/2)+1;
 			THISPAGE.boxHM=this->maxRows/2;
 			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}

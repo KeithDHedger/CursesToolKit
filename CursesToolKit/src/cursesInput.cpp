@@ -87,12 +87,6 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-//	if(this->text.length()==0)
-//		{
-//			MOVETO(this->sx,this->sy);
-//			return;
-//		}
-
 	if(this->curs>=this->wid)//TODO//
 		{
 			while(this->curs>=this->wid)

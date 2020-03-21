@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	if(cu->CTK_queryDialog(argv[1],argv[2],argv[3],atoi(argv[4])))
 		fprintf(stderr,"Button pressed=%i\n",cu->dialogReturnData.intValue);
 
-	SETSHOWCURS;
 	delete cu;
+	SETSHOWCURS;
 	return(0);
 }
