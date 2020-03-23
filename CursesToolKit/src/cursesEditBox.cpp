@@ -779,6 +779,8 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	this->currentY=j;
 	this->startLine=j;
 	this->adjustXY();
+	this->mc->CTK_clearScreen();
+	this->mc->CTK_updateScreen(this->mc,NULL);
 }
 
 /**

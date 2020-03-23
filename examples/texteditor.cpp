@@ -269,7 +269,6 @@ bool menuSelectCB(void *inst,void *userdata)
 										srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 										break;
 									}
-								mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							}
 							break;
 						case FIND:

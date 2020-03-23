@@ -357,9 +357,9 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)//TODO//
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
 	CTK_cursesGraphicsClass	cu(app);
 //TODO//
-MOVETO(1,1)
+	MOVETO(1,1)
 //app->CTK_clearScreen();
-app->drawAllGadgets();
+	app->drawAllGadgets();
 return;
 	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
 
