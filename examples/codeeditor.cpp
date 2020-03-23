@@ -110,7 +110,7 @@ void rebuildBMMenu(void)
 		}
 }
 
-void menuSelectCB(void *inst,void *userdata)
+bool menuSelectCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 	
@@ -126,11 +126,9 @@ void menuSelectCB(void *inst,void *userdata)
 								char	*uddata;
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
 								std::ofstream output(uddata);
-								//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 								srcbox->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
 								srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows,true,uddata);
-								//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
 								srcbox->CTK_setShowLineNumbers(showLineNumbers);
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
@@ -144,18 +142,14 @@ void menuSelectCB(void *inst,void *userdata)
 								std::string				str;
 								CTK_cursesUtilsClass	cu;
 								char					*buffer=get_current_dir_name();
-								cu.CTK_openFile(mainApp,"Open File",buffer);
-								if(cu.isValidFile==true)
+								cu.CTK_fileChooserDialog(buffer,CUOPENFILE);
+								if(cu.dialogReturnData.isValidData==true)
 									{
-										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.stringResult.c_str());
-										//srcbox->CTK_setInputLang(NULL);
-										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setInputLang(NULL);
-										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setShowLineNumbers(showLineNumbers);
+										srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.dialogReturnData.stringValue.c_str());
 										srcbox->CTK_setShowLineNumbers(showLineNumbers);
-										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.dialogReturnData.stringValue.c_str()));
 										rebuildTabMenu();
 										rebuildBMMenu();
 									}
@@ -167,13 +161,10 @@ void menuSelectCB(void *inst,void *userdata)
 								FILE *f=fopen((char*)mainApp->pages[mainApp->pageNumber].userData,"w+");
 								if(f!=NULL)
 									{
-										//fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer());
 										fprintf(f,"%s",srcbox->CTK_getBuffer());
 										fclose(f);
-										//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=false;
 										srcbox->isDirty=false;
 									}
-								//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_updateText((char*)mainApp->pages[mainApp->pageNumber].userData,true);
 								srcbox->CTK_updateText((char*)mainApp->pages[mainApp->pageNumber].userData,true);
 							}
 							break;
@@ -183,21 +174,18 @@ void menuSelectCB(void *inst,void *userdata)
 								CTK_cursesUtilsClass	cu;
 								char					*holdstr=strdup((char*)mainApp->pages[mainApp->pageNumber].userData);
 
-								cu.CTK_openFile(mainApp,"Save As ...",dirname(holdstr),false,basename(holdstr));
-								if(cu.isValidFile==true)
+								cu.CTK_fileChooserDialog(dirname(holdstr),CUSAVEFILE,NULL,basename(holdstr));
+								if(cu.dialogReturnData.isValidData==true)
 									{
-										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.stringResult.c_str());
+										sprintf(buffer,"%s",cu.dialogReturnData.stringValue.c_str());
 										FILE *f=fopen(buffer,"w+");
 										if(f!=NULL)
 											{
-												//fprintf(f,"%s",mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getBuffer());
 												fprintf(f,"%s",srcbox->CTK_getBuffer());
 												CTK_freeAndNull((char**)&mainApp->pages[mainApp->pageNumber].userData);
 												mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(buffer));
 												fclose(f);
-												//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=false;
 												srcbox->isDirty=false;
-												//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_updateText(buffer,true);
 												srcbox->CTK_updateText(buffer,true);
 												rebuildTabMenu();
 												rebuildBMMenu();
@@ -207,14 +195,12 @@ void menuSelectCB(void *inst,void *userdata)
 							}
 							break;
 						case CLOSEITEM:
-							//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 							srcbox->CTK_setRunLoop(false);
-							//if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty==true)
 							if(srcbox->isDirty==true)
 								{
 									CTK_cursesUtilsClass	cu;
-									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
-									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
 								}
 							CTK_freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
 							mainApp->CTK_removePage(mainApp->pageNumber);
@@ -227,14 +213,12 @@ void menuSelectCB(void *inst,void *userdata)
 								}
 							break;
 						case QUITITEM:
-							//if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty==true)
 							if(srcbox->isDirty==true)
 								{
 									CTK_cursesUtilsClass	cu;
-									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
-									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
 								}
-							//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_setRunLoop(false);
 							srcbox->CTK_setRunLoop(false);
 							mainApp->runEventLoop=false;
 							break;
@@ -244,36 +228,26 @@ void menuSelectCB(void *inst,void *userdata)
 				switch(mc->menuItemNumber)
 					{
 						case COPYWORD:
-							//if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting==true)
 							if(srcbox->isSelecting==true)
 								{
-									//clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getSelection();
 									clip=srcbox->CTK_getSelection();
-									//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_finishSelecting();
 									srcbox->CTK_finishSelecting();
 								}
 							else
-								//clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentWord();
 								clip=srcbox->CTK_getCurrentWord();
 							break;
 						case CUTWORD:
-						//	if(mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isSelecting==true)
 							if(srcbox->isSelecting==true)
 								{
-								//	clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getSelection();
 									clip=srcbox->CTK_getSelection();
-									//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteSelection();
 									srcbox->CTK_deleteSelection();
 								}
 							else
 								{
-								//	clip=mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_getCurrentWord();
 									clip=srcbox->CTK_getCurrentWord();
-									//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->CTK_deleteCurrentWord();
 									srcbox->CTK_deleteCurrentWord();
 								}
 							
-							//mainApp->pages[mainApp->pageNumber].srcEditBoxes[0]->isDirty=true;
 							srcbox->isDirty=true;
 							srcbox->CTK_getBuffer();
 							break;
@@ -290,9 +264,9 @@ void menuSelectCB(void *inst,void *userdata)
 						case GOTOLINE:
 							{
 								CTK_cursesUtilsClass	cu;
-								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
+								if(cu.CTK_entryDialog("Goto line","","Jump To Line ...","",true,40)==true)
 									{
-										srcbox->CTK_gotoLine(atoi(cu.stringResult.c_str()));
+										srcbox->CTK_gotoLine(atoi(cu.dialogReturnData.stringValue.c_str()));
 										mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 										srcbox->CTK_doEvent(true,srcbox->CTK_getStrings(),srcbox->CTK_getSrcStrings());
 										break;
@@ -359,7 +333,7 @@ void menuSelectCB(void *inst,void *userdata)
 					 	{
 						 	CTK_cursesUtilsClass	*cu;
 						 	cu=new CTK_cursesUtilsClass;
-							cu->CTK_aboutDialog(mainApp,"Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE");
+								cu->CTK_aboutDialog("Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE",80);
 							delete cu;
 						}
 						break;
@@ -427,19 +401,12 @@ int main(int argc, char **argv)
 	cs.backCol=BACK_BLACK;
 
 	mainApp->CTK_setColours(cs);
-//	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"../CursesToolKit/src/cursesSourceEditBox.cpp");
-	//srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"./widgetfactory.cpp");
-	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,3,3,140,20,true,"./widgetfactory.cpp");
+	srcbox=mainApp->CTK_addNewSourceEditBox(mainApp,1,3,windowCols,windowRows-1,true,"./widgetfactory.cpp");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
 	mainApp->CTK_setPageUserData(0,(void*)strdup("../CursesToolKit/src/cursesSourceEditBox.cpp"));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,"../CursesToolKit/src/cursesSourceEditBox.cpp");
 
-//	rebuildBMMenu();
-
 //clear screen etc
-	//mainApp->CTK_mainEventLoop(-1);
-//	mainApp->CTK_setDefaultGadget(srcbox);
-	//srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 	mainApp->CTK_mainEventLoop();
 
 	for(int j=0;j<bms.size();j++)

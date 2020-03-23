@@ -51,13 +51,10 @@ const char	*helpMenuNames[]={" _Help"," About ",NULL};
 CTK_mainAppClass			*mainApp=new CTK_mainAppClass();
 int							windowRows=mainApp->maxRows-3;
 int							windowCols=mainApp->maxCols;
-//int						windowCols=40;
 int							showLineNumbers=4;
 std::vector<bookmarkStruct>	bms;
 int							newCnt=0;
 std::string					clip="";
-//int							startSelection=-1;
-//int							endSelection=-1;
 
 CTK_cursesEditBoxClass* getSrcBox(int page)
 {
@@ -97,65 +94,27 @@ void rebuildBMMenu(void)
 	for(unsigned j=0;j<mainApp->pages.size();j++)
 		{
 			srcbox=getSrcBox(j);
-			//for(int k=0;k<mainApp->pages[j].srcEditBoxes[0]->CTK_getLineCnt();k++)
-			//for(int k=0;k<mainApp->pages[j].gadgets.size();k++)
 				{
-				//	if(mainApp->pages[j].gadgets[k]->CTK_getGadgetType()==SRCGADGET)
 						{
-						//	srcbox=static_cast<CTK_cursesSourceEditBoxClass*>(mainApp->pages[j].gadgets[k]);
 							for(int k=0;k<srcbox->CTK_getLineCnt();k++)
-//fprintf(stderr,"j=%i k=%i\n",j,k);
-					if(srcbox->CTK_getBookMark(k)==true)
-						{
-							bookmarkStruct bm;
-							bm.pageNum=j;
-							bm.lineNum=srcbox->CTK_getLineAtY(k);
-							sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
-							bm.label=strdup(buffer);
-							bms.push_back(bm);
-							mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
-						}
+								if(srcbox->CTK_getBookMark(k)==true)
+									{
+										bookmarkStruct bm;
+										bm.pageNum=j;
+										bm.lineNum=srcbox->CTK_getLineAtY(k);
+										sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
+										bm.label=strdup(buffer);
+										bms.push_back(bm);
+										mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
+									}
 						}
 					}
-				
 		}
 }
-//void rebuildBMMenu(void)
-//{
-//	int		cnt=0;
-//	char	buffer[4096]={0,};
-//	CTK_cursesEditBoxClass	*edbox;
-//
-//	mainApp->menuBar->CTK_clearMenu(BMMENU);
-//	while(bmMenuNames[cnt]!=NULL)
-//		mainApp->menuBar->CTK_addMenuItem(BMMENU,bmMenuNames[cnt++]);
-//
-//	for(int j=0;j<bms.size();j++)
-//		CTK_freeAndNull(&bms[j].label);
-//	bms.clear();
-//	
-//	for(unsigned j=0;j<mainApp->pages.size();j++)
-//		{
-//			for(int k=0;k<mainApp->pages[j].editBoxes[0]->CTK_getLineCnt();k++)
-//				{
-//					if(mainApp->pages[j].editBoxes[0]->CTK_getBookMark(k)==true)
-//						{
-//							bookmarkStruct bm;
-//							bm.pageNum=j;
-//							bm.lineNum=mainApp->pages[j].editBoxes[0]->CTK_getLineAtY(k);
-//							sprintf(buffer,"Tab %i, Line %i",bm.pageNum,bm.lineNum);
-//							bm.label=strdup(buffer);
-//							bms.push_back(bm);
-//							mainApp->menuBar->CTK_addMenuItem(BMMENU,(const char*)buffer);
-//						}
-//				}
-//		}
-//}
 
-void menuSelectCB(void *inst,void *userdata)
+bool menuSelectCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
-	
 //	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
 	CTK_cursesEditBoxClass	*srcbox=getSrcBox(mainApp->pageNumber);;
 
@@ -183,14 +142,14 @@ void menuSelectCB(void *inst,void *userdata)
 								std::string				str;
 								CTK_cursesUtilsClass	cu;
 								char					*buffer=get_current_dir_name();
-								cu.CTK_openFile(mainApp,"Open File",buffer);
-								if(cu.isValidFile==true)
+								cu.CTK_fileChooserDialog(buffer,CUOPENFILE);
+								if(cu.dialogReturnData.isValidData==true)
 									{
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.stringResult.c_str());
+										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.dialogReturnData.stringValue.c_str());
 										srcbox->CTK_setShowLineNumbers(showLineNumbers);
-										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.stringResult.c_str()));
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.dialogReturnData.stringValue.c_str()));
 										rebuildTabMenu();
 										rebuildBMMenu();
 									}
@@ -214,11 +173,11 @@ void menuSelectCB(void *inst,void *userdata)
 								CTK_cursesUtilsClass	cu;
 								char					*holdstr=strdup((char*)mainApp->pages[mainApp->pageNumber].userData);
 
-								cu.CTK_openFile(mainApp,"Save As ...",dirname(holdstr),false,basename(holdstr));
-								if(cu.isValidFile==true)
+								cu.CTK_fileChooserDialog(dirname(holdstr),CUSAVEFILE,NULL,basename(holdstr));
+								if(cu.dialogReturnData.isValidData==true)
 									{
-										sprintf(buffer,"%s/%s",cu.inFolder.c_str(),cu.stringResult.c_str());
-										FILE *f=fopen(cu.stringResult.c_str(),"w+");
+										sprintf(buffer,"%s",cu.dialogReturnData.stringValue.c_str());
+										FILE *f=fopen(cu.dialogReturnData.stringValue.c_str(),"w+");
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",srcbox->CTK_getBuffer());
@@ -237,8 +196,8 @@ void menuSelectCB(void *inst,void *userdata)
 							if(srcbox->isDirty==true)
 								{
 									CTK_cursesUtilsClass	cu;
-									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
-									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
 								}
 							srcbox->CTK_setRunLoop(false);
 							CTK_freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
@@ -255,8 +214,8 @@ void menuSelectCB(void *inst,void *userdata)
 							if(srcbox->isDirty==true)
 								{
 									CTK_cursesUtilsClass	cu;
-									cu.CTK_queryDialog(mainApp,"File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS);
-									fprintf(stderr,"Button pressed=%i\n",cu.intResult);
+									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
 								}
 							srcbox->CTK_setRunLoop(false);
 							mainApp->runEventLoop=false;
@@ -303,9 +262,9 @@ void menuSelectCB(void *inst,void *userdata)
 						case GOTOLINE:
 							{
 								CTK_cursesUtilsClass	cu;
-								if(cu.CTK_entryDialog(mainApp,"Goto Line Number?","","Jump To Line ...",NULL,true))
+								if(cu.CTK_entryDialog("Goto line","","Jump To Line ...","",true,40)==true)
 									{
-										srcbox->CTK_gotoLine(atoi(cu.stringResult.c_str()));
+										srcbox->CTK_gotoLine(atoi(cu.dialogReturnData.stringValue.c_str()));
 										mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 										srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 										break;
@@ -371,7 +330,7 @@ void menuSelectCB(void *inst,void *userdata)
 					 	{
 						 	CTK_cursesUtilsClass	*cu;
 						 	cu=new CTK_cursesUtilsClass;
-							cu->CTK_aboutDialog(mainApp,"Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE");
+								cu->CTK_aboutDialog("Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE",80);
 							delete cu;
 						}
 					 	break;
@@ -390,8 +349,7 @@ void mainloopCB(void *mainc,void *data)
 
 int main(int argc, char **argv)
 {
-//	const char				*ftol="texteditor.cpp";
-	const char				*ftol="/media/LinuxData/Development64/Projects/CursesToolKit/CursesToolKit/src/cursesSourceEditBox.cpp";
+	const char				*ftol="texteditor.cpp";
 	coloursStruct			cs;
 	CTK_cursesEditBoxClass	*srcbox;
 
@@ -451,19 +409,15 @@ int main(int argc, char **argv)
 	mainApp->CTK_setColours(cs);
 
 //int bw=32;
-	//srcbox=mainApp->CTK_addNewEditBox(mainApp,101,3,windowCols-1-101,windowRows-1,false,"\n");
 	srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,false,"\n");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
 	mainApp->CTK_setPageUserData(0,(void*)strdup(ftol));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,ftol);
 
-
 	srcbox->CTK_updateText(ftol,true);
 	srcbox->CTK_toggleBookMark(10);
 	srcbox->CTK_toggleBookMark(56);
 	rebuildBMMenu();
-	//srcbox->CTK_setEditable(true);
-//fprintf(stderr,">%s<\n",typeid(srcbox).name());
 
 	mainApp->eventLoopCBIn=mainloopCB;
 	mainApp->CTK_mainEventLoop();
