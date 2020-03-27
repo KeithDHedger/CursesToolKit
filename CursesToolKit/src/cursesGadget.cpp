@@ -37,7 +37,7 @@ void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 {
 	this->mc=mc;
 	this->gc=new CTK_cursesGraphicsClass(mc);
-	this->CTK_setColours(this->mc->colours);
+	this->CTK_setColours(&this->mc->colours);
 	this->isSelectable=true;
 	this->selectDeselects=true;
 	this->enabled=true;
@@ -80,10 +80,9 @@ void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
 /**
 * Set gadget colours etc.
 */
-void CTK_cursesGadgetClass::CTK_setColours(coloursStruct cs)
+void CTK_cursesGadgetClass::CTK_setColours(coloursStruct *cs,bool force)
 {
-	this->colours=cs;
-	this->gc->CTK_setColours(this->colours);
+	this->gc->CTK_setColours(cs,&this->colours,force);
 }
 
 /**

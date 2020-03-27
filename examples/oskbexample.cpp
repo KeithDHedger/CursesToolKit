@@ -22,7 +22,7 @@ exit $retval
 int main(int argc, char **argv)
 {
 	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-	CTK_cursesKeyboardClass		*oskb=new CTK_cursesKeyboardClass(mainApp);
+	CTK_cursesKeyboardClass	*oskb=new CTK_cursesKeyboardClass(mainApp);
 	varsStruct				vsitem;
 	std::vector<varsStruct> outvs;
 	std::vector<varsStruct> invs;

@@ -130,7 +130,7 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 {
 	char	*buffer=(char*)alloca(PATH_MAX);
 
-	this->lb->CTK_setColours(app->colours);
+	this->lb->CTK_setColours(&app->colours);
 
 	this->files->LFSTK_setFollowLinks(true);
 	this->files->LFSTK_setFindType(this->types);

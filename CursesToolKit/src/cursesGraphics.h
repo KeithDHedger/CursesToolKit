@@ -29,7 +29,9 @@ class CTK_cursesGraphicsClass
 		CTK_cursesGraphicsClass(CTK_mainAppClass *mc);
 		~CTK_cursesGraphicsClass();
 
-		void				CTK_setColours(coloursStruct cs);
+//		coloursStruct		colours;
+
+		void				CTK_setColours(coloursStruct *srccs,coloursStruct *dstcs,bool force=false);
 		void				CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
 		void				CTK_drawDialogWindow(void);
 
@@ -42,7 +44,7 @@ class CTK_cursesGraphicsClass
 
 	private:
 		void				detab(char *in,char *out,int maxlen,int sx);
-		coloursStruct		colours;
+		void				setUserColours(coloursStruct *cs);
 		int					tabWidth;
 		int					reservedSpace;
 		CTK_mainAppClass	*mc=NULL;

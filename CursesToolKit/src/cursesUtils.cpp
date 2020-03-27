@@ -324,7 +324,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
 	cs.textBoxType=INBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 
 	switch(choosertype)
 		{
@@ -435,7 +435,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,9);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -495,7 +495,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,7);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -571,7 +571,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow("About ...","",ABOUTWIDTH,ABOUTHITE);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -613,7 +613,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 //page 1 credits
 	cs.labelBoxType=INBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 	app->CTK_addPage();
 	app->CTK_setDialogWindow("Credits ...","",dialogwidth,-1);
 	CURRENTPAGE(app).fancyWindow=true;
@@ -629,7 +629,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 
 //page 2 licence
 	cs.textBoxType=INBOX;
-	app->CTK_setColours(cs);
+	app->CTK_setColours(&cs,true);
 	app->CTK_addPage();
 	app->CTK_setDialogWindow("Licence ...","",dialogwidth,-1);
 	CURRENTPAGE(app).fancyWindow=true;

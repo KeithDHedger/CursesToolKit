@@ -36,12 +36,49 @@ CTK_cursesGraphicsClass::CTK_cursesGraphicsClass(CTK_mainAppClass *mc)
 	this->mc=mc;
 }
 
+
+/**
+* Set colours etc from user defined colours.
+*/
+void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
+{
+	const char	*names[]={"forecolour","backcol","hiliteforecol","hilitebackcol","markbackcol","markforecol","cursbackcol","cursforecol","menubackcol","menuforecol","menuhilitebackcol","menuhiliteforecol","linenumbackcol","linenumforecol","windowbackcol","windowforecol","buttonbackcol","buttonforecol","buttondisabledforecol","disabledforecol","boxtype","textboxtype","inputboxtype","labelboxtype","listboxtype",NULL};
+	int			cnt=0;
+	varsStruct	vsitem;
+	int			*ptr;
+
+	if(this->mc->gotUserColours==false)
+		return;
+
+	ptr=(int*)cs;
+	while(names[cnt]!=NULL)
+		{
+			vsitem=this->mc->utils->CTK_findVar(this->mc->appColours,names[cnt]);
+			if(vsitem.vType==INTVAR)
+				ptr[cnt]=vsitem.intVar;
+			cnt++;
+		}
+}
+
 /**
 * Set colours etc from coloursStruct.
+* \note if force==true override user colours.
+* \note user colours are set 1st then overridden by cs.
+* \note if force==false colours are set from cs then overridden by user colours.
 */
-void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct cs)
+void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct *srccs,coloursStruct *dstcs,bool force)
 {
-	this->colours=cs;
+	if(force==true)
+		{
+			
+			this->setUserColours(dstcs);
+			memcpy(dstcs,srccs,sizeof(coloursStruct));
+		}
+	else
+		{
+			memcpy(dstcs,srccs,sizeof(coloursStruct));
+			this->setUserColours(dstcs);
+		}
 }
 
 /**
@@ -95,7 +132,7 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	int	foreblack=FORE_BLACK;
 	int	forewhite=FORE_BOLD_WHITE;
 
-	if(this->colours.use256Colours==true)
+	if(this->mc->colours.use256Colours==true)
 		{
 			foreblack=0;
 			forewhite=15;
@@ -120,7 +157,7 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 				break;
 		}
 
-	setBothColours(topcol,this->colours.backCol,this->colours.use256Colours);
+	setBothColours(topcol,this->mc->colours.backCol,this->mc->colours.use256Colours);
 
 //FLICKER//TODO//
 	if(fill==true)
@@ -137,23 +174,23 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	printf("%s",TOPLEFT);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
-	setForeColour(botcol,this->colours.use256Colours);
+	setForeColour(botcol,this->mc->colours.use256Colours);
 	printf("%s",TOPRITE);
 
 	for(int j=1;j<h;j++)
 		{
-			setForeColour(topcol,this->colours.use256Colours);
+			setForeColour(topcol,this->mc->colours.use256Colours);
 			MOVETO(x,y+j);
 			printf(VBAR);
-			setForeColour(botcol,this->colours.use256Colours);
+			setForeColour(botcol,this->mc->colours.use256Colours);
 			MOVETO(x+w,y+j);
 			printf(VBAR);
 		}
 
-	setForeColour(topcol,this->colours.use256Colours);
+	setForeColour(topcol,this->mc->colours.use256Colours);
 	MOVETO(x,y+h);
 	printf("%s",BOTTOMLEFT);
-	setForeColour(botcol,this->colours.use256Colours);
+	setForeColour(botcol,this->mc->colours.use256Colours);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
 	printf("%s",BOTTOMRITE);

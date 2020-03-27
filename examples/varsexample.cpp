@@ -2,7 +2,7 @@
 
 #©keithhedger Thu 19 Sep 11:20:00 BST 2019 kdhedger68713@gmail.com
 
-#USEVALGRIND="valgrind --leak-check=full"
+#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
 g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0" -o varsexample ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./varsexample "$@"

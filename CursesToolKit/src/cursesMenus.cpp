@@ -71,7 +71,7 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 			if((this->menuShowing==true) && (this->menuNumber==j))
 				{
 					if(this->menuNames[j]->menuEnabled==true)
-						setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+						setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
 					else
 						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 					printf( "%s" ,this->menuNames[j]->menuName);
@@ -413,7 +413,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
-										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										//this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										this->menuItemNumber=selection+this->menuStart-1;
 										if(this->menuItemNumber>-1)
 											this->selectCB(this,NULL);

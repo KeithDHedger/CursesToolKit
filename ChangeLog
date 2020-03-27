@@ -1,3 +1,11 @@
+2.0.1
+Fixed setting default gadget when switching pages from menu.
+Fixed examples.
+Redone main menu select colours.
+Added default colour rc to examples.
+Redone CTK_setColours.
+Added user colours override.
+
 2.0.0
 Fixed trying to make dialogs t big.
 Fixed input gadget when label=="".

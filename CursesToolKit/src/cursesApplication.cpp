@@ -55,15 +55,28 @@ CTK_mainAppClass::CTK_mainAppClass()
 {
 	int		fbfd=0;
 	winsize	w;
+	std::string	filepath;
 
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;
 	this->maxCols=w.ws_col;
 	this->pages.clear();
-	this->CTK_addPage();
-	this->pageNumber=0;
 	this->utils=new CTK_cursesUtilsClass(this);
 	this->gc=new CTK_cursesGraphicsClass(this);
+
+	filepath=getenv("HOME");
+	filepath+="/.config/ctk.colours.rc";
+	if(access(filepath.c_str(),F_OK)==0)
+		{
+			this->appColours=this->utils->CTK_loadVars(filepath.c_str());
+			varsStruct				vsitem;
+			vsitem=this->utils->CTK_findVar(this->appColours,"forecolour");
+			this->colours.foreCol=vsitem.intVar;
+			this->gotUserColours=true;
+		}
+
+	this->CTK_addPage();
+	this->pageNumber=0;
 
 	if(frameBufferData.fbIsMapped==false)
 		{
@@ -155,7 +168,7 @@ CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int widt
 	txtbox->tabWidth=this->tabWidth;
 	txtbox->CTK_newBox(x,y,width,hite,"",selectable);
 	txtbox->CTK_updateText(txt,isfilename);
-	txtbox->CTK_setColours(this->colours);
+	txtbox->CTK_setColours(&this->colours);
 	this->pages[this->pageNumber].gadgets.push_back(txtbox);
 	return(txtbox);
 }
@@ -548,7 +561,8 @@ void CTK_mainAppClass::runMenus(void)
 			this->menuBar->CTK_doMenuEvent(0,1,true);
 			this->menuBar->CTK_drawDefaultMenuBar();
 			this->CTK_clearScreen();
-			this->resetAllGadgets();
+			this->drawAllGadgets();
+			//this->resetAllGadgets();
 		}
 
 	if((hg!=-1) && (this->pageNumber==hp))
@@ -962,11 +976,14 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 }
 
 /**
-* Set gadget colours and box styles etc.
+* Set colours etc from coloursStruct.
+* \note if force==true override user colours.
+* \note user colours are set 1st then overridden by cs.
+* \note if force==false colours are set from cs then overridden by user colours.
 */
-void CTK_mainAppClass::CTK_setColours(coloursStruct cs)
+void CTK_mainAppClass::CTK_setColours(coloursStruct *srccs,bool force)
 {
-	this->colours=cs;
+	this->gc->CTK_setColours(srccs,&this->colours,force);
 }
 
 int CTK_mainAppClass::CTK_addPage(void)
@@ -987,8 +1004,6 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
-
-//	THISPAGE.currentGadget=-1;
 	if(this->menuBar!=NULL)
 		{
 			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
@@ -997,14 +1012,8 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	if((pagenum>=0) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
 	this->CTK_clearScreen();
-//	THISPAGE.currentGadget=-1;
-//	THISPAGE.ignoreFirstTab=false;
-//	THISPAGE.retainHighliting=false;
-//	this->resetAllGadgets();
 	this->drawAllGadgets();
 	return;
-
-
 
 	printf("%s",this->clearScreenCode.c_str());
 

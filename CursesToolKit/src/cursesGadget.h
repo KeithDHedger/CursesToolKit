@@ -58,7 +58,7 @@ class CTK_cursesGadgetClass
 		int						CTK_getSelectKey(void);
 
 //virtual functions
-		virtual void			CTK_setColours(coloursStruct cs);
+		virtual void			CTK_setColours(coloursStruct *cs,bool force=true);
 		virtual void			CTK_drawGadget(bool hilite=false);
 		virtual void			CTK_setSelectCB(bool (*select)(void *,void *),void *userdata=NULL);
 

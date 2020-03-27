@@ -363,7 +363,7 @@ int main(int argc, char **argv)
 	cs.lineNumForeCol=FORE_BLACK;
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
-	mainApp->CTK_setColours(cs);
+	mainApp->CTK_setColours(&cs,true);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[FILEMENU]);
@@ -405,7 +405,7 @@ int main(int argc, char **argv)
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
-	mainApp->CTK_setColours(cs);
+	mainApp->CTK_setColours(&cs,true);
 
 //int bw=32;
 	srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,false,"\n");

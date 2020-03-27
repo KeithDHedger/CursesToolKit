@@ -44,7 +44,9 @@ CTK_cursesTextBoxClass			*resulttextbox;
 CTK_cursesTextBoxClass			*resultbuttonstextbox;
 CTK_cursesDropClass				*dropdown;
 CTK_cursesSourceEditBoxClass	*srceditbox;
-	CTK_cursesEditBoxClass		*editbox;
+CTK_cursesEditBoxClass			*editbox;
+CTK_cursesListBoxClass			*list1;
+CTK_cursesListBoxClass			*list2;
 
 bool							mbarVis=true;
 int								b1Cnt=0;
@@ -81,6 +83,8 @@ bool menuselctCB(void *inst,void *userdata)
 						break;
 					default:
 						mainApp->CTK_setPage(mc->menuItemNumber);
+						if(mc->menuItemNumber==3)
+							mainApp->CTK_setDefaultGadget(list1);
 						break;
 				}
 		}
@@ -192,7 +196,7 @@ int main(int argc, char **argv)
 	CTK_cursesButtonClass			*button;
 	CTK_cursesTextBoxClass			*textbox;
 	CTK_cursesInputClass			*input;
-	CTK_cursesListBoxClass			*list;
+//	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
 	CTK_cursesLabelClass			*label;
 
@@ -245,17 +249,14 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //	mainApp->CTK_mainEventLoop(-2000);
 
 //custom menu colours
-	cs.hiliteBackCol=BACK_BLACK;
-	cs.hiliteForeCol=FORE_GREEN;
-
 	cs.menuHiliteBackCol=BACK_BLACK;
 	cs.menuHiliteForeCol=FORE_GREEN;
 
 	cs.menuForeCol=FORE_WHITE;
 	cs.menuBackCol=BACK_RED;
 	cs.disabledForeCol=FORE_BOLD_RED;
+	mainApp->CTK_setColours(&cs,true);
 
-	mainApp->CTK_setColours(cs);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[0]);
@@ -293,7 +294,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
-	mainApp->CTK_setColours(cs);
+	mainApp->CTK_setColours(&cs,true);
 
 //page 0
 //instructions
@@ -301,7 +302,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	geny=3;
 	genw=mainApp->maxCols-4;
 	genh=mainApp->maxRows-9;
-	
+
+
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Instructions");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
@@ -340,7 +342,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.backCol=BACK_BLACK;
 	cs.foreCol=FORE_WHITE;
 	cs.textBoxType=NOBOX;
-	srceditbox->CTK_setColours(cs);
+	srceditbox->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -357,43 +359,43 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
 //normal list box
-	list=mainApp->CTK_addNewListBox(genx,geny,genw/2,genh-3);
-	list->CTK_addListItem("Item 1");
-	list->CTK_addListItem("Item 2");
-	list->CTK_addListItem("Item 3",(void*)0xdeadbeef);
-	list->CTK_addListItem("Item 4");
-	list->CTK_addListItem("Item 5");
-	list->CTK_addListItem("Item 6");
-	list->CTK_addListItem("Item 7 is a really really really really really really really really really really really really really long line and gets truncated",(void*)7);
-	list->CTK_setSelectCB(listselctCB,(void*)1);
+	list1=mainApp->CTK_addNewListBox(genx,geny,genw/2,genh-3);
+	list1->CTK_addListItem("Item 1");
+	list1->CTK_addListItem("Item 2");
+	list1->CTK_addListItem("Item 3",(void*)0xdeadbeef);
+	list1->CTK_addListItem("Item 4");
+	list1->CTK_addListItem("Item 5");
+	list1->CTK_addListItem("Item 6");
+	list1->CTK_addListItem("Item 7 is a really really really really really really really really really really really really really long line and gets truncated",(void*)7);
+	list1->CTK_setSelectCB(listselctCB,(void*)1);
 //multi select list
-	list=mainApp->CTK_addNewListBox(genx+(genw/2)+3,geny,(genw/2)-2,genh-3);
-	list->CTK_addListItem("Item 1");
-	list->CTK_addListItem("Item 2");
-	list->CTK_addListItem("Item 3",(void*)0xdeadbeef);
-	list->CTK_addListItem("Item 4");
-	list->CTK_addListItem("Item 5");
-	list->CTK_addListItem("Item 6");
-	list->CTK_addListItem("Item 7 is a really really really really really really really really really really really really really long line and gets truncated",(void*)7);
-	list->CTK_addListItem("Item 8");
-	list->CTK_addListItem("Item 9");
-	list->CTK_addListItem("Item 10");
-	list->CTK_addListItem("Item 11");
-	list->CTK_addListItem("Item 12");
-	list->CTK_addListItem("Item 13");
-	list->CTK_addListItem("Item 14");
-	list->CTK_addListItem("Item 15");
-	list->CTK_addListItem("Item 16");
-	list->CTK_setSelectCB(listselctCB,(void*)2);
+	list2=mainApp->CTK_addNewListBox(genx+(genw/2)+3,geny,(genw/2)-2,genh-3);
+	list2->CTK_addListItem("Item 1");
+	list2->CTK_addListItem("Item 2");
+	list2->CTK_addListItem("Item 3",(void*)0xdeadbeef);
+	list2->CTK_addListItem("Item 4");
+	list2->CTK_addListItem("Item 5");
+	list2->CTK_addListItem("Item 6");
+	list2->CTK_addListItem("Item 7 is a really really really really really really really really really really really really really long line and gets truncated",(void*)7);
+	list2->CTK_addListItem("Item 8");
+	list2->CTK_addListItem("Item 9");
+	list2->CTK_addListItem("Item 10");
+	list2->CTK_addListItem("Item 11");
+	list2->CTK_addListItem("Item 12");
+	list2->CTK_addListItem("Item 13");
+	list2->CTK_addListItem("Item 14");
+	list2->CTK_addListItem("Item 15");
+	list2->CTK_addListItem("Item 16");
+	list2->CTK_setSelectCB(listselctCB,(void*)2);
 
-	list->CTK_setMultipleSelect(true);
-	list->CTK_setSelectDeselects(false);
+	list2->CTK_setMultipleSelect(true);
+	list2->CTK_setSelectDeselects(false);
 
 	cs.textBoxType=INBOX;
 	cs.backCol=BACK_WHITE;
 	cs.foreCol=FORE_BLACK;
 	resulttextbox=mainApp->CTK_addNewTextBox(genx,geny+genh-1,genw,1,"Result");
-	resulttextbox->CTK_setColours(cs);
+	resulttextbox->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -485,7 +487,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	geny=6;
 	cs.textBoxType=INBOX;
 	resultbuttonstextbox=mainApp->CTK_addNewTextBox(genx,geny+genh-1,genw,1,"Result");
-	resultbuttonstextbox->CTK_setColours(cs);
+	resultbuttonstextbox->CTK_setColours(&cs,true);
 
 	geny=6;
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
@@ -525,7 +527,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->eventLoopCBIn=mainloopCBIn;
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
-	mainApp->CTK_mainEventLoop();
+	mainApp->CTK_setDefaultGadget(textbox);
+	mainApp->CTK_mainEventLoop(0,true,true);
 
 	delete mainApp;
 	SETSHOWCURS;

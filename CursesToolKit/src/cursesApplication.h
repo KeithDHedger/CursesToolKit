@@ -43,6 +43,9 @@ class CTK_mainAppClass
 		CTK_mainAppClass();
 		~CTK_mainAppClass();
 
+		std::vector<varsStruct>					appColours;
+		bool									gotUserColours=false;
+
 		int										maxCols;
 		int										maxRows;
 		int										tabWidth=8;
@@ -56,7 +59,8 @@ class CTK_mainAppClass
 		bool									noHiliteChange=false;
 
 		void									CTK_clearScreen(void);
-		void									CTK_setColours(coloursStruct cs);
+		void									CTK_setColours(coloursStruct *srccs,bool force=false);
+
 		int										CTK_addPage(void);
 		int										CTK_removePage(int pagenum);
 		void									CTK_setPage(int pagenum);
@@ -127,6 +131,7 @@ class CTK_mainAppClass
 		void									drawAllGadgets(void);
 		void									resetAllGadgets(void);
 		void									setHilite(bool forward);
+//		void									setUserColours(void);
 
 		struct fbData							frameBufferData;
 		int										selectKey=CTK_KEY_RETURN;
