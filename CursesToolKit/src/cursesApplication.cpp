@@ -629,6 +629,7 @@ void CTK_mainAppClass::activateGadget(void)
 //input
 			case INPUTGADGET:
 				static_cast<CTK_cursesInputClass*>(CURRENTGADGET)->CTK_doInput();
+				THISPAGE.ignoreFirstTab=false;
 				break;
 //edit boxes
 			case EDITGADGET:
