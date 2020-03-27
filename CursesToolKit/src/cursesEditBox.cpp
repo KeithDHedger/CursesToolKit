@@ -700,6 +700,7 @@ void CTK_cursesEditBoxClass::CTK_gotoXY(int x,int y)
 	this->currentY=y;
 	this->startLine=y;
 	this->adjustXY();
+	this->CTK_drawGadget();
 }
 
 /**

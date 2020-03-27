@@ -1,4 +1,5 @@
 2.0.1
+Fixed update edit/src box after gotoxy.
 Fixed setting default gadget when switching pages from menu.
 Fixed examples.
 Redone main menu select colours.
