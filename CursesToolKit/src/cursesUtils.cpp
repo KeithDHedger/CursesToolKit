@@ -482,6 +482,9 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 	app->CTK_setDefaultGadget(this->dialogReturnData.input);
 
 	SETHIDECURS;
+	app->CTK_clearScreen();
+	app->CTK_updateScreen(app,NULL);
+	this->dialogReturnData.input->CTK_doInput();
 	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
