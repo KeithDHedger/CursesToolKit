@@ -235,6 +235,11 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 				ud->stringValue=ud->input->CTK_getText();
 				ud->varType=INTVAR;
 				break;
+			case CUENTRYINPUTENTER:
+				ud->mc->CTK_setDefaultGadget(CURRENTPAGE(ud->mc).gadgets[2]);
+				return(true);
+				break;
+
 			case CUQUERYNO:
 				ud->isValidData=true;
 				ud->intValue=CUQUERYNO;
@@ -417,6 +422,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 
 	SETHIDECURS;
+	app->CTK_setDefaultGadget(this->dialogReturnData.chooser->lb);
 	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
@@ -450,6 +456,8 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 
 	geny=CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3;
 	this->dialogReturnData.input=app->CTK_addNewInput(CURRENTPAGE(app).boxX+2,geny,CURRENTPAGE(app).boxW-3,1,defaulttxt);
+	this->dialogReturnData.input->userData=(void*)CUENTRYINPUTENTER;
+	this->dialogReturnData.input->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 	this->dialogReturnData.input->redrawAppWindow=false;
 
 	if(hascancel==false)
