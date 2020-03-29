@@ -45,6 +45,7 @@ struct varsStruct
 {
 	std::string	varName="";
 	int			vType=BADTYPE;
+	int			outIntType=DECIMALOUT;
 	bool		boolVar=false;
 	int			intVar=-1;
 	std::string	charVar="";	

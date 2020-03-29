@@ -53,9 +53,10 @@ CTK_mainAppClass::~CTK_mainAppClass()
 */
 CTK_mainAppClass::CTK_mainAppClass()
 {
-	int		fbfd=0;
-	winsize	w;
-	std::string	filepath;
+	int				fbfd=0;
+	winsize			w;
+	std::string		filepath;
+	coloursStruct	cs;
 
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;
@@ -69,9 +70,6 @@ CTK_mainAppClass::CTK_mainAppClass()
 	if(access(filepath.c_str(),F_OK)==0)
 		{
 			this->appColours=this->utils->CTK_loadVars(filepath.c_str());
-			varsStruct				vsitem;
-			vsitem=this->utils->CTK_findVar(this->appColours,"forecolour");
-			this->colours.foreCol=vsitem.intVar;
 			this->gotUserColours=true;
 		}
 
@@ -111,6 +109,8 @@ CTK_mainAppClass::CTK_mainAppClass()
 			this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
 			//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
+
+	this->CTK_setColours(&cs,false);
 
 	this->readKey=new CTK_cursesReadKeyClass(this);
 }

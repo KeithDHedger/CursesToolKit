@@ -441,14 +441,15 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
+
 	app->CTK_setColours(&cs,true);
-	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,9);
+	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,11);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
 	this->dialogReturnData.mc=app;
 
 	genx=CURRENTPAGE(app).boxX+2;
-	geny=CURRENTPAGE(app).boxY+1;
+	geny=CURRENTPAGE(app).boxY+2;
 	genw=CURRENTPAGE(app).boxW-3;
 
 	label=app->CTK_addNewLabel(genx,geny,genw,4,bodytxt);
@@ -485,7 +486,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 	app->CTK_clearScreen();
 	app->CTK_updateScreen(app,NULL);
 	this->dialogReturnData.input->CTK_doInput();
-	app->CTK_mainEventLoop(0,true,true);
+	app->CTK_mainEventLoop(0,false,true);
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
@@ -507,13 +508,13 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
 	app->CTK_setColours(&cs,true);
-	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,7);
+	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,8);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
 	this->dialogReturnData.mc=app;
 
 	genx=CURRENTPAGE(app).boxX+2;
-	geny=CURRENTPAGE(app).boxY+1;
+	geny=CURRENTPAGE(app).boxY+2;
 	genw=CURRENTPAGE(app).boxW-3;
 
 	label=app->CTK_addNewLabel(genx,geny,genw,4,bodytxt);
@@ -728,15 +729,18 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 * Load variables into vector of varsStructs.
 * \param const char *filepath.
 * \returns std::vector<varsStruct>.
+* \note file format=NAMEOFVARIABLE DATA.
+* \note Type of data is auto detected.
+* \note true/false=bool 123/0xfe/0177=int (decimal/hex/octal) all else is string.
 */
 std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
 {
 	std::vector<varsStruct>	invs;
 	FILE					*fp;
 	char					buffer[PATH_MAX];
-	char					*ptr;
-	char					*bufferstart;
 	varsStruct				vs;
+	char					*varname=(char*)alloca(256);
+	char					*data=(char*)alloca(256);
 
 	invs.clear();
 
@@ -745,28 +749,37 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
 		{
 			while(fgets(buffer,PATH_MAX,fp))
 				{
-					bufferstart=&buffer[0];
-					ptr=strchr(bufferstart,' ');
-					*ptr=0;
-					ptr++;
-					vs.varName=bufferstart;
-					bufferstart=ptr;
-					vs.vType=atoi(bufferstart);
-					ptr=strchr(bufferstart,' ');
-					ptr++;
-					bufferstart=ptr;
+					if(buffer[0]=='\n')
+						continue;
+					sscanf(buffer,"%[^ ] %[^\n]",varname,data);
+
+					vs.varName=varname;
+					if(isdigit(data[0]))
+						vs.vType=INTVAR;
+					else
+						vs.vType=CHARVAR;
+
+					if(strcasecmp(data,"true")==0)
+						{
+							vs.vType=BOOLVAR;
+							vs.boolVar=true;
+						}
+
+					if(strcasecmp(data,"false")==0)
+						{
+							vs.vType=BOOLVAR;
+							vs.boolVar=false;
+						}
+
 					switch(vs.vType)
 						{
-							case BOOLVAR:
-								vs.boolVar=atoi(bufferstart);
-								break;
 							case INTVAR:
-								vs.intVar=atoi(bufferstart);
+								vs.intVar=strtol(data,NULL,0);
 								break;
 							case CHARVAR:
-								if(bufferstart[strlen(bufferstart)-1]=='\n')
-									bufferstart[strlen(bufferstart)-1]=0;
-								vs.charVar=bufferstart;
+								if(data[strlen(data)-1]=='\n')
+									data[strlen(data)-1]=0;
+								vs.charVar=data;
 								break;
 						}					
 					invs.push_back(vs);
@@ -783,7 +796,7 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
 */
 void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStruct> vs)
 {
-	FILE	*fp;
+	FILE		*fp;
 
 	fp=fopen(filepath,"w+");
 	if(fp!=NULL)
@@ -793,20 +806,27 @@ void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStr
 					switch(vs[j].vType)
 						{
 							case BOOLVAR:
-								fprintf(fp,"%s %i %i\n",vs[j].varName.c_str(),vs[j].vType,vs[j].boolVar);
+							if(vs[j].boolVar==true)
+								fprintf(fp,"%s true\n",vs[j].varName.c_str());
+							else
+								fprintf(fp,"%s false\n",vs[j].varName.c_str());
 								break;
 							case INTVAR:
-								fprintf(fp,"%s %i %i\n",vs[j].varName.c_str(),vs[j].vType,vs[j].intVar);
+								if(vs[j].outIntType==DECIMALOUT)
+									fprintf(fp,"%s %i\n",vs[j].varName.c_str(),vs[j].intVar);
+								if(vs[j].outIntType==HEXOUT)
+									fprintf(fp,"%s 0x%x\n",vs[j].varName.c_str(),vs[j].intVar);
+								if(vs[j].outIntType==OCTALOUT)
+									fprintf(fp,"%s 0%o\n",vs[j].varName.c_str(),vs[j].intVar);
 								break;
 							case CHARVAR:
-								fprintf(fp,"%s %i %s\n",vs[j].varName.c_str(),vs[j].vType,vs[j].charVar.c_str());
+								fprintf(fp,"%s %s\n",vs[j].varName.c_str(),vs[j].charVar.c_str());
 								break;
 						}
 				}
 			fclose(fp);
 		}
 }
-
 
 /**
 * find variable from vector of varsStructs.

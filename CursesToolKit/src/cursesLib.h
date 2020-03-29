@@ -121,6 +121,15 @@ struct coloursStruct
 	int		buttonForeCol=FORE_WHITE;
 	int		buttonDisabledForeCol=FORE_BOLD_BLUE;
 	int		disabledForeCol=FORE_BOLD_WHITE;
+
+	int		dialogBackCol=BACK_BLUE;
+	int		dialogForeCol=FORE_BOLD_WHITE;
+	int		dialogBoxBackcol=BACK_WHITE;
+	int		dialogBoxForecol=FORE_BLACK;
+	int		dialogBoxTL=FORE_BOLD_WHITE;
+	int		dialogBoxBR=FORE_BOLD_BLACK;
+	int		dialogBoxShadowCol=BACK_BLACK;
+
 	int		boxType=PLAINBOX;
 	int		textBoxType=OUTBOX;
 	int		inputBoxType=INBOX;

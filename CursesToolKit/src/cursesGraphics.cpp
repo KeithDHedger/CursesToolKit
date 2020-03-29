@@ -42,10 +42,49 @@ CTK_cursesGraphicsClass::CTK_cursesGraphicsClass(CTK_mainAppClass *mc)
 */
 void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
 {
-	const char	*names[]={"forecolour","backcol","hiliteforecol","hilitebackcol","markbackcol","markforecol","cursbackcol","cursforecol","menubackcol","menuforecol","menuhilitebackcol","menuhiliteforecol","linenumbackcol","linenumforecol","windowbackcol","windowforecol","buttonbackcol","buttonforecol","buttondisabledforecol","disabledforecol","boxtype","textboxtype","inputboxtype","labelboxtype","listboxtype",NULL};
+	const char	*names[]={
+	"forecolour",
+	"backcol",
+	"hiliteforecol",
+	"hilitebackcol",
+	"markbackcol",
+	"markforecol",
+	"cursbackcol",
+	"cursforecol",
+	"menubackcol",
+	"menuforecol",
+	"menuhilitebackcol",
+	"menuhiliteforecol",
+	"linenumbackcol",
+	"linenumforecol",
+	"windowbackcol",
+	"windowforecol",
+	"buttonbackcol",
+	"buttonforecol",
+	"buttondisabledforecol",
+	"disabledforecol",
+	"dialogbackcol",
+	"dialogforecol",
+	"dialogboxbackcol",
+	"dialogboxforecol",
+	"dialogboxtlfore",
+	"dialogboxbrfore",
+	"dialogboxshadowbackcol",
+	"boxtype",
+	"textboxtype",
+	"inputboxtype",
+	"labelboxtype",
+	"listboxtype",
+	NULL};
+
 	int			cnt=0;
 	varsStruct	vsitem;
 	int			*ptr;
+	const char	*colournames[]={"black","red","green","yellow","blue","magenta","cyan","white",NULL};
+	char		*type=(char*)alloca(256);
+	char		*colour=(char*)alloca(256);
+	int			colouroffset;
+	int			colournamecnt=0;
 
 	if(this->mc->gotUserColours==false)
 		return;
@@ -55,7 +94,31 @@ void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
 		{
 			vsitem=this->mc->utils->CTK_findVar(this->mc->appColours,names[cnt]);
 			if(vsitem.vType==INTVAR)
-				ptr[cnt]=vsitem.intVar;
+				{
+					ptr[cnt]=vsitem.intVar;
+				}
+			if(vsitem.vType==CHARVAR)
+				{
+					colournamecnt=0;
+					sscanf(vsitem.charVar.c_str(),"%[^;];%[^\n]",type,colour);
+					while(colournames[colournamecnt]!=NULL)
+						{
+//					fprintf(stderr,"names=%s type=%s colour=%s cname=%s\n",names[cnt],type,colour,colournames[colournamecnt]);
+							if(strcmp(colournames[colournamecnt],colour)==0)
+								{
+									if(strstr(names[cnt],"fore")!=NULL)
+										colouroffset=30;
+									else
+										colouroffset=40;
+									if(strcmp(type,"bold")==0)
+										colouroffset+=60;
+									ptr[cnt]=colournamecnt+colouroffset;
+									//fprintf(stderr,"names=%s type=%s colour=%s int=%i int=%i\n",names[cnt],type,colour,ptr[cnt],cnt);
+									break;			
+								}
+							colournamecnt++;
+						}
+				}
 			cnt++;
 		}
 }
@@ -98,12 +161,17 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 			this->mc->menuBar->CTK_setMenuBarVisible(false);
 		}
 	MOVETO(1,1)
-	setBothColours(FORE_WHITE,BACK_BLUE,false);
+//	setBothColours(FORE_WHITE,BACK_BLUE,false);
+	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
+//	setBothColours(FORE_WHITE,BACK_BOLD_BLUE,false);
+//	fprintf(stderr,"%i %i\n",BACK_BOLD_BLUE,this->mc->colours.dialogBackCol);
 	printf("%s",CLEARTOEOS);
-	this->CTK_drawBox(page.boxX,page.boxY,page.boxW,page.boxH,OUTBOX,true,true);
+///	this->CTK_drawBox(page.boxX,page.boxY,page.boxW,page.boxH,OUTBOX,true,true);
+	this->drawDialogBox(page.boxX,page.boxY,page.boxW,page.boxH);
 
 	MOVETO(1,1)
-	setBothColours(FORE_WHITE,BACK_BLUE,false);
+//	setBothColours(FORE_WHITE,BACK_BLUE,false);
+	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
 	if(page.windowName.length()>0)
 		{
 			printf("%s",page.windowName.c_str());
@@ -117,9 +185,67 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 	if(page.dialogName.length()>0)
 		{
 			MOVETO((page.boxWM)-(page.dialogName.length()/2)+1,page.boxY)
-			setBothColours(FORE_BLUE,this->mc->colours.backCol,false);//TODO//
+			setBothColours(this->mc->colours.dialogBoxForecol,this->mc->colours.dialogBoxBackcol,false);//TODO//
 			printf("%s",page.dialogName.c_str());
 		}
+}
+
+/**
+* Draw a box a la dialog.
+*/
+void CTK_cursesGraphicsClass::drawDialogBox(int x,int y,int w,int h)
+{
+	int	topcol=this->mc->colours.dialogBoxTL;
+	int	botcol=this->mc->colours.dialogBoxBR;
+	int fillcol=this->mc->colours.dialogBoxBackcol;
+
+	setBothColours(this->mc->colours.dialogBoxForecol,fillcol,false);
+
+	for(int j=0;j<h;j++)
+		{
+			MOVETO(x,y+j);
+			printf("%*s",w," ");
+		}
+
+	SETALTCHARSET;
+	MOVETO(x,y);
+	fprintf(stderr,"topcol=%i fillcol=%i shadowcol=%i\n",topcol,fillcol,this->mc->colours.dialogBoxShadowCol);
+	setBothColours(topcol,fillcol,false);
+	printf("%s",TOPLEFT);
+	for(int j=1;j<w;j++)
+		printf("%s",HBAR);
+
+	setForeColour(botcol,false);
+	printf("%s",TOPRITE);
+
+	for(int j=1;j<h;j++)
+		{
+			setForeColour(topcol,false);
+			MOVETO(x,y+j);
+			printf(VBAR);
+			setForeColour(botcol,false);
+			MOVETO(x+w,y+j);
+			printf(VBAR);
+		}
+
+	setForeColour(topcol,false);
+	MOVETO(x,y+h);
+	printf("%s",BOTTOMLEFT);
+	setForeColour(botcol,false);
+	for(int j=1;j<w;j++)
+		printf("%s",HBAR);
+	printf("%s",BOTTOMRITE);
+
+	setBackColour(this->mc->colours.dialogBoxShadowCol,false);
+	for(int j=1;j<h+2;j++)
+		{
+			MOVETO(x+w+1,y+j);
+			printf("  ");
+		}
+	MOVETO(x+1,y+h+1);
+	printf("%*s",w," ");
+	SETNORMCHARSET;
+	fflush(NULL);
 }
 
 /**

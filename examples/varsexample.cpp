@@ -26,19 +26,26 @@ int main(int argc, char **argv)
 	std::vector<varsStruct> outvs;
 	std::vector<varsStruct> invs;
 	char					*filepath="/tmp/testvar.config";
+	const char				*vartype="";
 
 	if(argc>1)
 		filepath=argv[1];
 
 //bool
 	vsitem.vType=BOOLVAR;
-	vsitem.boolVar=false;
-	vsitem.varName="firstvar";
+	vsitem.boolVar=true;
+	vsitem.varName="firstboolvar";
 	outvs.push_back(vsitem);
 //int
 	vsitem.vType=INTVAR;
 	vsitem.intVar=666;
 	vsitem.varName="secondvarvar";
+	outvs.push_back(vsitem);
+//hex
+	vsitem.vType=INTVAR;
+	vsitem.intVar=0xfe;
+	vsitem.outIntType=HEXOUT;
+	vsitem.varName="hexvar";
 	outvs.push_back(vsitem);
 //string
 	vsitem.vType=CHARVAR;
@@ -47,7 +54,7 @@ int main(int argc, char **argv)
 	outvs.push_back(vsitem);
 //bool
 	vsitem.vType=BOOLVAR;
-	vsitem.boolVar=true;
+	vsitem.boolVar=false;
 	vsitem.varName="abool";
 	outvs.push_back(vsitem);
 
@@ -63,29 +70,41 @@ int main(int argc, char **argv)
 	for(unsigned j=0;j<invs.size();j++)
 		{
 			fprintf(stderr,"name=%s ",invs[j].varName.c_str());
-			fprintf(stderr,"type=%i ",invs[j].vType);
+
 			switch(invs[j].vType)
 				{
 					case BOOLVAR:
+						fprintf(stderr,"type=bool ");
 						fprintf(stderr,"val=%i\n",invs[j].boolVar);
 						break;
 					case INTVAR:
+						fprintf(stderr,"type=int ");
 						fprintf(stderr,"val=%i\n",invs[j].intVar);
 						break;
 					case CHARVAR:
+						fprintf(stderr,"type=string ");
 						fprintf(stderr,"val=%s\n",invs[j].charVar.c_str());
 						break;
 				}					
 		}
 
 	fprintf(stderr,"\n>>>>>\n");
-	vsitem=mainApp->utils->CTK_findVar(invs,"firstvar");
+	vsitem=mainApp->utils->CTK_findVar(invs,"firstboolvar");
 	if(vsitem.vType!=BADTYPE)
-		fprintf(stderr,"firstvar=%i\n",vsitem.boolVar);
+		fprintf(stderr,"firstboolvar=%i\n",vsitem.boolVar);
 
 	vsitem=mainApp->utils->CTK_findVar(invs,"3rdvar");
 	if(vsitem.vType!=BADTYPE)
 		fprintf(stderr,"3rdvar=%s\n",vsitem.charVar.c_str());
+
+	vsitem=mainApp->utils->CTK_findVar(invs,"unkownvar");
+	if(vsitem.vType==BADTYPE)
+		fprintf(stderr,"var 'unkownvar' doesn't exist\n");
+
+	vsitem=mainApp->utils->CTK_findVar(invs,"hexvar");
+	if(vsitem.vType!=BADTYPE)
+		fprintf(stderr,"hexvar=%x\n",vsitem.intVar);
+
 	fprintf(stderr,">>>>>\n");
 
 	SETSHOWCURS;

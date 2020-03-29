@@ -294,7 +294,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	cs.hiliteForeCol=FORE_BLACK;
 	cs.foreCol=FORE_BLACK;
 	cs.backCol=BACK_WHITE;
-	mainApp->CTK_setColours(&cs,true);
+	mainApp->CTK_setColours(&cs,false);
 
 //page 0
 //instructions
@@ -302,7 +302,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	geny=3;
 	genw=mainApp->maxCols-4;
 	genh=mainApp->maxRows-9;
-
 
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Instructions");
 	label->CTK_setJustify(CENTREJUSTIFY);

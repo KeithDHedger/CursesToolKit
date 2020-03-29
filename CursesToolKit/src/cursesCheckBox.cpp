@@ -53,7 +53,7 @@ void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
-		setBothColours(FORE_WHITE,BACK_BLUE,false);
+		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,false);
 
 	if(this->value==true)
 		val='X';
