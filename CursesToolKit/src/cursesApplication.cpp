@@ -361,67 +361,8 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)//TODO//
 {
 	CTK_mainAppClass		*app=static_cast<CTK_mainAppClass*>(object);
 	CTK_cursesGraphicsClass	cu(app);
-//TODO//
-	MOVETO(1,1)
-//app->CTK_clearScreen();
+
 	app->drawAllGadgets();
-return;
-	setBothColours(app->colours.windowForeCol,app->colours.windowBackCol,app->colours.use256Colours);
-
-	if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
-		app->menuBar->CTK_drawGadget();
-
-	if(app->pageNumber<0)
-		{
-			app->CTK_clearScreen();
-			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
-				app->menuBar->CTK_drawGadget();
-			fflush(NULL);
-			SETNORMAL;
-			return;
-		}
-
-	if((app->useAppWindow==true) || (userdata==SCREENUPDATEWINDOW))
-		{
-			int	yadj=0;
-			if((app->menuBar!=NULL) && (app->menuBar->CTK_getMenuBarVisible()==true))
-				yadj=1;
-			setBackColour(BACK_BLUE,false);
-//TODO//FLICKER//
-			printf("\e[2J\e[H");
-			if(app->windowName!=NULL)
-				cu.CTK_drawBox(app->x,app->y,app->wid,app->hite,OUTBOX,true,true);
-			else
-				cu.CTK_drawBox(app->x,app->y-1,app->wid,app->hite+1,OUTBOX,true,true);
-			MOVETO(1,1+yadj);
-			setBothColours(FORE_CYAN,BACK_BLUE,false);//TODO//
-			if(app->windowName!=NULL)
-				{
-					printf("%s\n",app->windowName);
-					SETALTCHARSET;
-					for(int j=0;j<app->maxCols;j++)
-						printf(HBAR);
-					SETNORMCHARSET;
-				}
-			if(app->title!=NULL)
-				{
-					MOVETO(app->x+(app->wid/2)-(strlen(app->title)/2),app->y)
-					setBothColours(FORE_BLUE,app->colours.backCol,false);//TODO//
-					printf("%s",app->title);
-				}
-		}
-
-	for(int j=0;j<app->pages[app->pageNumber].gadgets.size();j++)
-		{
-			if(userdata!=SCREENUPDATEBASIC)
-				app->pages[app->pageNumber].gadgets[j]->gadgetDirty=true;
-			if(userdata!=SCREENUPDATEUNHILITE)
-				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(app->pages[app->pageNumber].gadgets[j]->hiLited);
-			else
-				app->pages[app->pageNumber].gadgets[j]->CTK_drawGadget(false);
-			app->pages[app->pageNumber].gadgets[j]->gadgetDirty=false;
-		}
-	SETNORMAL;
 }
 
 /**
@@ -445,16 +386,13 @@ void CTK_mainAppClass::setHilite(bool forward)
 }
 
 /**
-* Draw all gdagets unhilted.
+* Mark all gdagets dirty.
 */
 void CTK_mainAppClass::markAll(bool isdirty)
 {
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
-		{
-			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
-		}
+		this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 }
-
 
 /**
 * Draw all gdagets unhilted.
@@ -474,7 +412,7 @@ void CTK_mainAppClass::resetAllGadgets(void)
 }
 
 /**
-* Draw all gdagets keeping highlight.
+* Draw all gadgets keeping highlight.
 */
 void CTK_mainAppClass::drawAllGadgets(void)
 {
