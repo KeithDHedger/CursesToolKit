@@ -491,6 +491,7 @@ void CTK_mainAppClass::runMenus(void)
 {
 	if(THISPAGE.menusActive==false)
 		return;
+
 	this->resetAllGadgets();
 	
 	int	hg=THISPAGE.currentGadget;
@@ -502,7 +503,7 @@ void CTK_mainAppClass::runMenus(void)
 		{
 			this->menuBar->CTK_doMenuEvent(0,1,true);
 			this->menuBar->CTK_drawDefaultMenuBar();
-			this->CTK_clearScreen();
+//			this->CTK_clearScreen();
 			this->drawAllGadgets();
 			//this->resetAllGadgets();
 		}
@@ -1194,4 +1195,5 @@ CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType ty
 		}
 	return(NULL);
 }
+
 
