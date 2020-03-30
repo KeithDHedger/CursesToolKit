@@ -425,6 +425,11 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 	app->CTK_setDefaultGadget(this->dialogReturnData.chooser->lb);
 	app->CTK_mainEventLoop(0,true,true);
 	delete app;
+	if(this->mc!=NULL)
+		{
+			this->mc->CTK_clearScreen();
+			this->mc->CTK_updateScreen(this->mc,NULL);
+		}
 	return(this->dialogReturnData.isValidData);
 }
 
@@ -488,6 +493,11 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 	this->dialogReturnData.input->CTK_doInput();
 	app->CTK_mainEventLoop(0,false,true);
 	delete app;
+	if(this->mc!=NULL)
+		{
+			this->mc->CTK_clearScreen();
+			this->mc->CTK_updateScreen(this->mc,NULL);
+		}
 	return(this->dialogReturnData.isValidData);
 }
 

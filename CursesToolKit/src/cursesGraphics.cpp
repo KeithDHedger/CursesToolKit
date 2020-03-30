@@ -161,16 +161,12 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 			this->mc->menuBar->CTK_setMenuBarVisible(false);
 		}
 	MOVETO(1,1)
-//	setBothColours(FORE_WHITE,BACK_BLUE,false);
 	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
-//	setBothColours(FORE_WHITE,BACK_BOLD_BLUE,false);
-//	fprintf(stderr,"%i %i\n",BACK_BOLD_BLUE,this->mc->colours.dialogBackCol);
 	printf("%s",CLEARTOEOS);
-///	this->CTK_drawBox(page.boxX,page.boxY,page.boxW,page.boxH,OUTBOX,true,true);
+
 	this->drawDialogBox(page.boxX,page.boxY,page.boxW,page.boxH);
 
-	MOVETO(1,1)
-//	setBothColours(FORE_WHITE,BACK_BLUE,false);
+	MOVETO(1,1);
 	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
 	if(page.windowName.length()>0)
 		{
@@ -184,6 +180,7 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 
 	if(page.dialogName.length()>0)
 		{
+			SETNORMCHARSET;
 			MOVETO((page.boxWM)-(page.dialogName.length()/2)+1,page.boxY)
 			setBothColours(this->mc->colours.dialogBoxForecol,this->mc->colours.dialogBoxBackcol,false);//TODO//
 			printf("%s",page.dialogName.c_str());
@@ -207,10 +204,9 @@ void CTK_cursesGraphicsClass::drawDialogBox(int x,int y,int w,int h)
 			printf("%*s",w," ");
 		}
 
-	SETALTCHARSET;
 	MOVETO(x,y);
-	fprintf(stderr,"topcol=%i fillcol=%i shadowcol=%i\n",topcol,fillcol,this->mc->colours.dialogBoxShadowCol);
 	setBothColours(topcol,fillcol,false);
+	SETALTCHARSET;
 	printf("%s",TOPLEFT);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);

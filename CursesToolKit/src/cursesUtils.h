@@ -96,7 +96,7 @@ class CTK_cursesUtilsClass
 		varsStruct					CTK_findVar(std::vector<varsStruct> vs,const char *varname);
 
 	private:
-		CTK_mainAppClass			*mc;
+		CTK_mainAppClass			*mc=NULL;
 };
 
 #endif
