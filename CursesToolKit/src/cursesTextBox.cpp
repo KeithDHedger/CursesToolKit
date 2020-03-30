@@ -114,6 +114,8 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetDirty==false)
 		return;
 
+	this->hiLited=hilite;
+
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
@@ -124,19 +126,30 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 	else
 		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-
+//fprintf(stderr,"j=%i hite=%i\n",j,this->hite);
+	fflush(NULL);
+//MOVETO(this->sx,this->sy);
+//	fflush(NULL);
 	while(j<this->hite)
 		{
+		//fprintf(stderr,"j=%i hite=%i\n",j,this->hite);
 			if(j<this->txtStrings.size())
 				{
 					//this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
 					this->gc->CTK_printJustLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
 					j++;
+	//fflush(NULL);
 				}
 			else
-				return;
+				break;
+//			else
+//				{
+//	fflush(NULL);
+//	MOVETO(this->sx,this->sy+100);
+//					return;
+//				}
 		}		
-	MOVETO(this->sx,this->sy+100);
+	MOVETO(this->sx,this->sy);
 	fflush(NULL);
 }
 
@@ -163,6 +176,9 @@ void CTK_cursesTextBoxClass::CTK_scrollPage(bool scrollup)
 */
 void CTK_cursesTextBoxClass::scrollTBox(bool scrollup,int numlines)
 {
+	if(this->txtStrings.size()<=this->hite)
+		return;
+
 	if(scrollup==true)
 		{
 			this->startLine-=numlines;

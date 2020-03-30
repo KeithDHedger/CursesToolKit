@@ -60,6 +60,8 @@ void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetDirty==false)
 		return;
 
+	this->hiLited=hilite;
+
 	MOVETO(this->sx,this->sy);
 	if(this->enabled==false)
 		{

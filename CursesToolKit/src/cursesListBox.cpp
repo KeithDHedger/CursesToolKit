@@ -59,9 +59,10 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 	char	buffer[4096];
 	char	selected;
 
-
 	if(	this->gadgetDirty==false)
 		return;
+
+	this->hiLited=hilite;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.listBoxType,false);

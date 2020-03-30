@@ -122,18 +122,10 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	MOVETO(1,1)
-	printf("%s",this->clearScreenCode.c_str());
-	fflush(NULL);
+	printf(CLEARTOEOS);
 
 	if(THISPAGE.fancyWindow==true)
 		this->gc->CTK_drawDialogWindow();
-
-	if(this->menuBar!=NULL)
-		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
-		}
-	fflush(NULL);
 }
 
 /**
@@ -451,6 +443,18 @@ void CTK_mainAppClass::setHilite(bool forward)
 		}
 	while(this->pages[this->pageNumber].gadgets[this->pages[this->pageNumber].currentGadget]->CTK_getSelectable()==false);
 }
+
+/**
+* Draw all gdagets unhilted.
+*/
+void CTK_mainAppClass::markAll(bool isdirty)
+{
+	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+		{
+			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
+		}
+}
+
 
 /**
 * Draw all gdagets unhilted.
@@ -1005,26 +1009,27 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
-	if(this->menuBar!=NULL)
-		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
-		}
-	if((pagenum>=0) && (pagenum<this->pages.size()))
+	if(this->pageNumber==pagenum)
+		return;
+
+	THISPAGE.currentGadget=-1;
+
+	if((pagenum>-1) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
+	else
+		return;
+
 	this->CTK_clearScreen();
-	this->drawAllGadgets();
-	return;
-
-	printf("%s",this->clearScreenCode.c_str());
-
 	if(this->menuBar!=NULL)
 		{
 			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
 			this->menuBar->CTK_drawDefaultMenuBar();
 		}
-	if((pagenum>=0) && (pagenum<this->pages.size()))
-		this->pageNumber=pagenum;
+
+	THISPAGE.currentGadget=-1;
+	THISPAGE.ignoreFirstTab=false;
+	THISPAGE.retainHighliting=false;
+	this->markAll(true);
 }
 
 /**
@@ -1033,14 +1038,14 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 int CTK_mainAppClass::CTK_previousPage(void)
 {
 	THISPAGE.currentGadget=-1;
+	if(this->pageNumber>0)
+		this->pageNumber--;
+	this->CTK_clearScreen();
 	if(this->menuBar!=NULL)
 		{
 			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
 			this->menuBar->CTK_drawDefaultMenuBar();
 		}
-	if(this->pageNumber>0)
-		this->pageNumber--;
-	this->CTK_clearScreen();
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
@@ -1054,16 +1059,16 @@ int CTK_mainAppClass::CTK_previousPage(void)
 int CTK_mainAppClass::CTK_nextPage(void)
 {
 	THISPAGE.currentGadget=-1;
-	if(this->menuBar!=NULL)
-		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
-		}
 
 	if(this->pageNumber<this->pages.size()-1)
 		this->pageNumber++;
 
 	this->CTK_clearScreen();
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
@@ -1194,9 +1199,11 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 		for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 			{
 				unhigadg=this->pages[this->pageNumber].gadgets[j];
-				unhigadg->gadgetDirty=true;
-				unhigadg->hiLited=false;
-				unhigadg->CTK_drawGadget(false);
+				if(unhigadg!=gadget)
+					{
+						unhigadg->gadgetDirty=true;
+						unhigadg->CTK_drawGadget(false);
+					}
 			}
 	}
 
@@ -1209,7 +1216,6 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 					THISPAGE.ignoreFirstTab=false;
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
-					gadget->hiLited=true;
 					gadget->CTK_drawGadget(true);
 					return;
 				}

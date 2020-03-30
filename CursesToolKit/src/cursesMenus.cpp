@@ -89,6 +89,7 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 	setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 	printf("%*s",this->mc->maxCols-x+1,"");
 	SETNORMAL;
+	MOVETO(1,1000);
 }
 
 /**
@@ -273,6 +274,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	int				selection=0;
 	int				maxitems;
 	bool			doshortcut=false;
+	int				sink;
 
 	if(this->menuNumber<0)
 		return(CONT);
@@ -413,10 +415,10 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
-										//this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										this->menuItemNumber=selection+this->menuStart-1;
 										if(this->menuItemNumber>-1)
 											this->selectCB(this,NULL);
+										sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										return(SELECTED);
 										break;
 

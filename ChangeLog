@@ -1,4 +1,6 @@
 2.0.1
+Fixed segfault on text box scroll.
+Fixed visual bugs.
 Redone vars example.
 Redone variable format for CTK_loadVars.
 Automatically select input box in dialog.

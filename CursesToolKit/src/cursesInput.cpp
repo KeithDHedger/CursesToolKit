@@ -78,6 +78,8 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetDirty==false)
 		return;
 
+	this->hiLited=hilite;
+
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
 

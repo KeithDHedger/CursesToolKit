@@ -179,6 +179,9 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	const char					*mark=INVERSEON "M" INVERSEOFF;
 	char						charundercurs=0;
 	std::vector<std::string>	edstrings;
+
+	this->hiLited=hilite;
+
 //TODO//
 	if(this->thisType==EDITBOXCLASS)
 		edstrings=this->CTK_getStrings();

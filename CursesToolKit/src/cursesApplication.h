@@ -132,6 +132,7 @@ class CTK_mainAppClass
 		void									resetAllGadgets(void);
 		void									setHilite(bool forward);
 //		void									setUserColours(void);
+		void									markAll(bool isdirty);
 
 		struct fbData							frameBufferData;
 		int										selectKey=CTK_KEY_RETURN;

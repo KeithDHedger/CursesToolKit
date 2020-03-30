@@ -193,6 +193,8 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
 	if(this->gadgetDirty==false)
 		return;
 
+	this->hiLited=hilite;
+
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);

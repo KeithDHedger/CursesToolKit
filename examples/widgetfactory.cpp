@@ -531,5 +531,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	delete mainApp;
 	SETSHOWCURS;
+	printf(NORMCHARSET);
 	return 0;
 }

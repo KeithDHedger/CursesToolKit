@@ -144,6 +144,9 @@ void CTK_cursesFBImageClass::drawFBImage(bool hilite)
 
 	if(lblob==NULL)
 		return;
+
+	this->hiLited=hilite;
+
 	if(hilite==false)
 		datptr=(unsigned char *)lblob->data();
 	else
