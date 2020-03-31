@@ -85,6 +85,7 @@ bool menuselctCB(void *inst,void *userdata)
 						mainApp->CTK_setPage(mc->menuItemNumber);
 						if(mc->menuItemNumber==3)
 							mainApp->CTK_setDefaultGadget(list1);
+						return(false);
 						break;
 				}
 		}
@@ -121,6 +122,8 @@ bool buttonselctCB(void *inst,void *userdata)
 					case BUTTON1:
 						b1Cnt++;
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b1Cnt);
+						mainApp->CTK_setPage(7);
+						return(true);
 						resultbuttonstextbox->CTK_updateText(buffer);
 						srcbuffercopy=srceditbox->CTK_getBuffer();
 						fprintf(stderr,">>%s<<",srcbuffercopy);
@@ -502,7 +505,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //page 6
 //dialogs with back window
 	mainApp->CTK_addPage();
-	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",-1,20);
+	mainApp->CTK_setDialogWindow("Fancy Window","Dialog  Name",80,20);
 	CURRENTPAGE(mainApp).fancyWindow=true;
 	CURRENTPAGE(mainApp).windowName="Fancy Window";
 	CURRENTPAGE(mainApp).dialogName="Dialog  Name";

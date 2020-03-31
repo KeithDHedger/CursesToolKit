@@ -123,7 +123,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	MOVETO(1,1)
 	printf(CLEARTOEOS);
-
+//	fflush(NULL);
 	if(THISPAGE.fancyWindow==true)
 		this->gc->CTK_drawDialogWindow();
 }
@@ -449,6 +449,8 @@ void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 		{
 			case LISTGADGET:
 				static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_keyUpDown(lineup,pagescroll);
+				//static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_drawGadget(true);
+				//return;
 				break;
 			case TEXTGADGET:
 				if(pagescroll==true)
@@ -948,6 +950,53 @@ int CTK_mainAppClass::CTK_addPage(void)
 */
 void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
+	THISPAGE.currentGadget=-1;
+	//if(this->pageNumber>0)
+//		this->pageNumber=pagenum;
+	if((pagenum>-1) && (pagenum<this->pages.size()))
+		this->pageNumber=pagenum;
+	else
+		return;
+
+	this->CTK_clearScreen();
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
+	THISPAGE.currentGadget=-1;
+	THISPAGE.ignoreFirstTab=false;
+	THISPAGE.retainHighliting=false;
+	this->resetAllGadgets();
+
+
+return;
+	if(this->pageNumber==pagenum)
+		return;
+
+	THISPAGE.currentGadget=-1;
+
+	if((pagenum>-1) && (pagenum<this->pages.size()))
+		this->pageNumber=pagenum;
+	else
+		return;
+
+	this->CTK_clearScreen();
+	if(this->menuBar!=NULL)
+		{
+			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
+			this->menuBar->CTK_drawDefaultMenuBar();
+		}
+
+	THISPAGE.currentGadget=-1;
+	THISPAGE.ignoreFirstTab=false;
+	THISPAGE.retainHighliting=false;
+	this->CTK_clearScreen();
+	this->markAll(true);
+	//this->resetAllGadgets();
+this->CTK_updateScreen(this,NULL);
+return;
+
 	if(this->pageNumber==pagenum)
 		return;
 

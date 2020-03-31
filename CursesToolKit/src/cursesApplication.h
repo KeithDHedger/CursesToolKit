@@ -36,6 +36,7 @@ class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
 class CTK_cursesFBImageClass;
 class CTK_cursesReadKeyClass;
+class CTK_cursesShellClass;
 
 class CTK_mainAppClass
 {

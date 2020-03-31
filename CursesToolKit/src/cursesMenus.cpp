@@ -417,8 +417,8 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 									case CTK_KEY_RETURN:
 										this->menuItemNumber=selection+this->menuStart-1;
 										if(this->menuItemNumber>-1)
-											this->selectCB(this,NULL);
-										sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+											if(this->selectCB(this,NULL)==true)
+												sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										return(SELECTED);
 										break;
 

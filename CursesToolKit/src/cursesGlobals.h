@@ -74,6 +74,7 @@ enum  utilVarType {BOOLVAR=0,INTVAR,CHARVAR,MULTVAR,BADTYPE,DECIMALOUT,HEXOUT,OC
 #include "cursesDropDown.h"
 #include "cursesFBImage.h"
 #include "cursesKeyboard.h"
+#include "cursesShell.h"
 
 #include "cursesApplication.h"
 

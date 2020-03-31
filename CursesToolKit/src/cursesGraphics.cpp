@@ -163,7 +163,6 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 	MOVETO(1,1)
 	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
 	printf("%s",CLEARTOEOS);
-
 	this->drawDialogBox(page.boxX,page.boxY,page.boxW,page.boxH);
 
 	MOVETO(1,1);
