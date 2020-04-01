@@ -103,7 +103,6 @@ void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
 					sscanf(vsitem.charVar.c_str(),"%[^;];%[^\n]",type,colour);
 					while(colournames[colournamecnt]!=NULL)
 						{
-//					fprintf(stderr,"names=%s type=%s colour=%s cname=%s\n",names[cnt],type,colour,colournames[colournamecnt]);
 							if(strcmp(colournames[colournamecnt],colour)==0)
 								{
 									if(strstr(names[cnt],"fore")!=NULL)
@@ -113,7 +112,6 @@ void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
 									if(strcmp(type,"bold")==0)
 										colouroffset+=60;
 									ptr[cnt]=colournamecnt+colouroffset;
-									//fprintf(stderr,"names=%s type=%s colour=%s int=%i int=%i\n",names[cnt],type,colour,ptr[cnt],cnt);
 									break;			
 								}
 							colournamecnt++;

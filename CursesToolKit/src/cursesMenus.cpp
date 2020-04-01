@@ -62,7 +62,6 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
-		//fprintf(stderr,"j=%i\n",j);
 			if(this->enableMenuBar==true)
 				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			else
@@ -225,22 +224,19 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 */
 int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,bool doshortcut)
 {
-	int	y=sy+1;
-	int	maxitems=0;
-	int msx=this->menuNames[menunum]->startCol;
-
 	if(this->menuNames[menunum]->menuEnabled==false)
 		return(0);
 
-int sz=this->menuNames[menunum]->menuItem.size();
-int rows=this->mc->maxRows-2;
+	int	y=sy+1;
+	int	maxitems=0;
+	int msx=this->menuNames[menunum]->startCol;
+	int sz=this->menuNames[menunum]->menuItem.size();
+	int rows=this->mc->maxRows-2;
 
 	maxitems=this->menuNames[menunum]->menuItemCnt;
-	//fprintf(stderr,"cnt=%i menunum=%i size=%i\n",maxitems,menunum,sz);
 	this->menuWidth=this->menuNames[menunum]->maxWidth;
 	for(int cnt=0;cnt<sz;cnt++)
 		{
-		//fprintf(stderr,"rows=%i\n",rows);
 			//if(cnt<static_cast<CTK_mainAppClass*>(this->mc)->maxRows-2)
 			if(cnt<rows)
 				{
@@ -252,7 +248,6 @@ int rows=this->mc->maxRows-2;
 						{
 							if(this->menuNames[menunum]->menuItem[cnt+this->menuStart]->menuEnabled==true)
 								{
-				//fprintf(stderr,"menuItem=%i\n",cnt+this->menuStart);
 									if(prelight==cnt)
 										this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
 									else
@@ -423,15 +418,12 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
-										//sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										this->mc->CTK_clearScreen();
 										this->mc->CTK_updateScreen(this->mc,NULL);
 										this->menuItemNumber=selection+this->menuStart-1;
 										fflush(NULL);
 										if(this->menuItemNumber>-1)
-											//if(this->selectCB(this,NULL)==true)
 											sink=this->selectCB(this,NULL);
-											//	sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										fflush(NULL);
 										return(SELECTED);
 										break;

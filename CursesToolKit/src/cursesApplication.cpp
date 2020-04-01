@@ -487,70 +487,6 @@ void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 * Run menu events
 * \note Private.
 */
-#if 0
-void CTK_mainAppClass::runMenus(void)
-{
-
-
-	if(THISPAGE.menusActive==false)
-		return;
-
-	this->resetAllGadgets();
-	
-	int	hg=THISPAGE.currentGadget;
-	int hp=this->pageNumber;
-	if(hg!=-1)//TODO//
-		CURRENTGADGET->hiLited=false;
-	THISPAGE.currentGadget=-1;
-	this->resetAllGadgets();
-	//this->CTK_updateScreen(this,NULL);
-	if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
-		{
-			this->menuBar->CTK_drawDefaultMenuBar();
-			this->menuBar->CTK_doMenuEvent(0,1,true);
-			this->menuBar->CTK_drawDefaultMenuBar();
-			this->CTK_clearScreen();
-			this->CTK_updateScreen(this,NULL);
-		//	this->drawAllGadgets();
-		}
-
-//	if((hg!=-1) && (this->pageNumber==hp))
-//		{
-//			this->CTK_setDefaultGadget(THISPAGE.gadgets[hg]);
-//			CURRENTGADGET->gadgetDirty=true;
-//			CURRENTGADGET->hiLited=true;
-//			CURRENTGADGET->CTK_drawGadget(true);
-//		}
-
-
-return;
-
-#if 0
-
-
-	if(THISPAGE.menusActive==false)
-		return;
-
-	int hp=this->pageNumber;
-
-	this->resetAllGadgets();
-
-	this->menuBar->CTK_doMenuEvent(0,1,true);
-	this->menuBar->CTK_drawDefaultMenuBar();
-	this->CTK_clearScreen();
-	this->CTK_updateScreen(this,NULL);
-	if(this->pageNumber!=hp)
-		{
-			fprintf(stderr,"from runMenus cg=%i keep hiliting=%i\n",THISPAGE.currentGadget,THISPAGE.retainHighliting);
-		}
-	if(THISPAGE.currentGadget!=-1)
-		{
-			fprintf(stderr,"---->\n");
-			CURRENTGADGET->CTK_drawGadget(true);
-		}
-#endif
-}
-#else
 void CTK_mainAppClass::runMenus(void)
 {
 	if(THISPAGE.menusActive==false)
@@ -567,9 +503,7 @@ void CTK_mainAppClass::runMenus(void)
 		{
 			this->menuBar->CTK_doMenuEvent(0,1,true);
 			this->menuBar->CTK_drawDefaultMenuBar();
-//			this->CTK_clearScreen();
 			this->drawAllGadgets();
-			//this->resetAllGadgets();
 		}
 
 	if((hg!=-1) && (this->pageNumber==hp))
@@ -580,14 +514,13 @@ void CTK_mainAppClass::runMenus(void)
 			CURRENTGADGET->CTK_drawGadget(true);
 		}
 }
-#endif
+
 /**
 * Activate gadget.
 * \note Private.
 */
 void CTK_mainAppClass::activateGadget(void)
 {
-//	fprintf(stderr,"gadget num=%i\n",THISPAGE.currentGadget);
 	int	thispnum=-1;
 	int	newpn=-1;
 	
@@ -703,7 +636,6 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 		}
 //special cases end
 
-//fprintf(stderr,">>>>current gadget=%i current page=%i\n",THISPAGE.currentGadget,this->pageNumber);
 	if(THISPAGE.ignoreFirstTab==true)
 		{
 			if((THISPAGE.currentGadget!=-1))
@@ -835,7 +767,6 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 	while(this->runEventLoop==true)
 		{
 			this->readKey->tabIsSpecial=true;
-XXX:
 			this->readKey->CTK_getInput();
 			//fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 
@@ -883,11 +814,8 @@ XXX:
 						case CTK_KEY_RETURN:
 							if(THISPAGE.currentGadget!=-1)
 								if(CURRENTGADGET->CTK_getSelectKey()==CTK_KEY_NONE)
-									{
-										//fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
-										this->activateGadget();
-										//fprintf(stderr,"cg=%i keep hi=%i\n",THISPAGE.currentGadget,THISPAGE.retainHighliting);
-									}
+									this->activateGadget();
+							//fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
 							break;
 						case CTK_KEY_BACKSPACE:
 							//fprintf(stderr,"CTK_KEY_BACKSPACE\n");
@@ -902,24 +830,6 @@ XXX:
 							break;
 						case CTK_KEY_ESC:
 							this->runMenus();
-							fflush(NULL);
-							//this->highLiteGadget(true);
-							//this->highLiteGadget(false);
-							//this->drawAllGadgets();
-							//CURRENTGADGET->CTK_drawGadget(true);
-//								if(THISPAGE.currentGadget!=-1)
-//									{
-//								//	this->highLiteGadget(true);
-//								//	this->highLiteGadget(false);
-//							fprintf(stderr,"cg=%i type=%i keep --- hi=%i\n",THISPAGE.currentGadget,CURRENTGADGET->CTK_getGadgetType(),THISPAGE.retainHighliting);
-//										fprintf(stderr,">>>>>>>>---->\n");
-//										CURRENTGADGET->gadgetDirty=true;
-//										CURRENTGADGET->CTK_drawGadget(true);
-//										fflush(NULL);
-//									}
-//
-//							fflush(NULL);
-//							goto XXX;
 							//fprintf(stderr,"CTK_KEY_ESC\n");
 							break;
 						case CTK_KEY_F1:
@@ -997,7 +907,6 @@ XXX:
 								{
 									this->activateGadget();
 								}
-							//fprintf(stderr,"%s\n",this->readKey->inputBuffer.c_str());
 						}
 				}
 		}
@@ -1035,9 +944,8 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 {
 	if(pagenum==this->pageNumber)
 		return;
+
 	THISPAGE.currentGadget=-1;
-	//if(this->pageNumber>0)
-//		this->pageNumber=pagenum;
 
 	if((pagenum>-1) && (pagenum<this->pages.size()))
 		this->pageNumber=pagenum;
@@ -1054,57 +962,6 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
 	this->resetAllGadgets();
-
-
-return;
-	if(this->pageNumber==pagenum)
-		return;
-
-	THISPAGE.currentGadget=-1;
-
-	if((pagenum>-1) && (pagenum<this->pages.size()))
-		this->pageNumber=pagenum;
-	else
-		return;
-
-	this->CTK_clearScreen();
-	if(this->menuBar!=NULL)
-		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
-		}
-
-	THISPAGE.currentGadget=-1;
-	THISPAGE.ignoreFirstTab=false;
-	THISPAGE.retainHighliting=false;
-	this->CTK_clearScreen();
-	this->markAll(true);
-	//this->resetAllGadgets();
-this->CTK_updateScreen(this,NULL);
-fflush(NULL);
-return;
-
-	if(this->pageNumber==pagenum)
-		return;
-
-	THISPAGE.currentGadget=-1;
-
-	if((pagenum>-1) && (pagenum<this->pages.size()))
-		this->pageNumber=pagenum;
-	else
-		return;
-
-	this->CTK_clearScreen();
-	if(this->menuBar!=NULL)
-		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
-		}
-
-	THISPAGE.currentGadget=-1;
-	THISPAGE.ignoreFirstTab=false;
-	THISPAGE.retainHighliting=false;
-	this->markAll(true);
 }
 
 /**
@@ -1270,30 +1127,27 @@ void CTK_mainAppClass::CTK_setDefaultGadget(CTK_cursesGadgetClass *gadget,bool u
 	CTK_cursesGadgetClass *unhigadg;
 
 	if(unhilite==true)
-	{
-		for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
-			{
-				unhigadg=this->pages[this->pageNumber].gadgets[j];
-				if(unhigadg!=gadget)
-					{
-						unhigadg->gadgetDirty=true;
-						unhigadg->CTK_drawGadget(false);
-					}
-			}
-	}
-fflush(NULL);
+		{
+			for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+				{
+					unhigadg=this->pages[this->pageNumber].gadgets[j];
+					if(unhigadg!=gadget)
+						{
+							unhigadg->gadgetDirty=true;
+							unhigadg->CTK_drawGadget(false);
+						}
+				}
+		}
 //hilight default
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 		{
 			if(this->pages[this->pageNumber].gadgets[j]==gadget)
 				{
-				//fprintf(stderr,">>>>>>>>>>>>>>\n");
 					THISPAGE.retainHighliting=true;
 					THISPAGE.ignoreFirstTab=false;
 					this->pages[this->pageNumber].currentGadget=j;
 					gadget->gadgetDirty=true;
 					gadget->CTK_drawGadget(true);
-fflush(NULL);
 					return;
 				}
 		}
