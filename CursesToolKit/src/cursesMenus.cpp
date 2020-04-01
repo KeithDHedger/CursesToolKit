@@ -62,6 +62,7 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
+		//fprintf(stderr,"j=%i\n",j);
 			if(this->enableMenuBar==true)
 				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			else
@@ -231,12 +232,17 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	if(this->menuNames[menunum]->menuEnabled==false)
 		return(0);
 
-	maxitems=this->menuNames[menunum]->menuItemCnt;
-	this->menuWidth=this->menuNames[menunum]->maxWidth;
+int sz=this->menuNames[menunum]->menuItem.size();
+int rows=this->mc->maxRows-2;
 
-	for(int cnt=0;cnt<this->menuNames[menunum]->menuItem.size();cnt++)
+	maxitems=this->menuNames[menunum]->menuItemCnt;
+	//fprintf(stderr,"cnt=%i menunum=%i size=%i\n",maxitems,menunum,sz);
+	this->menuWidth=this->menuNames[menunum]->maxWidth;
+	for(int cnt=0;cnt<sz;cnt++)
 		{
-			if(cnt<static_cast<CTK_mainAppClass*>(this->mc)->maxRows-2)
+		//fprintf(stderr,"rows=%i\n",rows);
+			//if(cnt<static_cast<CTK_mainAppClass*>(this->mc)->maxRows-2)
+			if(cnt<rows)
 				{
 					if(prelight==-10000)
 						{
@@ -246,6 +252,7 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 						{
 							if(this->menuNames[menunum]->menuItem[cnt+this->menuStart]->menuEnabled==true)
 								{
+				//fprintf(stderr,"menuItem=%i\n",cnt+this->menuStart);
 									if(prelight==cnt)
 										this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,FLATINVERT,doshortcut,true);
 									else
@@ -256,6 +263,7 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 									this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,DISABLED,doshortcut,true);
 								}
 						}
+					fflush(NULL);
 				}
 			else
 				break;
@@ -274,7 +282,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	int				selection=0;
 	int				maxitems;
 	bool			doshortcut=false;
-	int				sink;
+	bool			sink;
 
 	if(this->menuNumber<0)
 		return(CONT);
@@ -415,17 +423,23 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
+										//sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										this->mc->CTK_clearScreen();
+										this->mc->CTK_updateScreen(this->mc,NULL);
 										this->menuItemNumber=selection+this->menuStart-1;
+										fflush(NULL);
 										if(this->menuItemNumber>-1)
-											if(this->selectCB(this,NULL)==true)
-												sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+											//if(this->selectCB(this,NULL)==true)
+											sink=this->selectCB(this,NULL);
+											//	sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										fflush(NULL);
 										return(SELECTED);
 										break;
 
 									case CTK_KEY_ESC:
 										loop=false;
 										selection=BRAKE;
-										this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
+										sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										return(selection);
 										break;
 

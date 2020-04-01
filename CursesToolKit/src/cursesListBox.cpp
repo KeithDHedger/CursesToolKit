@@ -71,7 +71,10 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 	for(int j=0;j<this->hite;j++)
 		{
 			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+			{
+		//fprintf(stderr,"hilite=%i this->listItemNumber=%i j+this->listStart=%i\n",hilite,this->listItemNumber,j+this->listStart);
 				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);//TODO//
+			}
 			else
 				setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
@@ -96,7 +99,8 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 					this->gc->CTK_printJustLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
 				}
 		}
-	MOVETO(this->sx,this->sy+this->hite);
+//	fflush(NULL);
+//	MOVETO(this->sx,this->sy+this->hite);
 //	this->gadgetDirty=false;
 }
 

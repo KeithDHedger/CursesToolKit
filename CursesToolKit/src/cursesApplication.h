@@ -124,12 +124,15 @@ class CTK_mainAppClass
 		std::string								clearScreenCode="\e[H\e[2J";
 		CTK_cursesReadKeyClass					*readKey=NULL;
 
+		void									drawAllGadgets(void);
+
+
+
 	private:
 		void									scrollGadget(bool pagescrill,bool lineup);
 		void									runMenus(void);
 		void									activateGadget(void);
 		void									highLiteGadget(bool forward);
-		void									drawAllGadgets(void);
 		void									resetAllGadgets(void);
 		void									setHilite(bool forward);
 //		void									setUserColours(void);

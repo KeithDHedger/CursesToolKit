@@ -84,14 +84,18 @@ bool menuselctCB(void *inst,void *userdata)
 					default:
 						mainApp->CTK_setPage(mc->menuItemNumber);
 						if(mc->menuItemNumber==3)
+						{
 							mainApp->CTK_setDefaultGadget(list1);
-						return(false);
+							//fprintf(stderr,"mainApp->CTK_setDefaultGadget(list1);\n");
+							}
+						return(true);
 						break;
 				}
 		}
 
 	if((mc->menuNumber==FILEMENU) && (mc->menuItemNumber==QUITITEM))//TODO//exit edit box;
 		mainApp->runEventLoop=false;
+	return(true);
 }
 
 void mainloopCBIn(void *mainc,void *data)
@@ -122,11 +126,12 @@ bool buttonselctCB(void *inst,void *userdata)
 					case BUTTON1:
 						b1Cnt++;
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b1Cnt);
-						mainApp->CTK_setPage(7);
+						mainApp->CTK_setPage(3);
+						mainApp->CTK_setDefaultGadget(list1);
 						return(true);
 						resultbuttonstextbox->CTK_updateText(buffer);
 						srcbuffercopy=srceditbox->CTK_getBuffer();
-						fprintf(stderr,">>%s<<",srcbuffercopy);
+						//fprintf(stderr,">>%s<<",srcbuffercopy);
 						free(srcbuffercopy);
 						break;
 					case BUTTON2:
@@ -134,7 +139,7 @@ bool buttonselctCB(void *inst,void *userdata)
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b2Cnt);
 						resultbuttonstextbox->CTK_updateText(buffer);
 						srcbuffercopy=editbox->CTK_getBuffer();
-						fprintf(stderr,">>%s<<",srcbuffercopy);
+					//	fprintf(stderr,">>%s<<",srcbuffercopy);
 						free(srcbuffercopy);
 						break;
 				}
