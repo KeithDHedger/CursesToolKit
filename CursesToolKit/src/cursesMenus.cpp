@@ -38,10 +38,12 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 */
 CTK_cursesMenuClass::CTK_cursesMenuClass(CTK_mainAppClass *mc)
 {
-	winsize	w;
+//	winsize	w;
 
-    ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
-	this->rows=w.ws_row;
+ //  ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
+//	this->rows=w.ws_row;
+	fprintf(stderr,"mc=%i\n",mc->maxRows);
+	this->rows=mc->maxRows;
 	this->maxRows=this->rows-mBarHite+1;
 	this->menuHite=this->rows-mBarHite;
 	this->menuNames.clear();
@@ -232,6 +234,8 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 	int msx=this->menuNames[menunum]->startCol;
 	int sz=this->menuNames[menunum]->menuItem.size();
 	int rows=this->mc->maxRows-2;
+
+//rows=this->rows;
 
 	maxitems=this->menuNames[menunum]->menuItemCnt;
 	this->menuWidth=this->menuNames[menunum]->maxWidth;

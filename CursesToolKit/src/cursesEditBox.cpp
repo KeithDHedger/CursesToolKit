@@ -181,7 +181,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	std::vector<std::string>	edstrings;
 
 	this->hiLited=hilite;
-
 //TODO//
 	if(this->thisType==EDITBOXCLASS)
 		edstrings=this->CTK_getStrings();
@@ -192,8 +191,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		{
 			this->needsRefresh=false;
 		//fprintf(stderr,"long draw\n");
-			if(this->colours.fancyGadgets==true)
-				this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
+			////if(this->colours.fancyGadgets==true)
+			////	this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
 			if((this->txtStrings.size()-1)-this->startLine<this->hite)
 				this->startLine=this->txtStrings.size()-this->hite;
@@ -202,7 +201,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				this->startLine=0;
 
 			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-			while((boxline<this->hite) && (boxline<this->txtStrings.size()))
+/////////////////////////////////
+			while(((boxline)<this->hite) && (boxline<this->txtStrings.size()))
 				{
 					MOVETO(this->sx,this->sy+boxline);
 					if(this->showLineNumbers>0)
@@ -221,8 +221,10 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 						}
 
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-
+//ERROR//
 					this->gc->CTK_printJustLine(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+//fflush(NULL);
+//MOVETO(this->sx,this->sy+boxline);
 //this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}
@@ -231,6 +233,7 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		{
 			this->refreshLine();
 		}
+
 
 	if(hilite==true)
 		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
@@ -275,6 +278,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				}	
 			printf("%s%c",getBothColours(this->colours.cursBackCol,this->colours.cursForeCol,this->colours.use256Colours),charundercurs);
 		}
+	SETNORMCHARSET;
+	MOVETO(1,1)
 	fflush(NULL);
 }
 

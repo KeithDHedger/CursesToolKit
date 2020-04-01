@@ -36,9 +36,8 @@ CTK_cursesShellClass::CTK_cursesShellClass(CTK_mainAppClass *mc)
 	this->mc=mc;
 }
 
-
-#include <curses.h>
-#include <term.h>
+//#include <curses.h>
+//#include <term.h>
 
 void CTK_cursesShellClass::CTK_startShell(void)
 {

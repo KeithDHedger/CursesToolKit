@@ -61,6 +61,9 @@ CTK_mainAppClass::CTK_mainAppClass()
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;
 	this->maxCols=w.ws_col;
+
+fprintf(stderr,"rows %i\n",this->maxRows);
+system("tput lines >>/tmp/debug.log");
 	this->pages.clear();
 	this->utils=new CTK_cursesUtilsClass(this);
 	this->gc=new CTK_cursesGraphicsClass(this);
