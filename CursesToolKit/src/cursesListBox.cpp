@@ -70,6 +70,8 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 
 	for(int j=0;j<this->hite;j++)
 		{
+			if(j<this->listItems.size())
+				{
 			if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
 			{
 		//fprintf(stderr,"hilite=%i this->listItemNumber=%i j+this->listStart=%i\n",hilite,this->listItemNumber,j+this->listStart);
@@ -78,8 +80,6 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 			else
 				setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
-			if(j<this->listItems.size())
-				{
 					if(this->multi==false)
 						this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid);
 					else
@@ -93,14 +93,15 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 							this->gc->CTK_printJustLine(buffer,this->sx,this->sy+j,this->wid);
 						}
 				}
-			else
-				{
-					//this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
-					this->gc->CTK_printJustLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
-				}
+//			else
+//				{
+//					//this->gc->CTK_printLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+//					this->gc->CTK_printJustLine(this->blank.c_str(),this->sx,this->sy+j,this->wid);
+//				}
 		}
-//	fflush(NULL);
-//	MOVETO(this->sx,this->sy+this->hite);
+	SETNORMCHARSET;
+	MOVETO(1,1);
+	fflush(NULL);
 //	this->gadgetDirty=false;
 }
 

@@ -535,6 +535,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
 	mainApp->CTK_setDefaultGadget(textbox);
+	mainApp->CTK_setDefaultGadget(textbox);//TODO// horible hack!
+
 	mainApp->CTK_mainEventLoop(0,true,true);
 
 	delete mainApp;
