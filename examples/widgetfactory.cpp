@@ -47,7 +47,7 @@ CTK_cursesSourceEditBoxClass	*srceditbox;
 CTK_cursesEditBoxClass			*editbox;
 CTK_cursesListBoxClass			*list1;
 CTK_cursesListBoxClass			*list2;
-
+CTK_cursesTextBoxClass			*helptextbox;
 bool							mbarVis=true;
 int								b1Cnt=0;
 int								b2Cnt=0;
@@ -64,12 +64,25 @@ int								b2Cnt=0;
 #define BUTTON2	4001
 #define CHECK1 5000
 #define CHECK2 5001
+#define HELPMENU 3
+#define HELPITEM 0
 
 bool menuselctCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
 	fprintf(stderr,"Menu=%i Item=%i\n",mc->menuNumber,mc->menuItemNumber);
+	if(mc->menuNumber==HELPMENU)
+		{
+			switch(mc->menuItemNumber)
+				{
+					case HELPITEM:
+						mainApp->CTK_setPage(0);
+						mainApp->CTK_setDefaultGadget(helptextbox);
+						//mainApp->CTK_setDefaultGadget(helptextbox);
+						break;
+				}
+		}
 
 	if(mc->menuNumber==TABMENU)
 		{
@@ -84,9 +97,8 @@ bool menuselctCB(void *inst,void *userdata)
 					default:
 						mainApp->CTK_setPage(mc->menuItemNumber);
 						if(mc->menuItemNumber==3)
-						{
-							mainApp->CTK_setDefaultGadget(list1);
-							//fprintf(stderr,"mainApp->CTK_setDefaultGadget(list1);\n");
+							{
+								mainApp->CTK_setDefaultGadget(list1);
 							}
 						return(true);
 						break;
@@ -314,7 +326,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Instructions");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
-	textbox=mainApp->CTK_addNewTextBox(genx,geny,genw,genh,sampletxt);
+	helptextbox=mainApp->CTK_addNewTextBox(genx,geny,genw,genh,sampletxt);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Next Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)NEXTPAGE);
@@ -534,8 +546,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->eventLoopCBIn=mainloopCBIn;
 	mainApp->eventLoopCBOut=mainloopCBOut;
 
-	mainApp->CTK_setDefaultGadget(textbox);
-	mainApp->CTK_setDefaultGadget(textbox);//TODO// horible hack!
+	mainApp->CTK_setDefaultGadget(helptextbox);
+	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 
 	mainApp->CTK_mainEventLoop(0,true,true);
 

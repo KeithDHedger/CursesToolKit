@@ -423,8 +423,9 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
-										//this->mc->CTK_clearScreen();
-										//this->mc->CTK_updateScreen(this->mc,NULL);
+										sink=this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
+										this->mc->CTK_clearScreen();
+										this->mc->CTK_updateScreen(this->mc,NULL);
 										this->menuItemNumber=selection+this->menuStart-1;
 										fflush(NULL);
 										if(this->menuItemNumber>-1)
