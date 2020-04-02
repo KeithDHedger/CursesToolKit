@@ -561,13 +561,19 @@ fprintf(stderr,"395\n");
 //				break;
 //		}
 
-	printf("\e[%i;%iH%.*s",sy,sx,boxwidth,"X");
+	//MOVETO(sx,sy)
+	//fprintf(stderr,"boxw=%i\n",boxwidth);
+	//printf("%*s",boxwidth-40,"X");
+	//MOVETO(1,1)
+//	MOVETO(sx,sy)
+//	for(int k=1;k<boxwidth-20;k++)
+//		printf("X");
 	if(printablelen<boxwidth)
 		printf("\e[%i;%iH%s",sy,sx,buffer);
 	else
 	{
 	//	printf(buffer,"%s%-*s",outp,boxwidth-printablelen,"");
-		printf(buffer,"%.*s",outp,boxwidth-printablelen);
+		printf(buffer,"%.*s",buffer,boxwidth-printablelen);
 }
 	free(linecpy);
 	free(buffer);

@@ -171,6 +171,21 @@ void CTK_cursesEditBoxClass::CTK_updateText(const char *txt,bool isfilename,bool
 */
 void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdate)
 {
+//setBothColours(FORE_BLUE,BACK_GREEN,false);
+//this->mc->gc->CTK_drawBox(this->sx,this->sy,this->wid,this->hite,PLAINBOX,true,false);
+system("clear");
+for(int h=1;h<this->hite;h++)
+{
+	for(int w=1;w<this->wid;w++)
+		{
+			MOVETO(w+this->sx,h+this->sy);
+			printf("X");
+			fprintf(stderr,"X");
+		}
+			fprintf(stderr,"\n");
+}
+fflush(NULL);
+return;
 	int							startchr=0;
 	int							j;
 	int							linenum=0;
