@@ -385,6 +385,74 @@ void CTK_cursesGraphicsClass::CTK_printLine(const char *line,const char *blnk,in
 	printf("\e[%i;%iH%*s\e[%iG%s\n",sy,sx,boxwidth,blnk,sx,line);
 }
 
+
+
+void CTK_cursesGraphicsClass::CTK_printJustLineColour(const char *line,int sx,int sy,int boxwidth,int just,int fg,int bg)
+{
+	int		slen=strlen(line);
+	char	*buffer;
+	char	*outp;
+	char	*linecpy=strdup(line);
+	int		maxlen=boxwidth;
+	int		printablelen=0;
+
+//TODO//
+	maxlen=strlen(line)*this->tabWidth*boxwidth;
+	buffer=(char*)calloc(1,maxlen+boxwidth+1);
+	outp=(char*)calloc(1,maxlen+boxwidth+1);
+
+	if(linecpy[strlen(linecpy)-1]=='\n')
+		linecpy[strlen(linecpy)-1]=0;
+
+	this->detab(linecpy,&outp[0],maxlen,sx);
+	printablelen=strlen(outp);
+
+	if(strchr(outp,'\e')!=NULL)
+		{
+			printablelen=0;
+			for(int j=0;j<strlen(outp);j++)
+				{
+					if(outp[j]=='\e')
+						{
+							while(outp[j]!='m')
+								j++;
+						}
+					else
+						{
+							printablelen++;
+						}
+				}
+			slen=printablelen+1;
+		}
+////				fprintf(stderr,"%s\e[0m\e[%i;%im%s",NORMAL,this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->txtStrings[j+this->startLine].c_str());
+	switch(just)
+		{
+			case LEFTJUSTIFY:
+				if(printablelen>boxwidth)
+					sprintf(buffer,"\e[0m\e[%i;%im%.*s\e[0m",fg,bg,boxwidth,outp);
+				else
+					sprintf(buffer,"\e[0m\e[%i;%im%s%-*s\e[0m",fg,bg,outp,boxwidth-printablelen,"");
+				
+				break;
+			case CENTREJUSTIFY:
+				sprintf(buffer,"%*s",maxlen," ");
+				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2)-1,outp);
+				break;
+			case RIGHTJUSTIFY:
+				sprintf(buffer,"%*s",boxwidth,outp);
+				break;
+		}
+
+	printf("\e[%i;%iH%s",sy,sx,buffer);
+	free(linecpy);
+	free(buffer);
+	free(outp);
+}
+
+
+
+
+
 /**
 * Print a single line, justified.
 * \param const char *line to print.

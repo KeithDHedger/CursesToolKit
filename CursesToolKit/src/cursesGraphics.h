@@ -41,6 +41,10 @@ class CTK_cursesGraphicsClass
 		//void	CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth);
 		void				CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just=LEFTJUSTIFY);
 
+void CTK_printJustLineColour(const char *line,int sx,int sy,int boxwidth,int just,int fg,int bg);
+
+
+
 	private:
 		void				detab(char *in,char *out,int maxlen,int sx);
 		void				setUserColours(coloursStruct *cs);

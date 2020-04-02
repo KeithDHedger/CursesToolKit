@@ -79,7 +79,7 @@ bool menuselctCB(void *inst,void *userdata)
 					case HELPITEM:
 						mainApp->CTK_setPage(0);
 						mainApp->CTK_setDefaultGadget(helptextbox);
-						//mainApp->CTK_setDefaultGadget(helptextbox);
+						mainApp->CTK_setDefaultGadget(helptextbox);
 						break;
 				}
 		}
@@ -149,6 +149,9 @@ bool buttonselctCB(void *inst,void *userdata)
 					case BUTTON2:
 						b2Cnt++;
 						sprintf(buffer,"Button '%s' clicked, cnt %i.",bc->label,b2Cnt);
+						mainApp->CTK_setPage(0);
+						mainApp->CTK_setDefaultGadget(helptextbox);
+						return(true);
 						resultbuttonstextbox->CTK_updateText(buffer);
 						srcbuffercopy=editbox->CTK_getBuffer();
 					//	fprintf(stderr,">>%s<<",srcbuffercopy);

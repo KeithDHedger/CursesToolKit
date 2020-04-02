@@ -122,10 +122,10 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 	if(this->txtStrings.size()==0)
 		return;
 
-	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-	else
-		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+//	if(hilite==true)
+//		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+//	else
+//		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 //fprintf(stderr,"j=%i hite=%i\n",j,this->hite);
 	fflush(NULL);
 //MOVETO(this->sx,this->sy);
@@ -135,10 +135,29 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 		//fprintf(stderr,"j=%i hite=%i\n",j,this->hite);
 			if(j<this->txtStrings.size())
 				{
+				//MOVETO(this->sx,this->sy+j)
+//				SETNORMAL;
+//				printf("\e[%i;%iH%s",this->sy+j,this->sx,NORMAL);
+//				if(hilite==true)
+//				{
+//					setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+//				fprintf(stderr,"%s\e[0m\e[%i;%im%s",NORMAL,this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->txtStrings[j+this->startLine].c_str());
+//				}
+//				else
+//				{
+//					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+//				fprintf(stderr,"%s\e[0m\e[%i;%im%s",NORMAL,this->colours.foreCol,this->colours.backCol,this->txtStrings[j+this->startLine].c_str());
+//					}
+			
 					//this->gc->CTK_printLine(this->txtStrings[j+this->startLine].c_str(),this->blank.c_str(),this->sx,this->sy+j,this->wid);
-					this->gc->CTK_printJustLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
+//					this->gc->CTK_printJustLine(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid);
+					if(hilite==true)
+						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+					else
+						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+					
+					fflush(NULL);
 					j++;
-	//fflush(NULL);
 				}
 			else
 				break;

@@ -223,6 +223,14 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 //ERROR//
 					this->gc->CTK_printJustLine(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+
+//					if(hilite==true)
+//						this->gc->CTK_printJustLineColour(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+//					else
+				//	this->gc->CTK_printJustLineColour(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+
+
+
 //fflush(NULL);
 //MOVETO(this->sx,this->sy+boxline);
 //this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
