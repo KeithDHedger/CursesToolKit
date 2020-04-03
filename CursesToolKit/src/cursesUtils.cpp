@@ -575,6 +575,11 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop(0,true,true);
+	if(this->mc!=NULL)
+		{
+			this->mc->CTK_clearScreen();
+			this->mc->CTK_updateScreen(this->mc,NULL);
+		}
 	delete app;
 	return(this->dialogReturnData.isValidData);
 }
@@ -593,6 +598,7 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
+	cs.backCol=BACK_WHITE;
 	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow("About ...","",ABOUTWIDTH,ABOUTHITE);
 	CURRENTPAGE(app).fancyWindow=true;
@@ -670,6 +676,11 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 
 	SETHIDECURS;
 	app->CTK_mainEventLoop(0,true,true);
+	if(this->mc!=NULL)
+		{
+			this->mc->CTK_clearScreen();
+			this->mc->CTK_updateScreen(this->mc,NULL);
+		}
 	delete app;
 }
 

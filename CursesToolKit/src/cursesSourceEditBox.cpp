@@ -240,9 +240,10 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 void CTK_cursesSourceEditBoxClass::refreshLine(void)
 {
 	this->gadgetDirty=true;
-	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+	//setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 	//this->gc->CTK_printLine(srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
-	this->gc->CTK_printJustLine(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+	/////this->gc->CTK_printJustLine(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+	this->gc->CTK_printJustLineColour(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 }
 
 /**

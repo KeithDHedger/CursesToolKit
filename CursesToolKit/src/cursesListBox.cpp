@@ -72,13 +72,19 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 		{
 			if(j<this->listItems.size())
 				{
-					if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
-						setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);//TODO//
-					else
-						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+//					if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+//						setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);//TODO//
+//					else
+//						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 
 					if(this->multi==false)
-						this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid);
+						{
+						if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+						//this->gc->CTK_printLine(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid);
+							this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+						else
+							this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+						}
 					else
 						{
 							if(this->selections[j+this->listStart]==true)
@@ -86,7 +92,14 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 							else
 								selected=' ';
 							sprintf(buffer,"[%c] %s",selected,this->listItems[j+this->listStart]->label.c_str());
-							this->gc->CTK_printJustLine(buffer,this->sx,this->sy+j,this->wid);
+							//this->gc->CTK_printJustLine(buffer,this->sx,this->sy+j,this->wid);
+							
+							//this->gc->CTK_printJustLine(buffer,this->sx,this->sy+j,this->wid);
+							if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+								this->gc->CTK_printJustLineColour(buffer,this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+							else
+								this->gc->CTK_printJustLineColour(buffer,this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+							
 						}
 				}
 //			else

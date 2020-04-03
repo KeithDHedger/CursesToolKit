@@ -139,17 +139,16 @@ bool menuSelectCB(void *inst,void *userdata)
 
 						case OPENITEM:
 							{
-								std::string				str;
-								CTK_cursesUtilsClass	cu;
-								char					*buffer=get_current_dir_name();
-								cu.CTK_fileChooserDialog(buffer,CUOPENFILE);
-								if(cu.dialogReturnData.isValidData==true)
+								std::string	str;
+								char		*buffer=get_current_dir_name();
+								mainApp->utils->CTK_fileChooserDialog(buffer,CUOPENFILE);
+								if(mainApp->utils->dialogReturnData.isValidData==true)
 									{
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,cu.dialogReturnData.stringValue.c_str());
+										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,mainApp->utils->dialogReturnData.stringValue.c_str());
 										srcbox->CTK_setShowLineNumbers(showLineNumbers);
-										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(cu.dialogReturnData.stringValue.c_str()));
+										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(mainApp->utils->dialogReturnData.stringValue.c_str()));
 										rebuildTabMenu();
 										rebuildBMMenu();
 									}
@@ -169,15 +168,14 @@ bool menuSelectCB(void *inst,void *userdata)
 							break;
 						case SAVEASITEM:
 							{
-								char					*buffer=(char*)alloca(PATH_MAX);
-								CTK_cursesUtilsClass	cu;
-								char					*holdstr=strdup((char*)mainApp->pages[mainApp->pageNumber].userData);
+								char	*buffer=(char*)alloca(PATH_MAX);
+								char	*holdstr=strdup((char*)mainApp->pages[mainApp->pageNumber].userData);
 
-								cu.CTK_fileChooserDialog(dirname(holdstr),CUSAVEFILE,NULL,basename(holdstr));
-								if(cu.dialogReturnData.isValidData==true)
+								mainApp->utils->CTK_fileChooserDialog(dirname(holdstr),CUSAVEFILE,NULL,basename(holdstr));
+								if(mainApp->utils->dialogReturnData.isValidData==true)
 									{
-										sprintf(buffer,"%s",cu.dialogReturnData.stringValue.c_str());
-										FILE *f=fopen(cu.dialogReturnData.stringValue.c_str(),"w+");
+										sprintf(buffer,"%s",mainApp->utils->dialogReturnData.stringValue.c_str());
+										FILE *f=fopen(mainApp->utils->dialogReturnData.stringValue.c_str(),"w+");
 										if(f!=NULL)
 											{
 												fprintf(f,"%s",srcbox->CTK_getBuffer());
@@ -195,9 +193,8 @@ bool menuSelectCB(void *inst,void *userdata)
 						case CLOSEITEM:
 							if(srcbox->isDirty==true)
 								{
-									CTK_cursesUtilsClass	cu;
-									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
-										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
+									if(mainApp->utils->CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",mainApp->utils->dialogReturnData.intValue);
 								}
 							srcbox->CTK_setRunLoop(false);
 							CTK_freeAndNull((char**)&(mainApp->pages[mainApp->pageNumber].userData));
@@ -213,9 +210,8 @@ bool menuSelectCB(void *inst,void *userdata)
 						case QUITITEM:
 							if(srcbox->isDirty==true)
 								{
-									CTK_cursesUtilsClass	cu;
-									if(cu.CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
-										fprintf(stderr,"Button pressed=%i\n",cu.dialogReturnData.intValue);
+									if(mainApp->utils->CTK_queryDialog("File has changed ...\nDo you want to save it?",(const char*)mainApp->pages[mainApp->pageNumber].userData,"Save ...",ALLBUTTONS)==true)
+										fprintf(stderr,"Button pressed=%i\n",mainApp->utils->dialogReturnData.intValue);
 								}
 							srcbox->CTK_setRunLoop(false);
 							mainApp->runEventLoop=false;
@@ -261,10 +257,9 @@ bool menuSelectCB(void *inst,void *userdata)
 					{
 						case GOTOLINE:
 							{
-								CTK_cursesUtilsClass	cu;
-								if(cu.CTK_entryDialog("Goto line","","Jump To Line ...","",true,40)==true)
+								if(mainApp->utils->CTK_entryDialog("Goto line","","Jump To Line ...","",true,40)==true)
 									{
-										srcbox->CTK_gotoLine(atoi(cu.dialogReturnData.stringValue.c_str()));
+										srcbox->CTK_gotoLine(atoi(mainApp->utils->dialogReturnData.stringValue.c_str()));
 										mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 										srcbox->CTK_doEvent(false,srcbox->CTK_getStrings(),srcbox->CTK_getStrings());
 										break;
@@ -326,12 +321,7 @@ bool menuSelectCB(void *inst,void *userdata)
 					 case HELP:
 					 	break;
 					 case ABOUT:
-					 	{
-						 	CTK_cursesUtilsClass	*cu;
-						 	cu=new CTK_cursesUtilsClass;
-								cu->CTK_aboutDialog("Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE",80);
-							delete cu;
-						}
+							mainApp->utils->CTK_aboutDialog("Text Editor","Text Editor Example","Copyright 2019 K.D.Hedger","keithdhedger@gmail.com","http://keithhedger.freeddns.org","K.D.Hedger","../LICENSE",80);
 					 	break;
 					}
 				break;

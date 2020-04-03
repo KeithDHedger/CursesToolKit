@@ -1,4 +1,5 @@
 2.0.1
+Code clean.
 Fixed various ui bugs.
 Fixed visual artifacts from dialog boxes.
 Fixed segfault on text box scroll.

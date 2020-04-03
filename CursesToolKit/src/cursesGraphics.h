@@ -29,21 +29,11 @@ class CTK_cursesGraphicsClass
 		CTK_cursesGraphicsClass(CTK_mainAppClass *mc);
 		~CTK_cursesGraphicsClass();
 
-//		coloursStruct		colours;
-
 		void				CTK_setColours(coloursStruct *srccs,coloursStruct *dstcs,bool force=false);
 		void				CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
 		void				CTK_drawDialogWindow(void);
-		//void	CTK_printLine(const char *line,const char *blank,int width);
-		//void	CTK_printLine(const char *line,int boxwidth);
-		void				CTK_printLine(const char *line,int sx,int sy,int boxwidth);
-		void				CTK_printLine(const char *line,const char *blnk,int sx,int sy,int boxwidth);
-		//void	CTK_printLinePostBlanks(const char *line,int sx,int sy,int boxwidth);
-		void				CTK_printJustLine(const char *line,int sx,int sy,int boxwidth,int just=LEFTJUSTIFY);
 
-void CTK_printJustLineColour(const char *line,int sx,int sy,int boxwidth,int just,int fg,int bg);
-
-
+		void				CTK_printJustLineColour(const char *line,int sx,int sy,int boxwidth,int just,int fg,int bg);
 
 	private:
 		void				detab(char *in,char *out,int maxlen,int sx);

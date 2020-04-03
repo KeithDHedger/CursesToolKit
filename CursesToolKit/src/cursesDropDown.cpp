@@ -146,15 +146,14 @@ void CTK_cursesDropClass::drawList(int selection)
 	for(int j=0;j<this->items.size();j++)
 		{
 			if(this->items[j].enabled==false)
-				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.disabledForeCol,this->colours.menuBackCol);
 			else
 				{
 					if(selection==j)
-						setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
+						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol);
 					else
-						setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.menuForeCol,this->colours.menuBackCol);
 				}
-			this->gc->CTK_printJustLine(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth);
 		}
 	fflush(NULL);
 }
@@ -196,15 +195,14 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
 	this->hiLited=hilite;
 
 	MOVETO(this->sx,this->sy);
-	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-	else
-		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
 
 	if(this->colours.fancyGadgets==true)
 		str+=" >>";
 
-	this->gc->CTK_printJustLine(str.c_str(),this->sx,sy,str.length());
+	if(hilite==true)
+		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+	else
+		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->colours.buttonForeCol,this->colours.buttonBackCol);
 
 	fflush(NULL);
 }

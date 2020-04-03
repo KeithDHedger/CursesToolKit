@@ -551,6 +551,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	mainApp->CTK_setDefaultGadget(helptextbox);
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
+	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 
 	mainApp->CTK_mainEventLoop(0,true,true);
 

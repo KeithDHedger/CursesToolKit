@@ -123,9 +123,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	MOVETO(1,1)
-	//SETNORMCHARSET
 	printf(CLEARTOEOS);
-//	fflush(NULL);
 	if(THISPAGE.fancyWindow==true)
 		this->gc->CTK_drawDialogWindow();
 }
@@ -136,7 +134,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 void CTK_mainAppClass::CTK_addNewMenuBar(void)
 {
 	this->menuBar=new CTK_cursesMenuClass(this);
-	//this->menuBar->CTK_setUpdateCB(this->CTK_updateScreen,this);
+	//this->menuBar->CTK_setUpdateCB(this->CTK_updateScreen,this);//TODO//
 }
 
 /**
@@ -725,7 +723,6 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 		THISPAGE.currentGadget=newgadget;
 		CURRENTGADGET->gadgetDirty=true;
 		CURRENTGADGET->CTK_drawGadget(true);
-		//CURRENTGADGET->hiLited=true;
 }
 
 /**
@@ -1064,7 +1061,6 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 			THISPAGE.boxW=dialogwidth;
 			THISPAGE.boxX=(this->maxCols/2)-(dialogwidth/2);
 			THISPAGE.boxWM=(this->maxCols/2)-1;
-			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 
 	if((dialoghite==-1) || (dialoghite>this->maxRows-6))
@@ -1072,14 +1068,12 @@ void CTK_mainAppClass::CTK_setDialogWindow(const char *windowname,const char *di
 			THISPAGE.boxH=this->maxRows-6;
 			THISPAGE.boxY=4;
 			THISPAGE.boxHM=((this->maxRows)/2);
-		//	fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 	else
 		{
 			THISPAGE.boxH=dialoghite;
 			THISPAGE.boxY=(this->maxRows/2)-(dialoghite/2)+1;
 			THISPAGE.boxHM=this->maxRows/2;
-			//fprintf(stderr,"x=%i y=%i w=%i h=%i wm=%i hm=%i\n",THISPAGE.boxX,THISPAGE.boxY,THISPAGE.boxW,THISPAGE.boxW,THISPAGE.boxWM,THISPAGE.boxHM);
 		}
 }
 

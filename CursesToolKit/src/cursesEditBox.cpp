@@ -181,7 +181,7 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	std::vector<std::string>	edstrings;
 
 	this->hiLited=hilite;
-//TODO//
+
 	if(this->thisType==EDITBOXCLASS)
 		edstrings=this->CTK_getStrings();
 	else
@@ -190,9 +190,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	if((shortupdate==false) || (this->needsRefresh==true))
 		{
 			this->needsRefresh=false;
-		//fprintf(stderr,"long draw\n");
-			////if(this->colours.fancyGadgets==true)
-			////	this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
+			if(this->colours.fancyGadgets==true)
+				this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
 
 			if((this->txtStrings.size()-1)-this->startLine<this->hite)
 				this->startLine=this->txtStrings.size()-this->hite;
@@ -200,8 +199,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 			if(this->startLine<0)
 				this->startLine=0;
 
-			setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-/////////////////////////////////
 			while(((boxline)<this->hite) && (boxline<this->txtStrings.size()))
 				{
 					MOVETO(this->sx,this->sy+boxline);
@@ -220,20 +217,8 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 								printf("  ");
 						}
 
-					setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//ERROR//
-					this->gc->CTK_printJustLine(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
+					this->gc->CTK_printJustLineColour(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 
-//					if(hilite==true)
-//						this->gc->CTK_printJustLineColour(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
-//					else
-				//	this->gc->CTK_printJustLineColour(edstrings[boxline+this->startLine].c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
-
-
-
-//fflush(NULL);
-//MOVETO(this->sx,this->sy+boxline);
-//this->gc->CTK_printLine(edstrings[boxline+this->startLine].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+boxline,this->wid-this->lineReserve);
 					boxline++;
 				}
 		}
@@ -242,10 +227,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 			this->refreshLine();
 		}
 
-
-	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-
 	if(this->showStatus==true)
 		{
 			char	*statline;
@@ -253,7 +234,10 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 			if(tclip.back()=='\n')
 				tclip.pop_back();
 			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
-			this->gc->CTK_printJustLine(statline,this->sx,this->sy+hite+1,this->wid);
+			if(hilite==true)
+				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+			else
+				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 			free(statline);
 		}
 
@@ -271,7 +255,7 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 				}
 		}
 //print cursor
-//	if(showcursor==true)
+	if(showcursor==true)
 		{
 			MOVETO(getColForXpos(this->txtStrings[this->currentY],this->tabWidth,this->currentX,this->sx+this->lineReserve),this->sy+this->currentY-this->startLine);
 			switch(this->txtStrings[this->currentY][this->currentX])
@@ -527,7 +511,6 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 					if(this->mc->readKey->isControlKey==true)
 						{
 //check menu ctrl keys
-							//fprintf(stderr,"Control %s Key number=%i\n",this->mc->readKey->inputBuffer.c_str(),this->mc->readKey->controlKeyNumber);
 							if((this->mc->menuBar!=NULL) && (this->mc->menuBar->enableShortcuts==true) && (this->mc->menuBar->CTK_getMenuBarEnable()==true))
 								{
 									int	pagenum=this->mc->pageNumber;
@@ -607,10 +590,6 @@ char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
 	if(this->realAddedNL==true)
 		retdata[strlen(retdata)-2]=0;
 	return(retdata);
-
-
-//	this->updateBuffer();
-//	return(this->txtBuffer);
 }
 
 /**
@@ -795,10 +774,7 @@ void CTK_cursesEditBoxClass::CTK_gotoLine(int line)
 	this->currentX=0;
 	this->currentY=j;
 	this->startLine=j;
-	this->adjustXY();
-//	this->mc->CTK_clearScreen();
-//	this->mc->CTK_updateScreen(this->mc,NULL);
-	
+	this->adjustXY();	
 }
 
 /**
@@ -921,10 +897,7 @@ int CTK_cursesEditBoxClass::CTK_getLineCnt(void)
 */
 void CTK_cursesEditBoxClass::refreshLine(void)
 {
-//	this->gadgetDirty=true;
-	setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-//	this->gc->CTK_printLine(txtStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
-	this->gc->CTK_printJustLine(txtStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
+	this->gc->CTK_printJustLineColour(txtStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 }
 
 /**
