@@ -429,13 +429,13 @@ void CTK_cursesGraphicsClass::CTK_printJustLineColour(const char *line,int sx,in
 		{
 			case LEFTJUSTIFY:
 				if(printablelen>boxwidth)
-					sprintf(buffer,"\e[0m\e[%i;%im%.*s\e[0m",fg,bg,boxwidth,outp);
+					sprintf(buffer,NORMAL NORMCHARSET "\e[%i;%im%.*s\e[0m",fg,bg,boxwidth,outp);
 				else
-					sprintf(buffer,"\e[0m\e[%i;%im%s%-*s\e[0m",fg,bg,outp,boxwidth-printablelen,"");
+					sprintf(buffer,NORMAL NORMCHARSET "\e[%i;%im%s%-*s" NORMAL,fg,bg,outp,boxwidth-printablelen,"");
 				
 				break;
 			case CENTREJUSTIFY:
-				sprintf(buffer,"%*s",maxlen," ");
+				sprintf(buffer,NORMAL NORMCHARSET "%*s" NORMAL,maxlen," ");
 				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2)-1,outp);
 				break;
 			case RIGHTJUSTIFY:

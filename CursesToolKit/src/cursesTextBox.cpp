@@ -130,6 +130,7 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 	fflush(NULL);
 //MOVETO(this->sx,this->sy);
 //	fflush(NULL);
+	j=0;
 	while(j<this->hite)
 		{
 		//fprintf(stderr,"j=%i hite=%i\n",j,this->hite);
