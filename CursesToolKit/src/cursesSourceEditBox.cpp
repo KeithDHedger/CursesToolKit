@@ -157,13 +157,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 					flag=false;
 				}
 		}
-//	if(noeol==true)
-//	{
-//	this->srcStrings.push_back("\n\n");
-//inpstream << '\n' << "printf" << '\n' << '\n' << '\n';
-//	}
 	inpstream << std::endl; 
-//sourceHighlight.backgroundColor("white");
 	sourceHighlight.setDataDir(SRCDATADIR);
 	std::string lang="";
 	if((this->filePath.compare("")!=0) && (this->forceLang==false))
@@ -240,9 +234,6 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 void CTK_cursesSourceEditBoxClass::refreshLine(void)
 {
 	this->gadgetDirty=true;
-	//setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-	//this->gc->CTK_printLine(srcStrings[this->currentY].c_str(),this->blank.c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
-	/////this->gc->CTK_printJustLine(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve);
 	this->gc->CTK_printJustLineColour(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 }
 

@@ -97,11 +97,6 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 			bc=this->colours.backCol;
 		}
 
-//	if(hilite==true)
-//		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
-//	else
-//		setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-
 	if(this->curs>=this->wid)//TODO//
 		{
 			while(this->curs>=this->wid)
@@ -109,10 +104,7 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 					this->startChar++;
 					this->curs--;
 				}
-			//this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
-			//if(hilite==true)
-			//	this->gc->CTK_printJustLineColour(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
-			//else
+
 			this->gc->CTK_printJustLineColour(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY,fc,bc);
 			MOVETO(this->sx+this->curs,this->sy);
 		}
@@ -120,13 +112,11 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 		{
 			if(this->text.length()>0)
 				{
-//					this->gc->CTK_printJustLine(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY);
 					this->gc->CTK_printJustLineColour(this->text.substr(this->startChar,this->wid).c_str(),this->sx,this->sy,this->wid,LEFTJUSTIFY,fc,bc);
 					MOVETO(this->sx+this->curs,this->sy);
 				}
 			else
 				{
-					//this->gc->CTK_printJustLine(" ",this->sx,this->sy,this->wid,LEFTJUSTIFY);
 					this->gc->CTK_printJustLineColour(" ",this->sx,this->sy,this->wid,LEFTJUSTIFY,fc,bc);
 					MOVETO(this->sx,this->sy);
 				}
@@ -266,6 +256,4 @@ const char *CTK_cursesInputClass::CTK_getText(void)
 {
 	return(this->text.c_str());
 }
-
-
 

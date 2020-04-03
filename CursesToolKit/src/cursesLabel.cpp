@@ -91,12 +91,9 @@ void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 	if(this->txtStrings.size()==0)
 		return;
 
-	//setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
-
 	for(int j=0;j<this->hite;j++)
 		{
 			if(j<this->txtStrings.size())
-			//	this->gc->CTK_printJustLine(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify);
 				this->gc->CTK_printJustLineColour(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify,this->colours.foreCol,this->colours.backCol);
 		}
 }

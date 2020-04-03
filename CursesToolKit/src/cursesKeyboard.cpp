@@ -84,8 +84,6 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 
 	setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
 
-//	MOVETO(this->sx,this->sy);
-//	printf("%s",this->blank.c_str());
 	MOVETO(this->sx,this->sy);
 	printf("%s",this->text.substr(this->startChar,this->wid).c_str());
 

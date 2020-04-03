@@ -572,7 +572,6 @@ void CTK_cursesEditBoxClass::updateBuffer(void)
 
 	for(int j=0;j<this->txtStrings.size();j++)
 		buff.append(this->txtStrings[j]);
-//	buff.append("\n");
 
 	this->CTK_updateText(buff.c_str(),false,false);
 }

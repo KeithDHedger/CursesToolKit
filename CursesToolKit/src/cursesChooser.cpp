@@ -55,7 +55,6 @@ static bool chooserSelectCB(void *inst,void *ud)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 	CTK_cursesChooserClass		*ch=static_cast<CTK_cursesChooserClass*>(ud);
 	char						*cwd;
-//	fprintf(stderr,">>%s<<\n",ch->files->data[ls->listItemNumber].path.c_str());
 
 	ch->fileName=ch->files->data[ls->listItemNumber].name;
 	ch->filePath=ch->files->data[ls->listItemNumber].path;
@@ -70,7 +69,6 @@ static bool chooserSelectCB(void *inst,void *ud)
 			ch->CTK_updateList();
 		}
 
-//	fprintf(stderr,"folder=%s\nname=%s\npath=%s\n",ch->folderPath.c_str(),ch->fileName.c_str(),ch->filePath.c_str());
 	if(ch->selectCB!=NULL)
 		ch->selectCB((void*)ch,(void*)ch->CTK_getCBUserData());
 	return(true);
