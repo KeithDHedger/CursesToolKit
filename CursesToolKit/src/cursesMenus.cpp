@@ -38,11 +38,6 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 */
 CTK_cursesMenuClass::CTK_cursesMenuClass(CTK_mainAppClass *mc)
 {
-//	winsize	w;
-
- //  ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
-//	this->rows=w.ws_row;
-	fprintf(stderr,"mc=%i\n",mc->maxRows);
 	this->rows=mc->maxRows;
 	this->maxRows=this->rows-mBarHite+1;
 	this->menuHite=this->rows-mBarHite;
@@ -61,6 +56,8 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 
 	if(this->menuBarVisible==false)
 		return;
+	MOVETO(x,y);
+	SETNORMCHARSET;//TODO//
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
@@ -69,6 +66,7 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 			else
 				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 			MOVETO(x,y);
+
 
 			if((this->menuShowing==true) && (this->menuNumber==j))
 				{
@@ -166,6 +164,8 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	menuStruct	*themenu;
 
 	MOVETO(x,y);
+	SETNORMCHARSET;//TODO//
+
 	switch(style)
 		{
 			case FLATINVERT:
@@ -284,11 +284,6 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 	if(this->menuNumber<0)
 		return(CONT);
 
-	//this->mc->CTK_clearScreen();
-//	this->mc->CTK_updateScreen(this->mc,SCREENUPDATEUNHILITE);
-	//this->mc->CTK_updateScreen(this->mc,NULL);
-//sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
-//fflush(NULL);
 	while(mainloop==true)
 		{
 			this->menuShowing=true;
@@ -423,31 +418,17 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 									case CTK_KEY_ENTER:
 									case CTK_KEY_RETURN:
-									{
-									int hp=this->mc->pageNumber;
-										//sink=this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
-										//this->mc->CTK_clearScreen();
-										this->mc->CTK_updateScreen(this->mc,NULL);
+										sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 										this->menuItemNumber=selection+this->menuStart-1;
-										fflush(NULL);
-										if(this->menuItemNumber>-1)
-											sink=this->selectCB(this,NULL);
-										//sink=this->drawMenuWindow(this->menuNumber,sx,1,selection-1,doshortcut);
-										if(this->mc->pageNumber==hp)
-										{
-										this->mc->CTK_clearScreen();
-										this->mc->CTK_updateScreen(this->mc,NULL);
-										}
-										fflush(NULL);
 										return(SELECTED);
-										}
 										break;
 
 									case CTK_KEY_ESC:
 										loop=false;
 										selection=BRAKE;
 										sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
-										return(selection);
+										this->mc->CTK_updateScreen(this->mc,NULL);
+										return(BRAKE);
 										break;
 
 									default:
@@ -466,7 +447,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 								}
 						}
 				}
-			//this->updateCB((void*)this->mc,NULL);
+			//this->updateCB((void*)this->mc,NULL);//ERROR//
 		}
 	SETNORMAL;
 	return(selection);

@@ -123,6 +123,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	MOVETO(1,1)
+	//SETNORMCHARSET
 	printf(CLEARTOEOS);
 //	fflush(NULL);
 	if(THISPAGE.fancyWindow==true)
@@ -490,29 +491,16 @@ void CTK_mainAppClass::scrollGadget(bool pagescroll,bool lineup)
 */
 void CTK_mainAppClass::runMenus(void)
 {
-	if(THISPAGE.menusActive==false)
-		return;
+	int		retval=0;
+	bool	sink;
 
-	this->resetAllGadgets();
-	
-	int	hg=THISPAGE.currentGadget;
-	int hp=this->pageNumber;
-	if(hg!=-1)//TODO//
-		CURRENTGADGET->hiLited=false;
-	THISPAGE.currentGadget=-1;
-	if((this->menuBar!=NULL) && (this->menuBar->CTK_getMenuBarEnable()==true) && (this->menuBar->CTK_getMenuBarVisible()==true))
-		{
-			this->menuBar->CTK_doMenuEvent(0,1,true);
-			this->menuBar->CTK_drawDefaultMenuBar();
-			this->drawAllGadgets();
-		}
+	retval=this->menuBar->CTK_doMenuEvent(0,1,true);
+	this->menuBar->CTK_drawDefaultMenuBar();
 
-	if((hg!=-1) && (this->pageNumber==hp))
+	if(retval==SELECTED)
 		{
-			this->CTK_setDefaultGadget(THISPAGE.gadgets[hg]);
-			CURRENTGADGET->gadgetDirty=true;
-			CURRENTGADGET->hiLited=true;
-			CURRENTGADGET->CTK_drawGadget(true);
+			sink=this->menuBar->selectCB(this->menuBar,(void*)this->menuBar->CTK_getCBUserData());
+			this->CTK_updateScreen(this,NULL);
 		}
 }
 
@@ -749,6 +737,7 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 {
+	MOVETO(1,1)
 	SETHIDECURS;
 
 	if(docls==true)

@@ -71,7 +71,7 @@ bool menuselctCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
 
-	fprintf(stderr,"Menu=%i Item=%i\n",mc->menuNumber,mc->menuItemNumber);
+	fprintf(stderr,"Menu==%i Item==%i\n",mc->menuNumber,mc->menuItemNumber);
 	if(mc->menuNumber==HELPMENU)
 		{
 			switch(mc->menuItemNumber)
