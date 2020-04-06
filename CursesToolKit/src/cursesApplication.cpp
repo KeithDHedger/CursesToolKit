@@ -492,6 +492,8 @@ void CTK_mainAppClass::runMenus(void)
 	int		retval=0;
 	bool	sink;
 
+	if(this->menuBar==NULL)
+		return;
 	retval=this->menuBar->CTK_doMenuEvent(0,1,true);
 	this->menuBar->CTK_drawDefaultMenuBar();
 
