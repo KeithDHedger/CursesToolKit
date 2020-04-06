@@ -48,7 +48,8 @@ void CTK_cursesShellClass::CTK_startShell(void)
 
 //	fcntl(0, F_SETFL, 33794);
 
-//	this->mc->readKey->restoreTerminal();
+	//this->mc->CTK_clearScreen();
+	this->mc->readKey->CTK_restoreTerminal();
 	//tty_attr.c_iflag &= (ICRNL | IXON);
 	//tty_attr.c_lflag &= (ICANON | ECHO| ISIG|BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 
@@ -59,17 +60,19 @@ void CTK_cursesShellClass::CTK_startShell(void)
 
 	//printf("\e[?1049h");
 	//fflush(NULL);
-	system("/bin/bash 2>&1");
+	//system("/usr/bin/reset 2>&1");
+	//system("/usr/bin/tput clear 2>&1");
+	system("/bin/bash -c printf \"\e[0m\e[H\e[2J\" 2>&1;/bin/bash 2>&1");
 	//sleep(5);
 	//system("/bin/bash");
 	//printf("\e[?1049l");
 	//fflush(NULL);
-//	this->mc->readKey->setTerminal();
+	this->mc->readKey->CTK_setTerminal();
 	fprintf(stderr,"<<<<<<<\n");
 	SETHIDECURS;
-	//fflush(NULL);
 	this->mc->CTK_clearScreen();
 	this->mc->CTK_updateScreen(this->mc,NULL);
+	fflush(NULL);
 }
 
 

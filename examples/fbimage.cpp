@@ -37,22 +37,24 @@ int main(int argc, char **argv)
 		folder=argv[1];
 
 	cs.windowBackCol=BACK_WHITE;
-	mainApp->CTK_setColours(cs);
+	mainApp->CTK_setColours(&cs,true);
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),1,labellen,1,label);
-	lab->CTK_setJustify(CENTRE);
+	lab->CTK_setJustify(CENTREJUSTIFY);
 
 	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(2,2,64,32,"LFSTux.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 	mainApp->CTK_mainEventLoop(1);
 	img->CTK_newFBImage(1,2,-1,8,"LFSTuxRed.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
-	mainApp->CTK_mainEventLoop(1);
 
-	cu.CTK_openFile(mainApp,"Select an image ...",folder,true,"",".png;.tiff;.jpg;");
-	if(cu.isValidFile==true)
+	mainApp->CTK_mainEventLoop(-5000,true);
+
+	cu.CTK_fileChooserDialog(folder,CUOPENFILE,".png;.tiff;.jpeg;.jpg;");
+
+	if(cu.dialogReturnData.isValidData==true)
 		{
-			img->CTK_newFBImage(2,2,mainApp->maxCols-2,mainApp->maxRows-2,cu.stringResult.c_str());
+			img->CTK_newFBImage(2,2,mainApp->maxCols-2,mainApp->maxRows-2,cu.dialogReturnData.stringValue.c_str());
 			img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
 			mainApp->CTK_mainEventLoop(1);
 		}

@@ -95,6 +95,11 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 							
 						}
 				}
+			else
+				{
+					this->gc->CTK_printJustLineColour(this->blank.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+				}
+
 		}
 	SETNORMCHARSET;//TODO//
 	MOVETO(1,1);

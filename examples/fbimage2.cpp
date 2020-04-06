@@ -23,12 +23,13 @@ exit $retval
 #include <cursesGlobals.h>
 CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
 
-void imgselctCB(void *inst,void *userdata)
+bool imgselctCB(void *inst,void *userdata)
 {
 	fprintf(stderr,"image selected\n");
+	return(true);
 }
 
-void buttonselctCB(void *inst,void *userdata)
+bool buttonselctCB(void *inst,void *userdata)
 {
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
@@ -36,6 +37,7 @@ void buttonselctCB(void *inst,void *userdata)
 
 	fprintf(stderr,"Button '%s' clicked, Userdata %p\n",bc->label,userdata);
 	mainApp->runEventLoop=false;
+	return(true);
 }
 
 int main(int argc, char **argv)
@@ -56,10 +58,10 @@ int main(int argc, char **argv)
 
 	cs.windowBackCol=BACK_WHITE;
 	cs.fancyGadgets=true;
-	mainApp->CTK_setColours(cs);
+	mainApp->CTK_setColours(&cs,true);
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),2,labellen,1,label);
-	lab->CTK_setJustify(CENTRE);
+	lab->CTK_setJustify(CENTREJUSTIFY);
 
 	CTK_cursesFBImageClass	*img=mainApp->CTK_addNewFBImage(2,4,64,32,"LFSTux.png");
 	img->sx=(mainApp->maxCols/2)-(img->wid/2/fbinf->charWidth);
@@ -67,7 +69,7 @@ int main(int argc, char **argv)
 	button=mainApp->CTK_addNewButton((mainApp->maxCols/2)-(8/2),48,16,1,"  QUIT  ");
 	button->CTK_setSelectCB(buttonselctCB,(void*)1);
 
-	mainApp->CTK_mainEventLoop();
+	mainApp->CTK_mainEventLoop(0);
 
 	SETSHOWCURS;
 

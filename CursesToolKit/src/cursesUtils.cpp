@@ -504,7 +504,7 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 /**
 * User notification convenience dialog.
 */
-bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windowname,const char *dialogtitle,int buttons,int dialogwidth)
+bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windowname,const char *dialogtitle,int pbuttons,int dialogwidth)
 {
 	int						genx,geny,genw;
 	CTK_cursesButtonClass	*button;
@@ -514,6 +514,7 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	int						btnnum=0;
 	int						maxbtns=0;
 	CTK_cursesButtonClass	*defhold=NULL;
+	int						buttons=pbuttons;
 
 	cs.fancyGadgets=true;
 	cs.labelBoxType=NOBOX;
@@ -532,12 +533,20 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 
 	geny=CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3;
 
-	if((buttons&YESBUTTON)==YESBUTTON)
-		maxbtns++;
-	if((buttons&NOBUTTON)==NOBUTTON)
-		maxbtns++;
-	if((buttons&CANCELBUTTON)==CANCELBUTTON)
-		maxbtns++;
+	if(buttons>0)
+		{
+			if((buttons&YESBUTTON)==YESBUTTON)
+				maxbtns++;
+			if((buttons&NOBUTTON)==NOBUTTON)
+				maxbtns++;
+			if((buttons&CANCELBUTTON)==CANCELBUTTON)
+				maxbtns++;
+		}
+	else
+		{
+				buttons=CANCELBUTTON;
+				maxbtns++;
+		}
 
 	geny=CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-1;
 

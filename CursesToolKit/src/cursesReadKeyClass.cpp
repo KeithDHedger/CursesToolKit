@@ -31,7 +31,7 @@ const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm
 */
 CTK_cursesReadKeyClass::~CTK_cursesReadKeyClass()
 {
-	this->restoreTerminal();
+	this->CTK_restoreTerminal();
 }
 
 /**
@@ -40,7 +40,7 @@ CTK_cursesReadKeyClass::~CTK_cursesReadKeyClass()
 CTK_cursesReadKeyClass::CTK_cursesReadKeyClass(CTK_mainAppClass *mc)
 {
 	this->mc=mc;
-	this->setTerminal();
+	this->CTK_setTerminal();
 	this->getKeyCodes();
 	setupterm(NULL,STDOUT_FILENO,NULL);
 	this->mc->clearScreenCode=tigetstr("clear");
@@ -49,7 +49,7 @@ CTK_cursesReadKeyClass::CTK_cursesReadKeyClass(CTK_mainAppClass *mc)
 /**
 * Set up terminal.
 */
-void CTK_cursesReadKeyClass::setTerminal(void)
+void CTK_cursesReadKeyClass::CTK_setTerminal(void)
 {
 	struct termios	tty_attr;
 	int				flags;
@@ -70,7 +70,9 @@ void CTK_cursesReadKeyClass::setTerminal(void)
 
 	tty_attr.c_iflag &= ~(ICRNL | IXON);
 	tty_attr.c_lflag &= ~(ICANON | ECHO| ISIG|BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-
+//
+//tty_attr.c_cc[VMIN] = 0;
+//tty_attr.c_cc[VTIME] = 2; /* Set timeout of 10.0 seconds */
 
 	tcsetattr(0, TCSANOW, &tty_attr);
 	setupterm(NULL,STDOUT_FILENO,NULL);
@@ -81,7 +83,7 @@ void CTK_cursesReadKeyClass::setTerminal(void)
 /**
 * Restore terminal.
 */
-void CTK_cursesReadKeyClass::restoreTerminal(void)
+void CTK_cursesReadKeyClass::CTK_restoreTerminal(void)
 {
 	tcsetattr(0,TCSAFLUSH,&this->ttyOldAttr);
 	setupterm(NULL,STDOUT_FILENO,NULL);
@@ -89,6 +91,9 @@ void CTK_cursesReadKeyClass::restoreTerminal(void)
 	fflush(NULL);
 }
 
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/poll.h>
 /**
 * Get input.
 * \note If tabIsSpecial=true ^I is reported as CTK_KEY_TAB
@@ -106,8 +111,22 @@ void CTK_cursesReadKeyClass::CTK_getInput(void)
 	this->specialKeyName=CTK_KEY_NONE;
 	this->controlKeyNumber=-1;
 
+	if(this->waitTime!=-1)
+		{
+			struct	pollfd fds;
+			int		ret;
+
+			fds.fd=STDIN_FILENO;
+			fds.events=POLLIN;
+
+			ret=poll(&fds,1,this->waitTime);	
+			if(ret==0)
+				return;
+		}
+
 	while(true)
 		{
+
 			result=read(STDIN_FILENO,&buffer[0],1);
 			if(result>=0)
 				break;

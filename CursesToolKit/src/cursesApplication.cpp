@@ -407,8 +407,8 @@ void CTK_mainAppClass::resetAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(false);
+			fflush(NULL);
 		}
-	fflush(NULL);
 }
 
 /**
@@ -424,8 +424,8 @@ void CTK_mainAppClass::drawAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
+			fflush(NULL);
 		}
-	fflush(NULL);
 }
 
 /**
@@ -734,6 +734,21 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 {
+	int		cntdown=runcnt;
+	bool	cntflag=false;
+
+	this->readKey->waitTime=-1;
+
+	if(runcnt>0)
+		cntflag=true;
+
+	if(runcnt<0)
+		{
+			cntflag=true;
+			this->readKey->waitTime=abs(runcnt);
+			cntdown=1;
+		}
+
 	MOVETO(1,1)
 	SETHIDECURS;
 
@@ -755,7 +770,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 		{
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
-			//fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
+			fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 
 			if(this->readKey->isHexString==true)
 				{
@@ -865,6 +880,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 				{
 //control keys
 					if(this->readKey->isControlKey==true)
+					{
 						switch(this->readKey->controlKeyNumber)
 							{
 //^M
@@ -888,16 +904,19 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 												}
 										}
 							}
+						}
 					else
 						{
-							if((CURRENTGADGET->CTK_getSelectKey()==this->readKey->inputBuffer.c_str()[0]) && (this->readKey->inputBuffer.length()==1))
+							if((THISPAGE.currentGadget!=-1) && (CURRENTGADGET->CTK_getSelectable()==true) && (CURRENTGADGET->CTK_getSelectKey()==this->readKey->inputBuffer.c_str()[0]) && (this->readKey->inputBuffer.length()==1))
 								{
 									this->activateGadget();
 								}
 						}
 				}
+			if((cntflag==true) && (--runcnt<=0))
+				this->runEventLoop=false;
 		}
-	return 0;
+	return(this->readKey->inputBuffer.length());
 }
 
 /**

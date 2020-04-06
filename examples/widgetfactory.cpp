@@ -62,6 +62,7 @@ int								b2Cnt=0;
 #define	PREVPAGE 2001
 #define BUTTON1	4000
 #define BUTTON2	4001
+#define BUTTON3	4002
 #define CHECK1 5000
 #define CHECK2 5001
 #define HELPMENU 3
@@ -156,6 +157,10 @@ bool buttonselctCB(void *inst,void *userdata)
 						srcbuffercopy=editbox->CTK_getBuffer();
 					//	fprintf(stderr,">>%s<<",srcbuffercopy);
 						free(srcbuffercopy);
+						break;
+					case BUTTON3:
+						CTK_cursesShellClass shell(mainApp);
+						shell.CTK_startShell();
 						break;
 				}
 		}
@@ -473,10 +478,13 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	geny+=3;
 
 //general buttons
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,12,0);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,12,0);
 	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Button 1");
 	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON1);
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,1);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,1);
+	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Shell");
+	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON3);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,2);
 	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Button 2");
 	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON2);
 

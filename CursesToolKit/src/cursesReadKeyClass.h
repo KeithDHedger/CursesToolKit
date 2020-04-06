@@ -30,6 +30,9 @@ class CTK_cursesReadKeyClass
 	public:
 														CTK_cursesReadKeyClass(CTK_mainAppClass *mc);
 														~CTK_cursesReadKeyClass();
+
+		void											CTK_restoreTerminal(void);
+		void											CTK_setTerminal(void);
 		void											CTK_getInput(void);
 
 		std::string										inputBuffer;
@@ -38,12 +41,10 @@ class CTK_cursesReadKeyClass
 		bool											isHexString=false;
 		bool											tabIsSpecial=false;
 		bool											isControlKey=false;
-
+		int												waitTime=-1;
 
 	protected:
 	private:
-		void											restoreTerminal(void);
-		void											setTerminal(void);
 		void											getKeyCodes(void);
 		void											setSpecialKeyName(void);
 
