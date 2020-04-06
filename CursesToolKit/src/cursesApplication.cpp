@@ -770,7 +770,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 		{
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
-			fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
+		//	fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 
 			if(this->readKey->isHexString==true)
 				{
