@@ -1,4 +1,5 @@
 2.0.1
+Done shell class.
 Fixed segfault if no menubar.
 Restored main event loop timeout.
 Updated frame buffer examples.
