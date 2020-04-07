@@ -142,10 +142,6 @@ bool buttonselctCB(void *inst,void *userdata)
 						mainApp->CTK_setPage(3);
 						mainApp->CTK_setDefaultGadget(list1);
 						return(true);
-						resultbuttonstextbox->CTK_updateText(buffer);
-						srcbuffercopy=srceditbox->CTK_getBuffer();
-						//fprintf(stderr,">>%s<<",srcbuffercopy);
-						free(srcbuffercopy);
 						break;
 					case BUTTON2:
 						b2Cnt++;
@@ -153,10 +149,6 @@ bool buttonselctCB(void *inst,void *userdata)
 						mainApp->CTK_setPage(0);
 						mainApp->CTK_setDefaultGadget(helptextbox);
 						return(true);
-						resultbuttonstextbox->CTK_updateText(buffer);
-						srcbuffercopy=editbox->CTK_getBuffer();
-					//	fprintf(stderr,">>%s<<",srcbuffercopy);
-						free(srcbuffercopy);
 						break;
 					case BUTTON3:
 						CTK_cursesShellClass shell(mainApp);
@@ -479,13 +471,13 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 //general buttons
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,12,0);
-	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Button 1");
+	button=mainApp->CTK_addNewButton(genx,geny,12,1," Lists  ");
 	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON1);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,1);
 	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Shell");
 	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON3);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,2);
-	button=mainApp->CTK_addNewButton(genx,geny,12,1,"Button 2");
+	button=mainApp->CTK_addNewButton(genx,geny,12,1,"  Help  ");
 	button->CTK_setSelectCB(buttonselctCB,(void*)BUTTON2);
 
 //drop box

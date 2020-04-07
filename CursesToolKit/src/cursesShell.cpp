@@ -36,39 +36,12 @@ CTK_cursesShellClass::CTK_cursesShellClass(CTK_mainAppClass *mc)
 	this->mc=mc;
 }
 
-//#include <curses.h>
-//#include <term.h>
-
 void CTK_cursesShellClass::CTK_startShell(void)
 {
-	SETSHOWCURS;
-	fprintf(stderr,">>>>>>\n");
-//	struct termios	tty_attr;
-//	int				flags;
-
-//	fcntl(0, F_SETFL, 33794);
-
-	//this->mc->CTK_clearScreen();
 	this->mc->readKey->CTK_restoreTerminal();
-	//tty_attr.c_iflag &= (ICRNL | IXON);
-	//tty_attr.c_lflag &= (ICANON | ECHO| ISIG|BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-
-	//tcsetattr(0,TCSAFLUSH,&this->mc->readKey->ttyOldAttr);
-	//setupterm(NULL,STDOUT_FILENO,NULL);
-	//restartterm(NULL,STDOUT_FILENO,NULL);
-	//putp(tigetstr("rmkx"));
-
-	//printf("\e[?1049h");
-	//fflush(NULL);
-	//system("/usr/bin/reset 2>&1");
-	//system("/usr/bin/tput clear 2>&1");
-	system("/bin/bash -c printf \"\e[0m\e[H\e[2J\" 2>&1;/bin/bash 2>&1");
-	//sleep(5);
-	//system("/bin/bash");
-	//printf("\e[?1049l");
-	//fflush(NULL);
+	SETSHOWCURS;
+	system("/bin/bash -c \"setterm --background default --foreground default --clear all;printf \"\e[?25h\"\" 2>&1;/bin/bash 2>&1");
 	this->mc->readKey->CTK_setTerminal();
-	fprintf(stderr,"<<<<<<<\n");
 	SETHIDECURS;
 	this->mc->CTK_clearScreen();
 	this->mc->CTK_updateScreen(this->mc,NULL);
