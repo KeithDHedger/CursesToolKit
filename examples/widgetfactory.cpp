@@ -20,6 +20,10 @@
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s --show-error-list=yes --gen-suppressions="
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
+pushd ..
+	make||exit 100
+popd
+
 name=$(basename $0 .cpp)
 
 g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit "$0" -o $name ||exit 1

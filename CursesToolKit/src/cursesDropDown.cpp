@@ -74,8 +74,11 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 	int		selection=this->selectedItem;
 	int		maxitems=this->items.size();
 
-	if(this->items.size()==0)
+	if(maxitems==0)
 		return;
+
+	if(selection<0 || selection>maxitems)
+		selection=0;
 
 	this->drawList(selection);
 
@@ -94,6 +97,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 							case CTK_KEY_UP:
 								selection--;
 //skip disabled menu items
+//TODO//
 								while((selection>-1) && (this->items[selection].enabled==false))
 									selection--;
 								if(selection<0)
@@ -101,16 +105,20 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 								break;
 
 							case CTK_KEY_DOWN:
-								while((selection<maxitems) && (this->items[selection]->enabled==false))
-									selection++;
-
-								selection++;
-//skip disabled menu items
-//TODO//
-								while((selection<this->items.size()) && (this->items[selection].enabled==false))
-									selection++;
-								if(selection==this->items.size())
-									selection=this->items.size()-1;
+								{
+									int oldsel=selection;
+									for(int j=selection;j<maxitems;j++)
+										{
+											if(this->items[j].enabled==false)
+											selection++;
+										}
+									if(selection>maxitems || this->items[selection].enabled==false)
+										{
+											selection=oldsel;
+											this->selectedItem=oldsel;
+											this->drawList(selection);
+										}
+								}
 								break;
 
 							case CTK_KEY_HOME:
