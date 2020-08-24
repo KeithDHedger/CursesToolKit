@@ -72,6 +72,7 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 	int		iy=this->sy+this->hite;
 	bool	loop=true;
 	int		selection=this->selectedItem;
+	int		maxitems=this->items.size();
 
 	if(this->items.size()==0)
 		return;
@@ -100,8 +101,12 @@ void CTK_cursesDropClass::CTK_doDropDownEvent(void)
 								break;
 
 							case CTK_KEY_DOWN:
+								while((selection<maxitems) && (this->items[selection]->enabled==false))
+									selection++;
+
 								selection++;
 //skip disabled menu items
+//TODO//
 								while((selection<this->items.size()) && (this->items[selection].enabled==false))
 									selection++;
 								if(selection==this->items.size())

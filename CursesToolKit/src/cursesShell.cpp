@@ -40,7 +40,7 @@ void CTK_cursesShellClass::CTK_startShell(void)
 {
 	this->mc->readKey->CTK_restoreTerminal();
 	SETSHOWCURS;
-	system("/bin/bash -c \"setterm --background default --foreground default --clear all;printf \"\e[?25h\"\" 2>&1;/bin/bash 2>&1");
+	system("/bin/sh -c \"setterm --background default --foreground default --clear all;printf \"\e[?25h\"\" 2>&1;/bin/sh 2>&1");
 	this->mc->readKey->CTK_setTerminal();
 	SETHIDECURS;
 	this->mc->CTK_clearScreen();

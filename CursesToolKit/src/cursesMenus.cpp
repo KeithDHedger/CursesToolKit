@@ -218,7 +218,7 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 			MOVETO(x+this->menuWidth-1,y);
 			printf("Ctrl+%c ",themenu->shortcutKey);
 		}
-	fflush(stdout);
+	fflush(NULL);
 }
 
 /**
