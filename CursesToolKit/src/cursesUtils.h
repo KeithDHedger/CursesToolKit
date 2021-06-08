@@ -89,11 +89,13 @@ class CTK_cursesUtilsClass
 		void						CTK_splashScreen(CTK_mainAppClass *app,const char *text);
 
 		int							CTK_getGadgetPosX(int sx,int wid,int gadgetcnt,int gadgetwid,int gadgetnum);
+		int							CTK_getGadgetPos(int startx,int size,int numgads,int gadsize,int gadnum);
 		std::string					CTK_padString(std::string label,int maxlen);
 //prefs
 		void						CTK_saveVars(const char *filepath,std::vector<varsStruct> vs);
 		std::vector<varsStruct>		CTK_loadVars(const char *filepath);
 		varsStruct					CTK_findVar(std::vector<varsStruct> vs,const char *varname);
+		int							CTK_getVarEntry(std::vector<varsStruct> vs,const char *varname);
 
 	private:
 		CTK_mainAppClass			*mc=NULL;

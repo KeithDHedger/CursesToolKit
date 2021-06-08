@@ -694,6 +694,23 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 }
 
 /**
+* Calulate position for gadget given size of box, gadget size, gadget count and gadget number.
+* \param int startx start position of bounding box.
+* \param int size size of bounding box.
+* \param int numgads total number of gadgets.
+* \param int gadsize gadget size.
+* \param int gadnum this gadget number ( base 1 ).
+*/
+int CTK_cursesUtilsClass::CTK_getGadgetPos(int startx,int size,int numgads,int gadsize,int gadnum)
+{
+	double	secs;
+	int		totgadsize=numgads*gadsize;
+
+	secs=((size-totgadsize)/(numgads+1))+0.5;
+	return(startx+(secs*(gadnum))+(gadsize*(gadnum-1)));
+}
+
+/**
 * Calulate X position for gadget given total width, gadget width, gadget count and gadget number.
 * \param int sx start position of bounding box.
 * \param int wid of bounding box.
@@ -823,12 +840,27 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
 * Save variables into file from vector of varsStructs.
 * \param const char *filepath.
 * \param std::vector<varsStruct>.
+* \note If "filepath" = "1" output is to stdout, "2" goes to stderr.
 */
 void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStruct> vs)
 {
 	FILE		*fp;
+	bool		closefp=false;
 
-	fp=fopen(filepath,"w+");
+	switch(filepath[0])
+		{
+			case '1':
+				fp=stdout;
+				break;
+			case '2':
+				fp=stderr;
+				break;
+			default:
+				fp=fopen(filepath,"w+");
+				closefp=true;
+				break;
+		}
+
 	if(fp!=NULL)
 		{
 			for(int j=0;j<vs.size();j++)
@@ -854,7 +886,8 @@ void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStr
 								break;
 						}
 				}
-			fclose(fp);
+			if(closefp==true)
+				fclose(fp);
 		}
 }
 
@@ -875,4 +908,21 @@ varsStruct CTK_cursesUtilsClass::CTK_findVar(std::vector<varsStruct> vs,const ch
 				return(vs[j]);
 		}
 	return(retvs);
+}
+
+/**
+* find variable from vector of varsStructs.
+* \param const char *varname.
+* \param std::vector<varsStruct>.
+* \note On return varsStruct.vType is set to type of var found.
+* \note A type of BADTYPE indicates var not found.
+*/
+int CTK_cursesUtilsClass::CTK_getVarEntry(std::vector<varsStruct> vs,const char *varname)
+{
+	for(unsigned j=0;j<vs.size();j++)
+		{
+			if(varname,vs[j].varName==varname)
+				return(j);
+		}
+	return(-1);
 }

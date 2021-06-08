@@ -43,6 +43,10 @@ class CTK_cursesGadgetClass
 		bool					hiLited=false;
 		CTK_mainAppClass		*mc=NULL;
 		void					*userData=NULL;
+		int						sx=1;
+		int						sy=1;
+		int						wid=1;
+		int						hite=1;
 
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);
@@ -63,10 +67,6 @@ class CTK_cursesGadgetClass
 		virtual void			CTK_setSelectCB(bool (*select)(void *,void *),void *userdata=NULL);
 
 	protected:
-		int						sx=1;
-		int						sy=1;
-		int						wid=1;
-		int						hite=1;
 		void					*selectCBUserData=NULL;
 		gadgetType				type=BASEGADGET;
 		coloursStruct			colours;

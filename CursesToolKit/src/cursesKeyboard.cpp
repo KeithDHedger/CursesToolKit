@@ -241,6 +241,10 @@ void CTK_cursesKeyboardClass::CTK_doInput(void)
 					this->CTK_drawGadget(true);
 				}
 		}
+	this->mc->CTK_clearScreen();
+	this->mc->CTK_updateScreen(this->mc,NULL);
+	fflush(NULL);
+
 	SETHIDECURS;
 	fflush(NULL);
 }

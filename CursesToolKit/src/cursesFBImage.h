@@ -32,10 +32,10 @@ class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 		void		CTK_newFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
 		void		CTK_drawGadget(bool hilite=false);
 
-		int			sx=0;
-		int			sy=0;
-		int			wid=-1;
-		int			hite=-1;//TODO//
+//		int			sx=0;
+//		int			sy=0;
+//		int			wid=-1;
+//		int			hite=-1;//TODO//
 		const char	*hiliteColour="cyan";
 
 	private:

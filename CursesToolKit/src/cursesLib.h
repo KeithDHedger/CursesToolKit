@@ -228,7 +228,7 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 /**
 * Set file type to filepath
 */
-static void setPathAndType(char *retbuffer,const char *path,int type)
+[[maybe_unused]] static void setPathAndType(char *retbuffer,const char *path,int type)
 {
 	switch(type)
 		{
