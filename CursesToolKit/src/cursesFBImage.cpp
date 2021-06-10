@@ -34,6 +34,8 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 		delete static_cast<Magick::Image*>(this->image);
 	if(this->blob!=NULL)
 		delete static_cast<Magick::Blob*>(this->blob);
+	if(this->blobHilite!=NULL)
+		delete static_cast<Magick::Blob*>(this->blobHilite);
 #endif
 }
 
@@ -57,9 +59,9 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 {
 #ifdef _IMAGEMAGICK_
 	char	buffer[256];
-	Magick::Image	*limage;
-	Magick::Blob	*lblob;
-	Magick::Blob	*hblob;
+	Magick::Image	*limage=NULL;
+	Magick::Blob	*lblob=NULL;
+	Magick::Blob	*hblob=NULL;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 
 	if(this->image!=NULL)
@@ -76,8 +78,7 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	this->hite=1;
 	this->sx=x;
 	this->sy=y;
-
-	if(access(filepath,F_OK|R_OK)!=(F_OK))
+	if((filepath==NULL) || (access(filepath,F_OK|R_OK)!=F_OK))
 		return;
 
 	limage=new Magick::Image;
