@@ -494,6 +494,11 @@ void CTK_mainAppClass::runMenus(void)
 
 	if(this->menuBar==NULL)
 		return;
+	if(this->menuBar->CTK_getMenuBarEnable()==false)
+		return;
+	if(this->menuBar->CTK_getMenuBarVisible()==false)
+		return;
+
 	retval=this->menuBar->CTK_doMenuEvent(0,1,true);
 	this->menuBar->CTK_drawDefaultMenuBar();
 
