@@ -78,6 +78,14 @@ void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
 }
 
 /**
+* Set gadget CB user data.
+*/
+void CTK_cursesGadgetClass::CTK_setCBUserData(void *userdata)
+{
+	this->selectCBUserData=userdata;
+}
+
+/**
 * Set gadget colours etc.
 */
 void CTK_cursesGadgetClass::CTK_setColours(coloursStruct *cs,bool force)

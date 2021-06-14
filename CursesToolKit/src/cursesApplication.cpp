@@ -968,8 +968,8 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	this->CTK_clearScreen();
 	if(this->menuBar!=NULL)
 		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
+			if(this->menuBar->CTK_getMenuBarVisible()==true)
+				this->menuBar->CTK_drawDefaultMenuBar();
 		}
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
@@ -990,8 +990,8 @@ int CTK_mainAppClass::CTK_previousPage(void)
 	this->CTK_clearScreen();
 	if(this->menuBar!=NULL)
 		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
+			if(this->menuBar->CTK_getMenuBarVisible()==true)
+				this->menuBar->CTK_drawDefaultMenuBar();
 		}
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;
@@ -1013,8 +1013,8 @@ int CTK_mainAppClass::CTK_nextPage(void)
 	this->CTK_clearScreen();
 	if(this->menuBar!=NULL)
 		{
-			this->menuBar->CTK_setMenuBarVisible(THISPAGE.menuBarVisible);
-			this->menuBar->CTK_drawDefaultMenuBar();
+			if(this->menuBar->CTK_getMenuBarVisible()==true)
+				this->menuBar->CTK_drawDefaultMenuBar();
 		}
 	THISPAGE.currentGadget=-1;
 	THISPAGE.ignoreFirstTab=false;

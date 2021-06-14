@@ -39,10 +39,12 @@ class CTK_cursesChooserClass : public CTK_cursesGadgetClass
 		void					CTK_setShowTypes(int show);
 		void					CTK_setShowFileTypes(const char *filetypes);
 		void					CTK_updateList(void);
+		void					CTK_setCanChangeFolder(bool canchange);
 
 	protected:
 
 	private:
+		bool					canChangeFolder=true;
 		bool					showHidden=false;
 		int						types=FOLDERTYPE;
 		const char				*fileTypes=NULL;

@@ -154,10 +154,8 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 {
 	pageStruct	page=this->mc->pages[this->mc->pageNumber];
 	if(this->mc->menuBar!=NULL)
-		{
-			this->mc->pages[this->mc->pageNumber].menuBarVisible=false;
-			this->mc->menuBar->CTK_setMenuBarVisible(false);
-		}
+		this->mc->menuBar->CTK_setMenuBarVisible(false);
+
 	MOVETO(1,1)
 	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
 	printf("%s",CLEARTOEOS);

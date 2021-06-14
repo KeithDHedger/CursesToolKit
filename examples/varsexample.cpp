@@ -88,7 +88,6 @@ int main(int argc, char **argv)
 				}					
 		}
 
-	fprintf(stderr,"\n>>>>>\n");
 	vsitem=mainApp->utils->CTK_findVar(invs,"firstboolvar");
 	if(vsitem.vType!=BADTYPE)
 		fprintf(stderr,"firstboolvar=%i\n",vsitem.boolVar);
@@ -104,8 +103,6 @@ int main(int argc, char **argv)
 	vsitem=mainApp->utils->CTK_findVar(invs,"hexvar");
 	if(vsitem.vType!=BADTYPE)
 		fprintf(stderr,"hexvar=%x\n",vsitem.intVar);
-
-	fprintf(stderr,">>>>>\n");
 
 	SETSHOWCURS;
 	delete mainApp;

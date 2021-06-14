@@ -54,8 +54,9 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 	int	x=1;
 	int y=1;
 
-	if(this->menuBarVisible==false)
+	if(this->CTK_getMenuBarVisible()==false)
 		return;
+
 	MOVETO(x,y);
 	SETNORMCHARSET;//TODO//
 
@@ -516,7 +517,7 @@ void CTK_cursesMenuClass::CTK_setUpdateCB(void (*update)(void *,void*),void* mai
 */
 void CTK_cursesMenuClass::CTK_drawDefaultMenuBar(void)
 {
-	if(this->menuBarVisible==false)
+	if(this->CTK_getMenuBarVisible()==false)
 		return;
 	this->menuShowing=false;
 	this->CTK_drawGadget();
@@ -540,11 +541,26 @@ bool CTK_cursesMenuClass::CTK_getMenuBarEnable(void)
 
 /**
 * Set whether menu bar is visible.
+* \param bool page Show mbar on this page.
+* \param bool global Show mbar on ALL pages.
+* \note global & page must be tru to show menu bar.
 * \note To disable shortcuts while menu bar hidden, disable bar as well.
 */
-void CTK_cursesMenuClass::CTK_setMenuBarVisible(bool show)
+void CTK_cursesMenuClass::CTK_setMenuBarVisible(bool page,bool global)
 {
-	this->menuBarVisible=show;
+	this->mc->pages[this->mc->pageNumber].menuBarVisible=page;
+	this->menuBarVisibleGlobal=global;
+}
+
+/**
+* Set whether menu bar is visible.
+* \param bool page Show mbar on this page.
+* \note global & page must be tru to show menu bar.
+* \note To disable shortcuts while menu bar hidden, disable bar as well.
+*/
+void CTK_cursesMenuClass::CTK_setMenuBarVisible(bool page)
+{
+	this->mc->pages[this->mc->pageNumber].menuBarVisible=page;
 }
 
 /**
@@ -552,7 +568,7 @@ void CTK_cursesMenuClass::CTK_setMenuBarVisible(bool show)
 */
 bool CTK_cursesMenuClass::CTK_getMenuBarVisible(void)
 {
-	return(this->menuBarVisible);
+	return(this->mc->pages[this->mc->pageNumber].menuBarVisible & this->menuBarVisibleGlobal);
 }
 
 

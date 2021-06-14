@@ -149,3 +149,9 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 	this->folderPath=folder;
 	return;
 }
+
+void CTK_cursesChooserClass::CTK_setCanChangeFolder(bool canchange)
+{
+	this->canChangeFolder=canchange;
+}
+

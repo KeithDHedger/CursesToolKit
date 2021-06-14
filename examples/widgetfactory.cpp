@@ -69,6 +69,7 @@ int								b2Cnt=0;
 #define BUTTON3	4002
 #define CHECK1 5000
 #define CHECK2 5001
+#define CHECK3 5002
 #define HELPMENU 3
 #define HELPITEM 0
 
@@ -200,6 +201,13 @@ bool checkselctCB(void *inst,void *userdata)
 
 	if((long)userdata==CHECK2)
 		mainApp->menuBar->menuNames[1]->menuEnabled=!cb->CTK_getValue();
+
+	if((long)userdata==CHECK3)
+		{
+			mainApp->menuBar->CTK_setMenuBarVisible(true,!cb->CTK_getValue());
+			mainApp->CTK_clearScreen();
+			mainApp->CTK_updateScreen(mainApp,NULL);
+		}
 
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
 	mainApp->menuBar->CTK_drawDefaultMenuBar();
@@ -497,12 +505,17 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 //check box
 	geny+=3;
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,0);
 	checkbox=mainApp->CTK_addNewCheckBox(genx,geny,10,"Menus Off");
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK1);
 	checkbox->CTK_setSelectDeselects(false);
 	checkbox->CTK_setSelectKey(' ');
-	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,1);
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,1);
+	checkbox=mainApp->CTK_addNewCheckBox(genx,geny,10,"Menus Vis");
+	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK3);
+	checkbox->CTK_setSelectDeselects(false);
+	checkbox->CTK_setSelectKey(' ');
+	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,3,13,2);
 	checkbox=mainApp->CTK_addNewCheckBox(genx,geny,10,"Edit Off ");
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK2);
 	checkbox->CTK_setSelectDeselects(false);

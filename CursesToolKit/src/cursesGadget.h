@@ -51,6 +51,7 @@ class CTK_cursesGadgetClass
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);
 		void					*CTK_getCBUserData(void);
+		void					CTK_setCBUserData(void*);
 		bool					(*selectCB)(void *,void *)=NULL;
 		void					CTK_setSelectDeselects(bool deselect);
 		bool					CTK_getSelectDeselects(void);
