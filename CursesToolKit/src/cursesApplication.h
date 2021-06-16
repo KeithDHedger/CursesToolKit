@@ -61,6 +61,7 @@ class CTK_mainAppClass
 
 		void									CTK_clearScreen(void);
 		void									CTK_setColours(coloursStruct *srccs,bool force=false);
+		void									CTK_setFBBackDrop(const char *path);
 
 		int										CTK_addPage(void);
 		int										CTK_removePage(int pagenum);
@@ -89,6 +90,7 @@ class CTK_mainAppClass
 		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		CTK_cursesDropClass*					CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
 		CTK_cursesFBImageClass*					CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
+		CTK_cursesFBImageClass*					CTK_addNewFBImageAbsCoords(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
 //add existing gadgets
 		void									CTK_addMenuBar(CTK_cursesMenuClass *mb);
 		void									CTK_addTextBox(CTK_cursesTextBoxClass *txtbox);

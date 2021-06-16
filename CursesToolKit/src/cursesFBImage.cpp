@@ -130,6 +130,82 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 #endif
 }
 
+void CTK_cursesFBImageClass::CTK_newFBImageAbsCoords(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
+{
+#ifdef _IMAGEMAGICK_
+	char	buffer[256];
+	Magick::Image	*limage=NULL;
+	Magick::Blob	*lblob=NULL;
+	Magick::Blob	*hblob=NULL;
+	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+
+	if(this->image!=NULL)
+		delete static_cast<Magick::Image*>(this->image);
+	if(this->blob!=NULL)
+		delete static_cast<Magick::Blob*>(this->blob);
+	if(this->blobHilite!=NULL)
+		delete static_cast<Magick::Blob*>(this->blobHilite);
+//for errors
+    this->image=NULL;
+    this->blob=NULL;
+    this->blobHilite=NULL;
+    this->wid=1;
+	this->hite=1;
+	this->sx=x;
+	this->sy=y;
+	if((filepath==NULL) || (access(filepath,F_OK|R_OK)!=F_OK))
+		return;
+
+	limage=new Magick::Image;
+	lblob=new Magick::Blob;
+	hblob=new Magick::Blob;
+	this->image=(void*)limage;
+	this->blob=(void*)lblob;
+	this->blobHilite=(void*)hblob;
+	try
+		{
+			limage->read(filepath);
+			limage->magick("BGRA");
+			if(width!=-1)
+				{
+					if(keepaspect==true)
+						snprintf(buffer,255,"%ix%i",width,hite);
+					else
+						snprintf(buffer,255,"!%ix%i",width,hite);
+					buffer[255]=0;
+					limage->resize(buffer);
+				}
+
+			limage->write((lblob));
+			limage->strokeColor(this->hiliteColour);
+			limage->fillColor("transparent");
+			limage->strokeWidth(this->hiliteWidth);
+			limage->draw(Magick::DrawableRectangle(0,0,limage->columns()-1,limage->rows()-1));
+			limage->write((hblob));
+		}
+
+	catch(Magick::Exception &error_)
+		{
+		   	if(this->image!=NULL)
+				delete static_cast<Magick::Image*>(this->image);
+			if(this->blob!=NULL)
+				delete static_cast<Magick::Blob*>(this->blob);
+			if(this->blobHilite!=NULL)
+				delete static_cast<Magick::Blob*>(this->blobHilite);
+		    this->image=NULL;
+		    this->blob=NULL;
+		    this->blobHilite=NULL;
+		    return;
+		}
+
+	this->wid=(int)limage->columns();
+	this->hite=(int)limage->rows();
+	this->sx=x;
+	this->sy=y;
+	this->useAbsCoords=true;
+#endif
+}
+
 /**
 * Draw image
 */
@@ -151,12 +227,25 @@ void CTK_cursesFBImageClass::drawFBImage(bool hilite)
 		datptr=(unsigned char *)lblob->data();
 	else
 		datptr=(unsigned char *)hblob->data();
+
+if(this->useAbsCoords==false)
+{
 	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
 		{
 			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
 			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
 			datptr+=this->wid*4;
 		}
+}
+else
+{
+	for(int y=this->sy;y<this->hite;y++)
+		{
+			pixoffset=(this->sx)*4+(y*fbinfo->frameBufferInfo.line_length);
+			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+			datptr+=this->wid*4;
+		}
+}
 #endif
 }
 

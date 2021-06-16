@@ -50,6 +50,7 @@ struct fbData
 	int							charHeight=1;
 	int							screenWidth=1;
 	int							screenHeight=1;
+	void						*backDropBlob=NULL;
 };
 
 enum  utilVarType {BOOLVAR=0,INTVAR,CHARVAR,MULTVAR,BADTYPE,DECIMALOUT,HEXOUT,OCTALOUT};

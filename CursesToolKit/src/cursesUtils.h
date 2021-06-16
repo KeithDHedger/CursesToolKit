@@ -93,7 +93,7 @@ class CTK_cursesUtilsClass
 		std::string					CTK_padString(std::string label,int maxlen);
 //prefs
 		void						CTK_saveVars(const char *filepath,std::vector<varsStruct> vs);
-		std::vector<varsStruct>		CTK_loadVars(const char *filepath);
+		std::vector<varsStruct>		CTK_loadVars(const char *filepath,bool clear=true,std::vector<varsStruct> invs={});
 		varsStruct					CTK_findVar(std::vector<varsStruct> vs,const char *varname);
 		int							CTK_getVarEntry(std::vector<varsStruct> vs,const char *varname);
 

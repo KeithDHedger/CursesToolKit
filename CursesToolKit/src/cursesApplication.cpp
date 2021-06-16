@@ -40,6 +40,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 	this->pages.clear();
 	fflush(NULL);
 #ifdef _IMAGEMAGICK_
+	if(this->frameBufferData.backDropBlob!=NULL)
+		delete static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob);
 	Magick::TerminateMagick();//is this needed?
 #endif
 	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
@@ -123,7 +125,22 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
 	MOVETO(1,1)
-	printf(CLEARTOEOS);
+	if(this->frameBufferData.backDropBlob!=NULL)
+		{
+#ifdef _IMAGEMAGICK_
+			unsigned char *datptr=(unsigned char*)static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob)->data();
+			for(int y=0;y<this->frameBufferData.screenHeight;y++)
+				{
+					unsigned int pixoffset;
+
+					pixoffset=0+(y*this->frameBufferData.frameBufferInfo.line_length);
+					memcpy(&(this->frameBufferData.frameBufferMapPtr[pixoffset]),&datptr[0],this->frameBufferData.screenWidth*4);
+					datptr+=this->frameBufferData.screenWidth*4;
+				}
+#endif
+		}
+	else
+		printf(CLEARTOEOS);
 	if(THISPAGE.fancyWindow==true)
 		this->gc->CTK_drawDialogWindow();
 }
@@ -263,6 +280,18 @@ CTK_cursesFBImageClass* CTK_mainAppClass::CTK_addNewFBImage(int x,int y,int widt
 	this->pages[this->pageNumber].gadgets.push_back(fbi);
 	return(fbi);
 }
+
+/**
+* Create and add new frame buffer image. 
+*/
+CTK_cursesFBImageClass* CTK_mainAppClass::CTK_addNewFBImageAbsCoords(int x,int y,int width,int hite,const char *filepath,bool keepaspect)
+{
+	CTK_cursesFBImageClass	*fbi=new CTK_cursesFBImageClass(this);
+	fbi->CTK_newFBImageAbsCoords(x,y,width,hite,filepath,keepaspect);
+	this->pages[this->pageNumber].gadgets.push_back(fbi);
+	return(fbi);
+}
+
 
 /**
 * Add menu bar. 
@@ -1200,4 +1229,49 @@ CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType ty
 	return(NULL);
 }
 
+/**
+* Set a global backdrop if on framebuffer.
+* \param path path to image file.
+*/
+void CTK_mainAppClass::CTK_setFBBackDrop(const char *path)
+{
+#ifdef _IMAGEMAGICK_
+	char			buffer[256];
+	Magick::Image	*limage=NULL;
+	Magick::Blob	*lblob=NULL;
+
+	if(this->frameBufferData.backDropBlob!=NULL)
+		delete static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob);
+//for errors
+    this->frameBufferData.backDropBlob=NULL;
+    limage=NULL;
+    lblob=NULL;
+
+	if((path==NULL) || (access(path,F_OK|R_OK)!=F_OK))
+		return;
+
+	limage=new Magick::Image;
+	lblob=new Magick::Blob;
+
+	try
+		{
+			limage->read(path);
+			limage->magick("BGRA");
+			snprintf(buffer,255,"!%ix%i",this->frameBufferData.screenWidth,this->frameBufferData.screenHeight);
+			buffer[255]=0;
+			limage->resize(buffer);
+			limage->write(lblob);
+		}
+
+	catch(Magick::Exception &error_)
+		{
+			if(this->frameBufferData.backDropBlob!=NULL)
+				delete static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob);
+			this->frameBufferData.backDropBlob=NULL;
+		    return;
+		}
+	this->frameBufferData.backDropBlob=(void*)lblob;
+	delete limage;
+#endif
+}
 

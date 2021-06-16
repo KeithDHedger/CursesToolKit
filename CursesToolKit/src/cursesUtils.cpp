@@ -775,21 +775,25 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 /**
 * Load variables into vector of varsStructs.
 * \param const char *filepath.
+* \param bool clear ( optional ).
+* \param std::vector<varsStruct> ( optional, set to defined vars when clear=false ).
 * \returns std::vector<varsStruct>.
 * \note file format=NAMEOFVARIABLE DATA.
 * \note Type of data is auto detected.
 * \note true/false=bool 123/0xfe/0177=int (decimal/hex/octal) all else is string.
+* \note if clear is set all vars are cleared before loading, else loaded var overwrites current var.
 */
-std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
+std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,bool clear,std::vector<varsStruct> invs)
 {
-	std::vector<varsStruct>	invs;
 	FILE					*fp;
 	char					buffer[PATH_MAX];
 	varsStruct				vs;
+	varsStruct				vshold;
 	char					*varname=(char*)alloca(256);
 	char					*data=(char*)alloca(256);
 
-	invs.clear();
+	if (clear==true)
+		invs.clear();
 
 	fp=fopen(filepath,"r");
 	if(fp!=NULL)
@@ -828,8 +832,18 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath)
 									data[strlen(data)-1]=0;
 								vs.charVar=data;
 								break;
-						}					
-					invs.push_back(vs);
+						}
+
+					if(clear==true)
+						invs.push_back(vs);
+					else
+						{
+							int varentry=CTK_getVarEntry(invs,varname);
+							if(varentry==-1)
+								invs.push_back(vs);
+							else
+								invs.at(varentry)=vs;
+						}
 				}
 			fclose(fp);
 		}

@@ -39,6 +39,8 @@ int main(int argc, char **argv)
 	cs.windowBackCol=BACK_WHITE;
 	mainApp->CTK_setColours(&cs,true);
 
+	mainApp->CTK_setFBBackDrop("/home/keithhedger/casper2.JPG");
+
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),1,labellen,1,label);
 	lab->CTK_setJustify(CENTREJUSTIFY);
 

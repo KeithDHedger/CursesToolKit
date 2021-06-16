@@ -1,4 +1,7 @@
 2.0.1
+Added global backdrop if on framebuffer.
+Added fbimage with absolute alues instead of cols/rows.
+Added option to CTK_loadVars to clear vars or update vars.
 Fixed setting menubar visible for page and globally.
 Minor ui tweaks.
 Done shell class.
