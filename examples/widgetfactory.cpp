@@ -223,6 +223,18 @@ bool dropboxCB(void *inst,void *userdata)
 	resultbuttonstextbox->CTK_updateText(buffer);
 }
 
+bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
+{
+	fprintf(stderr,"Key scancode >>%s<<\nUserData=%p\n",app->readKey->inputBuffer.c_str(),userdata);
+	if(app->readKey->specialKeyName==CTK_KEY_ENTER)
+		{
+			fprintf(stderr,"I handled this key\n");
+			return(true);
+		}
+	else
+		return(false);
+}
+
 int main(int argc, char **argv)
 {
 	CTK_cursesButtonClass			*button;
@@ -475,6 +487,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //page 5
 //buttons
 	mainApp->CTK_addPage();
+	mainApp->pages[mainApp->pageNumber].pageKey=pagekeyCB;
+	mainApp->pages[mainApp->pageNumber].userData=(void*)0xdeadbeef;
 	geny=3;
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons, Space toggles check boxs");

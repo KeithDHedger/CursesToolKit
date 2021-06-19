@@ -117,6 +117,7 @@ struct pageStruct
 	int										boxH;
 	int										boxWM;
 	int										boxHM;
+	bool									(*pageKey)(CTK_mainAppClass *app,void*)=NULL;
 };
 
 enum menuStyle {FLATNORM=0,FLATINVERT,DISABLED,BLANK};

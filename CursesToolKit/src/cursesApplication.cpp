@@ -141,6 +141,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 		}
 	else
 		printf(CLEARTOEOS);
+
 	if(THISPAGE.fancyWindow==true)
 		this->gc->CTK_drawDialogWindow();
 }
@@ -807,6 +808,10 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
 		//	fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
+
+			if(THISPAGE.pageKey!=NULL)
+				if(THISPAGE.pageKey(this,THISPAGE.userData)==true)
+					continue;
 
 			if(this->readKey->isHexString==true)
 				{
