@@ -139,9 +139,10 @@ am__objects_1 = ../src/cursesApplication.lo ../src/cursesButton.lo \
 	../src/cursesGraphics.lo ../src/cursesInput.lo \
 	../src/cursesKeyboard.lo ../src/cursesLabel.lo \
 	../src/cursesListBox.lo ../src/cursesMenus.lo \
-	../src/cursesReadKeyClass.lo ../src/cursesShell.lo \
-	../src/cursesSourceEditBox.lo ../src/cursesTextBox.lo \
-	../src/cursesUtils.lo ../src/LFSTKFindClass.lo
+	../src/cursesProgressBar.lo ../src/cursesReadKeyClass.lo \
+	../src/cursesShell.lo ../src/cursesSourceEditBox.lo \
+	../src/cursesTextBox.lo ../src/cursesUtils.lo \
+	../src/LFSTKFindClass.lo
 am_libcursestoolkit_la_OBJECTS = $(am__objects_1)
 libcursestoolkit_la_OBJECTS = $(am_libcursestoolkit_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -182,6 +183,7 @@ am__depfiles_remade = ../src/$(DEPDIR)/LFSTKFindClass.Plo \
 	../src/$(DEPDIR)/cursesLabel.Plo \
 	../src/$(DEPDIR)/cursesListBox.Plo \
 	../src/$(DEPDIR)/cursesMenus.Plo \
+	../src/$(DEPDIR)/cursesProgressBar.Plo \
 	../src/$(DEPDIR)/cursesReadKeyClass.Plo \
 	../src/$(DEPDIR)/cursesShell.Plo \
 	../src/$(DEPDIR)/cursesSourceEditBox.Plo \
@@ -383,7 +385,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			$(IMAGEMAGICK_CFLAGS) \
 			$(NCURSES_CFLAGS)
 
-COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesReadKeyClass.cpp ../src/cursesShell.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
+COMMONSRC = ../src/cursesApplication.cpp ../src/cursesButton.cpp ../src/cursesCheckBox.cpp ../src/cursesChooser.cpp ../src/cursesDropDown.cpp ../src/cursesEditBox.cpp ../src/cursesFBImage.cpp ../src/cursesGadget.cpp ../src/cursesGraphics.cpp ../src/cursesInput.cpp ../src/cursesKeyboard.cpp ../src/cursesLabel.cpp ../src/cursesListBox.cpp ../src/cursesMenus.cpp ../src/cursesProgressBar.cpp ../src/cursesReadKeyClass.cpp ../src/cursesShell.cpp ../src/cursesSourceEditBox.cpp ../src/cursesTextBox.cpp ../src/cursesUtils.cpp ../src/LFSTKFindClass.cpp
 lib_LTLIBRARIES = libcursestoolkit.la
 libcursestoolkit_la_SOURCES = $(COMMONSRC)
 
@@ -494,6 +496,8 @@ clean-libLTLIBRARIES:
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesMenus.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
+../src/cursesProgressBar.lo: ../src/$(am__dirstamp) \
+	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesReadKeyClass.lo: ../src/$(am__dirstamp) \
 	../src/$(DEPDIR)/$(am__dirstamp)
 ../src/cursesShell.lo: ../src/$(am__dirstamp) \
@@ -533,6 +537,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesLabel.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesListBox.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesMenus.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesProgressBar.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesReadKeyClass.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesShell.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@../src/$(DEPDIR)/cursesSourceEditBox.Plo@am__quote@ # am--include-marker
@@ -742,6 +747,7 @@ distclean: distclean-am
 	-rm -f ../src/$(DEPDIR)/cursesLabel.Plo
 	-rm -f ../src/$(DEPDIR)/cursesListBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesMenus.Plo
+	-rm -f ../src/$(DEPDIR)/cursesProgressBar.Plo
 	-rm -f ../src/$(DEPDIR)/cursesReadKeyClass.Plo
 	-rm -f ../src/$(DEPDIR)/cursesShell.Plo
 	-rm -f ../src/$(DEPDIR)/cursesSourceEditBox.Plo
@@ -807,6 +813,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ../src/$(DEPDIR)/cursesLabel.Plo
 	-rm -f ../src/$(DEPDIR)/cursesListBox.Plo
 	-rm -f ../src/$(DEPDIR)/cursesMenus.Plo
+	-rm -f ../src/$(DEPDIR)/cursesProgressBar.Plo
 	-rm -f ../src/$(DEPDIR)/cursesReadKeyClass.Plo
 	-rm -f ../src/$(DEPDIR)/cursesShell.Plo
 	-rm -f ../src/$(DEPDIR)/cursesSourceEditBox.Plo

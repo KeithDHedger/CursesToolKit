@@ -31,6 +31,7 @@ class CTK_cursesEditBoxClass;
 class CTK_cursesMenuClass;
 class CTK_cursesListBoxClass;
 class CTK_cursesLabelClass;
+class CTK_cursesProgressBarClass;
 class CTK_cursesSourceEditBoxClass;
 class CTK_cursesChooserClass;
 class CTK_cursesDropClass;
@@ -87,6 +88,7 @@ class CTK_mainAppClass
 		CTK_cursesCheckBoxClass*				CTK_addNewCheckBox(int x,int y,int width,const char *label);
 		CTK_cursesEditBoxClass*					CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		CTK_cursesLabelClass*					CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
+		CTK_cursesProgressBarClass*				CTK_addNewProgressBar(int x,int y,int width,int hite,const char *txt);
 		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		CTK_cursesDropClass*					CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
 		CTK_cursesFBImageClass*					CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
@@ -100,6 +102,7 @@ class CTK_mainAppClass
 		void									CTK_addCheckBox(CTK_cursesCheckBoxClass *cb);
 		void									CTK_addEditBox(CTK_cursesEditBoxClass *edbox);
 		void									CTK_addLabel(CTK_cursesLabelClass *label);
+		void									CTK_addProgressBar(CTK_cursesProgressBarClass *bar);
 		void									CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox);
 		void									CTK_addChooserBox(CTK_cursesChooserClass *cb);
 		void									CTK_addDropBox(CTK_cursesDropClass *cb);

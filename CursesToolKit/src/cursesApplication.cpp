@@ -260,6 +260,19 @@ CTK_cursesLabelClass* CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,in
 	return(label);
 }
 
+
+/**
+* Create and add new progress gadget. 
+*/
+CTK_cursesProgressBarClass* CTK_mainAppClass::CTK_addNewProgressBar(int x,int y,int width,int hite,const char *txt)
+{
+	CTK_cursesProgressBarClass	*bar=new CTK_cursesProgressBarClass(this);
+//	bar->tabWidth=this->tabWidth;
+//	bar->CTK_newBar(x,y,width,hite,txt);
+	this->pages[this->pageNumber].gadgets.push_back(bar);
+	return(bar);
+}
+
 /**
 * Create and add new drop down gadget. 
 */
@@ -364,6 +377,15 @@ void CTK_mainAppClass::CTK_addSourceEditBox(CTK_cursesSourceEditBoxClass *edbox)
 void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
 {
 	this->pages[this->pageNumber].gadgets.push_back(label);
+}
+
+
+/**
+* Add bar gadget. 
+*/
+void CTK_mainAppClass::CTK_addProgressBar(CTK_cursesProgressBarClass *bar)
+{
+	this->pages[this->pageNumber].gadgets.push_back(bar);
 }
 
 /**

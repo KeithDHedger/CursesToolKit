@@ -70,6 +70,7 @@ enum  utilVarType {BOOLVAR=0,INTVAR,CHARVAR,MULTVAR,BADTYPE,DECIMALOUT,HEXOUT,OC
 #include "cursesCheckBox.h"
 #include "cursesEditBox.h"
 #include "cursesLabel.h"
+#include "cursesProgressBar.h"
 #include "cursesSourceEditBox.h"
 #include "cursesChooser.h"
 #include "cursesDropDown.h"
