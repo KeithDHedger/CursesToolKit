@@ -223,16 +223,40 @@ bool dropboxCB(void *inst,void *userdata)
 	resultbuttonstextbox->CTK_updateText(buffer);
 }
 
+CTK_cursesProgressBarClass		*progress;
+
 bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 {
-	fprintf(stderr,"Key scancode >>%s<<\nUserData=%p\n",app->readKey->inputBuffer.c_str(),userdata);
+	char				*buffer=(char*)alloca(256);
+	fprintf(stderr,"Key scancode >>%s<<\nspecial key name=%i\nUserData=%p\n",app->readKey->inputBuffer.c_str(),app->readKey->specialKeyName,userdata);
 	if(app->readKey->specialKeyName==CTK_KEY_ENTER)
 		{
 			fprintf(stderr,"I handled this key\n");
 			return(true);
 		}
-	else
-		return(false);
+
+	if(app->readKey->specialKeyName==CTK_KEY_RIGHT)
+		{
+			progress->CTK_setValue(progress->CTK_getValue()+1.0);
+			progress->gadgetDirty=true;
+			mainApp->CTK_updateScreen(mainApp,NULL);
+	//fprintf(stderr,"value=%f\n",progress->value);
+			sprintf(buffer,"Progress bar value=%f",progress->CTK_getValue());
+			resultbuttonstextbox->CTK_updateText(buffer);
+			return(true);
+		}
+	if(app->readKey->specialKeyName==CTK_KEY_LEFT)
+		{
+			progress->CTK_setValue(progress->CTK_getValue()-1.0);
+			progress->gadgetDirty=true;
+			mainApp->CTK_updateScreen(mainApp,NULL);
+	//fprintf(stderr,"value=%f\n",progress->value);
+			sprintf(buffer,"Progress bar value=%f",progress->CTK_getValue());
+			resultbuttonstextbox->CTK_updateText(buffer);
+
+			return(true);
+		}
+	return(false);
 }
 
 int main(int argc, char **argv)
@@ -491,7 +515,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->pages[mainApp->pageNumber].userData=(void*)0xdeadbeef;
 	geny=3;
 	genx=3;
-	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons, Space toggles check boxs");
+	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons, space toggles check boxs, use arrow keys to set progress box value, TAB/SHIFT TAB to select control.");
 	label->CTK_setJustify(CENTREJUSTIFY);
 	geny+=3;
 
@@ -534,6 +558,11 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	checkbox->CTK_setSelectCB(checkselctCB,(void*)CHECK2);
 	checkbox->CTK_setSelectDeselects(false);
 	checkbox->CTK_setSelectKey(' ');
+
+//sliders
+	geny+=3;
+	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
+	progress=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,2.0);
 
 //results
 	genx=3;

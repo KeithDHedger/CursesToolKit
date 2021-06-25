@@ -40,16 +40,16 @@ CTK_cursesProgressBarClass::CTK_cursesProgressBarClass(CTK_mainAppClass *mc)
 /**
 * New Progress Bar.
 */
-void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,int hite,const char *txt)
+void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,double max, double val)
 {
-//	this->sx=x;
-//	this->sy=y;
-//	this->wid=width;
-//	this->hite=hite;
-//	this->centre=(this->wid/2)+this->sx;
-//	this->gadgetDirty=true;
-//	this->blank.insert(this->blank.begin(),width,' ');
-//	this->CTK_updateText(txt);
+	this->sx=x;
+	this->sy=y;
+	this->wid=width;
+	this->hite=1;
+	this->gadgetDirty=true;
+	this->maxvalue=max;
+	this->minvalue=min;
+	this->value=val;
 }
 
 /**
@@ -57,24 +57,49 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,int hite,const
 */
 void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 {
-//	int xcnt=0;
-//	int ycnt=0;
-//	int j=0;
-//
-//	if(this->gadgetDirty==false)
-//		return;
-//
-//	if(this->colours.fancyGadgets==true)
-//		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.labelBoxType,true);
-//
-//	if(this->txtStrings.size()==0)
-//		return;
-//
-//	for(int j=0;j<this->hite;j++)
-//		{
-//			if(j<this->txtStrings.size())
-//				this->gc->CTK_printJustLineColour(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify,this->colours.foreCol,this->colours.backCol);
-//		}
+	double	absscale=(double)this->wid/this->maxvalue;
+	double	abswid=absscale*this->value;
+
+	setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+
+	MOVETO(this->sx,this->sy);
+	printf("%*s", this->wid,"");
+
+	MOVETO(this->sx,this->sy);
+	for(int j=0;j<abswid;j++)
+		printf("#");
 }
 
+void CTK_cursesProgressBarClass::CTK_setValue(double val)
+{
+	this->value=val;
+	if(this->value>this->maxvalue)
+		this->value=this->maxvalue;
+	if(this->value<this->minvalue)
+		this->value=this->minvalue;
+}
 
+double CTK_cursesProgressBarClass::CTK_getValue(void)
+{
+	return(this->value);
+}
+
+void CTK_cursesProgressBarClass::CTK_setMinValue(double val)
+{
+	this->minvalue=val;
+}
+
+double CTK_cursesProgressBarClass::CTK_getMinValue(void)
+{
+	return(this->minvalue);
+}
+
+void CTK_cursesProgressBarClass::CTK_setMaxValue(double val)
+{
+	this->minvalue=val;
+}
+
+double CTK_cursesProgressBarClass::CTK_getMaxValue(void)
+{
+	return(this->minvalue);
+}

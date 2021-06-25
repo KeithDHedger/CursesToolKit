@@ -27,13 +27,22 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		CTK_cursesProgressBarClass(CTK_mainAppClass *mc);
 		~CTK_cursesProgressBarClass();
 
-		void		CTK_newBar(int x,int y,int width,int hite,const char *txt);
-		void		CTK_drawGadget(bool hilite=false);
+		void	CTK_newBar(int x,int y,int width,double min,double max, double val);
+		void	CTK_drawGadget(bool hilite=false);
+
+		void	CTK_setValue(double val);
+		double	CTK_getValue(void);
+
+		void	CTK_setMinValue(double val);
+		double	CTK_getMinValue(void);
+		void	CTK_setMaxValue(double val);
+		double	CTK_getMaxValue(void);
 
 		std::string	text;
-		double		min=1.0;
-		double		max=100.0;
 	private:
+		double		minvalue=1.0;
+		double		maxvalue=100.0;
+		double		value=1.0;
 };
 
 #endif

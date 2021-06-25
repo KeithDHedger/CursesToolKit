@@ -264,11 +264,10 @@ CTK_cursesLabelClass* CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,in
 /**
 * Create and add new progress gadget. 
 */
-CTK_cursesProgressBarClass* CTK_mainAppClass::CTK_addNewProgressBar(int x,int y,int width,int hite,const char *txt)
+CTK_cursesProgressBarClass* CTK_mainAppClass::CTK_addNewProgressBar(int x,int y,int width,double min,double max, double val)
 {
 	CTK_cursesProgressBarClass	*bar=new CTK_cursesProgressBarClass(this);
-//	bar->tabWidth=this->tabWidth;
-//	bar->CTK_newBar(x,y,width,hite,txt);
+	bar->CTK_newBar(x,y,width,min,max,val);
 	this->pages[this->pageNumber].gadgets.push_back(bar);
 	return(bar);
 }

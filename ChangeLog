@@ -1,4 +1,5 @@
 2.0.1
+Added progress bar gadget.
 Added per page key trap/callback.
 Added global backdrop if on framebuffer.
 Added fbimage with absolute alues instead of cols/rows.
