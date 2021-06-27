@@ -61,9 +61,10 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 	double	absscale=(double)this->wid/this->maxvalue;
 	double	abswid=absscale*this->value;
 	int		absx;
+int jx;
 
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.barBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.barBoxType,false);
 
 	switch(this->style)
 		{
@@ -74,8 +75,14 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 			case BAR:
 				setBothColours(this->colours.buttonForeCol,this->blockColour,this->colours.use256Colours);
 				MOVETO(this->sx,this->sy);
-				for(int j=0;j<abswid;j++)
+				for(jx=0;jx<abswid;jx++)
 					printf(" ");
+				if(this->colours.fancyGadgets==true)
+					{
+						MOVETO(this->sx+jx,this->sy);
+						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+						printf("%*s",this->wid-jx,"");
+					}
 				break;
 			case FILLEDINDICATOR:
 				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
