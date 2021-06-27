@@ -275,12 +275,13 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 */
 int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 {
-	bool			loop=true;
-	bool			mainloop=true;
-	int				selection=0;
-	int				maxitems;
-	bool			doshortcut=false;
-	bool			sink;
+	bool					loop=true;
+	bool					mainloop=true;
+	int						selection=0;
+	int						maxitems;
+	bool					doshortcut=false;
+	bool					sink;
+	CTK_cursesReadKeyClass	menuReadKey(this->mc);
 
 	if(this->menuNumber<0)
 		return(CONT);
@@ -299,10 +300,10 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 
 			while(loop==true)
 				{
-					this->mc->readKey->CTK_getInput();
-					if(this->mc->readKey->isHexString==true)
+					menuReadKey.CTK_getInput();
+					if(menuReadKey.isHexString==true)
 						{
-							switch(this->mc->readKey->specialKeyName)
+							switch(menuReadKey.specialKeyName)
 								{
 									case CTK_KEY_UP:
 										selection--;
@@ -441,7 +442,7 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 							//fprintf(stderr,"Unknown Key ... ");
 							//fprintf(stderr,"%s\n",this->mc->readKey->inputBuffer.c_str());
 							sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
-							if(this->CTK_doMenuKey(toupper(this->mc->readKey->inputBuffer.c_str()[0]),this->menuNumber)==true)
+							if(this->CTK_doMenuKey(toupper(menuReadKey.inputBuffer.c_str()[0]),this->menuNumber)==true)
 								{
 									this->selectCB(this,NULL);
 									return(SELECTED);

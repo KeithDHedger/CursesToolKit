@@ -290,12 +290,16 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 //FLICKER//TODO//
 	if(fill==true)
 		{
+//			MOVETO(x,y);
+//			printf("%*s",w,"");
+
 			for(int fy=0;fy<h;fy++)
 				{
 					MOVETO(x,y+fy);
-					setBothColours(this->mc->colours.foreCol,this->mc->colours.backCol,this->mc->colours.use256Colours);
-					for(int fx=0;fx<w;fx++)
-						printf(" ");
+					//setBothColours(this->mc->colours.foreCol,this->mc->colours.backCol,this->mc->colours.use256Colours);
+					//for(int fx=0;fx<w;fx++)
+					//	printf(" ");
+					printf("%*s",w,"");
 				}
 			//SETNORMAL;
 			//fflush(NULL);

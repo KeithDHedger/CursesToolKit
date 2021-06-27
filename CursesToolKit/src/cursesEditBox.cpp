@@ -323,8 +323,9 @@ void CTK_cursesEditBoxClass::CTK_insertChar(std::string &str,char chr)
 */
 void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines)
 {
-	int				lineadd=1;
-	bool			shortdraw=false;
+	int						lineadd=1;
+	bool					shortdraw=false;
+	CTK_cursesReadKeyClass	editReadKey(this->mc);
 
 	if(this->canEdit==false)
 		return;
@@ -335,15 +336,15 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 	while(this->runLoop==true)
 		{
-			this->mc->readKey->CTK_getInput();
+			editReadKey.CTK_getInput();
 
 			if(this->mc->eventLoopCBIn!=NULL)
 				this->mc->eventLoopCBIn(this->mc,this->userData);
 
 			lineadd=1;
-			if(this->mc->readKey->isHexString==true)
+			if(editReadKey.isHexString==true)
 				{
-					switch(this->mc->readKey->specialKeyName)
+					switch(editReadKey.specialKeyName)
 						{
 							case  CTK_KEY_DELETE:
 								{
@@ -508,7 +509,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 				}
 			else
 				{
-					if(this->mc->readKey->isControlKey==true)
+					if(editReadKey.isControlKey==true)
 						{
 //check menu ctrl keys
 							if((this->mc->menuBar!=NULL) && (this->mc->menuBar->enableShortcuts==true) && (this->mc->menuBar->CTK_getMenuBarEnable()==true))
@@ -516,7 +517,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 									int	pagenum=this->mc->pageNumber;
 									for(int j=0;j<this->mc->menuBar->menuNames.size();j++)
 										{
-											if(this->mc->menuBar->CTK_doShortCutKey(this->mc->readKey->inputBuffer.c_str()[0],j)==true)
+											if(this->mc->menuBar->CTK_doShortCutKey(editReadKey.inputBuffer.c_str()[0],j)==true)
 												{
 													this->mc->menuBar->menuNumber=j;
 													this->mc->menuBar->selectCB(this->mc->menuBar,NULL);
@@ -533,14 +534,14 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 						}
 					else
 						{
-							this->CTK_insertText(this->mc->readKey->inputBuffer.c_str());
+							this->CTK_insertText(editReadKey.inputBuffer.c_str());
 							if(usesrc==true)
 								srclines[this->currentY]=lines[this->currentY];
 							this->isDirty=true;
 							this->needsRefresh=true;
 						}
-
 				}
+
 			if(this->isSelecting==true)
 				{
 					if(this->multiLineSels.back().line!=this->currentY)

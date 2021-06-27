@@ -1,4 +1,8 @@
 2.0.1
+Minor bug fixes.
+Fixed edit/source box gadgets readkey.
+Gui tweaks for progress bar gadget.
+Added pulsing bar to progress bar gadget.
 Added progress bar gadget.
 Added per page key trap/callback.
 Added global backdrop if on framebuffer.

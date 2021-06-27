@@ -264,10 +264,10 @@ CTK_cursesLabelClass* CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,in
 /**
 * Create and add new progress gadget. 
 */
-CTK_cursesProgressBarClass* CTK_mainAppClass::CTK_addNewProgressBar(int x,int y,int width,double min,double max, double val)
+CTK_cursesProgressBarClass* CTK_mainAppClass::CTK_addNewProgressBar(int x,int y,int width,double min,double max, double val,char fill)
 {
 	CTK_cursesProgressBarClass	*bar=new CTK_cursesProgressBarClass(this);
-	bar->CTK_newBar(x,y,width,min,max,val);
+	bar->CTK_newBar(x,y,width,min,max,val,fill);
 	this->pages[this->pageNumber].gadgets.push_back(bar);
 	return(bar);
 }
@@ -828,7 +828,6 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 		{
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
-		//	fprintf(stderr,"Key scancode %s\n",this->readKey->inputBuffer.c_str());
 
 			if(THISPAGE.pageKey!=NULL)
 				if(THISPAGE.pageKey(this,THISPAGE.userData)==true)
