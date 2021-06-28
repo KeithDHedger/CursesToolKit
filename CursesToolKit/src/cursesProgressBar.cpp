@@ -213,7 +213,7 @@ double CTK_cursesProgressBarClass::CTK_getMinValue(void)
 */
 void CTK_cursesProgressBarClass::CTK_setMaxValue(double val)
 {
-	this->minvalue=val;
+	this->maxvalue=val;
 }
 
 /**
@@ -222,7 +222,7 @@ void CTK_cursesProgressBarClass::CTK_setMaxValue(double val)
 */
 double CTK_cursesProgressBarClass::CTK_getMaxValue(void)
 {
-	return(this->minvalue);
+	return(this->maxvalue);
 }
 
 /**

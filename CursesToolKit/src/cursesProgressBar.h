@@ -30,39 +30,39 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		CTK_cursesProgressBarClass(CTK_mainAppClass *mc);
 		~CTK_cursesProgressBarClass();
 
-		void	CTK_newBar(int x,int y,int width,double min,double max, double val,char fill='#');
-		void	CTK_drawGadget(bool hilite=false);
+		void			CTK_newBar(int x,int y,int width,double min,double max, double val,char fill='#');
+		void			CTK_drawGadget(bool hilite=false);
 
-		void	CTK_setValue(double val);
-		double	CTK_getValue(void);
-		void	CTK_setMinValue(double val);
-		double	CTK_getMinValue(void);
-		void	CTK_setMaxValue(double val);
-		double	CTK_getMaxValue(void);
-		void	CTK_setScale(int scale);
-		void	CTK_setShowRealValue(bool real);
-		void	CTK_setShowValues(showValueStyle show);
+		void			CTK_setValue(double val);
+		double			CTK_getValue(void);
+		void			CTK_setMinValue(double val);
+		double			CTK_getMinValue(void);
+		void			CTK_setMaxValue(double val);
+		double			CTK_getMaxValue(void);
+		void			CTK_setScale(int scale);
+		void			CTK_setShowRealValue(bool real);
+		void			CTK_setShowValues(showValueStyle show);
 
-		void	CTK_setFillStyle(fillStyle style);
-		void	CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
-		void	CTK_pulseBar(void);
+		void			CTK_setFillStyle(fillStyle style);
+		void			CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
+		void			CTK_pulseBar(void);
 
-		int		blockColour=BACK_RED;
-		int		blockPulseColours[2]={BACK_RED,BACK_GREEN};
+		int				blockColour=BACK_RED;
+		int				blockPulseColours[2]={BACK_RED,BACK_GREEN};
 
 	private:
-		double		minvalue=1.0;
-		double		maxvalue=100.0;
-		double		value=1.0;
-		char		fillchar='#';
-		fillStyle	style=BAR;
-		bool		pulseColour=false;
-		bool		pulseCharacter=true;
-		std::string	pulseCharString="#*";
-		int			pulseCnt=0;
-		int			pulseColCnt=0;
-		int			scale=2;
-		bool		valueAsReal=false;
+		double			minvalue=1.0;
+		double			maxvalue=100.0;
+		double			value=1.0;
+		char			fillchar='#';
+		fillStyle		style=BAR;
+		bool			pulseColour=false;
+		bool			pulseCharacter=true;
+		std::string		pulseCharString="#*";
+		int				pulseCnt=0;
+		int				pulseColCnt=0;
+		int				scale=2;
+		bool			valueAsReal=false;
 		showValueStyle	showValues=SHOWVALUE;
 };
 

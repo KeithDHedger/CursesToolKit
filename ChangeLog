@@ -1,4 +1,6 @@
 2.0.1
+More progress bar visual tweaks.
+Added displaying values on progress bar.
 Minor bug fixes.
 Fixed edit/source box gadgets readkey.
 Gui tweaks for progress bar gadget.
