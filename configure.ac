@@ -32,6 +32,7 @@ AM_INIT_AUTOMAKE
 
 AC_PROG_CC
 AC_HEADER_STDC
+#AC_CONFIG_MACRO_DIR([./localm4s])
 
 LT_INIT([disable-static])
 
@@ -88,6 +89,10 @@ if test "$enable_imagemagick" = "yes"; then
 	GOTIMIAGEMAGIC="-D_IMAGEMAGICK_"
 	AC_SUBST(GOTIMIAGEMAGIC)
 fi
+
+#AX_BOOST_BASE([1.63],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
+#AX_BOOST_SYSTEM
+#AX_BOOST_FILESYSTEM
 
 AC_CONFIG_FILES([cursestoolkit.pc])
 AC_OUTPUT(Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile)

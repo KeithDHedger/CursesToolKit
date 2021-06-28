@@ -22,6 +22,7 @@
 #define _CURSESPROGRESSBAR_
 
 enum fillStyle {BAR=0,INDICATOR,PULSE,FILLEDBAR,FILLEDPULSE,FILLEDINDICATOR};
+enum showValueStyle {SHOWMINMAX=0,SHOWVALUE,SHOWALL,SHOWNONE};
 
 class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 {
@@ -38,6 +39,9 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		double	CTK_getMinValue(void);
 		void	CTK_setMaxValue(double val);
 		double	CTK_getMaxValue(void);
+		void	CTK_setScale(int scale);
+		void	CTK_setShowRealValue(bool real);
+		void	CTK_setShowValues(showValueStyle show);
 
 		void	CTK_setFillStyle(fillStyle style);
 		void	CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
@@ -57,6 +61,9 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		std::string	pulseCharString="#*";
 		int			pulseCnt=0;
 		int			pulseColCnt=0;
+		int			scale=2;
+		bool		valueAsReal=false;
+		showValueStyle	showValues=SHOWVALUE;
 };
 
 #endif

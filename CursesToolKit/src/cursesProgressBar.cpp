@@ -58,13 +58,42 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 */
 void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 {
-	double	absscale=(double)this->wid/this->maxvalue;
-	double	abswid=absscale*this->value;
-	int		absx;
-int jx;
+	double		absscale=(double)this->wid/(this->maxvalue-this->minvalue);
+	double		abswid=absscale*(this->value-this->minvalue);
+	int			absx;
+	int			jx;
+	char		buffer[16]={0};
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.barBoxType,false);
+
+//min
+	if((this->showValues==SHOWMINMAX) || (this->showValues==SHOWALL))
+		{
+			snprintf(buffer,15,"%.*f",this->scale,this->minvalue);
+			MOVETO(this->sx+1,this->sy-1);
+			printf("%s\n",buffer);
+//max
+			snprintf(buffer,15,"%.*f",this->scale,this->maxvalue);
+			MOVETO(this->sx+this->wid-strlen(buffer)-1,this->sy-1);
+			printf("%s\n",buffer);
+		}
+//value
+	if((this->showValues==SHOWVALUE) || (this->showValues==SHOWALL))
+		{
+			if(this->valueAsReal==true)
+				{
+					snprintf(buffer,15,"%.*f",this->scale,this->value);
+					MOVETO((this->sx+this->wid/2)-(strlen(buffer)/2),this->sy-1);
+					printf("%s\n",buffer);
+				}
+			else
+				{
+					snprintf(buffer,15,"%.*f",this->scale,((this->value-this->minvalue)/(this->maxvalue-this->minvalue))*100);
+					MOVETO((this->sx+this->wid/2)-(strlen(buffer)/2),this->sy-1);
+					printf("%s%%\n",buffer);
+				}
+		}
 
 	switch(this->style)
 		{
@@ -83,12 +112,14 @@ int jx;
 						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 						printf("%*s",this->wid-jx,"");
 					}
+				//MOVETO((this->sx+this->wid/2)-(percentstring.length()/2),this->sy-1)
+				//printf("%s%%\n",buffer);
 				break;
 			case FILLEDINDICATOR:
 				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
 				MOVETO(this->sx,this->sy);
 				printf("%*s", this->wid,"");
-		case INDICATOR:
+			case INDICATOR:
 				setBothColours(this->colours.buttonForeCol,this->blockColour,this->colours.use256Colours);
 				absx=(int)(abswid+this->sx);
 				if(absx>this->wid+this->sx-1)
@@ -192,6 +223,33 @@ void CTK_cursesProgressBarClass::CTK_setMaxValue(double val)
 double CTK_cursesProgressBarClass::CTK_getMaxValue(void)
 {
 	return(this->minvalue);
+}
+
+/**
+* Progress Bar Set Scale For All Values.
+* \param int New scale value ( default 2 ).
+*/
+void CTK_cursesProgressBarClass::CTK_setScale(int scale)
+{
+	this->scale=scale;
+}
+
+/**
+* Progress Bar Display Value As Real.
+* \param bool real
+*/
+void CTK_cursesProgressBarClass::CTK_setShowRealValue(bool real)
+{
+	this->valueAsReal=real;
+}
+
+/**
+* Progress Bar Show Values.
+* \param bool real
+*/
+void CTK_cursesProgressBarClass::CTK_setShowValues(showValueStyle show)
+{
+	this->showValues=show;
 }
 
 /**

@@ -26,7 +26,7 @@ popd
 
 name=$(basename $0 .cpp)
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit "$0" -o $name ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit -lboost_system -lboost_filesystem "$0" -o $name ||exit 1
 echo "done compiling ..."
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
@@ -609,7 +609,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse->CTK_setFillStyle(PULSE);
 	progressPulse->CTK_setPulseStyle(false,true,"#*");
-	geny+=3;
+		progressPulse->CTK_setShowValues(SHOWNONE);
+geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Pulsing colours, no chars, No fill, 50%.");
 	label->CTK_setColours(&cs,true);
@@ -617,6 +618,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse->CTK_setFillStyle(PULSE);
 	progressPulse->CTK_setPulseStyle(true,false,"  ");
+	progressPulse->CTK_setShowRealValue(true);
+	progressPulse->CTK_setShowValues(SHOWVALUE);
 	geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Pulsing chars, Filled, 50%.");
@@ -625,6 +628,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse->CTK_setFillStyle(FILLEDPULSE);
 	progressPulse->CTK_setPulseStyle(false,true,"#*");
+	progressPulse->CTK_setShowValues(SHOWALL);
 	geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Pulsing colours + chars, 100%.");
@@ -638,8 +642,12 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Static, No fill, 50%.");
 	label->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
-	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
+	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,200.0,400.0,300.0);
 	progressStatic->CTK_setFillStyle(BAR);
+	progressStatic->CTK_setScale(4);
+	progressStatic->CTK_setShowRealValue(true);
+	progressStatic->CTK_setShowValues(SHOWALL);
+	
 	geny+=3;
 //indicator
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Static, Slider, Filled, 50%.");
@@ -647,6 +655,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressIndicator->CTK_setFillStyle(FILLEDINDICATOR);
+	progressIndicator->CTK_setShowRealValue(false);
+	progressIndicator->CTK_setShowValues(SHOWVALUE);
 	geny+=3;
 
 //results
@@ -663,9 +673,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,1);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Next Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)NEXTPAGE);
-
-//	label=mainApp->CTK_addNewLabel(3,geny-8+genh+2,genw,1,"Test Label");
-//	label->CTK_setJustify(CENTREJUSTIFY);
 
 //page 6
 //dialogs with back window
