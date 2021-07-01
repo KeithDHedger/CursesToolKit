@@ -52,6 +52,57 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 	this->value=val;
 	this->fillchar=fill;
 }
+#include <chrono>
+#include <math.h>
+			
+std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
+{
+	char						buffer[256]={0};
+	std::string					retstr="";
+	int							s=value*(1000);
+	std::chrono::milliseconds	msec(s);
+	double						intpart;
+
+	if(this->valuesAsTime==false)
+		{
+			snprintf(buffer,255,"%.*f",this->scale,value);
+			retstr=buffer;
+			return(retstr);
+		}
+	else
+		{
+			if(value>=3600)
+				{
+					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::hours>(msec).count());
+					retstr+=":";
+				}
+			if(value>=60)
+				{
+					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::minutes>(msec).count() % 60);
+					retstr+=":";
+				}
+			if(value>=1)
+				{
+					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::seconds>(msec).count() % 60);
+					if(this->scale>0)
+						{
+							retstr+=".";
+							snprintf(buffer,255,"%.*f",this->scale,modf (value , &intpart));
+							retstr+=&buffer[2];
+						}
+				}
+			else
+				{
+					if(this->scale>0)
+						{
+							snprintf(buffer,255,"%.*f",this->scale,modf (value , &intpart));
+							retstr+=buffer;
+						}
+				}
+		}
+
+	return(retstr);
+}
 
 /**
 * Draw Progress Bar.
@@ -62,36 +113,53 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 	double		abswid=absscale*(this->value-this->minvalue);
 	int			absx;
 	int			jx;
-	char		buffer[16]={0};
+	std::string	timevalue;
 
 	if(this->colours.fancyGadgets==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.barBoxType,false);
 
+//show gauge
+	if((this->showValues==SHOWGAUGE) ||(this->showValues==SHOWGAUGEVALUE))
+		{
+			timevalue=this->convertValueToTime(this->value);
+			MOVETO(this->sx+1,this->sy-1);
+			printf("%s\n",timevalue.c_str());
+			if(this->showValues==SHOWGAUGEVALUE)
+				{
+					timevalue=this->convertValueToTime(this->value);
+					MOVETO((this->sx+this->wid/2)-(timevalue.length()/2),this->sy-1);
+					printf("%s\n",timevalue.c_str());
+				}
+			timevalue=this->convertValueToTime(this->maxvalue-this->value);
+			MOVETO(this->sx+this->wid-timevalue.length()-1,this->sy-1);
+			printf("%s\n",timevalue.c_str());
+		}
+
 //min
 	if((this->showValues==SHOWMINMAX) || (this->showValues==SHOWALL))
 		{
-			snprintf(buffer,15,"%.*f",this->scale,this->minvalue);
+			timevalue=this->convertValueToTime(this->minvalue);
 			MOVETO(this->sx+1,this->sy-1);
-			printf("%s\n",buffer);
+			printf("%s\n",timevalue.c_str());
 //max
-			snprintf(buffer,15,"%.*f",this->scale,this->maxvalue);
-			MOVETO(this->sx+this->wid-strlen(buffer)-1,this->sy-1);
-			printf("%s\n",buffer);
+			timevalue=this->convertValueToTime(this->maxvalue);
+			MOVETO(this->sx+this->wid-timevalue.length()-1,this->sy-1);
+			printf("%s\n",timevalue.c_str());
 		}
 //value
 	if((this->showValues==SHOWVALUE) || (this->showValues==SHOWALL))
 		{
 			if(this->valueAsReal==true)
 				{
-					snprintf(buffer,15,"%.*f",this->scale,this->value);
-					MOVETO((this->sx+this->wid/2)-(strlen(buffer)/2),this->sy-1);
-					printf("%s\n",buffer);
+					timevalue=this->convertValueToTime(this->value);
+					MOVETO((this->sx+this->wid/2)-(timevalue.length()/2),this->sy-1);
+					printf("%s\n",timevalue.c_str());
 				}
 			else
 				{
-					snprintf(buffer,15,"%.*f",this->scale,((this->value-this->minvalue)/(this->maxvalue-this->minvalue))*100);
-					MOVETO((this->sx+this->wid/2)-(strlen(buffer)/2),this->sy-1);
-					printf("%s%%\n",buffer);
+					timevalue=this->convertValueToTime(((this->value-this->minvalue)/(this->maxvalue-this->minvalue))*100);
+					MOVETO((this->sx+this->wid/2)-(timevalue.length()/2),this->sy-1);
+					printf("%s%%\n",timevalue.c_str());
 				}
 		}
 
@@ -112,8 +180,6 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
 						printf("%*s",this->wid-jx,"");
 					}
-				//MOVETO((this->sx+this->wid/2)-(percentstring.length()/2),this->sy-1)
-				//printf("%s%%\n",buffer);
 				break;
 			case FILLEDINDICATOR:
 				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
@@ -149,7 +215,6 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				MOVETO(this->sx,this->sy);
 				for(int j=0;j<abswid;j++)
 					printf("%c",this->pulseCharString.at(this->pulseCnt));
-			
 				break;
 		}
 }
@@ -260,6 +325,16 @@ void CTK_cursesProgressBarClass::CTK_setFillStyle(fillStyle style)
 {
 	this->style=style;
 }
+
+/**
+* Progress Bar Show Values as time.
+* \param bool usetime
+*/
+void CTK_cursesProgressBarClass::CTK_setShowValuesAsTime(bool usetime)
+{
+	this->valuesAsTime=usetime;
+}
+
 
 /**
 * Progress Bar Pulse Bar.

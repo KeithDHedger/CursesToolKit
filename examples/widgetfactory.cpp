@@ -252,7 +252,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 		{
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()+1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+1.0);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+0.05);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -264,7 +264,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 		{
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()-1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-1.0);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-0.05);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -609,7 +609,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse->CTK_setFillStyle(PULSE);
 	progressPulse->CTK_setPulseStyle(false,true,"#*");
-		progressPulse->CTK_setShowValues(SHOWNONE);
+	progressPulse->CTK_setShowValues(SHOWMINMAX);
 geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Pulsing colours, no chars, No fill, 50%.");
@@ -644,19 +644,21 @@ geny+=3;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,200.0,400.0,300.0);
 	progressStatic->CTK_setFillStyle(BAR);
-	progressStatic->CTK_setScale(4);
+	progressStatic->CTK_setScale(1);
 	progressStatic->CTK_setShowRealValue(true);
 	progressStatic->CTK_setShowValues(SHOWALL);
-	
+	progressStatic->CTK_setShowValuesAsTime(true);
 	geny+=3;
 //indicator
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/3,1,"Static, Slider, Filled, 50%.");
 	label->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
-	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
+	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,130.0,0.0);
 	progressIndicator->CTK_setFillStyle(FILLEDINDICATOR);
 	progressIndicator->CTK_setShowRealValue(false);
-	progressIndicator->CTK_setShowValues(SHOWVALUE);
+	progressIndicator->CTK_setShowValues(SHOWGAUGE);
+	progressIndicator->CTK_setShowValuesAsTime(true);
+	progressIndicator->CTK_setScale(2);
 	geny+=3;
 
 //results

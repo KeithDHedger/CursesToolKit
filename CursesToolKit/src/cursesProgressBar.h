@@ -22,7 +22,7 @@
 #define _CURSESPROGRESSBAR_
 
 enum fillStyle {BAR=0,INDICATOR,PULSE,FILLEDBAR,FILLEDPULSE,FILLEDINDICATOR};
-enum showValueStyle {SHOWMINMAX=0,SHOWVALUE,SHOWALL,SHOWNONE};
+enum showValueStyle {SHOWMINMAX=0,SHOWVALUE,SHOWALL,SHOWNONE,SHOWGAUGE,SHOWGAUGEVALUE};
 
 class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 {
@@ -45,12 +45,16 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 
 		void			CTK_setFillStyle(fillStyle style);
 		void			CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
+		void			CTK_setShowValuesAsTime(bool usetime);
+	
 		void			CTK_pulseBar(void);
 
 		int				blockColour=BACK_RED;
 		int				blockPulseColours[2]={BACK_RED,BACK_GREEN};
 
 	private:
+		std::string		convertValueToTime(double value);
+
 		double			minvalue=1.0;
 		double			maxvalue=100.0;
 		double			value=1.0;
@@ -63,6 +67,7 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		int				pulseColCnt=0;
 		int				scale=2;
 		bool			valueAsReal=false;
+		bool			valuesAsTime=false;
 		showValueStyle	showValues=SHOWVALUE;
 };
 
