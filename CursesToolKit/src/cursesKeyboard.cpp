@@ -123,6 +123,7 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 				break;
 		}
 	MOVETO(this->sx+this->curs,this->sy);
+	fflush(NULL);
 }
 
 /**

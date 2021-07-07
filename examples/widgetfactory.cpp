@@ -252,7 +252,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 		{
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()+1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+0.05);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+0.1);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -264,7 +264,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 		{
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()-1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-0.05);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-0.1);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -658,7 +658,8 @@ geny+=3;
 	progressIndicator->CTK_setShowRealValue(false);
 	progressIndicator->CTK_setShowValues(SHOWGAUGE);
 	progressIndicator->CTK_setShowValuesAsTime(true);
-	progressIndicator->CTK_setScale(2);
+	progressIndicator->CTK_setScale(0);
+	//progressIndicator->CTK_setShowZeroMinutes(true);
 	geny+=3;
 
 //results

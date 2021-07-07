@@ -62,6 +62,7 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 	int							s=value*(1000);
 	std::chrono::milliseconds	msec(s);
 	double						intpart;
+	const char					*zeros="";
 
 	if(this->valuesAsTime==false)
 		{
@@ -81,8 +82,13 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::minutes>(msec).count() % 60);
 					retstr+=":";
 				}
+
+			if((this->showZeroMinutes==true) && (value<60))
+				zeros="0:";
+
 			if(value>=1)
 				{
+					retstr+=zeros;
 					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::seconds>(msec).count() % 60);
 					if(this->scale>0)
 						{
@@ -93,11 +99,8 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 				}
 			else
 				{
-					if(this->scale>0)
-						{
-							snprintf(buffer,255,"%.*f",this->scale,modf (value , &intpart));
-							retstr+=buffer;
-						}
+					snprintf(buffer,255,"%s%.*f",zeros,this->scale,modf(value,&intpart));
+					retstr+=buffer;
 				}
 		}
 
@@ -335,6 +338,14 @@ void CTK_cursesProgressBarClass::CTK_setShowValuesAsTime(bool usetime)
 	this->valuesAsTime=usetime;
 }
 
+/**
+* Progress Bar Show zero minutes.
+* \param bool showzero
+*/
+void CTK_cursesProgressBarClass::CTK_setShowZeroMinutes(bool showzero)
+{
+	this->showZeroMinutes=showzero;
+}
 
 /**
 * Progress Bar Pulse Bar.

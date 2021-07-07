@@ -414,6 +414,7 @@ void CTK_mainAppClass::CTK_updateScreen(void *object,void* userdata)//TODO//
 	CTK_cursesGraphicsClass	cu(app);
 
 	app->drawAllGadgets();
+	fflush(NULL);
 }
 
 /**
@@ -458,8 +459,9 @@ void CTK_mainAppClass::resetAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(false);
-			fflush(NULL);
+	//		fflush(NULL);
 		}
+	fflush(NULL);
 }
 
 /**
@@ -475,7 +477,7 @@ void CTK_mainAppClass::drawAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
-			fflush(NULL);
+		//	fflush(NULL);
 		}
 }
 
@@ -1030,7 +1032,7 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	THISPAGE.retainHighliting=false;
 	this->resetAllGadgets();
 
-	fflush(NULL);
+	//fflush(NULL);
 }
 
 /**

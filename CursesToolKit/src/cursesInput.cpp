@@ -82,9 +82,10 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 		return;
 
 	this->hiLited=hilite;
+	
 
 	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,false);
 
 	if(hilite==true)
 		{
@@ -121,6 +122,8 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 					MOVETO(this->sx,this->sy);
 				}
 		}
+//this->gadgetDirty=false;
+//	fflush(NULL);
 }
 
 /**
@@ -223,6 +226,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 						}
 					MOVETO(this->sx+this->curs,this->sy);
 					this->CTK_drawGadget(true);
+					fflush(NULL);
 				}
 			else
 				{
@@ -234,6 +238,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 							this->startChar=this->text.length()-this->wid;
 						}
 					this->CTK_drawGadget(true);
+					fflush(NULL);
 				}
 		}
 	SETHIDECURS;

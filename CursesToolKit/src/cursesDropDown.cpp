@@ -168,7 +168,7 @@ void CTK_cursesDropClass::drawList(int selection)
 						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.menuForeCol,this->colours.menuBackCol);
 				}
 		}
-	fflush(NULL);
+//	fflush(NULL);
 }
 
 /**
@@ -217,7 +217,7 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
 	else
 		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->colours.buttonForeCol,this->colours.buttonBackCol);
 
-	fflush(NULL);
+	//fflush(NULL);
 }
 
 

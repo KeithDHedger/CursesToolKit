@@ -48,7 +48,7 @@
 #define CLEARTOSOL "\e[1K"
 #define CLEARTOEOS "\e[0J"
 
-#define MOVETO(x,y) printf("\e[%i;%iH",y,x);fflush(NULL);
+#define MOVETO(x,y) printf("\e[%i;%iH",y,x);//fflush(NULL);
 
 #define ALTCHARSET "\e(0"
 #define NORMCHARSET "\e(B"

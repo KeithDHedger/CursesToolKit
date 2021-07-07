@@ -122,7 +122,7 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 	if(this->txtStrings.size()==0)
 		return;
 
-	fflush(NULL);
+	//fflush(NULL);
 	j=0;
 	while(j<this->hite)
 		{
@@ -133,14 +133,14 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 					else
 						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
 					
-					fflush(NULL);
+					//fflush(NULL);
 					j++;
 				}
 			else
 				break;
 		}
 	MOVETO(this->sx,this->sy);
-	fflush(NULL);
+//	fflush(NULL);
 }
 
 /**

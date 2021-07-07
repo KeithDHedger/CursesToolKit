@@ -46,6 +46,7 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		void			CTK_setFillStyle(fillStyle style);
 		void			CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
 		void			CTK_setShowValuesAsTime(bool usetime);
+		void			CTK_setShowZeroMinutes(bool showzero);
 	
 		void			CTK_pulseBar(void);
 
@@ -68,6 +69,7 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		int				scale=2;
 		bool			valueAsReal=false;
 		bool			valuesAsTime=false;
+		bool			showZeroMinutes=true;
 		showValueStyle	showValues=SHOWVALUE;
 };
 

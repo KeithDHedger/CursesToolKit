@@ -331,7 +331,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 		return;
 	this->editStatus="Edit Mode";
 	this->drawBox(false,true,shortdraw);
-	fflush(NULL);
+	//fflush(NULL);
 	this->runLoop=true;
 
 	while(this->runLoop==true)
