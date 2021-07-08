@@ -90,7 +90,8 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 	setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
 	printf("%*s",this->mc->maxCols-x+1,"");
 	SETNORMAL;
-	MOVETO(1,1000);
+	//MOVETO(1,1000);
+	fflush(NULL);
 }
 
 /**
@@ -260,7 +261,7 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 									this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,DISABLED,doshortcut,true);
 								}
 						}
-					fflush(NULL);
+					//fflush(NULL);
 				}
 			else
 				break;

@@ -191,8 +191,8 @@ void CTK_cursesKeyboardClass::CTK_doInput(void)
 																}
 															break;
 
-														case ' ':
-															this->text.insert(this->startChar+this->curs,1,' ');
+														default:
+															this->text.insert(this->startChar+this->curs,1,osKLine[this->cPage][this->cy][this->cx]);
 															this->curs++;
 															if(this->curs>this->wid)
 																{

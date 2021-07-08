@@ -123,7 +123,7 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 				}
 		}
 //this->gadgetDirty=false;
-//	fflush(NULL);
+	fflush(NULL);
 }
 
 /**
@@ -226,7 +226,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 						}
 					MOVETO(this->sx+this->curs,this->sy);
 					this->CTK_drawGadget(true);
-					fflush(NULL);
+					//fflush(NULL);
 				}
 			else
 				{
@@ -238,7 +238,7 @@ void CTK_cursesInputClass::CTK_doInput(void)
 							this->startChar=this->text.length()-this->wid;
 						}
 					this->CTK_drawGadget(true);
-					fflush(NULL);
+					//fflush(NULL);
 				}
 		}
 	SETHIDECURS;
