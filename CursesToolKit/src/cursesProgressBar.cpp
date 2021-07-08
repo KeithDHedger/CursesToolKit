@@ -220,6 +220,7 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 					printf("%c",this->pulseCharString.at(this->pulseCnt));
 				break;
 		}
+	fflush(NULL);
 }
 
 /**

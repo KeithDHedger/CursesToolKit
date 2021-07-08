@@ -103,7 +103,7 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 		}
 	SETNORMCHARSET;//TODO//
 	MOVETO(1,1);
-	//fflush(NULL);
+	fflush(NULL);
 }
 
 /**
