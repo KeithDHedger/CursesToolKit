@@ -479,6 +479,7 @@ void CTK_mainAppClass::drawAllGadgets(void)
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
 		//	fflush(NULL);
 		}
+	fflush(NULL);
 }
 
 /**

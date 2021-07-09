@@ -64,7 +64,7 @@ void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 	else
 		printf("[%c] %s",val,this->label);
 
-//	fflush(NULL);
+	fflush(NULL);
 }
 
 /**

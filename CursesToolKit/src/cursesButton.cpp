@@ -80,5 +80,5 @@ void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 	else
 		printf("%s",this->label);
 
-//	fflush(NULL);
+	fflush(NULL);
 }
