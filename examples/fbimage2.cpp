@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 	CTK_cursesLabelClass	*lab;
 	CTK_cursesButtonClass	*button;
 
+
 	const char				*label="Simple Framebuffer Image Example.";
 	int						labellen=strlen(label);
 	struct fbData			*fbinf=mainApp->CTK_getFBData();

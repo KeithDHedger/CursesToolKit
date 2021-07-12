@@ -477,6 +477,7 @@ void CTK_mainAppClass::drawAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
+		//	fprintf(stderr,"type==%i\n",this->pages[this->pageNumber].gadgets[j]->CTK_getGadgetType());
 		//	fflush(NULL);
 		}
 	fflush(NULL);
@@ -823,6 +824,13 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 				}
 			else
 				this->drawAllGadgets();
+
+//refresh images only.
+			for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
+				{
+					if(this->pages[this->pageNumber].gadgets[j]->CTK_getGadgetType()==IMAGEGADGET)
+						this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
+				}
 		}
 
 	this->runEventLoop=true;

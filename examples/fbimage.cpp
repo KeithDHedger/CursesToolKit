@@ -36,6 +36,7 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
+
 	cs.windowBackCol=BACK_WHITE;
 	mainApp->CTK_setColours(&cs,true);
 
