@@ -708,8 +708,6 @@ geny+=3;
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 
-DEBUGFUNC("%s\n",">>>>>>>>>>>>");
-
 //mainApp->readKey->waitTime=100;
 if(false)
 	{
