@@ -200,6 +200,7 @@ SOURCEHILITE_LIBS = @SOURCEHILITE_LIBS@
 STRIP = @STRIP@
 USEDEBUG = @USEDEBUG@
 VERSION = @VERSION@
+WARNDEBUG = @WARNDEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@

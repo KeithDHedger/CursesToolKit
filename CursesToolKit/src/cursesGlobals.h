@@ -40,9 +40,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#ifdef _DEBUGCODE_
-#include "debug.h"
-#endif
+#include "../src/debug.h"
 
 struct fbData
 {

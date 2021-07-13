@@ -799,6 +799,8 @@ void CTK_mainAppClass::highLiteGadget(bool forward)
 */
 int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 {
+DEBUG
+DEBUGFUNC("%s\n",">>>>>")
 	int		cntdown=runcnt;
 	bool	cntflag=false;
 

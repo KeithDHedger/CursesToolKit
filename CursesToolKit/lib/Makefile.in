@@ -322,6 +322,7 @@ SOURCEHILITE_LIBS = @SOURCEHILITE_LIBS@
 STRIP = @STRIP@
 USEDEBUG = @USEDEBUG@
 VERSION = @VERSION@
+WARNDEBUG = @WARNDEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -383,6 +384,7 @@ AM_CPPFLAGS = -I$(top_srcdir) \
 			-DLIBDIR=\""${libdir}/${PACKAGE}"\" \
 			$(SOURCEHILITE_CFLAGS) \
 			$(USEDEBUG) \
+			$(WARNDEBUG) \
 			$(GOTIMIAGEMAGIC) \
 			$(IMAGEMAGICK_CFLAGS) \
 			$(NCURSES_CFLAGS)
