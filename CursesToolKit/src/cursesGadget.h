@@ -61,6 +61,8 @@ class CTK_cursesGadgetClass
 		bool					CTK_getSelectable(void);
 		void					CTK_setSelectKey(int key);
 		int						CTK_getSelectKey(void);
+		void					CTK_setVisible(bool visible);
+		bool					CTK_getVisible(void);
 
 //virtual functions
 		virtual void			CTK_setColours(coloursStruct *cs,bool force=true);
@@ -76,6 +78,7 @@ class CTK_cursesGadgetClass
 		bool					selectDeselects=true;
 		bool					enabled=true;
 		int						selectKey=CTK_KEY_NONE;
+		bool					visible=true;
 	private:	
 };
 

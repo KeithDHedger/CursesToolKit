@@ -159,3 +159,14 @@ int CTK_cursesGadgetClass::CTK_getSelectKey(void)
 	return(this->selectKey);
 }
 
+void CTK_cursesGadgetClass::CTK_setVisible(bool visible)
+{
+	this->visible=visible;
+	//this->mc->CTK_updateScreen(this->mc,NULL);
+}
+
+bool CTK_cursesGadgetClass::CTK_getVisible(void)
+{
+	return(this->visible);
+}
+

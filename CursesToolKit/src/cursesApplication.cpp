@@ -475,9 +475,12 @@ void CTK_mainAppClass::drawAllGadgets(void)
 
 	for(int j=0;j<this->pages[this->pageNumber].gadgets.size();j++)
 		{
-			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
-			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
-		//	fprintf(stderr,"type==%i\n",this->pages[this->pageNumber].gadgets[j]->CTK_getGadgetType());
+			if(this->pages[this->pageNumber].gadgets[j]->CTK_getVisible()==true)
+				{
+					this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
+					this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
+			fprintf(stderr,"type==%i\n",this->pages[this->pageNumber].gadgets[j]->CTK_getGadgetType());
+				}
 		//	fflush(NULL);
 		}
 	fflush(NULL);
