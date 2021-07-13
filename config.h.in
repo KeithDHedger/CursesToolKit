@@ -59,6 +59,3 @@
 
 /* Version number of package */
 #undef VERSION
-
-/* Use IMAGEMAGICK */
-#undef _IMAGEMAGICK_

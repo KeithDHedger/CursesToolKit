@@ -40,6 +40,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifdef _DEBUGCODE_
+#include "debug.h"
+#endif
+
 struct fbData
 {
 	struct fb_fix_screeninfo	frameBufferInfo;

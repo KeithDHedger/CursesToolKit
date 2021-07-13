@@ -26,7 +26,7 @@ popd
 
 name=$(basename $0 .cpp)
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit -lboost_system -lboost_filesystem "$0" -o $name ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs -D_DEBUGCODE_ $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit -lboost_system -lboost_filesystem "$0" -o $name ||exit 1
 echo "done compiling ..."
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
@@ -707,6 +707,8 @@ geny+=3;
 	mainApp->CTK_setDefaultGadget(helptextbox);
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
+
+DEBUGFUNC("%s\n",">>>>>>>>>>>>");
 
 //mainApp->readKey->waitTime=100;
 if(false)

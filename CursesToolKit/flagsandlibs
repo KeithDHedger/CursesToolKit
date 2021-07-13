@@ -1,10 +1,12 @@
 
+
 AM_CPPFLAGS =	-I$(top_srcdir) \
 			-DPREFIX=\""${prefix}\"" \
 			-DDATADIR=\""${pkgdatadir}"\" \
 			-DSYSCONFDIR=\""${sysconfdir}/${PACKAGE}"\" \
 			-DLIBDIR=\""${libdir}/${PACKAGE}"\" \
 			$(SOURCEHILITE_CFLAGS) \
+			$(USEDEBUG) \
 			$(GOTIMIAGEMAGIC) \
 			$(IMAGEMAGICK_CFLAGS) \
 			$(NCURSES_CFLAGS)

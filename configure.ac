@@ -81,13 +81,23 @@ AC_ARG_ENABLE(imagemagick,
 AC_MSG_RESULT($enable_imagemagick)
 
 if test "$enable_imagemagick" = "yes"; then
-	AC_DEFINE([_IMAGEMAGICK_], [], [Use IMAGEMAGICK])
+	#AC_DEFINE([_IMAGEMAGICK_], [], [Use IMAGEMAGICK])
 	IMAGEMAGICK_MODULES="Magick++ >= 7.0.0"
 	PKG_CHECK_MODULES(IMAGEMAGICK,$IMAGEMAGICK_MODULES)
 	AC_SUBST(IMAGEMAGICK_CFLAGS)
 	AC_SUBST(IMAGEMAGICK_LIBS)
 	GOTIMIAGEMAGIC="-D_IMAGEMAGICK_"
 	AC_SUBST(GOTIMIAGEMAGIC)
+fi
+
+AC_MSG_CHECKING(whether to build debug functions)
+AC_ARG_ENABLE(debug,AS_HELP_STRING([--enable-debug],[Enable debug code]),
+    [enable_debug=$enableval],
+    [enable_debug="no"])
+AC_MSG_RESULT($enable_debug)
+if test "$enable_debug" = "yes"; then
+	USEDEBUG="-D_DEBUGCODE_"
+	AC_SUBST(USEDEBUG)
 fi
 
 #AX_BOOST_BASE([1.63],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
