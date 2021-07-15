@@ -444,6 +444,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	geny+=3;
 //normal list box
 	list1=mainApp->CTK_addNewListBox(genx,geny,genw/2,genh-3);
+	list1->CTK_addListItem("Item 0");
 	list1->CTK_addListItem("Item 1");
 	list1->CTK_addListItem("Item 2");
 	list1->CTK_addListItem("Item 3",(void*)0xdeadbeef);
@@ -451,7 +452,33 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	list1->CTK_addListItem("Item 5");
 	list1->CTK_addListItem("Item 6");
 	list1->CTK_addListItem("Item 7 is a really really really really really really really really really really really really really long line and gets truncated",(void*)7);
+	list1->CTK_addListItem("Item 8");
+	list1->CTK_addListItem("Item 9");
+	list1->CTK_addListItem("Item 10");
+	list1->CTK_addListItem("Item 11");
+	list1->CTK_addListItem("Item 12");
+	list1->CTK_addListItem("Item 13");
+	list1->CTK_addListItem("Item 14");
+	list1->CTK_addListItem("Item 15");
+	list1->CTK_addListItem("Item 16");
+	list1->CTK_addListItem("Item 17");
+	list1->CTK_addListItem("Item 18");
+	list1->CTK_addListItem("Item 19");
+	list1->CTK_addListItem("Item 20");
+	list1->CTK_addListItem("Item 21");
+	list1->CTK_addListItem("Item 22");
+	list1->CTK_addListItem("Item 23");
+	list1->CTK_addListItem("Item 24");
+	list1->CTK_addListItem("Item 25");
+	list1->CTK_addListItem("Item 26");
+	list1->CTK_addListItem("Item 27");
+	list1->CTK_addListItem("Item 28");
+	list1->CTK_addListItem("Item 29");
+	list1->CTK_addListItem("Item 30");
 	list1->CTK_setSelectCB(listselctCB,(void*)1);
+//	list1->CTK_selectItem(26);
+	list1->CTK_selectItem(list1->CTK_findByLabel("Item 28"));
+	
 //multi select list
 	list2=mainApp->CTK_addNewListBox(genx+(genw/2)+3,geny,(genw/2)-2,genh-3);
 	list2->CTK_addListItem("Item 1");
@@ -474,6 +501,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	list2->CTK_setMultipleSelect(true);
 	list2->CTK_setSelectDeselects(false);
+	list2->CTK_setItem(3,true);	
 
 	cs.textBoxType=INBOX;
 	cs.backCol=BACK_WHITE;

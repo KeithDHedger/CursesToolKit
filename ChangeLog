@@ -1,4 +1,6 @@
 2.0.1
+Added find by label to list box.
+Added select item to list box.
 Added debug.h file.
 Fixed various UI bugs.
 Added displaying values as time in progress bar.

@@ -52,6 +52,8 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		const std::vector<bool>			CTK_getSelections(void);
 		void							CTK_toggleItem(int item);
 		void							CTK_setItem(int item,bool set);
+		void							CTK_selectItem(int item);
+		int								CTK_findByLabel(const std::string);
 
 //over ridden virtual funcs and data
 		void							CTK_drawGadget(bool hilite=false);

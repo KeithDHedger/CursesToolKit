@@ -224,12 +224,50 @@ void CTK_cursesListBoxClass::CTK_toggleItem(int item)
 }
 
 /**
-* Set select item.
+* Set select item ( multiple selections ).
+* \param int item
+* \param bool set/unset
 */
 void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
 {
-	this->selections[item]=set;
-	this->gadgetDirty=true;
+	if(item<this->selections.size())
+		{
+			this->selections[item]=set;
+			this->gadgetDirty=true;
+		}
+}
+
+/**
+* Select list item.
+* \param int item
+* \note if item out of bounds selects item 0.
+*/
+void CTK_cursesListBoxClass::CTK_selectItem(int item)
+{
+	int	tonum=item;
+
+	if(item<0)
+		tonum=0;
+	else
+		if(item>this->listItems.size()-1)
+			tonum=this->listItems.size()-1;
+	this->listItemNumber=0;
+	this->listStart=0;
+	for(int j=0;j<tonum;j++)
+		this->CTK_keyUpDown(false,false);
+}
+
+/**
+* Find item by label.
+* \param const std::string needle
+* \return List item index or -1 if not found.
+*/
+int CTK_cursesListBoxClass::CTK_findByLabel(const std::string needle)
+{
+	for(int j=0;j<this->listItems.size();j++)
+		if(needle.compare(this->listItems.at(j)->label)==0)
+			return(j);
+	return(-1);
 }
 
 /**
