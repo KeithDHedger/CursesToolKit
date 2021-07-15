@@ -58,6 +58,8 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 {
 	char	buffer[4096];
 	char	selected;
+	int		bc;
+	int		fc;
 
 	if(	this->gadgetDirty==false)
 		return;
@@ -75,24 +77,40 @@ void CTK_cursesListBoxClass::CTK_drawGadget(bool hilite)
 
 					if(this->multi==false)
 						{
-						if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
-							this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
-						else
-							this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+							if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
+								{
+									this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+								}
+							else
+								{
+									if(this->activeItem==(j+this->listStart))
+										{
+											this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.markForeCol,this->colours.markBackCol);
+										}
+									else
+										this->gc->CTK_printJustLineColour(this->listItems[j+this->listStart]->label.c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+								}
 						}
 					else
 						{
+							bc=this->colours.backCol;
+							fc=this->colours.foreCol;
 							if(this->selections[j+this->listStart]==true)
-								selected='X';
+								{
+									bc=this->colours.markBackCol;
+									fc=this->colours.markForeCol;
+									selected='X';
+								}
 							else
-								selected=' ';
+								{
+									selected=' ';
+								}
 							sprintf(buffer,"[%c] %s",selected,this->listItems[j+this->listStart]->label.c_str());
 							
 							if((hilite==true) && (this->listItemNumber==(j+this->listStart)))
 								this->gc->CTK_printJustLineColour(buffer,this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
 							else
-								this->gc->CTK_printJustLineColour(buffer,this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
-							
+								this->gc->CTK_printJustLineColour(buffer,this->sx,this->sy+j,this->wid,LEFTJUSTIFY,fc,bc);
 						}
 				}
 			else
@@ -230,10 +248,17 @@ void CTK_cursesListBoxClass::CTK_toggleItem(int item)
 */
 void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
 {
-	if(item<this->selections.size())
+	if(this->multi==true)
 		{
-			this->selections[item]=set;
-			this->gadgetDirty=true;
+			if(item<this->selections.size())
+				{
+					this->selections[item]=set;
+					this->gadgetDirty=true;
+				}
+		}
+	else
+		{
+			this->CTK_selectItem(item);
 		}
 }
 
@@ -255,6 +280,7 @@ void CTK_cursesListBoxClass::CTK_selectItem(int item)
 	this->listStart=0;
 	for(int j=0;j<tonum;j++)
 		this->CTK_keyUpDown(false,false);
+	this->activeItem=tonum;
 }
 
 /**
@@ -276,4 +302,12 @@ int CTK_cursesListBoxClass::CTK_findByLabel(const std::string needle)
 const std::vector<bool> CTK_cursesListBoxClass::CTK_getSelections(void)
 {
 	return(this->selections);
+}
+
+/**
+* Get active item.
+*/
+int CTK_cursesListBoxClass::CTK_getActiveItem(void)
+{
+	return(this->activeItem);
 }

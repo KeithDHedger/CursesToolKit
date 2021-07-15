@@ -54,10 +54,12 @@ class CTK_cursesListBoxClass : public CTK_cursesGadgetClass
 		void							CTK_setItem(int item,bool set);
 		void							CTK_selectItem(int item);
 		int								CTK_findByLabel(const std::string);
+		int								CTK_getActiveItem(void);
 
 //over ridden virtual funcs and data
 		void							CTK_drawGadget(bool hilite=false);
 
+		int								activeItem=-1;
 	private:
 		std::string						blank;
 		bool							multi=false;

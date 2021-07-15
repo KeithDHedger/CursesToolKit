@@ -1,4 +1,5 @@
 2.0.1
+Set colours of active list item(s).
 Added find by label to list box.
 Added select item to list box.
 Added debug.h file.

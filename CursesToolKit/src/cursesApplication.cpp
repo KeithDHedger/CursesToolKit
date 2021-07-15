@@ -603,6 +603,7 @@ void CTK_mainAppClass::activateGadget(void)
 					{
 						static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->CTK_toggleItem(static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->listItemNumber);
 					}
+				static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->activeItem=static_cast<CTK_cursesListBoxClass*>(CURRENTGADGET)->listItemNumber;
 				if(CURRENTGADGET->selectCB!=NULL)
 					CURRENTGADGET->selectCB((void*)CURRENTGADGET,(void*)CURRENTGADGET->CTK_getCBUserData());
 				CURRENTGADGET->CTK_drawGadget(true);
