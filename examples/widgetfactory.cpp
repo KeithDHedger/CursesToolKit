@@ -693,7 +693,7 @@ geny+=3;
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,200.0,400.0,300.0);
-	progressStatic->gadgetColours.backCol=BACK_WHITE;
+	progressStatic->gadgetColours.backCol=mainApp->windowColours.backCol;
 	progressStatic->CTK_setFillStyle(BAR);
 	progressStatic->CTK_setScale(1);
 	progressStatic->CTK_setShowRealValue(true);
