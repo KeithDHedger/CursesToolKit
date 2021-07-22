@@ -33,7 +33,21 @@ CTK_cursesButtonClass::~CTK_cursesButtonClass()
 */
 CTK_cursesButtonClass::CTK_cursesButtonClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("btnforecol",this->gadgetColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("btnbackcol",this->gadgetColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("btnhiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("btnhilitebackcol",this->gadgetColours.hiliteBackCol);
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("btndisabledforecol",this->gadgetColours.disabledForeCol);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("btndisabledbackcol",this->gadgetColours.disabledBackCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"btnfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
 	this->type=BUTTONGADGET;
 }
 
@@ -57,6 +71,8 @@ void CTK_cursesButtonClass::CTK_newButton(int x,int y,int width,int hite,const c
 */
 void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 {
+	varsStruct	vsitem;
+
 	if(this->gadgetDirty==false)
 		return;
 
@@ -65,17 +81,17 @@ void CTK_cursesButtonClass::CTK_drawGadget(bool hilite)
 	MOVETO(this->sx,this->sy);
 	if(this->enabled==false)
 		{
-			setBothColours(this->colours.buttonDisabledForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+			setBothColours(this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 		}
 	else
 		{
 			if(hilite==true)
-				setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 			else
-				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 		}
 
-	if(this->colours.fancyGadgets==true)
+	if(this->gadgetColours.useFancy==true)
 		printf("< %s >",this->label);
 	else
 		printf("%s",this->label);

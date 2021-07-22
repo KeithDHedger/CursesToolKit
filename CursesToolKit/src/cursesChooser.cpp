@@ -65,6 +65,7 @@ static bool chooserSelectCB(void *inst,void *ud)
 			ch->folderPath=buffer;
 			ch->fileName=ch->files->data[ls->listItemNumber].name;
 			ch->filePath=ch->files->data[ls->listItemNumber].path;
+			ch->lb->CTK_setItem(0xdeadbeef,false);
 			ch->CTK_updateList();
 		}
 
@@ -127,8 +128,6 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 {
 	char	*buffer=(char*)alloca(PATH_MAX);
 
-	this->lb->CTK_setColours(&app->colours);
-
 	this->files->LFSTK_setFollowLinks(true);
 	this->files->LFSTK_setFindType(this->types);
 	this->files->LFSTK_setFullPath(true);
@@ -144,10 +143,8 @@ void CTK_cursesChooserClass::CTK_selectFolder(CTK_mainAppClass *app,const char *
 		}
 
 	this->lb->CTK_setSelectDeselects(false);
-	//app->CTK_addListBox(this->lb);
 	this->lb->CTK_setSelectCB(chooserSelectCB,this);
 	this->folderPath=folder;
-	return;
 }
 
 void CTK_cursesChooserClass::CTK_setCanChangeFolder(bool canchange)

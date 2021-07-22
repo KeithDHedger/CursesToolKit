@@ -44,7 +44,21 @@ CTK_cursesFBImageClass::~CTK_cursesFBImageClass()
 */
 CTK_cursesFBImageClass::CTK_cursesFBImageClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"imagehiliteforecol");
+	if(vsitem.vType!=BADTYPE)
+		{
+			std::string::size_type found=vsitem.charVar.find_last_of(";");
+			this->hiliteColour=vsitem.charVar.substr(found+1);
+		}
+	else
+		{
+			this->hiliteColour="cyan";
+		}
+
 	this->type=IMAGEGADGET;
 }
 
@@ -102,7 +116,7 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 				}
 
 			limage->write((lblob));
-			limage->strokeColor(this->hiliteColour);
+			limage->strokeColor(this->hiliteColour.c_str());
 			limage->fillColor("transparent");
 			limage->strokeWidth(this->hiliteWidth);
 			limage->draw(Magick::DrawableRectangle(0,0,limage->columns()-1,limage->rows()-1));
@@ -177,7 +191,7 @@ void CTK_cursesFBImageClass::CTK_newFBImageAbsCoords(int x,int y,int width,int h
 				}
 
 			limage->write((lblob));
-			limage->strokeColor(this->hiliteColour);
+			limage->strokeColor(this->hiliteColour.c_str());
 			limage->fillColor("transparent");
 			limage->strokeWidth(this->hiliteWidth);
 			limage->draw(Magick::DrawableRectangle(0,0,limage->columns()-1,limage->rows()-1));

@@ -32,7 +32,25 @@ CTK_cursesTextBoxClass::~CTK_cursesTextBoxClass()
 */
 CTK_cursesTextBoxClass::CTK_cursesTextBoxClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+	
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("textforecol",this->mc->windowColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("textbackcol",this->mc->windowColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("texthiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("texthilitebackcol",this->gadgetColours.hiliteBackCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"textfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"textboxtype");
+	if(vsitem.vType==INTVAR)
+		this->gadgetColours.boxType=vsitem.intVar;
+	else
+		this->gadgetColours.boxType=OUTBOX;
+
 	this->type=TEXTGADGET;
 }
 
@@ -116,31 +134,27 @@ void CTK_cursesTextBoxClass::CTK_drawGadget(bool hilite)
 
 	this->hiLited=hilite;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.textBoxType,false);
+	if(this->gadgetColours.useFancy==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->gadgetColours.boxType,false);
 
 	if(this->txtStrings.size()==0)
 		return;
 
-	//fflush(NULL);
 	j=0;
 	while(j<this->hite)
 		{
 			if(j<this->txtStrings.size())
 				{
 					if(hilite==true)
-						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 					else
-						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
-					
-					//fflush(NULL);
+						this->gc->CTK_printJustLineColour(this->txtStrings[j+this->startLine].c_str(),this->sx,this->sy+j,this->wid,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
 					j++;
 				}
 			else
 				break;
 		}
 	MOVETO(this->sx,this->sy);
-//	fflush(NULL);
 }
 
 /**

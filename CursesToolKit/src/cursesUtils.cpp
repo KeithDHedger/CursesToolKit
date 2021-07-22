@@ -151,7 +151,7 @@ std::vector<std::string> CTK_cursesUtilsClass::CTK_explodeWidth(const std::strin
 					buff="";
 				}
 
-			if(s[j]!=c)//TODO//
+			if(s[j]!=c)
 				{
 					buff+=s[j];
 				}
@@ -319,17 +319,11 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 {
 	int						genx,geny,genw,genh;
 	CTK_cursesButtonClass	*button;
-	coloursStruct			cs;
 	CTK_mainAppClass		*app=new CTK_mainAppClass;
 	CTK_cursesLabelClass	*label;
 	char					*folder;
 	std::string				labelstr;
 	CTK_cursesCheckBoxClass	*checkGadget;
-
-	cs.fancyGadgets=true;
-	cs.labelBoxType=NOBOX;
-	cs.textBoxType=INBOX;
-	app->CTK_setColours(&cs,true);
 
 	switch(choosertype)
 		{
@@ -362,6 +356,8 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 	genh=CURRENTPAGE(app).boxH-7;
 
 	this->dialogReturnData.chooser=new CTK_cursesChooserClass(app,genx,geny,genw,genh);
+	this->dialogReturnData.chooser->lb->gadgetColours.foreCol=FORE_BLACK;
+	this->dialogReturnData.chooser->lb->gadgetColours.backCol=BACK_WHITE;
 
 	switch(choosertype)
 		{
@@ -391,13 +387,19 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 			this->dialogReturnData.input->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			this->dialogReturnData.input->userData=(void*)CUCHOOSERINPUT;
 			this->dialogReturnData.input->redrawAppWindow=false;
+					this->dialogReturnData.input->gadgetColours.boxType=INBOX;
+					this->dialogReturnData.input->gadgetColours.foreCol=FORE_BLACK;
+					this->dialogReturnData.input->gadgetColours.backCol=BACK_WHITE;
 		}
 	else
 		{
 			if(choosertype==CUOPENFOLDER)
 				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,startdir,false);
 			else
-				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
+					this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
+			this->dialogReturnData.results->gadgetColours.boxType=INBOX;
+			this->dialogReturnData.results->gadgetColours.foreCol=FORE_BLACK;
+			this->dialogReturnData.results->gadgetColours.backCol=BACK_WHITE;
 		}
 
 	labelstr=this->CTK_padString("OK",CHOOSERBTNWIDTH);
@@ -440,14 +442,9 @@ bool CTK_cursesUtilsClass::CTK_entryDialog(const char *bodytxt,const char *defau
 {
 	int						genx,geny,genw;
 	CTK_cursesButtonClass	*button;
-	coloursStruct			cs;
 	CTK_mainAppClass		*app=new CTK_mainAppClass;
 	CTK_cursesLabelClass	*label;
 
-	cs.fancyGadgets=true;
-	cs.labelBoxType=NOBOX;
-
-	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,11);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -508,7 +505,6 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 {
 	int						genx,geny,genw;
 	CTK_cursesButtonClass	*button;
-	coloursStruct			cs;
 	CTK_mainAppClass		*app=new CTK_mainAppClass;
 	CTK_cursesLabelClass	*label;
 	int						btnnum=0;
@@ -516,9 +512,6 @@ bool CTK_cursesUtilsClass::CTK_queryDialog(const char *bodytxt,const char *windo
 	CTK_cursesButtonClass	*defhold=NULL;
 	int						buttons=pbuttons;
 
-	cs.fancyGadgets=true;
-	cs.labelBoxType=NOBOX;
-	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow(windowname,dialogtitle,dialogwidth,8);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -600,15 +593,10 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 {
 	int						genx,geny,genw;
 	CTK_cursesButtonClass	*button;
-	coloursStruct			cs;
 	CTK_mainAppClass		*app=new CTK_mainAppClass;
 	CTK_cursesLabelClass	*label;
 	CTK_cursesTextBoxClass	*textbox;
 
-	cs.fancyGadgets=true;
-	cs.labelBoxType=NOBOX;
-	cs.backCol=BACK_WHITE;
-	app->CTK_setColours(&cs,true);
 	app->CTK_setDialogWindow("About ...","",ABOUTWIDTH,ABOUTHITE);
 	CURRENTPAGE(app).fancyWindow=true;
 	this->dialogReturnData.isValidData=false;
@@ -649,8 +637,6 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	button->userData=(void*)CUABOUTLICENCE;
 	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 //page 1 credits
-	cs.labelBoxType=INBOX;
-	app->CTK_setColours(&cs,true);
 	app->CTK_addPage();
 	app->CTK_setDialogWindow("Credits ...","",dialogwidth,-1);
 	CURRENTPAGE(app).fancyWindow=true;
@@ -665,8 +651,6 @@ void CTK_cursesUtilsClass::CTK_aboutDialog(const char *appname,const char *appin
 	button->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 
 //page 2 licence
-	cs.textBoxType=INBOX;
-	app->CTK_setColours(&cs,true);
 	app->CTK_addPage();
 	app->CTK_setDialogWindow("Licence ...","",dialogwidth,-1);
 	CURRENTPAGE(app).fancyWindow=true;
@@ -935,7 +919,7 @@ int CTK_cursesUtilsClass::CTK_getVarEntry(std::vector<varsStruct> vs,const char 
 {
 	for(unsigned j=0;j<vs.size();j++)
 		{
-			if(varname,vs[j].varName==varname)
+			if(vs[j].varName.compare(varname)==0)
 				return(j);
 		}
 	return(-1);

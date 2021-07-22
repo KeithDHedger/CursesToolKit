@@ -33,7 +33,28 @@ CTK_cursesDropClass::~CTK_cursesDropClass()
 */
 CTK_cursesDropClass::CTK_cursesDropClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("dropforecol",this->gadgetColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("dropbackcol",this->gadgetColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("drophiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("drophilitebackcol",this->gadgetColours.hiliteBackCol);
+
+	this->gadgetColours.gadgetCustom1ForeCol=this->mc->gc->CTK_getColourFromNamedVar("dropmenuforecol",this->gadgetColours.gadgetCustom1ForeCol);
+	this->gadgetColours.gadgetCustom1BackCol=this->mc->gc->CTK_getColourFromNamedVar("dropmenubackcol",this->gadgetColours.gadgetCustom1BackCol);
+	this->gadgetColours.gadgetCustom2ForeCol=this->mc->gc->CTK_getColourFromNamedVar("dropmenuhiliteforecol",this->gadgetColours.gadgetCustom2ForeCol);
+	this->gadgetColours.gadgetCustom2BackCol=this->mc->gc->CTK_getColourFromNamedVar("dropmenuhilitebackcol",this->gadgetColours.gadgetCustom2BackCol);
+
+
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("dropdisabledforecol",this->gadgetColours.disabledForeCol);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("dropdisabledbackcol",this->gadgetColours.disabledBackCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"dropfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
 	this->type=DROPGADGET;
 }
 
@@ -159,13 +180,13 @@ void CTK_cursesDropClass::drawList(int selection)
 	for(int j=0;j<this->items.size();j++)
 		{
 			if(this->items[j].enabled==false)
-				this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.disabledForeCol,this->colours.menuBackCol);
+				this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 			else
 				{
 					if(selection==j)
-						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol);
+						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->gadgetColours.gadgetCustom1ForeCol,this->gadgetColours.gadgetCustom1BackCol);
 					else
-						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->colours.menuForeCol,this->colours.menuBackCol);
+						this->gc->CTK_printJustLineColour(this->items[j].label.c_str(),this->sx,iy+j,this->maxWidth,LEFTJUSTIFY,this->gadgetColours.gadgetCustom2ForeCol,this->gadgetColours.gadgetCustom2BackCol);
 				}
 		}
 	fflush(NULL);
@@ -198,7 +219,7 @@ bool CTK_cursesDropClass::CTK_getItemEnabled(int item)
 * Draw gadget.
 * \note hilite=true draw in highlight colour.
 */
-void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
+void CTK_cursesDropClass::CTK_drawGadget(bool hilite)
 {
 	std::string	str=this->label;
 
@@ -209,15 +230,13 @@ void CTK_cursesDropClass::CTK_drawGadget(bool hilite)//TODO//
 
 	MOVETO(this->sx,this->sy);
 
-	if(this->colours.fancyGadgets==true)
+	if(this->gadgetColours.useFancy==true)
 		str+=" >>";
 
 	if(hilite==true)
-		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->colours.hiliteForeCol,this->colours.hiliteBackCol);
+		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 	else
-		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->colours.buttonForeCol,this->colours.buttonBackCol);
-
-	//fflush(NULL);
+		this->gc->CTK_printJustLineColour(str.c_str(),this->sx,sy,str.length(),LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
 }
 
 

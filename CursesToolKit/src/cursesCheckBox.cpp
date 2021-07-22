@@ -33,7 +33,22 @@ CTK_cursesCheckBoxClass::~CTK_cursesCheckBoxClass()
 */
 CTK_cursesCheckBoxClass::CTK_cursesCheckBoxClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("checkforecol",this->gadgetColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("checkbackcol",this->gadgetColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("checkhiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("checkhilitebackcol",this->gadgetColours.hiliteBackCol);
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("checkdisabledforecol",this->gadgetColours.disabledForeCol);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("checkdisabledbackcol",this->gadgetColours.disabledBackCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"checkfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+
 	this->type=CHECKGADGET;
 }
 
@@ -53,13 +68,13 @@ void CTK_cursesCheckBoxClass::CTK_drawGadget(bool hilite)
 
 	MOVETO(this->sx,this->sy);
 	if(hilite==true)
-		setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+		setBothColours(this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 	else
-		setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,false);
+		setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 
 	if(this->value==true)
 		val='X';
-	if(this->colours.fancyGadgets==false)
+	if(this->gadgetColours.useFancy==false)
 		printf("%c %s",val,this->label);
 	else
 		printf("[%c] %s",val,this->label);

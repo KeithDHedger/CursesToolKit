@@ -25,7 +25,7 @@ exit $retval
 int main(int argc, char **argv)
 {
 	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-	coloursStruct			cs;
+	//coloursStruct			cs;
 	CTK_cursesLabelClass	*lab;
 	const char				*label="Simple Framebuffer Image Example, Press Any Key ...";
 	int						labellen=strlen(label);
@@ -37,8 +37,8 @@ int main(int argc, char **argv)
 		folder=argv[1];
 
 
-	cs.windowBackCol=BACK_WHITE;
-	mainApp->CTK_setColours(&cs,true);
+	//cs.windowBackCol=BACK_WHITE;
+	//mainApp->CTK_setColours(&cs,true);
 
 	mainApp->CTK_setFBBackDrop("/home/keithhedger/casper2.JPG");
 

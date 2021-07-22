@@ -30,6 +30,7 @@ __attribute__((unused)) static void debugFunc(const char *file,const char *func,
 	va_list		ap;
 	char		*buffer,*subbuffer;
 	const char	*bools[]={"false","true"};
+	std::string	str;
 
 	buffer=(char*)alloca(512);
 	subbuffer=(char*)alloca(512);
@@ -47,6 +48,10 @@ __attribute__((unused)) static void debugFunc(const char *file,const char *func,
 						{
 							case 's':
 								sprintf(subbuffer,"%s",va_arg(ap,char*));
+								break;
+							case 'S':
+								str=va_arg(ap,std::string);
+								sprintf(subbuffer,"%s",str.c_str());
 								break;
 							case 'x':
 								sprintf(subbuffer,"%x",va_arg(ap,int));

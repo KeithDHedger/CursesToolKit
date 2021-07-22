@@ -37,6 +37,7 @@ class CTK_cursesButtonClass : public CTK_cursesGadgetClass
 		void			CTK_drawGadget(bool hilite=false);
 
 	private:
+
 };
 
 #endif

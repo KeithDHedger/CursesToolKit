@@ -43,8 +43,27 @@ CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 */
 CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
-	this->thisType=SRCBOXCLASS;
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("srcforecol",FORE_WHITE);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("srcbackcol",BACK_BLACK);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("srchiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("srchilitebackcol",this->gadgetColours.hiliteBackCol);
+	this->gadgetColours.gadgetCustom1ForeCol=this->mc->gc->CTK_getColourFromNamedVar("srclineforecol",FORE_YELLOW);
+	this->gadgetColours.gadgetCustom1BackCol=this->mc->gc->CTK_getColourFromNamedVar("srclinebackcol",BACK_BLACK);
+	this->gadgetColours.gadgetCustom2ForeCol=this->mc->gc->CTK_getColourFromNamedVar("srccursorforecol",FORE_BLACK);
+	this->gadgetColours.gadgetCustom2BackCol=this->mc->gc->CTK_getColourFromNamedVar("srccursorbackcol",BACK_GREEN);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"srcfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"srcboxtype");
+	if(vsitem.vType==INTVAR)
+		this->gadgetColours.boxType=vsitem.intVar;
+
 	this->type=SRCGADGET;
 	this->addedNL=false;
 }
@@ -185,7 +204,6 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 
 	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
-
 }
 
 /**
@@ -234,7 +252,7 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 void CTK_cursesSourceEditBoxClass::refreshLine(void)
 {
 	this->gadgetDirty=true;
-	this->gc->CTK_printJustLineColour(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve,LEFTJUSTIFY,this->colours.foreCol,this->colours.backCol);
+	this->gc->CTK_printJustLineColour(srcStrings[this->currentY].c_str(),this->sx+this->lineReserve,this->sy+this->currentY-this->startLine,this->wid-this->lineReserve,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
 }
 
 /**

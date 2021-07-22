@@ -43,7 +43,7 @@ bool buttonselctCB(void *inst,void *userdata)
 int main(int argc, char **argv)
 {
 
-	coloursStruct			cs;
+	//coloursStruct			cs;
 	CTK_cursesLabelClass	*lab;
 	CTK_cursesButtonClass	*button;
 
@@ -57,9 +57,9 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
-	cs.windowBackCol=BACK_WHITE;
-	cs.fancyGadgets=true;
-	mainApp->CTK_setColours(&cs,true);
+	//cs.windowBackCol=BACK_WHITE;
+//	cs.fancyGadgets=true;
+//	mainApp->CTK_setColours(&cs,true);
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),2,labellen,1,label);
 	lab->CTK_setJustify(CENTREJUSTIFY);

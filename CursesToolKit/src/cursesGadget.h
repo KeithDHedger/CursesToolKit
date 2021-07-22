@@ -48,6 +48,8 @@ class CTK_cursesGadgetClass
 		int						wid=1;
 		int						hite=1;
 
+		gadgetColourStruct		gadgetColours;
+
 		void					CTK_setCommon(CTK_mainAppClass *mc);
 		const gadgetType		CTK_getGadgetType(void);
 		void					*CTK_getCBUserData(void);
@@ -65,14 +67,12 @@ class CTK_cursesGadgetClass
 		bool					CTK_getVisible(void);
 
 //virtual functions
-		virtual void			CTK_setColours(coloursStruct *cs,bool force=true);
 		virtual void			CTK_drawGadget(bool hilite=false);
 		virtual void			CTK_setSelectCB(bool (*select)(void *,void *),void *userdata=NULL);
 
 	protected:
 		void					*selectCBUserData=NULL;
 		gadgetType				type=BASEGADGET;
-		coloursStruct			colours;
 		CTK_cursesGraphicsClass	*gc;
 		bool					isSelectable=true;
 		bool					selectDeselects=true;

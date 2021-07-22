@@ -20,6 +20,9 @@
 
 #include "cursesGlobals.h"
 
+#include <chrono>
+#include <math.h>
+
 /**
 * Progress Bar class destroy.
 */
@@ -32,7 +35,31 @@ CTK_cursesProgressBarClass::~CTK_cursesProgressBarClass()
 */
 CTK_cursesProgressBarClass::CTK_cursesProgressBarClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("barforecol",this->gadgetColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("barbackcol",this->gadgetColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("barthiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("barhilitebackcol",this->gadgetColours.hiliteBackCol);
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("bardisabledforecol",this->gadgetColours.disabledForeCol);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("bardisabledbackcol",this->gadgetColours.disabledBackCol);
+
+	this->gadgetColours.gadgetCustom1ForeCol=this->mc->gc->CTK_getColourFromNamedVar("barfillforecol",this->mc->windowColours.foreCol);
+	this->gadgetColours.gadgetCustom1BackCol=this->mc->gc->CTK_getColourFromNamedVar("barfillbackcol",this->mc->windowColours.backCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"barfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"barboxtype");
+	if(vsitem.vType==INTVAR)
+		this->gadgetColours.boxType=vsitem.intVar;
+	else
+		this->gadgetColours.boxType=INBOX;
+
 	this->isSelectable=false;
 	this->type=BARGADGET;
 }
@@ -52,8 +79,6 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 	this->value=val;
 	this->fillchar=fill;
 }
-#include <chrono>
-#include <math.h>
 			
 std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 {
@@ -118,8 +143,8 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 	int			jx;
 	std::string	timevalue;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.barBoxType,false);
+	if(this->gadgetColours.useFancy==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->gadgetColours.boxType,false);
 
 //show gauge
 	if((this->showValues==SHOWGAUGE) ||(this->showValues==SHOWGAUGEVALUE))
@@ -166,30 +191,34 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				}
 		}
 
+	setBothColours(this->gadgetColours.gadgetCustom1ForeCol,this->gadgetColours.gadgetCustom1BackCol);
+	MOVETO(this->sx,this->sy);
+	printf("%*s", this->wid,"");
+
 	switch(this->style)
 		{
 			case FILLEDBAR:
-				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 				MOVETO(this->sx,this->sy);
 				printf("%*s", this->wid,"");
 			case BAR:
-				setBothColours(this->colours.buttonForeCol,this->blockColour,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->blockColour);
 				MOVETO(this->sx,this->sy);
-				for(jx=0;jx<abswid;jx++)
+				for(jx=0;jx<abswid-1;jx++)
 					printf(" ");
-				if(this->colours.fancyGadgets==true)
+				if(this->gadgetColours.useFancy==true)
 					{
 						MOVETO(this->sx+jx,this->sy);
-						setBothColours(this->colours.foreCol,this->colours.backCol,this->colours.use256Colours);
+						setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 						printf("%*s",this->wid-jx,"");
 					}
 				break;
 			case FILLEDINDICATOR:
-				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 				MOVETO(this->sx,this->sy);
 				printf("%*s", this->wid,"");
 			case INDICATOR:
-				setBothColours(this->colours.buttonForeCol,this->blockColour,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->blockColour);
 				absx=(int)(abswid+this->sx);
 				if(absx>this->wid+this->sx-1)
 					absx=this->wid+this->sx-1;
@@ -198,11 +227,11 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				break;
 
 			case FILLEDPULSE:
-				setBothColours(this->colours.buttonForeCol,this->colours.buttonBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 				MOVETO(this->sx,this->sy);
 				printf("%*s", this->wid,"");
 			case PULSE:
-				setBothColours(this->colours.buttonForeCol,this->blockColour,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->blockColour);
 				this->pulseColCnt+=1;
 				if(this->pulseCharacter==true)
 					this->pulseCnt+=1;
@@ -211,9 +240,9 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				if(this->pulseColour==true)
 					{
 						if((this->pulseColCnt & 1)==0)
-							setBothColours(this->colours.buttonForeCol,this->blockPulseColours[0],this->colours.use256Colours);
+							setBothColours(this->gadgetColours.backCol,this->blockPulseColours[0]);
 						else
-							setBothColours(this->colours.buttonForeCol,this->blockPulseColours[1],this->colours.use256Colours);
+							setBothColours(this->gadgetColours.backCol,this->blockPulseColours[1]);
 					}
 				MOVETO(this->sx,this->sy);
 				for(int j=0;j<abswid;j++)
@@ -243,9 +272,9 @@ void CTK_cursesProgressBarClass::CTK_setPulseStyle(bool pulsecol,bool pulschar,c
 void CTK_cursesProgressBarClass::CTK_setValue(double val)
 {
 	this->value=val;
-	if(this->value>this->maxvalue)
+	if(this->value>=this->maxvalue)
 		this->value=this->maxvalue;
-	if(this->value<this->minvalue)
+	if(this->value<=this->minvalue)
 		this->value=this->minvalue;
 }
 

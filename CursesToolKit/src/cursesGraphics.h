@@ -29,15 +29,14 @@ class CTK_cursesGraphicsClass
 		CTK_cursesGraphicsClass(CTK_mainAppClass *mc);
 		~CTK_cursesGraphicsClass();
 
-		void				CTK_setColours(coloursStruct *srccs,coloursStruct *dstcs,bool force=false);
 		void				CTK_drawBox(int x,int y,int w,int h,int type,bool fill,bool shadow=false);
 		void				CTK_drawDialogWindow(void);
 
 		void				CTK_printJustLineColour(const char *line,int sx,int sy,int boxwidth,int just,int fg,int bg);
+		int					CTK_getColourFromNamedVar(const char *varname,int defaultcolour);
 
 	private:
 		void				detab(char *in,char *out,int maxlen,int sx);
-		void				setUserColours(coloursStruct *cs);
 		int					tabWidth;
 		int					reservedSpace;
 		CTK_mainAppClass	*mc=NULL;

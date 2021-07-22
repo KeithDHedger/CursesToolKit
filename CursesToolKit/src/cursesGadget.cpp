@@ -37,7 +37,6 @@ void CTK_cursesGadgetClass::CTK_setCommon(CTK_mainAppClass *mc)
 {
 	this->mc=mc;
 	this->gc=new CTK_cursesGraphicsClass(mc);
-	this->CTK_setColours(&this->mc->colours);
 	this->isSelectable=true;
 	this->selectDeselects=true;
 	this->enabled=true;
@@ -83,14 +82,6 @@ void *CTK_cursesGadgetClass::CTK_getCBUserData(void)
 void CTK_cursesGadgetClass::CTK_setCBUserData(void *userdata)
 {
 	this->selectCBUserData=userdata;
-}
-
-/**
-* Set gadget colours etc.
-*/
-void CTK_cursesGadgetClass::CTK_setColours(coloursStruct *cs,bool force)
-{
-	this->gc->CTK_setColours(cs,&this->colours,force);
 }
 
 /**
@@ -162,7 +153,6 @@ int CTK_cursesGadgetClass::CTK_getSelectKey(void)
 void CTK_cursesGadgetClass::CTK_setVisible(bool visible)
 {
 	this->visible=visible;
-	//this->mc->CTK_updateScreen(this->mc,NULL);
 }
 
 bool CTK_cursesGadgetClass::CTK_getVisible(void)

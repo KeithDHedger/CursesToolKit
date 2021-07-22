@@ -81,6 +81,29 @@ enum COLOUR8 {BLACK=0,RED,GREEN,YELLOW,BLUE,MAGENTA,CYAN,WHITE};
 
 enum {PLAINBOX=0,OUTBOX,INBOX,NOBOX};
 
+struct gadgetColourStruct
+{
+	int		foreCol=FORE_WHITE;
+	int		backCol=BACK_BLUE;
+
+	int		hiliteForeCol=FORE_BLACK;
+	int		hiliteBackCol=BACK_CYAN;
+
+	int		selectedForeCol=FORE_BLACK;
+	int		selectedBackCol=BACK_GREEN;
+
+	int		disabledForeCol=FORE_BOLD_BLUE;
+	int		disabledBackCol=BACK_BLUE;
+
+	int		gadgetCustom1ForeCol=FORE_BLACK;
+	int		gadgetCustom2ForeCol=FORE_GREEN;
+	int		gadgetCustom1BackCol=BACK_GREEN;
+	int		gadgetCustom2BackCol=BACK_BLACK;
+
+	bool	useFancy=true;
+	int		boxType=OUTBOX;
+};
+#if 0
 struct coloursStruct
 {
 	int		foreCol=FORE_BLACK;
@@ -89,6 +112,8 @@ struct coloursStruct
 	int		hiliteBackCol=BACK_CYAN;
 	int		markBackCol=BACK_RED;
 	int		markForeCol=FORE_WHITE;
+	int		listItemBackCol=FORE_BOLD_BLUE;
+	int		listItemForeCol=FORE_BOLD_WHITE;
 	int		cursBackCol=BACK_GREEN;
 	int		cursForeCol=FORE_BLACK;
 	int		menuBackCol=BACK_GREEN;
@@ -119,55 +144,42 @@ struct coloursStruct
 	int		listBoxType=INBOX;
 	int		barBoxType=OUTBOX;
 
-	bool	use256Colours=false;
 	bool	fancyGadgets=false;
 };
-
+#endif
 static char colBuffer[256]={0,};
 
 /**
 * Set foreground colour
 */
-static inline void setForeColour(int fc,bool use256=false)
+static inline void setForeColour(int fc)
 {
-	if(use256==false)
-		printf("\e[%im",fc);
-	else
-		printf("\e[38;5;%im",fc);
+	printf("\e[%im",fc);
 }
 
 /**
 * Set background colour
 */
-static inline void setBackColour(int fc,bool use256=false)
+static inline void setBackColour(int bc)
 {
-	if(use256==false)
-		printf("\e[%im",fc);
-	else
-		printf("\e[48;5;%im",fc);
+	printf("\e[%im",bc);
 }
 
 /**
 * Set fore and background colour
 */
-static inline void setBothColours(int fc,int bc,bool use256=false)
+static inline void setBothColours(int fc,int bc)
 {
-	if(use256==false)
-		printf("\e[0m\e[%i;%im",fc,bc);
-	else
-		printf("\e[0m\e[38;5;%i;48;5;%im",fc,bc);
+	printf("\e[0m\e[%i;%im",fc,bc);
 }
 
 /**
 * Get ansi codes to set fore/back colours.
 * \note returns pointer to static buffer **Do not free**
 */
-static inline const char* getBothColours(int fc,int bc,bool use256=false)
+static inline const char* getBothColours(int fc,int bc)
 {
-	if(use256==false)
-		sprintf(colBuffer,"\e[0m\e[%i;%im",fc,bc);
-	else
-		sprintf(colBuffer,"\e[0m\e[38;5;%i;48;5;%im",fc,bc);
+	sprintf(colBuffer,"\e[0m\e[%i;%im",fc,bc);
 	return(colBuffer);
 }
 

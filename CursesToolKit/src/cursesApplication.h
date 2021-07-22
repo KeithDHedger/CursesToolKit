@@ -45,7 +45,7 @@ class CTK_mainAppClass
 		CTK_mainAppClass();
 		~CTK_mainAppClass();
 
-		std::vector<varsStruct>					appColours;
+		std::vector<varsStruct>					newAppColours;
 		bool									gotUserColours=false;
 
 		int										maxCols;
@@ -54,14 +54,14 @@ class CTK_mainAppClass
 		int										pageNumber=0;
 		std::vector<pageStruct>					pages;
 		CTK_cursesMenuClass						*menuBar=NULL;
-		coloursStruct							colours;
 		bool									runEventLoop=false;
 		CTK_cursesUtilsClass					*utils;
 		CTK_cursesGraphicsClass					*gc;
 		bool									noHiliteChange=false;
 
+		gadgetColourStruct						windowColours;
+
 		void									CTK_clearScreen(void);
-		void									CTK_setColours(coloursStruct *srccs,bool force=false);
 		void									CTK_setFBBackDrop(const char *path);
 
 		int										CTK_addPage(void);

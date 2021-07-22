@@ -79,16 +79,13 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetDirty==false)
 		return;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,true);
-
-	setBothColours(this->colours.hiliteForeCol,this->colours.hiliteBackCol,this->colours.use256Colours);
+	setBothColours(this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 
 	MOVETO(this->sx,this->sy);
 	printf("%s",this->text.substr(this->startChar,this->wid).c_str());
 
 	MOVETO(this->sx,this->sy+1);
-	setBothColours(FORE_BLACK,BACK_GREEN,this->colours.use256Colours);
+	setBothColours(FORE_BLACK,BACK_GREEN);
 
 	for(int j=0;j<4;j++)
 		{
@@ -100,7 +97,7 @@ void CTK_cursesKeyboardClass::CTK_drawGadget(bool hilite)
 	printf("%.8s\e(0%c%c\e(B",osKLine[this->cPage][4],0xab,0xac);
 	
 	MOVETO(this->sx+this->cx,this->sy+this->cy+1);
-	setBothColours(FORE_GREEN,BACK_BLACK,this->colours.use256Colours);
+	setBothColours(FORE_GREEN,BACK_BLACK);
 
 	switch (this->cy)
 		{

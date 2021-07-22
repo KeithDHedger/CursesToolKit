@@ -38,108 +38,41 @@ CTK_cursesGraphicsClass::CTK_cursesGraphicsClass(CTK_mainAppClass *mc)
 
 
 /**
-* Set colours etc from user defined colours.
+* Set colour var
 */
-void CTK_cursesGraphicsClass::setUserColours(coloursStruct *cs)
+int CTK_cursesGraphicsClass::CTK_getColourFromNamedVar(const char *varname,int defaultcolour)
 {
-	const char	*names[]={
-	"forecolour",
-	"backcol",
-	"hiliteforecol",
-	"hilitebackcol",
-	"markbackcol",
-	"markforecol",
-	"cursbackcol",
-	"cursforecol",
-	"menubackcol",
-	"menuforecol",
-	"menuhilitebackcol",
-	"menuhiliteforecol",
-	"linenumbackcol",
-	"linenumforecol",
-	"windowbackcol",
-	"windowforecol",
-	"buttonbackcol",
-	"buttonforecol",
-	"buttondisabledforecol",
-	"disabledforecol",
-	"dialogbackcol",
-	"dialogforecol",
-	"dialogboxbackcol",
-	"dialogboxforecol",
-	"dialogboxtlfore",
-	"dialogboxbrfore",
-	"dialogboxshadowbackcol",
-	"boxtype",
-	"textboxtype",
-	"inputboxtype",
-	"labelboxtype",
-	"listboxtype",
-	NULL};
-
-	int			cnt=0;
-	varsStruct	vsitem;
-	int			*ptr;
 	const char	*colournames[]={"black","red","green","yellow","blue","magenta","cyan","white",NULL};
+	int			colouroffset=0;
+	varsStruct	vsitem;
 	char		*type=(char*)alloca(256);
 	char		*colour=(char*)alloca(256);
-	int			colouroffset;
 	int			colournamecnt=0;
+	int			basecol=-1;
 
-	if(this->mc->gotUserColours==false)
-		return;
-
-	ptr=(int*)cs;
-	while(names[cnt]!=NULL)
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,varname);
+	if(vsitem.vType!=BADTYPE)
 		{
-			vsitem=this->mc->utils->CTK_findVar(this->mc->appColours,names[cnt]);
-			if(vsitem.vType==INTVAR)
+			std::string::size_type found = vsitem.charVar.find_last_of(";");
+			std::string col=vsitem.charVar.substr(found+1);
+			while(colournames[colournamecnt]!=NULL)
 				{
-					ptr[cnt]=vsitem.intVar;
-				}
-			if(vsitem.vType==CHARVAR)
-				{
-					colournamecnt=0;
-					sscanf(vsitem.charVar.c_str(),"%[^;];%[^\n]",type,colour);
-					while(colournames[colournamecnt]!=NULL)
+					if(col.compare(colournames[colournamecnt])==0)
 						{
-							if(strcmp(colournames[colournamecnt],colour)==0)
-								{
-									if(strstr(names[cnt],"fore")!=NULL)
-										colouroffset=30;
-									else
-										colouroffset=40;
-									if(strcmp(type,"bold")==0)
-										colouroffset+=60;
-									ptr[cnt]=colournamecnt+colouroffset;
-									break;			
-								}
-							colournamecnt++;
+							basecol=colournamecnt;
+							if(strstr(varname,"fore")!=NULL)
+								colouroffset=30;
+							else
+								colouroffset=40;
+							if(strstr(vsitem.charVar.c_str(),"bold")!=NULL)
+								colouroffset+=60;
+							return(basecol+colouroffset);
+							break;
 						}
+					colournamecnt++;
 				}
-			cnt++;
 		}
-}
-
-/**
-* Set colours etc from coloursStruct.
-* \note if force==true override user colours.
-* \note user colours are set 1st then overridden by cs.
-* \note if force==false colours are set from cs then overridden by user colours.
-*/
-void CTK_cursesGraphicsClass::CTK_setColours(coloursStruct *srccs,coloursStruct *dstcs,bool force)
-{
-	if(force==true)
-		{
-			
-			this->setUserColours(dstcs);
-			memcpy(dstcs,srccs,sizeof(coloursStruct));
-		}
-	else
-		{
-			memcpy(dstcs,srccs,sizeof(coloursStruct));
-			this->setUserColours(dstcs);
-		}
+	return(defaultcolour);
 }
 
 /**
@@ -157,12 +90,12 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 		this->mc->menuBar->CTK_setMenuBarVisible(false);
 
 	MOVETO(1,1)
-	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
+	setBothColours(FORE_BOLD_WHITE,BACK_BLUE);
 	printf("%s",CLEARTOEOS);
 	this->drawDialogBox(page.boxX,page.boxY,page.boxW,page.boxH);
 
 	MOVETO(1,1);
-	setBothColours(this->mc->colours.dialogForeCol,this->mc->colours.dialogBackCol,false);
+	setBothColours(FORE_BOLD_WHITE,BACK_BLUE);
 	if(page.windowName.length()>0)
 		{
 			printf("%s",page.windowName.c_str());
@@ -177,7 +110,7 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 		{
 			SETNORMCHARSET;
 			MOVETO((page.boxWM)-(page.dialogName.length()/2)+1,page.boxY)
-			setBothColours(this->mc->colours.dialogBoxForecol,this->mc->colours.dialogBoxBackcol,false);//TODO//
+			setBothColours(FORE_BLACK,BACK_WHITE);
 			printf("%s",page.dialogName.c_str());
 		}
 }
@@ -187,11 +120,11 @@ void CTK_cursesGraphicsClass::CTK_drawDialogWindow(void)
 */
 void CTK_cursesGraphicsClass::drawDialogBox(int x,int y,int w,int h)
 {
-	int	topcol=this->mc->colours.dialogBoxTL;
-	int	botcol=this->mc->colours.dialogBoxBR;
-	int fillcol=this->mc->colours.dialogBoxBackcol;
+	int	topcol=FORE_BOLD_WHITE;
+	int	botcol=FORE_BOLD_BLACK;
+	int fillcol=BACK_WHITE;
 
-	setBothColours(this->mc->colours.dialogBoxForecol,fillcol,false);
+	setBothColours(FORE_BOLD_WHITE,fillcol);
 
 	for(int j=0;j<h;j++)
 		{
@@ -200,34 +133,34 @@ void CTK_cursesGraphicsClass::drawDialogBox(int x,int y,int w,int h)
 		}
 
 	MOVETO(x,y);
-	setBothColours(topcol,fillcol,false);
+	setBothColours(topcol,fillcol);
 	SETALTCHARSET;
 	printf("%s",TOPLEFT);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
 
-	setForeColour(botcol,false);
+	setForeColour(botcol);
 	printf("%s",TOPRITE);
 
 	for(int j=1;j<h;j++)
 		{
-			setForeColour(topcol,false);
+			setForeColour(topcol);
 			MOVETO(x,y+j);
 			printf(VBAR);
-			setForeColour(botcol,false);
+			setForeColour(botcol);
 			MOVETO(x+w,y+j);
 			printf(VBAR);
 		}
 
-	setForeColour(topcol,false);
+	setForeColour(topcol);
 	MOVETO(x,y+h);
 	printf("%s",BOTTOMLEFT);
-	setForeColour(botcol,false);
+	setForeColour(botcol);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
 	printf("%s",BOTTOMRITE);
 
-	setBackColour(this->mc->colours.dialogBoxShadowCol,false);
+	setBackColour(BACK_BLACK);
 	for(int j=1;j<h+2;j++)
 		{
 			MOVETO(x+w+1,y+j);
@@ -249,12 +182,6 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 	int	foreblack=FORE_BLACK;
 	int	forewhite=FORE_BOLD_WHITE;
 
-	if(this->mc->colours.use256Colours==true)
-		{
-			foreblack=0;
-			forewhite=15;
-		}
-
 	switch(type)
 		{
 			case PLAINBOX:
@@ -274,68 +201,46 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 				break;
 		}
 
-	setBothColours(topcol,this->mc->colours.backCol,this->mc->colours.use256Colours);
+	setBothColours(topcol,this->mc->windowColours.backCol);
 
-//FLICKER//TODO//
-#if 0
 	if(fill==true)
 		{
-			for(int j=0;j<h;j++)
-				{
-					MOVETO(x,y+j);
-					printf("%*s",w," ");
-				}
-		}
-#else
-//FLICKER//TODO//
-	if(fill==true)
-		{
-//			MOVETO(x,y);
-//			printf("%*s",w,"");
-
 			for(int fy=0;fy<h;fy++)
 				{
 					MOVETO(x,y+fy);
-					//setBothColours(this->mc->colours.foreCol,this->mc->colours.backCol,this->mc->colours.use256Colours);
-					//for(int fx=0;fx<w;fx++)
-					//	printf(" ");
 					printf("%*s",w,"");
 				}
-			//SETNORMAL;
-			//fflush(NULL);
 		}
-#endif
-
 
 	SETALTCHARSET;
 	MOVETO(x,y);
 	printf("%s",TOPLEFT);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
-	setForeColour(botcol,this->mc->colours.use256Colours);
+	setForeColour(botcol);
 	printf("%s",TOPRITE);
 
 	for(int j=1;j<h;j++)
 		{
-			setForeColour(topcol,this->mc->colours.use256Colours);
+			setForeColour(topcol);
 			MOVETO(x,y+j);
 			printf(VBAR);
-			setForeColour(botcol,this->mc->colours.use256Colours);
+			setForeColour(botcol);
 			MOVETO(x+w,y+j);
 			printf(VBAR);
 		}
 
-	setForeColour(topcol,this->mc->colours.use256Colours);
+	setForeColour(topcol);
 	MOVETO(x,y+h);
 	printf("%s",BOTTOMLEFT);
-	setForeColour(botcol,this->mc->colours.use256Colours);
+	setForeColour(botcol);
 	for(int j=1;j<w;j++)
 		printf("%s",HBAR);
 	printf("%s",BOTTOMRITE);
 
 	if(shadow==true)
 		{
-			setBackColour(BACK_BLACK,false);
+			setBackColour(BACK_BLACK);
 			for(int j=1;j<h+2;j++)
 				{
 					MOVETO(x+w+1,y+j);
@@ -345,7 +250,6 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 			printf("%*s",w," ");
 		}
 	SETNORMCHARSET;
-	//fflush(NULL);
 }
 
 /**
@@ -394,7 +298,6 @@ void CTK_cursesGraphicsClass::CTK_printJustLineColour(const char *line,int sx,in
 	int		maxlen=boxwidth;
 	int		printablelen=0;
 
-//TODO//
 	maxlen=strlen(line)*this->tabWidth*boxwidth;
 	buffer=(char*)calloc(1,maxlen+boxwidth+1);
 	outp=(char*)calloc(1,maxlen+boxwidth+1);
@@ -427,16 +330,14 @@ void CTK_cursesGraphicsClass::CTK_printJustLineColour(const char *line,int sx,in
 		{
 			case LEFTJUSTIFY:
 				if(printablelen>boxwidth)
-					//sprintf(buffer,"\e[0m\e[%i;%im%.*s\e[0m",fg,bg,boxwidth,outp);
 					sprintf(buffer,"%.*s",boxwidth,outp);
 				else
-					//sprintf(buffer,"\e[0m\e[%i;%im%s%-*s\e[0m",fg,bg,outp,boxwidth-printablelen,"");
 					sprintf(buffer,"%s%-*s",outp,boxwidth-printablelen,"");
 				
 				break;
 			case CENTREJUSTIFY:
 				sprintf(buffer,"%*s",maxlen," ");
-				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2)-1,outp);
+				sprintf(&buffer[(boxwidth/2)-(slen/2)],"%-*s",(int)(boxwidth/2)+(slen/2),outp);//TODO//
 				break;
 			case RIGHTJUSTIFY:
 				sprintf(buffer,"%*s",boxwidth,outp);

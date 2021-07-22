@@ -32,7 +32,23 @@ CTK_cursesLabelClass::~CTK_cursesLabelClass()
 */
 CTK_cursesLabelClass::CTK_cursesLabelClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("labelforecol",this->mc->windowColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("labelbackcol",this->mc->windowColours.backCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"labelfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"labelboxtype");
+	if(vsitem.vType==INTVAR)
+		this->gadgetColours.boxType=vsitem.intVar;
+	else
+		this->gadgetColours.boxType=NOBOX;
+
 	this->isSelectable=false;
 	this->type=LABELGADGET;
 }
@@ -85,8 +101,8 @@ void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetDirty==false)
 		return;
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.labelBoxType,true);
+	if(this->gadgetColours.useFancy==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->gadgetColours.boxType,true);
 
 	if(this->txtStrings.size()==0)
 		return;
@@ -94,7 +110,7 @@ void CTK_cursesLabelClass::CTK_drawGadget(bool hilite)
 	for(int j=0;j<this->hite;j++)
 		{
 			if(j<this->txtStrings.size())
-				this->gc->CTK_printJustLineColour(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify,this->colours.foreCol,this->colours.backCol);
+				this->gc->CTK_printJustLineColour(this->txtStrings[j].c_str(),this->sx,this->sy+j,this->wid,this->justify,this->gadgetColours.foreCol,this->gadgetColours.backCol);
 		}
 }
 

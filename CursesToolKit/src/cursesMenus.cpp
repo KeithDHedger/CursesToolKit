@@ -38,11 +38,23 @@ CTK_cursesMenuClass::~CTK_cursesMenuClass()
 */
 CTK_cursesMenuClass::CTK_cursesMenuClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->rows=mc->maxRows;
 	this->maxRows=this->rows-mBarHite+1;
 	this->menuHite=this->rows-mBarHite;
 	this->menuNames.clear();
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("menuforecol",FORE_BLACK);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("menubackcol",BACK_GREEN);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("menuhiliteforecol",FORE_GREEN);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("menuhilitebackcol",BACK_BLACK);
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("menudisabledforecol",FORE_BOLD_GREEN);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("menudisabledbackcol",BACK_GREEN);
+	this->gadgetColours.useFancy=false;
+	this->gadgetColours.boxType=NOBOX;
+
 	this->type=MENUGADGET;
 }
 
@@ -58,39 +70,37 @@ void CTK_cursesMenuClass::CTK_drawGadget(bool hilite)//TODO//
 		return;
 
 	MOVETO(x,y);
-	SETNORMCHARSET;//TODO//
+	SETNORMCHARSET;
 
 	for(int j=0;j<this->menuCnt;j++)
 		{
 			if(this->enableMenuBar==true)
-				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 			else
-				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 			MOVETO(x,y);
-
 
 			if((this->menuShowing==true) && (this->menuNumber==j))
 				{
 					if(this->menuNames[j]->menuEnabled==true)
-						setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
+						setBothColours(this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
 					else
-						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+						setBothColours(this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 					printf( "%s" ,this->menuNames[j]->menuName);
 				}
 			else
 				{
 					if(this->menuNames[j]->menuEnabled==false)
-						setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+						setBothColours(this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 					printf("%s",this->menuNames[j]->menuName);
 				}
 			printf(" ");
 			x+=strlen(this->menuNames[j]->menuName)+1;
 		}
 	MOVETO(x,1);
-	setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+	setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 	printf("%*s",this->mc->maxCols-x+1,"");
 	SETNORMAL;
-	//MOVETO(1,1000);
 	fflush(NULL);
 }
 
@@ -171,16 +181,16 @@ void CTK_cursesMenuClass::drawMenuStyle(int menunum,int menuitem,int x,int y,int
 	switch(style)
 		{
 			case FLATINVERT:
-				setBothColours(this->colours.menuHiliteForeCol,this->colours.menuHiliteBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.hiliteBackCol,this->gadgetColours.hiliteForeCol);
 				break;
 			case FLATNORM:
-				setBothColours(this->colours.menuForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 				break;
 			case BLANK:
-				setBothColours(this->colours.windowBackCol,this->colours.windowBackCol,this->colours.use256Colours);
+				setBothColours(this->mc->windowColours.foreCol,this->mc->windowColours.backCol);
 				break;
 			case DISABLED:
-				setBothColours(this->colours.disabledForeCol,this->colours.menuBackCol,this->colours.use256Colours);
+				setBothColours(this->gadgetColours.disabledForeCol,this->gadgetColours.disabledBackCol);
 				break;
 		}
 
@@ -261,7 +271,6 @@ int CTK_cursesMenuClass::drawMenuWindow(int menunum,int sx,int sy,int prelight,b
 									this->drawMenuStyle(menunum,cnt+this->menuStart,msx,y++,DISABLED,doshortcut,true);
 								}
 						}
-					//fflush(NULL);
 				}
 			else
 				break;
@@ -440,8 +449,6 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 						}
 					else
 						{
-							//fprintf(stderr,"Unknown Key ... ");
-							//fprintf(stderr,"%s\n",this->mc->readKey->inputBuffer.c_str());
 							sink=this->drawMenuWindow(this->menuNumber,sx,1,-10000,doshortcut);
 							if(this->CTK_doMenuKey(toupper(menuReadKey.inputBuffer.c_str()[0]),this->menuNumber)==true)
 								{
@@ -450,7 +457,6 @@ int CTK_cursesMenuClass::CTK_doMenuEvent(int sx,int sy,bool xdoshortcut)
 								}
 						}
 				}
-			//this->updateCB((void*)this->mc,NULL);//ERROR//
 		}
 	SETNORMAL;
 	return(selection);

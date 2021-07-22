@@ -58,7 +58,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 	int				fbfd=0;
 	winsize			w;
 	std::string		filepath;
-	coloursStruct	cs;
+	varsStruct		vsitem;
 
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&w);
 	this->maxRows=w.ws_row;
@@ -72,7 +72,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 	filepath+="/.config/ctk.colours.rc";
 	if(access(filepath.c_str(),F_OK)==0)
 		{
-			this->appColours=this->utils->CTK_loadVars(filepath.c_str());
+			this->newAppColours=this->utils->CTK_loadVars(filepath.c_str());
 			this->gotUserColours=true;
 		}
 
@@ -110,10 +110,22 @@ CTK_mainAppClass::CTK_mainAppClass()
 			this->frameBufferData.charHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length/this->maxRows;
 			this->frameBufferData.screenWidth=frameBufferData.frameBufferInfo.line_length/4;
 			this->frameBufferData.screenHeight=frameBufferData.screensize/frameBufferData.frameBufferInfo.line_length;
-			//fprintf(stderr,"cw=%i ch=%i\n",this->frameBufferData.charWidth,this->frameBufferData.charHeight);
 		}
 
-	this->CTK_setColours(&cs,false);
+	this->windowColours.foreCol=this->gc->CTK_getColourFromNamedVar("windowforecol",FORE_BLACK);
+	this->windowColours.backCol=this->gc->CTK_getColourFromNamedVar("windowbackcol",BACK_WHITE);
+	this->windowColours.hiliteForeCol=this->gc->CTK_getColourFromNamedVar("windowhiliteforecol",this->windowColours.hiliteForeCol);
+	this->windowColours.hiliteBackCol=this->gc->CTK_getColourFromNamedVar("windowhilitebackcol",this->windowColours.hiliteBackCol);
+	this->windowColours.gadgetCustom1ForeCol=this->gc->CTK_getColourFromNamedVar("windowdisabledforecol",this->windowColours.disabledForeCol);
+	this->windowColours.gadgetCustom1BackCol=this->gc->CTK_getColourFromNamedVar("windowdisabledbackcol",this->windowColours.disabledBackCol);
+
+	vsitem=this->utils->CTK_findVar(this->newAppColours,"windowfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->windowColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->utils->CTK_findVar(this->newAppColours,"windowboxtype");
+	if(vsitem.vType==INTVAR)
+		this->windowColours.boxType=vsitem.intVar;
 
 	this->readKey=new CTK_cursesReadKeyClass(this);
 }
@@ -123,7 +135,7 @@ CTK_mainAppClass::CTK_mainAppClass()
 */
 void CTK_mainAppClass::CTK_clearScreen(void)
 {
-	setBothColours(this->colours.windowForeCol,this->colours.windowBackCol,this->colours.use256Colours);
+	setBothColours(this->windowColours.foreCol,this->windowColours.backCol);
 	MOVETO(1,1)
 	if(this->frameBufferData.backDropBlob!=NULL)
 		{
@@ -152,7 +164,6 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 void CTK_mainAppClass::CTK_addNewMenuBar(void)
 {
 	this->menuBar=new CTK_cursesMenuClass(this);
-	//this->menuBar->CTK_setUpdateCB(this->CTK_updateScreen,this);//TODO//
 }
 
 /**
@@ -178,7 +189,6 @@ CTK_cursesTextBoxClass* CTK_mainAppClass::CTK_addNewTextBox(int x,int y,int widt
 	txtbox->tabWidth=this->tabWidth;
 	txtbox->CTK_newBox(x,y,width,hite,"",selectable);
 	txtbox->CTK_updateText(txt,isfilename);
-	txtbox->CTK_setColours(&this->colours);
 	this->pages[this->pageNumber].gadgets.push_back(txtbox);
 	return(txtbox);
 }
@@ -259,7 +269,6 @@ CTK_cursesLabelClass* CTK_mainAppClass::CTK_addNewLabel(int x,int y,int width,in
 	this->pages[this->pageNumber].gadgets.push_back(label);
 	return(label);
 }
-
 
 /**
 * Create and add new progress gadget. 
@@ -378,7 +387,6 @@ void CTK_mainAppClass::CTK_addLabel(CTK_cursesLabelClass *label)
 	this->pages[this->pageNumber].gadgets.push_back(label);
 }
 
-
 /**
 * Add bar gadget. 
 */
@@ -459,7 +467,6 @@ void CTK_mainAppClass::resetAllGadgets(void)
 		{
 			this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 			this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(false);
-	//		fflush(NULL);
 		}
 	fflush(NULL);
 }
@@ -479,9 +486,7 @@ void CTK_mainAppClass::drawAllGadgets(void)
 				{
 					this->pages[this->pageNumber].gadgets[j]->gadgetDirty=true;
 					this->pages[this->pageNumber].gadgets[j]->CTK_drawGadget(this->pages[this->pageNumber].gadgets[j]->hiLited);
-			//fprintf(stderr,"type==%i\n",this->pages[this->pageNumber].gadgets[j]->CTK_getGadgetType());
 				}
-		//	fflush(NULL);
 		}
 	fflush(NULL);
 }
@@ -995,17 +1000,6 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 	return(this->readKey->inputBuffer.length());
 }
 
-/**
-* Set colours etc from coloursStruct.
-* \note if force==true override user colours.
-* \note user colours are set 1st then overridden by cs.
-* \note if force==false colours are set from cs then overridden by user colours.
-*/
-void CTK_mainAppClass::CTK_setColours(coloursStruct *srccs,bool force)
-{
-	this->gc->CTK_setColours(srccs,&this->colours,force);
-}
-
 int CTK_mainAppClass::CTK_addPage(void)
 {
 	pageStruct	ps;
@@ -1044,8 +1038,6 @@ void CTK_mainAppClass::CTK_setPage(int pagenum)
 	THISPAGE.ignoreFirstTab=false;
 	THISPAGE.retainHighliting=false;
 	this->resetAllGadgets();
-
-	//fflush(NULL);
 }
 
 /**

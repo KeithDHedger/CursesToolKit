@@ -28,7 +28,7 @@ struct	selectStruct
 	int ex;
 };
 
-enum {EDITBOXCLASS=0,SRCBOXCLASS};
+//enum {EDITBOXCLASS=0,SRCBOXCLASS};
 
 class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 {
@@ -89,7 +89,6 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		bool						realAddedNL=false;
 
 	protected:
-		int							thisType;
 		std::vector<selectStruct>	multiLineSels;
 		std::vector<std::string>	txtStrings;
 		std::vector<bool>			bookMarks;

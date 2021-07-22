@@ -32,7 +32,27 @@ CTK_cursesInputClass::~CTK_cursesInputClass()
 */
 CTK_cursesInputClass::CTK_cursesInputClass(CTK_mainAppClass *mc)
 {
+	varsStruct	vsitem;
+
 	this->CTK_setCommon(mc);
+
+	this->gadgetColours.foreCol=this->mc->gc->CTK_getColourFromNamedVar("inputforecol",this->mc->windowColours.foreCol);
+	this->gadgetColours.backCol=this->mc->gc->CTK_getColourFromNamedVar("inputbackcol",this->mc->windowColours.backCol);
+	this->gadgetColours.hiliteForeCol=this->mc->gc->CTK_getColourFromNamedVar("inputhiliteforecol",this->gadgetColours.hiliteForeCol);
+	this->gadgetColours.hiliteBackCol=this->mc->gc->CTK_getColourFromNamedVar("inputhilitebackcol",this->gadgetColours.hiliteBackCol);
+	this->gadgetColours.disabledForeCol=this->mc->gc->CTK_getColourFromNamedVar("inputdisabledforecol",this->gadgetColours.disabledForeCol);
+	this->gadgetColours.disabledBackCol=this->mc->gc->CTK_getColourFromNamedVar("inputdisabledbackcol",this->gadgetColours.disabledBackCol);
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"inputfancy");
+	if(vsitem.vType==BOOLVAR)
+		this->gadgetColours.useFancy=vsitem.boolVar;
+
+	vsitem=this->mc->utils->CTK_findVar(this->mc->newAppColours,"inputboxtype");
+	if(vsitem.vType==INTVAR)
+		this->gadgetColours.boxType=vsitem.intVar;
+	else
+		this->gadgetColours.boxType=INBOX;
+
 	this->type=INPUTGADGET;
 }
 
@@ -82,20 +102,19 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 		return;
 
 	this->hiLited=hilite;
-	
 
-	if(this->colours.fancyGadgets==true)
-		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->colours.inputBoxType,false);
+	if(this->gadgetColours.useFancy==true)
+		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->gadgetColours.boxType,false);
 
 	if(hilite==true)
 		{
-			fc=this->colours.hiliteForeCol;
-			bc=this->colours.hiliteBackCol;
+			fc=this->gadgetColours.hiliteForeCol;
+			bc=this->gadgetColours.hiliteBackCol;
 		}
 	else
 		{
-			fc=this->colours.foreCol;
-			bc=this->colours.backCol;
+			fc=this->gadgetColours.foreCol;
+			bc=this->gadgetColours.backCol;
 		}
 
 	if(this->curs>=this->wid)//TODO//
@@ -122,7 +141,6 @@ void CTK_cursesInputClass::CTK_drawGadget(bool hilite)
 					MOVETO(this->sx,this->sy);
 				}
 		}
-//this->gadgetDirty=false;
 	fflush(NULL);
 }
 
@@ -226,7 +244,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 						}
 					MOVETO(this->sx+this->curs,this->sy);
 					this->CTK_drawGadget(true);
-					//fflush(NULL);
 				}
 			else
 				{
@@ -238,7 +255,6 @@ void CTK_cursesInputClass::CTK_doInput(void)
 							this->startChar=this->text.length()-this->wid;
 						}
 					this->CTK_drawGadget(true);
-					//fflush(NULL);
 				}
 		}
 	SETHIDECURS;

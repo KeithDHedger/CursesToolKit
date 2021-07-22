@@ -70,9 +70,6 @@ void CTK_cursesReadKeyClass::CTK_setTerminal(void)
 
 	tty_attr.c_iflag &= ~(ICRNL | IXON);
 	tty_attr.c_lflag &= ~(ICANON | ECHO| ISIG|BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-//
-//tty_attr.c_cc[VMIN] = 0;
-//tty_attr.c_cc[VTIME] = 2; /* Set timeout of 10.0 seconds */
 
 	tcsetattr(0, TCSANOW, &tty_attr);
 	setupterm(NULL,STDOUT_FILENO,NULL);

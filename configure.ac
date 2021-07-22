@@ -15,12 +15,12 @@
 #        |           set to zero if current is incremented
 #        +- increment if interfaces have been added, removed or changed
 
-m4_define([CURSESTOOLKIT_MAJ_N],[2])
-m4_define([CURSESTOOLKIT_REL_N],[2])
+m4_define([CURSESTOOLKIT_MAJ_N],[3])
+m4_define([CURSESTOOLKIT_REL_N],[3])
 m4_define([CURSESTOOLKIT_MIN_N],[0])
-m4_define([CURSESTOOLKIT_REV_N],[1])
+m4_define([CURSESTOOLKIT_REV_N],[0])
 
-m4_define([ctk_api_version], [2.0])
+m4_define([ctk_api_version], [3.0])
 m4_define([ctk_version],[CURSESTOOLKIT_REL_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
 
 AC_INIT([CursesToolKit],[ctk_version],[PROJ],[CursesToolKit])
@@ -40,7 +40,6 @@ LT_INIT([disable-static])
 CURSESTOOLKIT_MAJOR=CURSESTOOLKIT_MAJ_N()
 CURSESTOOLKIT_MINOR=CURSESTOOLKIT_MIN_N()
 CURSESTOOLKIT_REVISION=CURSESTOOLKIT_REV_N()
-#CURSESTOOLKIT_INTERFACE=$(( CURSESTOOLKIT_MAJ_N() ))
 CURSESTOOLKIT_INTERFACE=$(( CURSESTOOLKIT_MAJ_N() ))
 
 CURSESTOOLKIT_LIBTOOL_VERSION=$CURSESTOOLKIT_INTERFACE:$CURSESTOOLKIT_REVISION:$CURSESTOOLKIT_MINOR
@@ -81,7 +80,6 @@ AC_ARG_ENABLE(imagemagick,
 AC_MSG_RESULT($enable_imagemagick)
 
 if test "$enable_imagemagick" = "yes"; then
-	#AC_DEFINE([_IMAGEMAGICK_], [], [Use IMAGEMAGICK])
 	IMAGEMAGICK_MODULES="Magick++ >= 7.0.0"
 	PKG_CHECK_MODULES(IMAGEMAGICK,$IMAGEMAGICK_MODULES)
 	AC_SUBST(IMAGEMAGICK_CFLAGS)

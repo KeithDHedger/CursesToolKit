@@ -1,3 +1,10 @@
+3.0.0
+Version bump.
+Default fore/back colour now black/white.
+code clean.
+Removed 256 colour support.
+Completly revamped the colour preferences.
+
 2.0.1
 Set colours of active list item(s).
 Added find by label to list box.

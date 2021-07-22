@@ -33,7 +33,7 @@ class CTK_cursesFBImageClass : public CTK_cursesGadgetClass
 		void		CTK_newFBImageAbsCoords(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
 		void		CTK_drawGadget(bool hilite=false);
 
-		const char	*hiliteColour="cyan";
+		std::string	hiliteColour="cyan";
 
 	private:
 		void		drawFBImage(bool hilite);
