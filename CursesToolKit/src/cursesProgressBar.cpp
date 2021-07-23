@@ -146,6 +146,8 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 	if(this->gadgetColours.useFancy==true)
 		this->gc->CTK_drawBox(this->sx-1,this->sy-1,this->wid+1,this->hite+1,this->gadgetColours.boxType,false);
 
+//	setBothColours(this->this->mc->windowColours.foreCol,this->mc->windowColours.backCol);
+
 //show gauge
 	if((this->showValues==SHOWGAUGE) ||(this->showValues==SHOWGAUGEVALUE))
 		{

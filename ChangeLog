@@ -1,4 +1,5 @@
 3.0.0
+Fixed reseting colours after drawing box.
 More bar tweaks.
 Version bump.
 Default fore/back colour now black/white.

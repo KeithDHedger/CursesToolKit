@@ -398,6 +398,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Instructions");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 	helptextbox=mainApp->CTK_addNewTextBox(genx,geny,genw,genh,sampletxt);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,1,13,0);
@@ -411,6 +412,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Edit Box");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 	editbox=mainApp->CTK_addNewEditBox(mainApp,genx,geny,genw,genh,true,"../ChangeLog");
 	//editbox->CTK_setShowLineNumbers(4);
@@ -428,13 +430,10 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Code Editor Box");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"./widgetfactory.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
-	//cs.backCol=BACK_BLACK;
-	//cs.foreCol=FORE_WHITE;
-	//cs.textBoxType=NOBOX;
-	//srceditbox->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -449,6 +448,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"List Box's");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 //normal list box
 	list1=mainApp->CTK_addNewListBox(genx,geny,genw/2,genh-3);
@@ -484,7 +484,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	list1->CTK_addListItem("Item 29");
 	list1->CTK_addListItem("Item 30");
 	list1->CTK_setSelectCB(listselctCB,(void*)1);
-//	list1->CTK_selectItem(26);
 	list1->CTK_selectItem(list1->CTK_findByLabel("Item 28"));
 	
 //multi select list
@@ -511,11 +510,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	list2->CTK_setSelectDeselects(false);
 	list2->CTK_setItem(3,true);	
 
-//	cs.textBoxType=INBOX;
-//	cs.backCol=BACK_WHITE;
-//	cs.foreCol=FORE_BLACK;
 	resulttextbox=mainApp->CTK_addNewTextBox(genx,geny+genh-1,genw,1,"Result");
-//	resulttextbox->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -530,6 +525,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Labels");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,2,"Default justified non selectable label.\nLine 2 of label.");
 	label->gadgetColours.boxType=PLAINBOX;
@@ -554,6 +550,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Input Box");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 	input=mainApp->CTK_addNewInput(genx,geny,genw,1,"Some input");
 	input->redrawAppWindow=false;
@@ -571,6 +568,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Buttons, space toggles check boxs, use arrow keys to set progress box value, TAB/SHIFT TAB to select control.");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 
 //general buttons
@@ -622,9 +620,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 //results
 	genx=3;
 	geny=6;
-	//cs.textBoxType=INBOX;
 	resultbuttonstextbox=mainApp->CTK_addNewTextBox(genx,geny+genh-1,genw,1,"Result");
-	//resultbuttonstextbox->CTK_setColours(&cs,true);
 
 	geny=6;
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
@@ -643,6 +639,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	genx=3;
 	label=mainApp->CTK_addNewLabel(genx,geny,genw,1,"Progress bars, use arrow keys to set progress box value.");
 	label->CTK_setJustify(CENTREJUSTIFY);
+	label->gadgetColours.boxType=0;
 	geny+=3;
 
 //sliders
@@ -689,16 +686,14 @@ geny+=3;
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,200.0,400.0,300.0);
-	//progressStatic->gadgetColours.backCol=mainApp->windowColours.backCol;
 	progressStatic->CTK_setFillStyle(BAR);
 	progressStatic->CTK_setScale(1);
 	progressStatic->CTK_setShowRealValue(true);
 	progressStatic->CTK_setShowValues(SHOWALL);
-	//progressStatic->CTK_setShowValuesAsTime(true);
+	progressStatic->CTK_setShowValuesAsTime(true);
 	geny+=3;
 //indicator
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Static, Slider, Filled, 50%.");
-	//label->CTK_setColours(&cs,true);
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,130.0,0.0);
@@ -707,16 +702,12 @@ geny+=3;
 	progressIndicator->CTK_setShowValues(SHOWGAUGE);
 	progressIndicator->CTK_setShowValuesAsTime(true);
 	progressIndicator->CTK_setScale(0);
-	//progressIndicator->CTK_setShowZeroMinutes(true);
 	geny+=3;
 
 //results
 	genx=3;
 	geny=6;
-	//cs.textBoxType=INBOX;
 	resultbuttonstextbox=mainApp->CTK_addNewTextBox(genx,geny+genh-1,genw,1,"Result");
-	//resultbuttonstextbox->CTK_setColours(&cs,true);
-
 	geny=6;
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
@@ -749,26 +740,21 @@ geny+=3;
 	mainApp->menuBar->CTK_setMenuShortCut(FILEMENU,QUITITEM,'Q');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,NEXTTAB,'N');
 	mainApp->menuBar->CTK_setMenuShortCut(TABMENU,PREVTAB,'P');
-	//mainApp->eventLoopCBIn=mainloopCBIn;
-	//mainApp->eventLoopCBOut=mainloopCBOut;
 
 	mainApp->CTK_setDefaultGadget(helptextbox);
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 
-//mainApp->readKey->waitTime=100;
-if(false)
-	{
+	if(false)
 		mainApp->CTK_mainEventLoop(0,true,true);
-	}
-else
-	{
-	while(doMainLoop==true)
+	else
 		{
-			mainApp->CTK_mainEventLoop(-250,false);
-			doPulseBar();
+			while(doMainLoop==true)
+				{
+					mainApp->CTK_mainEventLoop(-250,false);
+					doPulseBar();
+				}
 		}
-	}
 
 	delete mainApp;
 	SETSHOWCURS;

@@ -250,6 +250,7 @@ void CTK_cursesGraphicsClass::CTK_drawBox(int x,int y,int w,int h,int type,bool 
 			printf("%*s",w," ");
 		}
 	SETNORMCHARSET;
+	setBothColours(this->mc->windowColours.foreCol,this->mc->windowColours.backCol);
 }
 
 /**
