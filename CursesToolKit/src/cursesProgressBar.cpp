@@ -191,32 +191,27 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				}
 		}
 
-	setBothColours(this->gadgetColours.gadgetCustom1ForeCol,this->gadgetColours.gadgetCustom1BackCol);
-	MOVETO(this->sx,this->sy);
-	printf("%*s", this->wid,"");
-
 	switch(this->style)
 		{
 			case FILLEDBAR:
-				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
-				MOVETO(this->sx,this->sy);
-				printf("%*s", this->wid,"");
 			case BAR:
-				setBothColours(this->gadgetColours.foreCol,this->blockColour);
 				MOVETO(this->sx,this->sy);
-				for(jx=0;jx<abswid-1;jx++)
+				setBothColours(this->gadgetColours.foreCol,this->blockColour);
+				for(jx=0;jx<abswid;jx++)
 					printf(" ");
-				if(this->gadgetColours.useFancy==true)
-					{
-						MOVETO(this->sx+jx,this->sy);
-						setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
-						printf("%*s",this->wid-jx,"");
-					}
+
+				MOVETO(this->sx+jx,this->sy);
+				if(this->style==FILLEDBAR)
+					setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
+				else
+					setBothColours(this->gadgetColours.foreCol,this->mc->windowColours.backCol);
+				printf("%*s",this->wid-jx,"");
+
 				break;
 			case FILLEDINDICATOR:
 				setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
 				MOVETO(this->sx,this->sy);
-				printf("%*s", this->wid,"");
+				printf("%*s",this->wid,"");
 			case INDICATOR:
 				setBothColours(this->gadgetColours.foreCol,this->blockColour);
 				absx=(int)(abswid+this->sx);
@@ -232,6 +227,7 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				printf("%*s", this->wid,"");
 			case PULSE:
 				setBothColours(this->gadgetColours.foreCol,this->blockColour);
+				
 				this->pulseColCnt+=1;
 				if(this->pulseCharacter==true)
 					this->pulseCnt+=1;
@@ -245,11 +241,16 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 							setBothColours(this->gadgetColours.backCol,this->blockPulseColours[1]);
 					}
 				MOVETO(this->sx,this->sy);
-				for(int j=0;j<abswid;j++)
+				for(jx=0;jx<abswid;jx++)
 					printf("%c",this->pulseCharString.at(this->pulseCnt));
+				if(this->style==FILLEDPULSE)
+					setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
+				else
+					setBothColours(this->gadgetColours.foreCol,this->mc->windowColours.backCol);
+				printf("%*s",this->wid-jx,"");
+			
 				break;
 		}
-	//fflush(NULL);
 }
 
 /**

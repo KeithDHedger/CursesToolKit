@@ -647,10 +647,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 //sliders
 //pulsing
-//	cs.labelBoxType=NOBOX;
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Pulsing chars, No fill, 50%.");
 	label->gadgetColours.boxType=NOBOX;
-	//label->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressPulse1=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse1->CTK_setFillStyle(PULSE);
@@ -660,7 +658,6 @@ geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Pulsing colours, no chars, No fill, 50%.");
 	label->gadgetColours.boxType=NOBOX;
-	//label->CTK_setColours(&cs,true);
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
 	progressPulse->CTK_setFillStyle(PULSE);
@@ -689,16 +686,15 @@ geny+=3;
 	geny+=3;
 //static
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Static, No fill, 50%.");
-	//label->CTK_setColours(&cs,true);
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressStatic=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,200.0,400.0,300.0);
-	progressStatic->gadgetColours.backCol=mainApp->windowColours.backCol;
+	//progressStatic->gadgetColours.backCol=mainApp->windowColours.backCol;
 	progressStatic->CTK_setFillStyle(BAR);
 	progressStatic->CTK_setScale(1);
 	progressStatic->CTK_setShowRealValue(true);
 	progressStatic->CTK_setShowValues(SHOWALL);
-	progressStatic->CTK_setShowValuesAsTime(true);
+	//progressStatic->CTK_setShowValuesAsTime(true);
 	geny+=3;
 //indicator
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Static, Slider, Filled, 50%.");
