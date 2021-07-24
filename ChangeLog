@@ -1,4 +1,7 @@
 3.0.0
+Scroll selected item in list box to near centre.
+Added var type to save/load vars. 
+Fixed progress bar colours.
 Fixed reseting colours after drawing box.
 More bar tweaks.
 Version bump.

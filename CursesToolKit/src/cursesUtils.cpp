@@ -775,6 +775,7 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 	varsStruct				vshold;
 	char					*varname=(char*)alloca(256);
 	char					*data=(char*)alloca(256);
+	char					*datatype=(char*)alloca(256);
 
 	if (clear==true)
 		invs.clear();
@@ -786,25 +787,41 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 				{
 					if(buffer[0]=='\n')
 						continue;
-					sscanf(buffer,"%[^ ] %[^\n]",varname,data);
+					sscanf(buffer,"%[^ ] %[^ ] %[^\n]",varname,datatype,data);
 
 					vs.varName=varname;
-					if(isdigit(data[0]))
+					if(strcasecmp(datatype,"number")==0)
 						vs.vType=INTVAR;
-					else
+					if(strcasecmp(datatype,"string")==0)
 						vs.vType=CHARVAR;
 
-					if(strcasecmp(data,"true")==0)
+//boolean data
+					if(strcasecmp(datatype,"bool")==0)
 						{
 							vs.vType=BOOLVAR;
-							vs.boolVar=true;
-						}
+							if(strcasecmp(data,"true")==0)
+								vs.boolVar=true;
 
-					if(strcasecmp(data,"false")==0)
-						{
-							vs.vType=BOOLVAR;
-							vs.boolVar=false;
+							if(strcasecmp(data,"false")==0)
+								vs.boolVar=false;
 						}
+						
+//					if(isdigit(data[0]))
+//						vs.vType=INTVAR;
+//					else
+//						vs.vType=CHARVAR;
+//
+//					if(strcasecmp(data,"true")==0)
+//						{
+//							vs.vType=BOOLVAR;
+//							vs.boolVar=true;
+//						}
+//
+//					if(strcasecmp(data,"false")==0)
+//						{
+//							vs.vType=BOOLVAR;
+//							vs.boolVar=false;
+//						}
 
 					switch(vs.vType)
 						{
@@ -867,20 +884,20 @@ void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStr
 						{
 							case BOOLVAR:
 							if(vs[j].boolVar==true)
-								fprintf(fp,"%s true\n",vs[j].varName.c_str());
+								fprintf(fp,"%s bool true\n",vs[j].varName.c_str());
 							else
-								fprintf(fp,"%s false\n",vs[j].varName.c_str());
+								fprintf(fp,"%s bool false\n",vs[j].varName.c_str());
 								break;
 							case INTVAR:
 								if(vs[j].outIntType==DECIMALOUT)
-									fprintf(fp,"%s %i\n",vs[j].varName.c_str(),vs[j].intVar);
+									fprintf(fp,"%s number %i\n",vs[j].varName.c_str(),vs[j].intVar);
 								if(vs[j].outIntType==HEXOUT)
-									fprintf(fp,"%s 0x%x\n",vs[j].varName.c_str(),vs[j].intVar);
+									fprintf(fp,"%s number 0x%x\n",vs[j].varName.c_str(),vs[j].intVar);
 								if(vs[j].outIntType==OCTALOUT)
-									fprintf(fp,"%s 0%o\n",vs[j].varName.c_str(),vs[j].intVar);
+									fprintf(fp,"%s number 0%o\n",vs[j].varName.c_str(),vs[j].intVar);
 								break;
 							case CHARVAR:
-								fprintf(fp,"%s %s\n",vs[j].varName.c_str(),vs[j].charVar.c_str());
+								fprintf(fp,"%s string %s\n",vs[j].varName.c_str(),vs[j].charVar.c_str());
 								break;
 						}
 				}

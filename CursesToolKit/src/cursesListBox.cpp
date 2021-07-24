@@ -290,6 +290,9 @@ void CTK_cursesListBoxClass::CTK_setItem(int item,bool set)
 void CTK_cursesListBoxClass::CTK_selectItem(int item)
 {
 	int	tonum=item;
+	int	xtra=this->hite/2;
+	int xxtra=0;
+
 	if(item==0xdeadbeef)
 		{
 			this->listItemNumber=-1;
@@ -298,14 +301,44 @@ void CTK_cursesListBoxClass::CTK_selectItem(int item)
 		}
 
 	if(item<0)
-		tonum=0;
+		{
+			tonum=0;
+			xtra=0;
+		}
 	else
-		if(item>this->listItems.size()-1)
-			tonum=this->listItems.size()-1;
+		{
+			if(item>this->listItems.size()-1)
+				tonum=this->listItems.size()-1;
+		}
+
+	if((tonum-this->listStart)<this->hite)
+		xtra=0;
+
+	xxtra=0;
 	this->listItemNumber=0;
 	this->listStart=0;
+
 	for(int j=0;j<tonum;j++)
 		this->CTK_keyUpDown(false,false);
+
+	if(tonum<(this->listItems.size()-(this->hite/2)))
+		{
+			xtra=this->hite/2;
+			if((this->listItems.size()-tonum)<xtra)
+				xtra=this->listItems.size()-tonum;
+		}
+	else
+		{
+			xtra=this->listItems.size()-tonum;
+			xxtra=-1;
+		}
+
+	for(int j=0;j<xtra;j++)
+		this->CTK_keyUpDown(false,false);
+	
+	for(int j=0;j<xtra+xxtra;j++)
+		this->CTK_keyUpDown(true,false);
+
 	this->activeItem=tonum;
 }
 

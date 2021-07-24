@@ -484,7 +484,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	list1->CTK_addListItem("Item 29");
 	list1->CTK_addListItem("Item 30");
 	list1->CTK_setSelectCB(listselctCB,(void*)1);
-	list1->CTK_selectItem(list1->CTK_findByLabel("Item 28"));
+	list1->CTK_selectItem(list1->CTK_findByLabel("Item 10"));
 	
 //multi select list
 	list2=mainApp->CTK_addNewListBox(genx+(genw/2)+3,geny,(genw/2)-2,genh-3);
