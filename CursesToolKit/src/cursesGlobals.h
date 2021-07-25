@@ -40,7 +40,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#if defined _DEBUGCODE_ || defined _WARN_ENABLEDEBUG_
 #include "debug.h"
+#endif
 
 struct fbData
 {

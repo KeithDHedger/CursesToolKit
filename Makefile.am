@@ -6,6 +6,7 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = cursestoolkit.pc
 DISTCLEANFILES = cursestoolkit.pc
 
+
 .PHONY: docs
 
 docs:
@@ -25,3 +26,5 @@ docs-uninstall:
 remake:
 	$(shell ./remakesourcelist)
 
+install-data-hook:
+	rm -f $(DESTDIR)${prefix}/include/cursestoolkit/debug.h

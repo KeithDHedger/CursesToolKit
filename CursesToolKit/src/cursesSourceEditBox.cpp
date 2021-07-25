@@ -181,13 +181,13 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	std::string lang="";
 	if((this->filePath.compare("")!=0) && (this->forceLang==false))
 		{
-			lang=langMap.getMappedFileNameFromFileName(this->filePath.c_str());
-
+			lang=langMap.getMappedFileNameFromFileName(this->filePath);
 			if(lang != "")
 				this->inputLang=lang;
 			else
 				{
-					lang=inf.infer(this->filePath.c_str());
+					lang=inf.infer(this->filePath);
+
 					if(lang != "")
 						{
 							langMap.open();
@@ -197,11 +197,14 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 		}
 
 	if(this->forceLang==false)
-		if(lang=="")
-			this->inputLang="nohilite.lang";
+		{
+			if(lang=="")
+				this->inputLang="nohilite.lang";
 
+			if(this->inputLang.length()==0)
+				this->inputLang="cpp.lang";
+		}
 	sourceHighlight.setStyleFile("esc.style");
-
 	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
 }

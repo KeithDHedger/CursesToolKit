@@ -339,21 +339,21 @@ void mainloopCB(void *mainc,void *data)
 int main(int argc, char **argv)
 {
 	const char				*ftol="texteditor.cpp";
-	coloursStruct			cs;
+//	coloursStruct			cs;
 	CTK_cursesEditBoxClass	*srcbox;
 
-	cs.windowBackCol=BACK_WHITE;
-	cs.fancyGadgets=false;
+	//cs.windowBackCol=BACK_WHITE;
+	//cs.fancyGadgets=false;
 
-	cs.hiliteBackCol=BACK_BLACK;
-	cs.hiliteForeCol=FORE_GREEN;
-	cs.menuForeCol=FORE_BLACK;
-	cs.menuBackCol=BACK_GREEN;
-	cs.lineNumBackCol=BACK_WHITE;
-	cs.lineNumForeCol=FORE_BLACK;
+	//cs.hiliteBackCol=BACK_BLACK;
+	//cs.hiliteForeCol=FORE_GREEN;
+	//cs.menuForeCol=FORE_BLACK;
+	//cs.menuBackCol=BACK_GREEN;
+	//cs.lineNumBackCol=BACK_WHITE;
+	//cs.lineNumForeCol=FORE_BLACK;
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
-	mainApp->CTK_setColours(&cs,true);
+	//mainApp->CTK_setColours(&cs,true);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[FILEMENU]);
@@ -391,11 +391,11 @@ int main(int argc, char **argv)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,tabMenuNames[cnt++]);
 
 	mainApp->menuBar->CTK_setSelectCB(menuSelectCB,NULL);
-	cs.hiliteBackCol=BACK_CYAN;
-	cs.hiliteForeCol=FORE_BLACK;
-	cs.foreCol=FORE_BLACK;
-	cs.backCol=BACK_WHITE;
-	mainApp->CTK_setColours(&cs,true);
+	//cs.hiliteBackCol=BACK_CYAN;
+	//cs.hiliteForeCol=FORE_BLACK;
+	//cs.foreCol=FORE_BLACK;
+	//cs.backCol=BACK_WHITE;
+	//mainApp->CTK_setColours(&cs,true);
 
 //int bw=32;
 	srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,false,"\n");
