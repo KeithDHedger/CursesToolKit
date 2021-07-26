@@ -745,6 +745,8 @@ geny+=3;
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 
+DEBUG
+
 	if(false)
 		mainApp->CTK_mainEventLoop(0,true,true);
 	else

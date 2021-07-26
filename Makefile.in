@@ -312,9 +312,7 @@ SHELL = @SHELL@
 SOURCEHILITE_CFLAGS = @SOURCEHILITE_CFLAGS@
 SOURCEHILITE_LIBS = @SOURCEHILITE_LIBS@
 STRIP = @STRIP@
-USEDEBUG = @USEDEBUG@
 VERSION = @VERSION@
-WARNDEBUG = @WARNDEBUG@
 abs_builddir = @abs_builddir@
 abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
@@ -817,8 +815,7 @@ info: info-recursive
 info-am:
 
 install-data-am: install-pkgconfigDATA
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
+
 install-dvi: install-dvi-recursive
 
 install-dvi-am:
@@ -865,8 +862,7 @@ ps-am:
 
 uninstall-am: uninstall-pkgconfigDATA
 
-.MAKE: $(am__recursive_targets) all install-am install-data-am \
-	install-strip
+.MAKE: $(am__recursive_targets) all install-am install-strip
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-cscope clean-generic \
@@ -876,14 +872,14 @@ uninstall-am: uninstall-pkgconfigDATA
 	distclean-hdr distclean-libtool distclean-tags distcleancheck \
 	distdir distuninstallcheck dvi dvi-am html html-am info \
 	info-am install install-am install-data install-data-am \
-	install-data-hook install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-pkgconfigDATA install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am uninstall-pkgconfigDATA
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-pkgconfigDATA \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am uninstall-pkgconfigDATA
 
 .PRECIOUS: Makefile
 
@@ -907,8 +903,8 @@ docs-uninstall:
 remake:
 	$(shell ./remakesourcelist)
 
-install-data-hook:
-	rm -f $(DESTDIR)${prefix}/include/cursestoolkit/debug.h
+#install-data-hook:
+#	rm -f $(DESTDIR)${prefix}/include/cursestoolkit/debug.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

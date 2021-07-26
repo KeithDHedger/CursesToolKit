@@ -41,7 +41,7 @@
 #include <fcntl.h>
 
 #if defined _DEBUGCODE_ || defined _WARN_ENABLEDEBUG_
-#include "debug.h"
+#include "/media/LinuxData/Development/DevelopmentFiles/Debugging/debug.h"
 #endif
 
 struct fbData
