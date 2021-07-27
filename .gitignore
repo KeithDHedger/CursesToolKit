@@ -25,4 +25,4 @@ examples/searchdata.xml
 Makefile.in
 configure
 config.h.in
-Doxyfile.in
+Doxyfile
