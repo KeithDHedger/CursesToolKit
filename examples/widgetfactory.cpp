@@ -331,6 +331,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	int genw;
 	int	genh;
 
+//system("setterm --background white");
+//mainApp->windowColours.backCol=BACK_BOLD_WHITE;
 	mainApp->CTK_setTabWidth(TABWIDTH);
 
 	CTK_cursesUtilsClass	cu;
@@ -416,6 +418,8 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
 	srceditbox->CTK_setStyleFile("./esc.style");
+	//srceditbox->gadgetColours.backCol=BACK_BOLD_WHITE;
+	//srceditbox->gadgetColours.gadgetCustom1BackCol=BACK_BOLD_WHITE;
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
