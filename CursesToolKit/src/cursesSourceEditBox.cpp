@@ -204,9 +204,16 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 			if(this->inputLang.length()==0)
 				this->inputLang="cpp.lang";
 		}
-	sourceHighlight.setStyleFile("esc.style");
+
+	sourceHighlight.setStyleFile(this->styleFile);
 	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
 	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
+}
+
+void CTK_cursesSourceEditBoxClass::CTK_setStyleFile(const char *filepath)
+{
+	this->styleFile=filepath;
+	this->updateBuffer();
 }
 
 /**

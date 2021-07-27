@@ -333,22 +333,10 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
 
-	//cs.windowBackCol=BACK_WHITE;
-	//cs.fancyGadgets=true;
-
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
 //	sleep(2);
 //	mainApp->CTK_mainEventLoop(-2000);
-
-//custom menu colours
-	//cs.menuHiliteBackCol=BACK_BLACK;
-	//cs.menuHiliteForeCol=FORE_GREEN;
-
-	//cs.menuForeCol=FORE_WHITE;
-	//cs.menuBackCol=BACK_RED;
-	//cs.disabledForeCol=FORE_BOLD_RED;
-	//mainApp->CTK_setColours(&cs,true);
 
 	mainApp->CTK_addNewMenuBar();
 
@@ -382,12 +370,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	mainApp->menuBar->CTK_setSelectCB(menuselctCB,NULL);
 	for(int j=2;j<10;j++)
 		mainApp->menuBar->menuNames[3]->menuItem[j]->menuEnabled=false;
-//reset colours to defaults
-	//cs.hiliteBackCol=BACK_CYAN;
-	//cs.hiliteForeCol=FORE_BLACK;
-	//cs.foreCol=FORE_BLACK;
-	//cs.backCol=BACK_WHITE;
-	//mainApp->CTK_setColours(&cs,false);
 
 //page 0
 //instructions
@@ -415,7 +397,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->gadgetColours.boxType=0;
 	geny+=3;
 	editbox=mainApp->CTK_addNewEditBox(mainApp,genx,geny,genw,genh,true,"../ChangeLog");
-	//editbox->CTK_setShowLineNumbers(4);
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -432,8 +413,9 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->CTK_setJustify(CENTREJUSTIFY);
 	label->gadgetColours.boxType=0;
 	geny+=3;
-	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"./widgetfactory.cpp");
+	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
+	srceditbox->CTK_setStyleFile("./esc.style");
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);
@@ -664,7 +646,6 @@ geny+=3;
 	geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Pulsing chars, Filled, 50%.");
-	//label->CTK_setColours(&cs,true);
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,10.0);
@@ -674,7 +655,6 @@ geny+=3;
 	geny+=3;
 //pulsing
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Pulsing colours + chars, 100%.");
-	//label->CTK_setColours(&cs,true);
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressPulse=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,20,20.0);
@@ -744,8 +724,6 @@ geny+=3;
 	mainApp->CTK_setDefaultGadget(helptextbox);
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
-
-DEBUG
 
 	if(false)
 		mainApp->CTK_mainEventLoop(0,true,true);

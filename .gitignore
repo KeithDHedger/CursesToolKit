@@ -22,3 +22,7 @@ tmpexamples
 examples/html
 examples/searchdata.xml
 *.HOLD
+Makefile.in
+configure
+config.h.in
+Doxyfile.in

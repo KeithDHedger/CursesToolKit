@@ -1,0 +1,14 @@
+cbracket red b;
+classname green ;
+comment cyan b;
+function white b ;
+keyword blue b ;
+number purple ;
+preproc blue b ;
+regexp orange ;
+specialchar pink ;
+string red ;
+symbol red b;
+type green;
+usertype pink b;
+url red b;
