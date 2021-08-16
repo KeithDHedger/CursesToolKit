@@ -33,6 +33,7 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		void						CTK_setInputLang(srcFileType lang);
 		void						CTK_setStyleFile(const char *filepath);
 		virtual char				*CTK_getBuffer(void);
+		void						CTK_setUseNative(bool native);
 		bool						liveUpdate=false;
 	private:
 		std::string					filePath="";

@@ -325,6 +325,12 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(srcFileType lang)
 	this->updateBuffer();
 }
 
+void CTK_cursesSourceEditBoxClass::CTK_setUseNative(bool native)
+{
+	this->useNative=native;
+	this->updateBuffer();
+}
+
 /**
 * Private.
 */
