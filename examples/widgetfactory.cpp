@@ -26,7 +26,7 @@ popd
 
 name=$(basename $0 .cpp)
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs -D_DEBUGCODE_ $(pkg-config --cflags --libs Magick++ ncurses) -lcursestoolkit -lboost_system -lboost_filesystem "$0" -o $name ||exit 1
+g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs -D_DEBUGCODE_ $(pkg-config --cflags --libs Magick++ ncurses ) -lcursestoolkit -lboost_system -lboost_filesystem -lboost_regex "$0" -o $name ||exit 1
 echo "done compiling ..."
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
@@ -415,11 +415,12 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->CTK_setJustify(CENTREJUSTIFY);
 	label->gadgetColours.boxType=0;
 	geny+=3;
+	bool usenativehiliter=true;
+//	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp",usenativehiliter);
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
-	srceditbox->CTK_setStyleFile("./esc.style");
-	//srceditbox->gadgetColours.backCol=BACK_BOLD_WHITE;
-	//srceditbox->gadgetColours.gadgetCustom1BackCol=BACK_BOLD_WHITE;
+	srceditbox->liveUpdate=true;
+	//srceditbox->CTK_setStyleFile("./esc.style");
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
 	button->CTK_setSelectCB(buttonselctCB,(void*)PREVPAGE);

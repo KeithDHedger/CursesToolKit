@@ -1,0 +1,14 @@
+forcol int 97
+backcol int 40
+keyword int 91
+type int 92
+include int 94
+string int 95
+custom int 96
+comment int 36
+class int 33
+function int 91
+bracket int 92
+namespace int 33
+number int 93
+variable int 33

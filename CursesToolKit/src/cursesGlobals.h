@@ -61,6 +61,7 @@ enum  utilVarType {BOOLVAR=0,INTVAR,CHARVAR,MULTVAR,BADTYPE,DECIMALOUT,HEXOUT,OC
 
 #include "LFSTKFindClass.h"
 #include "cursesLib.h"
+#include "srcHighlight.h"
 #include "cursesUtils.h"
 #include "cursesReadKeyClass.h"
 #include "cursesGraphics.h"

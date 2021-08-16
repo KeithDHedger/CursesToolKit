@@ -294,7 +294,6 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 	fflush(NULL);
 }
 
-
 /**
 * Draw edit box.
 */
@@ -567,6 +566,11 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 							this->multiLineSels.push_back({this->currentY,0,this->currentX});
 						}
 					this->multiLineSels.back().ex=this->currentX;
+				}
+
+			if((this->type==SRCGADGET) && (dynamic_cast<CTK_cursesSourceEditBoxClass*>(this)->liveUpdate==true) && (this->needsRefresh==true))
+				{
+					this->updateBuffer();
 				}
 
 			this->drawBox(false,true,shortdraw);

@@ -18,7 +18,7 @@
 m4_define([CURSESTOOLKIT_MAJ_N],[3])
 m4_define([CURSESTOOLKIT_REL_N],[3])
 m4_define([CURSESTOOLKIT_MIN_N],[0])
-m4_define([CURSESTOOLKIT_REV_N],[0])
+m4_define([CURSESTOOLKIT_REV_N],[1])
 
 m4_define([ctk_api_version], [3.0])
 m4_define([ctk_version],[CURSESTOOLKIT_REL_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_REV_N])
@@ -55,15 +55,28 @@ AC_SUBST(LDFLAGS)
 CFLAGS=-Wall
 AC_SUBST(CFLAGS)
 
+AC_CONFIG_MACRO_DIR([./localm4s])
+
 NCURSES_MODULES="ncurses >= 6.1"
 PKG_CHECK_MODULES(NCURSES, $NCURSES_MODULES)
 AC_SUBST(NCURSES_CFLAGS)
 AC_SUBST(NCURSES_LIBS)
 
+AC_MSG_CHECKING(whether to enable source-highlight syntax highliter)
+AC_ARG_ENABLE(sourcehighlight,
+    [  --disable-sourcehighlight	  Don't Use source-highlight library (Default is to enable).],
+    [enable_sourcehighlight=$enableval],
+    [enable_sourcehighlight="yes"])
+AC_MSG_RESULT($enable_sourcehighlight)
+
+if test "$enable_sourcehighlight" = "yes"; then
 SOURCEHILITE_MODULES="source-highlight >= 3.1.6"
 PKG_CHECK_MODULES(SOURCEHILITE, $SOURCEHILITE_MODULES)
 AC_SUBST(SOURCEHILITE_CFLAGS)
 AC_SUBST(SOURCEHILITE_LIBS)
+GOTSOURCEHIGHLIGHT="-D_SOURCEHIGHLIGHT_"
+AC_SUBST(GOTSOURCEHIGHLIGHT)
+fi
 
 AC_CHECK_PROGS([DOXYGEN], [doxygen])
 if test -z "$DOXYGEN";
@@ -88,9 +101,10 @@ if test "$enable_imagemagick" = "yes"; then
 	AC_SUBST(GOTIMIAGEMAGIC)
 fi
 
-#AX_BOOST_BASE([1.63],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
-#AX_BOOST_SYSTEM
-#AX_BOOST_FILESYSTEM
+AX_BOOST_BASE([1.63],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
+AX_BOOST_SYSTEM
+AX_BOOST_FILESYSTEM
+AX_BOOST_REGEX
 
 AC_CONFIG_FILES([cursestoolkit.pc])
 AC_OUTPUT(Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile)

@@ -24,15 +24,16 @@
 class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 {
 	public:
-		CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc);
+		CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc,bool native=false);
 		~CTK_cursesSourceEditBoxClass();
 
 		void						CTK_updateText(const char *txt,bool isfilename=false,bool reset=true);
 		std::vector<std::string>	&CTK_getSrcStrings(void);
 		void						CTK_setInputLang(const char *lang);
+		void						CTK_setInputLang(srcFileType lang);
 		void						CTK_setStyleFile(const char *filepath);
 		virtual char				*CTK_getBuffer(void);
-
+		bool						liveUpdate=false;
 	private:
 		std::string					filePath="";
 		std::string					inputLang="default.lang";
@@ -43,6 +44,8 @@ class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 		bool						realAddedNL=false;
 
 	protected:
+		bool						useNative;
+		srcHighlight				srcClass;
 		std::vector<std::string>	srcStrings;
 		void						updateBuffer(void);
 		void						refreshLine(void);

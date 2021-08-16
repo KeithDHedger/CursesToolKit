@@ -249,9 +249,9 @@ CTK_cursesEditBoxClass* CTK_mainAppClass::CTK_addNewEditBox(CTK_mainAppClass *mc
 /**
 * Create and add new source edit box gadget. 
 */
-CTK_cursesSourceEditBoxClass* CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable)
+CTK_cursesSourceEditBoxClass* CTK_mainAppClass::CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool native,bool selectable)
 {
-	CTK_cursesSourceEditBoxClass	*srcbox=new CTK_cursesSourceEditBoxClass(this);
+	CTK_cursesSourceEditBoxClass	*srcbox=new CTK_cursesSourceEditBoxClass(this,native);
 	srcbox->tabWidth=this->tabWidth;
 	srcbox->CTK_newBox(x,y,width,hite,isfilename,txt,selectable);
 	this->pages[this->pageNumber].gadgets.push_back(srcbox);

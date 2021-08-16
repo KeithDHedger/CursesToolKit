@@ -17,19 +17,21 @@
  * You should have received a copy of the GNU General Public License
  * along with CursesToolKit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+ 
+#ifdef _SOURCEHIGHLIGHT_
+#define SRCDATADIR "/usr/share/source-highlight"
 #include <srchilite/sourcehighlight.h>
 #include <srchilite/langmap.h>
 #include <srchilite/lineranges.h>
 #include <srchilite/sourcehighlight.h>
 #include <srchilite/languageinfer.h>
+#endif
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 #include "cursesGlobals.h"
 
-#define SRCDATADIR "/usr/share/source-highlight"
 
 /**
 *  Source code box class destroy.
@@ -41,9 +43,15 @@ CTK_cursesSourceEditBoxClass::~CTK_cursesSourceEditBoxClass()
 /**
 *  Source code box class.
 */
-CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc)
+CTK_cursesSourceEditBoxClass::CTK_cursesSourceEditBoxClass(CTK_mainAppClass *mc,bool native)
 {
 	varsStruct	vsitem;
+
+#ifndef _SOURCEHIGHLIGHT_
+	this->useNative=true;
+#else
+	this->useNative=native;
+#endif
 
 	this->CTK_setCommon(mc);
 
@@ -82,11 +90,13 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 	CTK_cursesUtilsClass		cu;
 	long						fsize;
 	FILE						*f;
+#ifdef _SOURCEHIGHLIGHT_
 	std::stringstream			inpstream;
 	std::ostringstream			oputstream;
 	srchilite::LanguageInfer	inf;
 	srchilite::SourceHighlight	sourceHighlight("esc.outlang");
 	srchilite::LangMap			langMap(SRCDATADIR,"lang.map");
+#endif
 	std::string					buff;
 	bool						noeol=false;
 
@@ -129,6 +139,7 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 					this->txtBuffer=(char*)malloc(fsize+1);
 					fread(this->txtBuffer,1,fsize,f);
 					this->txtBuffer[fsize]=0;
+					this->srcClass.findFileType(txt);
 				}
 			fclose(f);
 		}
@@ -153,61 +164,99 @@ void CTK_cursesSourceEditBoxClass::CTK_updateText(const char *txt,bool isfilenam
 					this->txtStrings.push_back("\n");
 				}
 		}
-
-	bool	flag=true;
-	this->lineNumbers.clear();
-	this->startLineNumber=1;
-	for(int j=0;j<this->txtStrings.size();j++)
+#ifdef _SOURCEHIGHLIGHT_
+	if(this->useNative==false)
 		{
-			this->bookMarks.push_back(false);
-			if(flag==true)
-				this->lineNumbers.push_back(this->startLineNumber++);
-			else
-				this->lineNumbers.push_back(-1);
+			bool	flag=true;
+			this->lineNumbers.clear();
+			this->startLineNumber=1;
+			for(int j=0;j<this->txtStrings.size();j++)
+				{
+					this->bookMarks.push_back(false);
+					if(flag==true)
+						this->lineNumbers.push_back(this->startLineNumber++);
+					else
+						this->lineNumbers.push_back(-1);
 
-			if(this->txtStrings[j].back()=='\n')
-				{
-					inpstream << this->txtStrings[j];
-					flag=true;
-				}
-			else
-				{
-					inpstream << this->txtStrings[j] << '\n';
-					flag=false;
-				}
-		}
-	inpstream << std::endl; 
-	sourceHighlight.setDataDir(SRCDATADIR);
-	std::string lang="";
-	if((this->filePath.compare("")!=0) && (this->forceLang==false))
-		{
-			lang=langMap.getMappedFileNameFromFileName(this->filePath);
-			if(lang != "")
-				this->inputLang=lang;
-			else
-				{
-					lang=inf.infer(this->filePath);
-
-					if(lang != "")
+					if(this->txtStrings[j].back()=='\n')
 						{
-							langMap.open();
-							this->inputLang=langMap.getFileName(lang);
+							inpstream << this->txtStrings[j];
+							flag=true;
+						}
+					else
+						{
+							inpstream << this->txtStrings[j] << '\n';
+							flag=false;
 						}
 				}
-		}
+			inpstream << std::endl; 
+			sourceHighlight.setDataDir(SRCDATADIR);
+			std::string lang="";
+			if((this->filePath.compare("")!=0) && (this->forceLang==false))
+				{
+					lang=langMap.getMappedFileNameFromFileName(this->filePath);
+					if(lang != "")
+						this->inputLang=lang;
+					else
+						{
+							lang=inf.infer(this->filePath);
 
-	if(this->forceLang==false)
+							if(lang != "")
+								{
+									langMap.open();
+									this->inputLang=langMap.getFileName(lang);
+								}
+						}
+				}
+
+			if(this->forceLang==false)
+				{
+					if(lang=="")
+						this->inputLang="nohilite.lang";
+
+					if(this->inputLang.length()==0)
+						this->inputLang="cpp.lang";
+				}
+
+			sourceHighlight.setStyleFile(this->styleFile);
+			sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
+			this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
+		}
+#endif
+
+	if(this->useNative==true)
 		{
-			if(lang=="")
-				this->inputLang="nohilite.lang";
+			this->srcClass.data="";
 
-			if(this->inputLang.length()==0)
-				this->inputLang="cpp.lang";
+			bool	flag=true;
+			this->lineNumbers.clear();
+			this->startLineNumber=1;
+			for(int j=0;j<this->txtStrings.size();j++)
+				{
+					this->bookMarks.push_back(false);
+					if(flag==true)
+						this->lineNumbers.push_back(this->startLineNumber++);
+					else
+						this->lineNumbers.push_back(-1);
+
+					if(this->txtStrings[j].back()=='\n')
+						{
+							this->srcClass.data+=this->txtStrings[j];
+							flag=true;
+						}
+					else
+						{
+							this->srcClass.data+=this->txtStrings[j];
+							this->srcClass.data+='\n';
+							flag=false;
+						}
+				}
+
+			this->srcClass.data+="\n";
+			this->srcClass.getColourFile(this->styleFile);
+			this->srcClass.hilight();
+			this->srcStrings=cu.CTK_explode(this->srcClass.getHighlightedData(),'\n');
 		}
-
-	sourceHighlight.setStyleFile(this->styleFile);
-	sourceHighlight.highlight(inpstream,oputstream,this->inputLang,"");
-	this->srcStrings=cu.CTK_explode(oputstream.str(),'\n');
 }
 
 void CTK_cursesSourceEditBoxClass::CTK_setStyleFile(const char *filepath)
@@ -240,6 +289,7 @@ std::vector<std::string> &CTK_cursesSourceEditBoxClass::CTK_getSrcStrings(void)
 
 /**
 * Force a source language.
+* \note use for the external source-highlight lib.
 */
 void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 {
@@ -252,6 +302,25 @@ void CTK_cursesSourceEditBoxClass::CTK_setInputLang(const char *lang)
 		{
 			this->inputLang="default.lang";
 			this->forceLang=false;
+		}
+	this->updateBuffer();
+}
+
+/**
+* Force a source language.
+* \note use for the internal syntax hilighter.
+*/
+void CTK_cursesSourceEditBoxClass::CTK_setInputLang(srcFileType lang)
+{
+	if(lang!=(srcFileType)NULL)
+		{
+			this->forceLang=true;
+			this->srcClass.setSrcLang(lang);
+		}
+	else
+		{
+			this->forceLang=false;
+			this->srcClass.setSrcLang(PLAIN);
 		}
 	this->updateBuffer();
 }

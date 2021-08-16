@@ -1,3 +1,7 @@
+3.0.1
+Added boost dependency.
+Made external source-highlight optional, can now use an internal syntax hiliter ( less accurate but much faster ).
+
 3.0.0
 Scroll selected item in list box to near centre.
 Added var type to save/load vars. 

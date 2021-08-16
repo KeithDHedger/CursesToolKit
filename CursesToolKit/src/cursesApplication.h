@@ -89,7 +89,7 @@ class CTK_mainAppClass
 		CTK_cursesEditBoxClass*					CTK_addNewEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
 		CTK_cursesLabelClass*					CTK_addNewLabel(int x,int y,int width,int hite,const char *txt);
 		CTK_cursesProgressBarClass*				CTK_addNewProgressBar(int x,int y,int width,double min,double max,double val,char fill='#');
-		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool selectable=true);
+		CTK_cursesSourceEditBoxClass*			CTK_addNewSourceEditBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,bool isfilename,const char *txt,bool native=false,bool selectable=true);
 		CTK_cursesDropClass*					CTK_addNewDropDownBox(CTK_mainAppClass *mc,int x,int y,int width,int hite,const char *label);
 		CTK_cursesFBImageClass*					CTK_addNewFBImage(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
 		CTK_cursesFBImageClass*					CTK_addNewFBImageAbsCoords(int x,int y,int width,int hite,const char *filepath,bool keepaspect=true);
