@@ -34,7 +34,7 @@ void srcHighlight::findFileType(const std::string filepath)
 	if(strcmp(buffer,"x-shellscript")==0)
 		this->srcType=SHELL;
 
-	if(strncmp(buffer,"x-c",3)==0)
+	if((strcmp(buffer,"x-csrc")==0) || (strcmp(buffer,"x-c++src")==0) || (strcmp(buffer,"x-chdr")==0) || (strcmp(buffer,"x-c++hdr")==0))
 		this->srcType=CPP;
 
 	if(strcmp(buffer,"javascript")==0)

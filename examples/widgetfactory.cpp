@@ -420,7 +420,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
 	srceditbox->liveUpdate=true;
-	srceditbox->CTK_setUseNative(false);
+	srceditbox->CTK_setUseNative(usenativehiliter);
 	//srceditbox->CTK_setStyleFile("./esc.style");
 	genx=mainApp->utils->CTK_getGadgetPosX(3,mainApp->maxCols-4,2,13,0);
 	button=mainApp->CTK_addNewButton(genx,geny+genh+2,13,1,"Prev Page");
