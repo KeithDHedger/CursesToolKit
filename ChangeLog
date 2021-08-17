@@ -1,5 +1,5 @@
 3.0.1
-Fixed wrong file type detec
+Fixed wrong file type detection in srchighlight class.
 added ctk_setusenative to force syntax hilighting to inbuilt or external.
 Added boost dependency.
 Made external source-highlight optional, can now use an internal syntax hiliter ( less accurate but much faster ).
