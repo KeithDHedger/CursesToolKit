@@ -59,6 +59,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		void						CTK_startSelecting(void);
 		void						CTK_finishSelecting(void);
 		std::string					CTK_getSelection(void);
+		bool						CTK_isValidSelection(void);
 		void						CTK_deleteSelection(void);
 		void						CTK_deleteCurrentWord(void);
 		void						CTK_deleteCurrentLine(void);

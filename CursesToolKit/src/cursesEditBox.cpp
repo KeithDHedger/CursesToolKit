@@ -410,6 +410,9 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 							case CTK_KEY_ENTER:
 							case CTK_KEY_RETURN:
+								if(this->isSelecting==true)
+									this->CTK_finishSelecting();
+								this->multiLineSels.clear();
 								lines[this->currentY].insert(this->currentX,1,'\n');
 								shortdraw=false;
 								this->currentX=0;
@@ -434,7 +437,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 								this->updateBuffer();
 								continue;
 								break;
-//start selecting
+//start/end selecting
 							case CTK_KEY_INSERT:
 								if(this->isSelecting==false)
 									this->CTK_startSelecting();
@@ -947,6 +950,12 @@ void CTK_cursesEditBoxClass::CTK_finishSelecting(void)
 	this->gadgetDirty=true;
 	isSelecting=false;
 	this->needsRefresh=true;
+}
+
+bool CTK_cursesEditBoxClass::CTK_isValidSelection(void)
+{
+	if (this->multiLineSels.size()>0)
+		return(true);
 }
 
 /**
