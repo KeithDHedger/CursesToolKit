@@ -1245,7 +1245,7 @@ struct fbData* CTK_mainAppClass::CTK_getFBData(void)//TODO// put in lib, globals
 * \param gadgetType type.
 * \param int nth gadget of type.
 */
-CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType type,int nth)
+CTK_cursesGadgetClass* CTK_mainAppClass::CTK_getGadgetNum(int page,gadgetType type,int nth)//TODO//
 {
 	int	cntdown=nth;
 
