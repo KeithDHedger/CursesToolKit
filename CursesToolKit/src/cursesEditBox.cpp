@@ -247,31 +247,23 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		}
 
 	if((this->showStatus==true) && ((this->statusNeedsUpdate==true) || hilite==true))
-//	if((this->showStatus==true) )
 		{
 			char					*statline;
-	std::string				tclip;
-
+			std::string				tclip;
+			int						filelinenum;
+			int						backcnt=1;
 			tclip=this->CTK_getCurrentWord();
-	if(tclip.back()=='\n')
-		tclip.pop_back();
-	asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
-	this->CTK_setStatusBar(statline,hilite);
-//	updatestatus=false;
-	fflush(NULL);
-	CTK_freeAndNull(&statline);
+			if(tclip.back()=='\n')
+				tclip.pop_back();
 
-			//this->
-//			char	*statline;
-//			tclip=this->CTK_getCurrentWord();
-//			if(tclip.back()=='\n')
-//				tclip.pop_back();
-//			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
-//			if(hilite==true)
-//				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
-//			else
-//				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
-//			free(statline);
+			filelinenum=this->lineNumbers[this->currentY];
+			while(filelinenum==-1)
+				filelinenum=this->lineNumbers[this->currentY-backcnt++];
+			
+			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,filelinenum,this->editStatus,tclip.c_str());
+			this->CTK_setStatusBar(statline,hilite);
+			fflush(NULL);
+			CTK_freeAndNull(&statline);
 			this->statusNeedsUpdate=false;
 		}
 
