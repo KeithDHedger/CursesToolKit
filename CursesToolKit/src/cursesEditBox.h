@@ -49,6 +49,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		void						CTK_drawGadget(bool hilite=false);
 		void						CTK_setStatusBarVisible(bool show);
 		bool						CTK_getStatusBarVisible(void);
+		void						CTK_setStatusBar(std::string str,bool hilite=false);
 
 		void						CTK_doEvent(bool usesrc,std::vector<std::string> &lines,std::vector<std::string> &srclines);
 		void						CTK_newBox(int x,int y,int width,int hite,bool isfilename,const char *txt="",bool selectable=true);
@@ -110,6 +111,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 		std::string					blank;
 		std::string					status;
 		const char					*editStatus="Normal";
+		bool						statusNeedsUpdate=true;
 
 		virtual void				updateBuffer(void);
 		void						adjustXY(void);

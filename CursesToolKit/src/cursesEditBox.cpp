@@ -246,18 +246,33 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 			this->refreshLine();
 		}
 
-	if(this->showStatus==true)
+	if((this->showStatus==true) && ((this->statusNeedsUpdate==true) || hilite==true))
+//	if((this->showStatus==true) )
 		{
-			char	*statline;
+			char					*statline;
+	std::string				tclip;
+
 			tclip=this->CTK_getCurrentWord();
-			if(tclip.back()=='\n')
-				tclip.pop_back();
-			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
-			if(hilite==true)
-				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
-			else
-				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
-			free(statline);
+	if(tclip.back()=='\n')
+		tclip.pop_back();
+	asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+	this->CTK_setStatusBar(statline,hilite);
+//	updatestatus=false;
+	fflush(NULL);
+	CTK_freeAndNull(&statline);
+
+			//this->
+//			char	*statline;
+//			tclip=this->CTK_getCurrentWord();
+//			if(tclip.back()=='\n')
+//				tclip.pop_back();
+//			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+//			if(hilite==true)
+//				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
+//			else
+//				this->gc->CTK_printJustLineColour(statline,this->sx,this->sy+hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
+//			free(statline);
+			this->statusNeedsUpdate=false;
 		}
 
 //higlite selection
@@ -344,12 +359,24 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 	int						lineadd=1;
 	bool					shortdraw=false;
 	CTK_cursesReadKeyClass	editReadKey(this->mc);
+	bool					updatestatus=false;
+	char					*statline;
+	std::string				tclip;
 
 	if(this->canEdit==false)
 		return;
 	this->editStatus="Edit Mode";
 	this->drawBox(false,true,shortdraw);
 	this->runLoop=true;
+
+//	tclip=this->CTK_getCurrentWord();
+//	if(tclip.back()=='\n')
+//		tclip.pop_back();
+//	asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+//	this->CTK_setStatusBar(statline,true);
+//	updatestatus=false;
+//	fflush(NULL);
+//	CTK_freeAndNull(&statline);
 
 	while(this->runLoop==true)
 		{
@@ -365,6 +392,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 						{
 							case  CTK_KEY_DELETE:
 								{
+									this->statusNeedsUpdate=true;
 									char hold=lines[this->currentY][this->currentX];
 									lines[this->currentY].erase(this->currentX,1);
 									if(usesrc==true)
@@ -380,6 +408,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 								break;
 
 							case CTK_KEY_BACKSPACE:
+								this->statusNeedsUpdate=true;
 								if((this->currentY==0) && (this->currentX==0))
 									break;
 								this->isDirty=true;
@@ -423,18 +452,21 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 
 								this->updateBuffer();
 								this->isDirty=true;
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_TAB:
 								this->CTK_insertChar(lines[this->currentY],'\t');
 								if(usesrc==true)
 									srclines[this->currentY]=lines[this->currentY];
+								this->statusNeedsUpdate=true;
 								break;
 //exit loop
 							case CTK_KEY_ESC:
 								this->runLoop=false;
 								shortdraw=false;
 								this->updateBuffer();
+								this->statusNeedsUpdate=true;
 								continue;
 								break;
 //start/end selecting
@@ -443,14 +475,17 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 									this->CTK_startSelecting();
 								else
 									this->CTK_finishSelecting();
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_HOME:
 								this->currentX=0;
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_END:
 								this->currentX=lines[this->currentY].length()-1;
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_PAGEUP:
@@ -474,6 +509,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 									}
 								if(this->currentX>=lines[this->currentY].length())
 									this->currentX=lines[this->currentY].length()-1;
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_PAGEDOWN:
@@ -494,6 +530,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 									}
 								if(this->currentX>=lines[this->currentY].length())
 									this->currentX=lines[this->currentY].length()-1;
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_LEFT:
@@ -509,6 +546,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										else
 											this->currentX=0;
 									}
+								this->statusNeedsUpdate=true;
 								break;
 
 							case CTK_KEY_RIGHT:
@@ -524,6 +562,7 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 										else
 											this->currentX=lines[currentY].length()-1;
 									}
+								this->statusNeedsUpdate=true;
 								break;
 						}
 				}
@@ -577,6 +616,31 @@ void CTK_cursesEditBoxClass::CTK_doEvent(bool usesrc,std::vector<std::string> &l
 				}
 
 			this->drawBox(false,true,shortdraw);
+	if(updatestatus==true)
+		{
+	tclip=this->CTK_getCurrentWord();
+	if(tclip.back()=='\n')
+		tclip.pop_back();
+	asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+	this->CTK_setStatusBar(statline,true);
+	updatestatus=false;
+	fflush(NULL);
+	CTK_freeAndNull(&statline);
+//			char	*statline;
+//
+//			std::string	tclip;
+//			tclip=this->CTK_getCurrentWord();
+//			if(tclip.back()=='\n')
+//				tclip.pop_back();
+//			//asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+////this->resetNormal=str(boost::format("%i;%i") %this->colours[BACKCOL] %this->colours[FORECOL]);
+//			//std::string statstr=str(boost::format("COL %.*i, LINE %.*i, MODE %s SELECTION %s") %this->statusCLPad %this->currentX+1 %this->statusCLPad %this->currentY+1 %this->editStatus %tclip);
+//			std::string statstr;
+//			statstr=str(boost::format("COL %i") %(this->currentX+1));
+//			this->CTK_setStatusBar(statstr);
+////			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->currentY+1,this->editStatus,tclip.c_str());
+//updatestatus=false;
+		}
 			this->mc->CTK_emptyIPBuffer();
 			if(this->mc->eventLoopCBOut!=NULL)
 				this->mc->eventLoopCBOut(this->mc,this->userData);
@@ -956,6 +1020,7 @@ bool CTK_cursesEditBoxClass::CTK_isValidSelection(void)
 {
 	if (this->multiLineSels.size()>0)
 		return(true);
+	return(false);
 }
 
 /**
@@ -982,6 +1047,22 @@ void CTK_cursesEditBoxClass::CTK_deleteSelection(void)
 	this->currentY=this->multiLineSels[0].line;
 	this->adjustXY();
 	this->CTK_finishSelecting();
+}
+
+/*
+**
+*Set contents of the staus bar status bar.
+*/
+void CTK_cursesEditBoxClass::CTK_setStatusBar(std::string str,bool hilite)
+{
+		if(this->showStatus==true)
+			{
+				if(hilite==true)
+					this->gc->CTK_printJustLineColour(str.c_str(),this->sx,this->sy+this->hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.hiliteForeCol,this->gadgetColours.hiliteBackCol);
+				else
+					this->gc->CTK_printJustLineColour(str.c_str(),this->sx,this->sy+this->hite+1,this->wid,LEFTJUSTIFY,this->gadgetColours.foreCol,this->gadgetColours.backCol);
+				this->statusNeedsUpdate=false;
+			}
 }
 
 /*

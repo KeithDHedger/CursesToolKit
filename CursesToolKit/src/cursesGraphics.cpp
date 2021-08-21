@@ -314,6 +314,8 @@ void CTK_cursesGraphicsClass::CTK_printJustLineColour(const char *line,int sx,in
 			printablelen=0;
 			for(int j=0;j<strlen(outp);j++)
 				{
+				//if(outp[j]=='\n')
+				//	break;
 					if(outp[j]=='\e')
 						{
 							while(outp[j]!='m')

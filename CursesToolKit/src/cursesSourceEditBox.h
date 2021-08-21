@@ -21,6 +21,8 @@
 #ifndef _CURSESSOURCEEDITBOX_
 #define _CURSESSOURCEEDITBOX_
 
+#include <boost/format.hpp>
+
 class CTK_cursesSourceEditBoxClass : public CTK_cursesEditBoxClass
 {
 	public:

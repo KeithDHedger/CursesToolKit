@@ -1,4 +1,6 @@
 3.0.1
+Fixed copying multiple lines.
+Fixed edit/src box status line.
 Multiselect now cancels on enter/return.
 Fixed wrong file type detection in srchighlight class.
 added ctk_setusenative to force syntax hilighting to inbuilt or external.
