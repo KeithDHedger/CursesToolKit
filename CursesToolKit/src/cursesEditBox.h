@@ -56,6 +56,7 @@ class CTK_cursesEditBoxClass : public CTK_cursesGadgetClass
 
 		virtual char				*CTK_getBuffer(void);
 		const std::string			CTK_getCurrentLine(void);
+		int							CTK_currentLineNumber(void);
 		const std::string			CTK_getCurrentWord(void);
 		void						CTK_startSelecting(void);
 		void						CTK_finishSelecting(void);

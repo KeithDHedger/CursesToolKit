@@ -20,9 +20,6 @@
 
 #include "cursesGlobals.h"
 
-#include <chrono>
-#include <math.h>
-
 /**
 * Progress Bar class destroy.
 */
@@ -79,15 +76,14 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 	this->value=val;
 	this->fillchar=fill;
 }
-			
+
 std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 {
 	char						buffer[256]={0};
 	std::string					retstr="";
-	int							s=value*(1000);
-	std::chrono::milliseconds	msec(s);
-	double						intpart;
-	const char					*zeros="";
+	int							tim;
+	time_t						rawtime;
+	struct tm					*timeinfo;
 
 	if(this->valuesAsTime==false)
 		{
@@ -95,39 +91,17 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 			retstr=buffer;
 			return(retstr);
 		}
+
+	tim=value*1000.0;
+	rawtime=(tim/1000.0);
+	timeinfo=gmtime(&rawtime);
+
+	if(this->showHours==true)
+		strftime (buffer,80,"%H:%M:%S",timeinfo);
 	else
-		{
-			if(value>=3600)
-				{
-					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::hours>(msec).count());
-					retstr+=":";
-				}
-			if(value>=60)
-				{
-					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::minutes>(msec).count() % 60);
-					retstr+=":";
-				}
+		strftime (buffer,80,"%M:%S",timeinfo);
 
-			if((this->showZeroMinutes==true) && (value<60))
-				zeros="0:";
-
-			if(value>=1)
-				{
-					retstr+=zeros;
-					retstr+=std::to_string(std::chrono::duration_cast<std::chrono::seconds>(msec).count() % 60);
-					if(this->scale>0)
-						{
-							retstr+=".";
-							snprintf(buffer,255,"%.*f",this->scale,modf (value , &intpart));
-							retstr+=&buffer[2];
-						}
-				}
-			else
-				{
-					snprintf(buffer,255,"%s%.*f",zeros,this->scale,modf(value,&intpart));
-					retstr+=buffer;
-				}
-		}
+	retstr=str(boost::format("%s.%02.0f") %buffer %(float)((tim % 1000)/10));
 
 	return(retstr);
 }

@@ -53,6 +53,7 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		int				blockColour=BACK_RED;
 		int				blockPulseColours[2]={BACK_RED,BACK_GREEN};
 
+		bool			showHours=false;
 	private:
 		std::string		convertValueToTime(double value);
 

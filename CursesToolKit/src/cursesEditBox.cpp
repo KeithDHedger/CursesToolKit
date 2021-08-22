@@ -250,17 +250,11 @@ void CTK_cursesEditBoxClass::drawBox(bool hilite,bool showcursor,bool shortupdat
 		{
 			char					*statline;
 			std::string				tclip;
-			int						filelinenum;
-			int						backcnt=1;
 			tclip=this->CTK_getCurrentWord();
 			if(tclip.back()=='\n')
 				tclip.pop_back();
 
-			filelinenum=this->lineNumbers[this->currentY];
-			while(filelinenum==-1)
-				filelinenum=this->lineNumbers[this->currentY-backcnt++];
-			
-			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,filelinenum,this->editStatus,tclip.c_str());
+			asprintf(&statline,"COL %.*i, LINE %.*i, MODE %s SELECTION %s",this->statusCLPad,this->currentX+1,this->statusCLPad,this->CTK_currentLineNumber(),this->editStatus,tclip.c_str());
 			this->CTK_setStatusBar(statline,hilite);
 			fflush(NULL);
 			CTK_freeAndNull(&statline);
@@ -671,6 +665,22 @@ char *CTK_cursesEditBoxClass::CTK_getBuffer(void)
 		retdata[strlen(retdata)-2]=0;
 	return(retdata);
 }
+
+/**
+* Get 'real' line number.
+* \note takes account of wrapped text.
+* \return int
+*/
+int	CTK_cursesEditBoxClass::CTK_currentLineNumber(void)
+{
+	int	filelinenum;
+	int	backcnt=1;
+
+	filelinenum=this->lineNumbers[this->currentY];
+	while(filelinenum==-1)
+		filelinenum=this->lineNumbers[this->currentY-backcnt++];
+	return(filelinenum);
+}			
 
 /**
 * Get current line of text.

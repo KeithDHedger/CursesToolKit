@@ -257,7 +257,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()+1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+1.0);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+0.25);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -272,7 +272,7 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()-1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-1.0);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-0.25);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
 	//fprintf(stderr,"value=%f\n",progress->value);
@@ -683,6 +683,7 @@ geny+=3;
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,130.0,0.0);
+	progressIndicator->showHours=true;
 	progressIndicator->CTK_setFillStyle(FILLEDINDICATOR);
 	progressIndicator->CTK_setShowRealValue(false);
 	progressIndicator->CTK_setShowValues(SHOWGAUGE);
