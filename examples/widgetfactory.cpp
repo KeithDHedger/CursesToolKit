@@ -137,7 +137,7 @@ fprintf(stderr,"here\n");
 
 void doPulseBar(void)
 {
-	progressPulse->CTK_pulseBar();
+	//progressPulse->CTK_pulseBar();
 }
 
 bool buttonselctCB(void *inst,void *userdata)
@@ -253,14 +253,11 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 		{
 			progressPulse1->CTK_setValue(progressPulse1->CTK_getValue()+1.0);
 			progressPulse1->gadgetDirty=true;
-
-
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()+1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+0.25);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()+1.25);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
-	//fprintf(stderr,"value=%f\n",progress->value);
 			sprintf(buffer,"Progress bar value=%f",progressStatic->CTK_getValue());
 			resultbuttonstextbox->CTK_updateText(buffer);
 			return(true);
@@ -272,10 +269,9 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 
 			progressStatic->CTK_setValue(progressStatic->CTK_getValue()-1.0);
 			progressStatic->gadgetDirty=true;
-			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-0.25);
+			progressIndicator->CTK_setValue(progressIndicator->CTK_getValue()-1.25);
 			progressIndicator->gadgetDirty=true;
 			mainApp->CTK_updateScreen(mainApp,NULL);
-	//fprintf(stderr,"value=%f\n",progress->value);
 			sprintf(buffer,"Progress bar value=%f",progressStatic->CTK_getValue());
 			resultbuttonstextbox->CTK_updateText(buffer);
 
@@ -289,7 +285,6 @@ int main(int argc, char **argv)
 	CTK_cursesButtonClass			*button;
 	CTK_cursesTextBoxClass			*textbox;
 	CTK_cursesInputClass			*input;
-//	CTK_cursesListBoxClass			*list;
 	CTK_cursesCheckBoxClass			*checkbox;
 	CTK_cursesLabelClass			*label;
 
@@ -632,6 +627,7 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 
 //sliders
 //pulsing
+#if 1
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Pulsing chars, No fill, 50%.");
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
@@ -667,6 +663,7 @@ geny+=3;
 	progressPulse->CTK_setFillStyle(PULSE);
 	progressPulse->CTK_setPulseStyle(true,true);
 	geny+=3;
+#endif
 //static
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Static, No fill, 50%.");
 	label->gadgetColours.boxType=NOBOX;
@@ -678,6 +675,7 @@ geny+=3;
 	progressStatic->CTK_setShowValues(SHOWALL);
 	progressStatic->CTK_setShowValuesAsTime(true);
 	geny+=3;
+#if 1
 //indicator
 	label=mainApp->CTK_addNewLabel(3,geny,mainApp->maxCols/4,1,"Static, Slider, Filled, 50%.");
 	label->gadgetColours.boxType=NOBOX;
@@ -690,7 +688,7 @@ geny+=3;
 	progressIndicator->CTK_setShowValuesAsTime(true);
 	progressIndicator->CTK_setScale(0);
 	geny+=3;
-
+#endif
 //results
 	genx=3;
 	geny=6;

@@ -79,17 +79,15 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 
 std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 {
-	char						buffer[256]={0};
-	std::string					retstr="";
-	int							tim;
-	time_t						rawtime;
-	struct tm					*timeinfo;
+	char		buffer[256]={0};
+	int			tim;
+	time_t		rawtime;
+	struct tm	*timeinfo;
 
 	if(this->valuesAsTime==false)
 		{
 			snprintf(buffer,255,"%.*f",this->scale,value);
-			retstr=buffer;
-			return(retstr);
+			return(buffer);
 		}
 
 	tim=value*1000.0;
@@ -101,9 +99,7 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 	else
 		strftime (buffer,80,"%M:%S",timeinfo);
 
-	retstr=str(boost::format("%s.%02.0f") %buffer %(float)((tim % 1000)/10));
-
-	return(retstr);
+	return(str(boost::format("%s.%02.0f") %buffer %(float)((tim % 1000)/10)));
 }
 
 /**
@@ -111,7 +107,7 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 */
 void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 {
-	double		absscale=(double)this->wid/(this->maxvalue-this->minvalue);
+	double		absscale=(double)((double)this->wid)/(this->maxvalue-this->minvalue);
 	double		abswid=absscale*(this->value-this->minvalue);
 	int			absx;
 	int			jx;
@@ -171,9 +167,11 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 			case BAR:
 				MOVETO(this->sx,this->sy);
 				setBothColours(this->gadgetColours.foreCol,this->blockColour);
-				for(jx=0;jx<abswid;jx++)
+				if(abswid>this->wid)
+					abswid=this->wid-1;
+				
+				for(jx=0;jx<=abswid;jx++)
 					printf(" ");
-
 				MOVETO(this->sx+jx,this->sy);
 				if(this->style==FILLEDBAR)
 					setBothColours(this->gadgetColours.foreCol,this->gadgetColours.backCol);
@@ -191,6 +189,7 @@ void CTK_cursesProgressBarClass::CTK_drawGadget(bool hilite)
 				absx=(int)(abswid+this->sx);
 				if(absx>this->wid+this->sx-1)
 					absx=this->wid+this->sx-1;
+
 				MOVETO(absx,this->sy);
 				printf(" ");
 				break;
