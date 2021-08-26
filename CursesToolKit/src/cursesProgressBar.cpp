@@ -77,6 +77,10 @@ void CTK_cursesProgressBarClass::CTK_newBar(int x,int y,int width,double min,dou
 	this->fillchar=fill;
 }
 
+/**
+* Private.
+* \note See CTK_setTimeFormat.
+*/
 std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 {
 	char		buffer[256]={0};
@@ -86,7 +90,10 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 
 	if(this->valuesAsTime==false)
 		{
-			snprintf(buffer,255,"%.*f",this->scale,value);
+			if(this->showMilliSecs==true)
+				snprintf(buffer,255,"%.*f",this->scale,value);
+			else
+				snprintf(buffer,255,"%.0f",value);
 			return(buffer);
 		}
 
@@ -95,11 +102,22 @@ std::string CTK_cursesProgressBarClass::convertValueToTime(double value)
 	timeinfo=gmtime(&rawtime);
 
 	if(this->showHours==true)
-		strftime (buffer,80,"%H:%M:%S",timeinfo);
-	else
-		strftime (buffer,80,"%M:%S",timeinfo);
+		{
+			strftime (buffer,80,"%H:%M:%S",timeinfo);
+		}
+	else if(this->showMinutes==true)
+		{
+			strftime (buffer,80,"%M:%S",timeinfo);
+		}
+	else if(this->showMinutes==false)
+		{
+			snprintf(buffer,255,"%.0f",value);
+		}
 
-	return(str(boost::format("%s.%02.0f") %buffer %(float)((tim % 1000)/10)));
+	if(this->showMilliSecs==true)
+		return(str(boost::format("%s.%02.0f") %buffer %(float)((tim % 1000)/10)));
+	else
+		return(buffer);
 }
 
 /**
@@ -343,12 +361,17 @@ void CTK_cursesProgressBarClass::CTK_setShowValuesAsTime(bool usetime)
 }
 
 /**
-* Progress Bar Show zero minutes.
-* \param bool showzero
+* Progress Bar Show hours/minutes/milli secs .
+* \param bool hours Show hours ( overides mins ).
+* \param bool mins Show minutes.
+* \param bool milli Show milliseconds.
+* \note Setting mins=false will show time in seconds.
 */
-void CTK_cursesProgressBarClass::CTK_setShowZeroMinutes(bool showzero)
+void CTK_cursesProgressBarClass::CTK_setTimeFormat(bool hours,bool mins,bool milli)
 {
-	this->showZeroMinutes=showzero;
+	this->showHours=hours;
+	this->showMinutes=mins;
+	this->showMilliSecs=milli;
 }
 
 /**

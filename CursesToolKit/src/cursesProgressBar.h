@@ -46,14 +46,13 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		void			CTK_setFillStyle(fillStyle style);
 		void			CTK_setPulseStyle(bool pulsecol,bool pulschar,const char *pulsechars="#*");
 		void			CTK_setShowValuesAsTime(bool usetime);
-		void			CTK_setShowZeroMinutes(bool showzero);
+		void			CTK_setTimeFormat(bool hours,bool mins,bool milli);
 	
 		void			CTK_pulseBar(void);
 
 		int				blockColour=BACK_RED;
 		int				blockPulseColours[2]={BACK_RED,BACK_GREEN};
 
-		bool			showHours=false;
 	private:
 		std::string		convertValueToTime(double value);
 
@@ -70,7 +69,9 @@ class CTK_cursesProgressBarClass : public CTK_cursesGadgetClass
 		int				scale=2;
 		bool			valueAsReal=false;
 		bool			valuesAsTime=false;
-		bool			showZeroMinutes=true;
+		bool			showHours=false;
+		bool			showMinutes=true;
+		bool			showMilliSecs=true;
 		showValueStyle	showValues=SHOWVALUE;
 };
 

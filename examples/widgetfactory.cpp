@@ -137,7 +137,7 @@ fprintf(stderr,"here\n");
 
 void doPulseBar(void)
 {
-	//progressPulse->CTK_pulseBar();
+	progressPulse->CTK_pulseBar();
 }
 
 bool buttonselctCB(void *inst,void *userdata)
@@ -681,7 +681,7 @@ geny+=3;
 	label->gadgetColours.boxType=NOBOX;
 	genx=mainApp->utils->CTK_getGadgetPos(0,mainApp->maxCols,3,mainApp->maxCols/3,2);
 	progressIndicator=mainApp->CTK_addNewProgressBar(genx,geny,mainApp->maxCols/3,0.0,130.0,0.0);
-	progressIndicator->showHours=true;
+	progressIndicator->CTK_setTimeFormat(false,false,false);
 	progressIndicator->CTK_setFillStyle(FILLEDINDICATOR);
 	progressIndicator->CTK_setShowRealValue(false);
 	progressIndicator->CTK_setShowValues(SHOWGAUGE);
