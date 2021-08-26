@@ -23,5 +23,3 @@ docs-install:
 docs-uninstall:
 	rm -rv $(DESTDIR)$(docdir)
 
-remake:
-	$(shell ./remakesourcelist)
