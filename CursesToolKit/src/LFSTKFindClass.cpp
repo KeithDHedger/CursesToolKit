@@ -386,6 +386,27 @@ bool LFSTK_findClass::fileTypesTest(const char *name)
 * \param bool Tru=Add this search to last, False=New search.
 * \note If LFSTK_getIgnoreBroken()==true broken links not reported.
 */
+
+int filter(const struct dirent *entry1)
+{
+	struct stat	st;
+
+	stat(entry1->d_name,&st);
+	struct dirent *e1=(struct dirent *)entry1;
+
+	if(e1->d_type==DT_UNKNOWN)
+		{
+			e1->d_type=DT_REG;
+			if((st.st_mode & S_IFMT)==S_IFDIR)
+				e1->d_type=DT_DIR;
+			if((st.st_mode & S_IFMT)==S_IFLNK)
+				e1->d_type=DT_LNK;
+		}
+	return(true);
+}
+
+#if 0
+
 void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 {
 	DIR			*dirhandle;
@@ -394,6 +415,8 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 	int			retstat;
 	dataStruct	datas;
 	char		*filepath;
+
+				std::cerr << dir << std::endl;
 
 	fc=this;
 	if(multi==false)
@@ -404,6 +427,28 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 		{
 			while ((entry=readdir(dirhandle)) != NULL)
 				{
+				std::cerr << entry->d_name << "---" << entry->d_type << std::endl;
+				if(entry->d_type==DT_UNKNOWN)
+				{
+					std::cerr << "DT_UNKNOWN" <<  std::endl;
+					fprintf(stderr,">>%i<<\n",entry->d_type);
+					struct dirent **namelist; 
+    int n;
+
+
+    n = scandir(".", &namelist, filter,versionsort); 
+    if (n == -1) { 
+        fprintf(stderr,"scandir"); 
+        exit(EXIT_FAILURE); 
+    }
+ while (n--) { 
+        fprintf(stderr,"%s - %i\n", namelist[n]->d_name, namelist[n]->d_type); 
+        free(namelist[n]); 
+    } 
+    free(namelist);
+    					//	page->fileCnt=scandir(page->thisFolder,&page->fileList,filter,versionsort);
+					return;
+				}
 					if(strcmp(entry->d_name,".")==0)
 						continue;
 					if((this->LFSTK_getIncludeHidden()==false) && ((strlen(entry->d_name)>2) && ((entry->d_name[0]=='.') && (entry->d_name[1]!='.') )))
@@ -483,3 +528,110 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 }
 
 
+#else
+void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
+{
+	DIR				*dirhandle;
+	dirent			*entry;
+	struct stat		filestat;
+	int				retstat;
+	dataStruct		datas;
+	char			*filepath;
+	struct dirent	**namelist=NULL; 
+	int n=0;
+
+	fc=this;
+	if(multi==false)
+		this->deleteData();
+	filepath=(char*)alloca(PATH_MAX);
+
+    n=scandir(dir,&namelist,filter,versionsort);
+    if(n==-1)
+    	{
+	        fprintf(stderr,"scandir fail >>%s<<",filepath); 
+			return;
+		}
+
+	for (int j=0;j<n;j++)
+		{
+			entry=namelist[j];
+
+			if(strcmp(entry->d_name,".")==0)
+				continue;
+			if((this->LFSTK_getIncludeHidden()==false) && ((strlen(entry->d_name)>2) && ((entry->d_name[0]=='.') && (entry->d_name[1]!='.') )))
+				continue;
+
+			if((this->ignoreNavLinks==true) && ((strcmp(entry->d_name,".")==0) || (strcmp(entry->d_name,"..")==0)))
+				continue;
+
+			datas.name=entry->d_name;
+			sprintf(filepath,"%s/%s",dir,entry->d_name);
+			if(entry->d_type==DT_LNK)
+				{
+					retstat=stat(filepath,&filestat);
+					if(retstat!=0)
+						{
+							if(this->LFSTK_getIgnoreBroken()==true)
+								continue;
+							datas.fileType=BROKENLINKTYPE;
+						}
+					else
+						{
+							if(this->LFSTK_getFollowlinks()==false)
+								{
+									datas.fileType=FILELINKTYPE;
+								}
+							else
+								{
+									switch(filestat.st_mode & S_IFMT)
+										{
+											case S_IFREG:
+												if(this->fileTypeTest(FILELINKTYPE)==false)
+													continue;
+												if(this->fileTypesTest(entry->d_name)==false)
+													continue;
+												datas.fileType=FILELINKTYPE;
+												break;
+											case S_IFDIR:
+												if(this->fileTypeTest(FOLDERLINKTYPE)==false)
+													continue;
+												datas.fileType=FOLDERLINKTYPE;
+												break;
+										}
+								}
+						}
+				}
+			else
+				{
+					switch(entry->d_type)
+						{
+							case DT_REG:
+								if(this->fileTypeTest(FILETYPE)==false)
+									continue;
+								if(this->fileTypesTest(entry->d_name)==false)
+									continue;			
+								datas.fileType=FILETYPE;
+								break;
+							case DT_DIR:
+								if(this->fileTypeTest(FOLDERTYPE)==false)
+									continue;
+								datas.fileType=FOLDERTYPE;
+								break;
+						}
+				}
+
+			if(this->LFSTK_getFullPath()==true)
+				datas.path=filepath;
+			else
+				datas.path="";
+					
+			this->data.push_back(datas);
+			datas.name.clear();
+			datas.path.clear();
+			free(namelist[j]);
+		}
+	free(namelist); 
+	this->dataCnt=this->data.size();
+}
+
+#endif

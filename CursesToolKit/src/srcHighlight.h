@@ -5,7 +5,6 @@
 #include <boost/regex.hpp>
 #include <boost/format.hpp>
 
-
 #ifndef _SRCHIGHLIGHT_
 #define _SRCHIGHLIGHT_
 

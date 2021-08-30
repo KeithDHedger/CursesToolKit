@@ -6,6 +6,10 @@
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
+pushd ..
+	make||exit 100
+popd
+
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o folderselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./folderselect "$@"
 retval=$?

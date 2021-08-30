@@ -189,16 +189,36 @@ static bool fileSelectCB(void *inst,void *data)
 			case CUOPENFILE:
 				if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
 					{
-						ud->results->CTK_updateText(ch->filePath.c_str());
+						char *rp=realpath(ch->filePath.c_str(),NULL);
+						if(rp!=NULL)
+							{
+								ud->results->CTK_updateText(rp);
+								free(rp);
+							}
+						else
+							{
+								ud->results->CTK_updateText(ch->filePath.c_str());
+							}
 						ud->defaultGadget->CTK_setEnabled(true);
 						ud->defaultGadget->CTK_drawGadget(false);
 					}
 				break;
 			case CUOPENFOLDER:
-				ud->results->CTK_updateText(ch->filePath.c_str());
-				ud->defaultGadget->CTK_setEnabled(true);
-				ud->defaultGadget->CTK_drawGadget(false);
-				return(true);
+				{
+					char *rp=realpath(ch->filePath.c_str(),NULL);
+					if(rp!=NULL)
+						{
+							ud->results->CTK_updateText(rp);
+							free(rp);
+						}
+					else
+						{
+							ud->results->CTK_updateText(ch->filePath.c_str());
+						}
+					ud->defaultGadget->CTK_setEnabled(true);
+					ud->defaultGadget->CTK_drawGadget(false);
+					return(true);
+				}
 				break;
 			case CUSAVEFILE:
 				if(ch->files->data[ch->lb->listItemNumber].fileType!=FOLDERTYPE)
@@ -387,16 +407,16 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 			this->dialogReturnData.input->CTK_setSelectCB(buttonSelectEntryCB,(void*)&this->dialogReturnData);
 			this->dialogReturnData.input->userData=(void*)CUCHOOSERINPUT;
 			this->dialogReturnData.input->redrawAppWindow=false;
-					this->dialogReturnData.input->gadgetColours.boxType=INBOX;
-					this->dialogReturnData.input->gadgetColours.foreCol=FORE_BLACK;
-					this->dialogReturnData.input->gadgetColours.backCol=BACK_WHITE;
+			this->dialogReturnData.input->gadgetColours.boxType=INBOX;
+			this->dialogReturnData.input->gadgetColours.foreCol=FORE_BLACK;
+			this->dialogReturnData.input->gadgetColours.backCol=BACK_WHITE;
 		}
 	else
 		{
 			if(choosertype==CUOPENFOLDER)
 				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,startdir,false);
 			else
-					this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
+				this->dialogReturnData.results=app->CTK_addNewTextBox(genx,CURRENTPAGE(app).boxY+CURRENTPAGE(app).boxH-3,genw,1,"",false);
 			this->dialogReturnData.results->gadgetColours.boxType=INBOX;
 			this->dialogReturnData.results->gadgetColours.foreCol=FORE_BLACK;
 			this->dialogReturnData.results->gadgetColours.backCol=BACK_WHITE;
@@ -425,6 +445,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 
 	SETHIDECURS;
 	app->CTK_setDefaultGadget(this->dialogReturnData.chooser->lb);
+	fflush(NULL);
 	app->CTK_mainEventLoop(0,true,true);
 	delete app;
 	if(this->mc!=NULL)
@@ -432,6 +453,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 			this->mc->CTK_clearScreen();
 			this->mc->CTK_updateScreen(this->mc,NULL);
 		}
+	fflush(NULL);
 	return(this->dialogReturnData.isValidData);
 }
 
