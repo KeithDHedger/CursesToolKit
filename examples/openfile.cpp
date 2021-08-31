@@ -2,9 +2,14 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./openfile.cpp ~
+#(cd ../;make -j4);./openfile.cpp
 
-#USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+
+pushd ..
+	make||exit 100
+popd
+
 
 g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o fileselect ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fileselect "$@"

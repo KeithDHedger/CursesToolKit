@@ -2,7 +2,7 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./openfolder.cpp ~
+#(cd ../;make -j4);./openfolder.cpp
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 

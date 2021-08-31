@@ -809,6 +809,9 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 		{
 			while(fgets(buffer,PATH_MAX,fp))
 				{
+					datatype[0]=0;
+					data[0]=0;
+					varname[0]=0;
 					if(buffer[0]=='\n')
 						continue;
 					sscanf(buffer,"%[^ ] %[^ ] %[^\n]",varname,datatype,data);
