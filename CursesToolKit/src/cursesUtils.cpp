@@ -445,8 +445,10 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 
 	SETHIDECURS;
 	app->CTK_setDefaultGadget(this->dialogReturnData.chooser->lb);
+	app->CTK_clearScreen();
+	app->CTK_updateScreen(app,NULL);
 	fflush(NULL);
-	app->CTK_mainEventLoop(0,true,true);
+	app->CTK_mainEventLoop(0,false,true);
 	delete app;
 	if(this->mc!=NULL)
 		{

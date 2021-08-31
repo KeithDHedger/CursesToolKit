@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 {
 	CTK_cursesUtilsClass	cu;
 
+//	cu.CTK_fileChooserDialog("/media/Kodi/media/Movies3/Movies/Drama",CUOPENFOLDER);
 	cu.CTK_fileChooserDialog(getenv("HOME"),CUOPENFOLDER);
 	if(cu.dialogReturnData.isValidData==true)
 		fprintf(stderr,"%s\n",cu.dialogReturnData.stringValue.c_str());
