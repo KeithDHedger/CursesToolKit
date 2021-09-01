@@ -255,6 +255,8 @@ static inline int getColForXpos(std::string str,int tabwidth,int cx,int pad)
 				sprintf(retbuffer,"%s",path);
 				break;
 			case BROKENLINKTYPE:
+				sprintf(retbuffer,"%s@X",path);
+				break;
 			case FILELINKTYPE:
 				sprintf(retbuffer,"%s@",path);
 				break;

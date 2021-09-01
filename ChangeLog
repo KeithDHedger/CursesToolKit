@@ -1,4 +1,7 @@
 3.0.1
+Marked broken links.
+Ignore broken links now default in chooser.
+Fixed wrong file type in mounted folder.
 Fixed mem leak in LFSTK_findFiles.
 Fixed openfolder/file opening from mounted sshfs folder.
 Removed unused target from Makefile.

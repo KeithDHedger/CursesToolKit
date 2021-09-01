@@ -330,12 +330,13 @@ static bool buttonSelectEntryCB(void *inst,void *data)
 * Open/save file/folder convenience dialog.
 * \param const char *startdir, default start in current dir.
 * \param int choosertype, CUOPENFILE, CUOPENFOLDER or CUSAVEFILE.
+* \param bool ignorebroken ignore broken links ( default true ).
 * \param const char *filetypes file types to show.
 * \param const char *savename default save file name, ignored for open.
 * \note Default is to show all file types in open dialog,
 * \note filetypes is ';' delimited string eg ".png;.tiff;"
 */
-bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choosertype,const char *filetypes,const char *savename)
+bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choosertype,bool ignorebroken,const char *filetypes,const char *savename)
 {
 	int						genx,geny,genw,genh;
 	CTK_cursesButtonClass	*button;
@@ -396,6 +397,7 @@ bool CTK_cursesUtilsClass::CTK_fileChooserDialog(const char *startdir,int choose
 		}
 
 	this->dialogReturnData.chooser->CTK_setShowFileTypes(filetypes);
+	this->dialogReturnData.chooser->files->LFSTK_setIgnoreBroken(ignorebroken);
 	this->dialogReturnData.chooser->CTK_setShowHidden(false);
 	this->dialogReturnData.chooser->CTK_selectFolder(app,this->inFolder.c_str());
 	app->CTK_addChooserBox(this->dialogReturnData.chooser);

@@ -380,27 +380,6 @@ bool LFSTK_findClass::fileTypesTest(const char *name)
 }
 
 /**
-* Private filter unction.
-*/
-static int filter(const struct dirent *entry1)
-{
-	struct stat	st;
-
-	stat(entry1->d_name,&st);
-	struct dirent *e1=(struct dirent *)entry1;
-
-	if(e1->d_type==DT_UNKNOWN)
-		{
-			e1->d_type=DT_REG;
-			if((st.st_mode & S_IFMT)==S_IFDIR)
-				e1->d_type=DT_DIR;
-			if((st.st_mode & S_IFMT)==S_IFLNK)
-				e1->d_type=DT_LNK;
-		}
-	return(true);
-}
-
-/**
 * Main search function.
 * \param const char *dir Path to search.
 * \param bool Tru=Add this search to last, False=New search.
@@ -422,10 +401,10 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 		this->deleteData();
 	filepath=(char*)alloca(PATH_MAX);
 
-    n=scandir(dir,&namelist,filter,versionsort);
+    n=scandir(dir,&namelist,NULL,versionsort);
     if(n==-1)
     	{
-	        fprintf(stderr,"scandir fail >>%s<<",filepath); 
+	        fprintf(stderr,"scandir fail >>%s<<",dir); 
 			return;
 		}
 
@@ -440,6 +419,17 @@ void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 
 			if((this->ignoreNavLinks==true) && ((strcmp(entry->d_name,".")==0) || (strcmp(entry->d_name,"..")==0)))
 				continue;
+
+			if(entry->d_type==DT_UNKNOWN)//for fuse mounted files
+				{
+					sprintf(filepath,"%s/%s",dir,entry->d_name);
+					stat(filepath,&filestat);
+					entry->d_type=DT_REG;
+					if((filestat.st_mode & S_IFMT)==S_IFDIR)
+						entry->d_type=DT_DIR;
+					if((filestat.st_mode & S_IFMT)==S_IFLNK)
+						entry->d_type=DT_LNK;
+				}
 
 			datas.name=entry->d_name;
 			sprintf(filepath,"%s/%s",dir,entry->d_name);
