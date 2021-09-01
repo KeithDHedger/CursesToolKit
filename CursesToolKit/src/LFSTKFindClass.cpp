@@ -379,15 +379,10 @@ bool LFSTK_findClass::fileTypesTest(const char *name)
 	return(false);
 }
 
-
 /**
-* Main search function.
-* \param const char *dir Path to search.
-* \param bool Tru=Add this search to last, False=New search.
-* \note If LFSTK_getIgnoreBroken()==true broken links not reported.
+* Private filter unction.
 */
-
-int filter(const struct dirent *entry1)
+static int filter(const struct dirent *entry1)
 {
 	struct stat	st;
 
@@ -405,6 +400,12 @@ int filter(const struct dirent *entry1)
 	return(true);
 }
 
+/**
+* Main search function.
+* \param const char *dir Path to search.
+* \param bool Tru=Add this search to last, False=New search.
+* \note If LFSTK_getIgnoreBroken()==true broken links not reported.
+*/
 void LFSTK_findClass::LFSTK_findFiles(const char *dir,bool multi)
 {
 	DIR				*dirhandle;

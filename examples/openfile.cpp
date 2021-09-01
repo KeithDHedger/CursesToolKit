@@ -4,7 +4,9 @@
 #Run eg:
 #(cd ../;make -j4);./openfile.cpp
 
-USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+if [ "${USEVAL}" != "" ];then
+	USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
+fi
 
 pushd ..
 	make||exit 100
