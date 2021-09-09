@@ -788,10 +788,9 @@ void CTK_cursesUtilsClass::CTK_splashScreen(CTK_mainAppClass *app,const char *te
 * \param bool clear ( optional ).
 * \param std::vector<varsStruct> ( optional, set to defined vars when clear=false ).
 * \returns std::vector<varsStruct>.
-* \note file format=NAMEOFVARIABLE DATA.
-* \note Type of data is auto detected.
-* \note true/false=bool 123/0xfe/0177=int (decimal/hex/octal) all else is string.
+* \note file format=NAMEOFVARIABLE DATATYPE DATA.
 * \note if clear is set all vars are cleared before loading, else loaded var overwrites current var.
+* \note Escaped space and tab ( \s and \t ) will be unescaped.
 */
 std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,bool clear,std::vector<varsStruct> invs)
 {
@@ -834,23 +833,6 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 							if(strcasecmp(data,"false")==0)
 								vs.boolVar=false;
 						}
-						
-//					if(isdigit(data[0]))
-//						vs.vType=INTVAR;
-//					else
-//						vs.vType=CHARVAR;
-//
-//					if(strcasecmp(data,"true")==0)
-//						{
-//							vs.vType=BOOLVAR;
-//							vs.boolVar=true;
-//						}
-//
-//					if(strcasecmp(data,"false")==0)
-//						{
-//							vs.vType=BOOLVAR;
-//							vs.boolVar=false;
-//						}
 
 					switch(vs.vType)
 						{
@@ -861,6 +843,8 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 								if(data[strlen(data)-1]=='\n')
 									data[strlen(data)-1]=0;
 								vs.charVar=data;
+								boost::replace_all(vs.charVar,"\\s"," ");
+								boost::replace_all(vs.charVar,"\\t","\t");
 								break;
 						}
 
@@ -885,6 +869,7 @@ std::vector<varsStruct> CTK_cursesUtilsClass::CTK_loadVars(const char *filepath,
 * \param const char *filepath.
 * \param std::vector<varsStruct>.
 * \note If "filepath" = "1" output is to stdout, "2" goes to stderr.
+* \note Spaces and tabs will be escaped.
 */
 void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStruct> vs)
 {
@@ -926,7 +911,12 @@ void CTK_cursesUtilsClass::CTK_saveVars(const char *filepath,std::vector<varsStr
 									fprintf(fp,"%s number 0%o\n",vs[j].varName.c_str(),vs[j].intVar);
 								break;
 							case CHARVAR:
-								fprintf(fp,"%s string %s\n",vs[j].varName.c_str(),vs[j].charVar.c_str());
+								{
+									std::string tstr=vs[j].charVar;
+									boost::replace_all(tstr," ","\\s");
+									boost::replace_all(tstr,"\t","\\t");
+									fprintf(fp,"%s string %s\n",vs[j].varName.c_str(),tstr.c_str());
+								}
 								break;
 						}
 				}

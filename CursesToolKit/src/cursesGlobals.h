@@ -40,6 +40,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include<boost/algorithm/string.hpp>
+
 #if defined _DEBUGCODE_ || defined _WARN_ENABLEDEBUG_
 #include "/media/LinuxData/Development/DevelopmentFiles/Debugging/debug.h"
 #endif
