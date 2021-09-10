@@ -12,11 +12,10 @@ pushd ..
 	make||exit 100
 popd
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o fileselect ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fileselect "$@"
+g++ "$0" -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit -o fileselect ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fileselect
 retval=$?
 rm fileselect
-reset
 exit $retval
 
 #endif

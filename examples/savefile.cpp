@@ -6,11 +6,10 @@
 
 #USEVALGRIND="valgrind --leak-check=full"
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o savefile ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./savefile "$@"
+g++ "$0" -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit -o savefile ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./savefile
 retval=$?
 rm savefile
-reset
 exit $retval
 
 #endif
@@ -21,7 +20,7 @@ int main(int argc, char **argv)
 {
 	CTK_cursesUtilsClass	cu;
 
-	cu.CTK_fileChooserDialog(getenv("HOME"),CUSAVEFILE,NULL,"Test File");
+	cu.CTK_fileChooserDialog(getenv("HOME"),CUSAVEFILE,NULL,"Test File");//TODO//
 	if(cu.dialogReturnData.isValidData==true)
 		fprintf(stderr,"%s\n",cu.dialogReturnData.stringValue.c_str());
 

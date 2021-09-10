@@ -2,16 +2,16 @@
 
 #©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
-#(cd ../;make -j4);./aboutbox.cpp  "About Example" "An example about box" "Copyright 2019 K.D.Hedger" "keithdhedger@gmail.com" "http://keithhedger.freeddns.org" "$(echo -e "K.D.Hedger\nJoe Bloggs")" "/media/LinuxData/Development64/Projects/CursesToolKit/LICENSE"
+#(cd ../;make -j4);./aboutbox.cpp  "About Example" "An example about box" "Copyright 2019 K.D.Hedger" "keithdhedger@gmail.com" "http://keithhedger.freeddns.org" "$(echo -e "K.D.Hedger\nJoe Bloggs")" "/media/LinuxData/Development64/Projects/CursesToolKit/LICENSE" -1
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0"  -o aboutbox ||exit 1
+g++ "$0" -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit -o aboutbox ||exit 1
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./aboutbox "$@"
 retval=$?
 rm aboutbox
-reset
 exit $retval
+
 #endif
 
 #include <cursesGlobals.h>

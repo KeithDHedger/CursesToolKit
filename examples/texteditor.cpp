@@ -4,11 +4,10 @@
 
 #USEVALGRIND="valgrind --leak-check=full"
 
-g++ -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs ncurses Magick++ ) -lcursestoolkit "$0" -o texteditor ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./texteditor "$@"
+g++ "$0" -Wall -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs ncurses Magick++ ) -lcursestoolkit -o texteditor ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./texteditor
 retval=$?
 rm texteditor
-reset
 exit $retval
 
 #endif
@@ -40,13 +39,13 @@ enum {NEXTTAB=0,PREVTAB};
 enum {REMOVEMARKS=0,TOGGLEMARK};
 enum {HELP=0,ABOUT};
 
-const char	*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
-const char	*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
-const char	*editMenuNames[]={" _Copy"," C_ut"," _Paste",NULL};
-const char	*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
-const char	*tabMenuNames[]={" _Next Tab"," _Prev Tab",NULL};
-const char	*bmMenuNames[]={" _Remove All Marks"," _Toggle Mark",NULL};
-const char	*helpMenuNames[]={" _Help"," About ",NULL};
+const char					*menuNames[]={"File","Edit","Navigation","Tabs","BookMarks","Help",NULL};
+const char					*fileMenuNames[]={" _New"," _Open"," _Save"," Save _As"," _Close"," _Quit",NULL};
+const char					*editMenuNames[]={" _Copy"," C_ut"," _Paste",NULL};
+const char					*navMenuNames[]={" _Goto Line"," _Find"," Find _Next",NULL};
+const char					*tabMenuNames[]={" _Next Tab"," _Prev Tab",NULL};
+const char					*bmMenuNames[]={" _Remove All Marks"," _Toggle Mark",NULL};
+const char					*helpMenuNames[]={" _Help"," About ",NULL};
 
 CTK_mainAppClass			*mainApp=new CTK_mainAppClass();
 int							windowRows=mainApp->maxRows-3;
@@ -55,14 +54,19 @@ int							showLineNumbers=4;
 std::vector<bookmarkStruct>	bms;
 int							newCnt=0;
 std::string					clip="";
+int							genw;
+int							geny;
+int							genx;
+int							genh;
 
 CTK_cursesEditBoxClass* getSrcBox(int page)
 {
-	for(int k=0;k<mainApp->pages[page].gadgets.size();k++)
+	for(long unsigned int k=0;k<mainApp->pages[page].gadgets.size();k++)
 		{
 			if(mainApp->pages[page].gadgets[k]->CTK_getGadgetType()==EDITGADGET)
 				return(static_cast<CTK_cursesEditBoxClass*>(mainApp->pages[page].gadgets[k]));
 		}
+	return(NULL);
 }
 
 void rebuildTabMenu(void)
@@ -87,7 +91,7 @@ void rebuildBMMenu(void)
 	while(bmMenuNames[cnt]!=NULL)
 		mainApp->menuBar->CTK_addMenuItem(BMMENU,bmMenuNames[cnt++]);
 
-	for(int j=0;j<bms.size();j++)
+	for(long unsigned int j=0;j<bms.size();j++)
 		CTK_freeAndNull(&bms[j].label);
 	bms.clear();
 
@@ -115,7 +119,6 @@ void rebuildBMMenu(void)
 bool menuSelectCB(void *inst,void *userdata)
 {
 	CTK_cursesMenuClass	*mc=static_cast<CTK_cursesMenuClass*>(inst);
-//	fprintf(stderr,"Menu item (%i) '%s' of menu (%i) '%s' selected.\n",mc->menuItemNumber,mc->menuNames[mc->menuNumber]->menuItem[mc->menuItemNumber]->menuName,mc->menuNumber,mainApp->menuBar->menuNames[mc->menuNumber]->menuName);
 	CTK_cursesEditBoxClass	*srcbox=getSrcBox(mainApp->pageNumber);;
 
 	switch(mc->menuNumber)
@@ -129,11 +132,13 @@ bool menuSelectCB(void *inst,void *userdata)
 								asprintf(&uddata,"/tmp/Untitled-%i",++newCnt);
 								srcbox->CTK_setRunLoop(false);
 								mainApp->CTK_addPage();
-								srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows,false,"\n");
+								srcbox=mainApp->CTK_addNewEditBox(mainApp,genx,geny,genw,genh,false,"\n");
 								srcbox->CTK_setShowLineNumbers(showLineNumbers);
+								srcbox->gadgetColours.boxType=NOBOX;
 								mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)uddata);
 								rebuildTabMenu();
 								rebuildBMMenu();
+								mainApp->CTK_clearScreen();
 							}
 							break;
 
@@ -146,11 +151,13 @@ bool menuSelectCB(void *inst,void *userdata)
 									{
 										srcbox->CTK_setRunLoop(false);
 										mainApp->CTK_addPage();
-										srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,true,mainApp->utils->dialogReturnData.stringValue.c_str());
+										srcbox=mainApp->CTK_addNewEditBox(mainApp,genx,geny,genw,genh,true,mainApp->utils->dialogReturnData.stringValue.c_str());
 										srcbox->CTK_setShowLineNumbers(showLineNumbers);
+										srcbox->gadgetColours.boxType=NOBOX;
 										mainApp->CTK_setPageUserData(mainApp->pageNumber,(void*)strdup(mainApp->utils->dialogReturnData.stringValue.c_str()));
 										rebuildTabMenu();
 										rebuildBMMenu();
+										mainApp->CTK_clearScreen();
 									}
 								free(buffer);
 							}
@@ -278,14 +285,20 @@ bool menuSelectCB(void *inst,void *userdata)
 					{
 						case NEXTTAB:
 							mainApp->CTK_nextPage();
+							mainApp->CTK_clearScreen();
+							mainApp->CTK_setDefaultGadget(mainApp->CTK_getGadgetNum(mainApp->pageNumber,EDITGADGET,1));
 							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 						case PREVTAB:
 							mainApp->CTK_previousPage();
+							mainApp->CTK_clearScreen();
+							mainApp->CTK_setDefaultGadget(mainApp->CTK_getGadgetNum(mainApp->pageNumber,EDITGADGET,1));
 							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 						default:
 							mainApp->CTK_setPage(mc->menuItemNumber-2);
+							mainApp->CTK_clearScreen();
+							mainApp->CTK_setDefaultGadget(mainApp->CTK_getGadgetNum(mainApp->pageNumber,EDITGADGET,1));
 							mainApp->CTK_updateScreen(mainApp,SCREENUPDATEBASIC);
 							break;
 					}
@@ -326,34 +339,24 @@ bool menuSelectCB(void *inst,void *userdata)
 					}
 				break;
 		}
+	return(true);
 }
 
 void mainloopCB(void *mainc,void *data)
 {
-//MOVETO(1,2);
-//printf("123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
-//fprintf(stderr,"sx=%i -> se=%i\n",srcbox->startSelection,srcbox->endSelection);
-//fflush(NULL);
 }
 
 int main(int argc, char **argv)
 {
 	const char				*ftol="texteditor.cpp";
-//	coloursStruct			cs;
 	CTK_cursesEditBoxClass	*srcbox;
 
-	//cs.windowBackCol=BACK_WHITE;
-	//cs.fancyGadgets=false;
-
-	//cs.hiliteBackCol=BACK_BLACK;
-	//cs.hiliteForeCol=FORE_GREEN;
-	//cs.menuForeCol=FORE_BLACK;
-	//cs.menuBackCol=BACK_GREEN;
-	//cs.lineNumBackCol=BACK_WHITE;
-	//cs.lineNumForeCol=FORE_BLACK;
+	genw=windowCols;
+	geny=2;
+	genx=1;
+	genh=windowRows;
 
 	mainApp->CTK_setTabWidth(TABWIDTH);
-	//mainApp->CTK_setColours(&cs,true);
 	mainApp->CTK_addNewMenuBar();
 
 	mainApp->menuBar->CTK_addMenuToBar(menuNames[FILEMENU]);
@@ -391,15 +394,11 @@ int main(int argc, char **argv)
 		mainApp->menuBar->CTK_addMenuItem(TABMENU,tabMenuNames[cnt++]);
 
 	mainApp->menuBar->CTK_setSelectCB(menuSelectCB,NULL);
-	//cs.hiliteBackCol=BACK_CYAN;
-	//cs.hiliteForeCol=FORE_BLACK;
-	//cs.foreCol=FORE_BLACK;
-	//cs.backCol=BACK_WHITE;
-	//mainApp->CTK_setColours(&cs,true);
 
 //int bw=32;
-	srcbox=mainApp->CTK_addNewEditBox(mainApp,1,3,windowCols,windowRows-1,false,"\n");
+	srcbox=mainApp->CTK_addNewEditBox(mainApp,genx,geny,genw,genh,false,"\n");
 	srcbox->CTK_setShowLineNumbers(showLineNumbers);
+	srcbox->gadgetColours.boxType=NOBOX;
 	mainApp->CTK_setPageUserData(0,(void*)strdup(ftol));
 	mainApp->menuBar->CTK_addMenuItem(TABMENU,ftol);
 
@@ -411,10 +410,10 @@ int main(int argc, char **argv)
 	mainApp->eventLoopCBIn=mainloopCB;
 	mainApp->CTK_mainEventLoop();
 
-	for(int j=0;j<bms.size();j++)
+	for(long unsigned int j=0;j<bms.size();j++)
 		CTK_freeAndNull(&bms[j].label);
 
-	for(int k=0;k<mainApp->pages.size();k++)
+	for(long unsigned int k=0;k<mainApp->pages.size();k++)
 		free(mainApp->pages[k].userData);
 
 	delete mainApp;

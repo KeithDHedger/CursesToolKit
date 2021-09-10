@@ -4,11 +4,10 @@
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit "$0" -o varsexample ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./varsexample "$@"
+g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++) -lcursestoolkit -o varsexample ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./varsexample
 retval=$?
 rm varsexample
-reset
 exit $retval
 
 #endif
@@ -25,8 +24,7 @@ int main(int argc, char **argv)
 	varsStruct				vsitem;
 	std::vector<varsStruct> outvs;
 	std::vector<varsStruct> invs;
-	char					*filepath="/tmp/testvar.config";
-	const char				*vartype="";
+	std::string				filepath="/tmp/testvar.config";
 
 	if(argc>1)
 		filepath=argv[1];
@@ -64,8 +62,8 @@ int main(int argc, char **argv)
 	vsitem.varName="4thvar";
 	outvs.push_back(vsitem);
 
-	mainApp->utils->CTK_saveVars(filepath,outvs);
-	invs=mainApp->utils->CTK_loadVars(filepath);
+	mainApp->utils->CTK_saveVars(filepath.c_str(),outvs);
+	invs=mainApp->utils->CTK_loadVars(filepath.c_str());
 
 	for(unsigned j=0;j<invs.size();j++)
 		{

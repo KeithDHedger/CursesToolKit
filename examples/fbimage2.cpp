@@ -7,11 +7,10 @@
 #Run eg:
 #(cd ../;make -j4);./fbimage2.cpp /path/to/folder/with/images
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ) -lcursestoolkit "$0" -o fbimage2example ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimage2example "$@"
+g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ) -lcursestoolkit -o fbimage2example ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimage2example
 retval=$?
 rm fbimage2example
-reset
 exit $retval
 
 #endif
@@ -31,9 +30,7 @@ bool imgselctCB(void *inst,void *userdata)
 
 bool buttonselctCB(void *inst,void *userdata)
 {
-	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
-	long					ud=(long)userdata;
 
 	fprintf(stderr,"Button '%s' clicked, Userdata %p\n",bc->label,userdata);
 	mainApp->runEventLoop=false;
@@ -42,8 +39,6 @@ bool buttonselctCB(void *inst,void *userdata)
 
 int main(int argc, char **argv)
 {
-
-	//coloursStruct			cs;
 	CTK_cursesLabelClass	*lab;
 	CTK_cursesButtonClass	*button;
 
@@ -52,14 +47,6 @@ int main(int argc, char **argv)
 	int						labellen=strlen(label);
 	struct fbData			*fbinf=mainApp->CTK_getFBData();
 	CTK_cursesUtilsClass	cu;
-	char					*folder=NULL;
-
-	if(argc>1)
-		folder=argv[1];
-
-	//cs.windowBackCol=BACK_WHITE;
-//	cs.fancyGadgets=true;
-//	mainApp->CTK_setColours(&cs,true);
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),2,labellen,1,label);
 	lab->CTK_setJustify(CENTREJUSTIFY);

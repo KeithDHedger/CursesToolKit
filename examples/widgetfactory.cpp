@@ -20,19 +20,20 @@
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s --show-error-list=yes --gen-suppressions="
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"
 
+#USEDEBUG="-D_DEBUGCODE"
+USEDEBUG=""
+
 pushd ..
 	make||exit 100
 popd
 
 name=$(basename $0 .cpp)
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs -D_DEBUGCODE_ $(pkg-config --cflags --libs Magick++ ncurses ) -lcursestoolkit -lboost_system -lboost_filesystem -lboost_regex "$0" -o $name ||exit 1
-echo "done compiling ..."
+g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $USEDEBUG_ $(pkg-config --cflags --libs Magick++ ncurses ) -lcursestoolkit -lboost_system -lboost_filesystem -lboost_regex  -o $name ||exit 1
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
 retval=$?
 rm $name
-#reset
 exit $retval
 
 #endif
@@ -145,7 +146,6 @@ bool buttonselctCB(void *inst,void *userdata)
 	char					*buffer=(char*)alloca(256);
 	CTK_cursesButtonClass	*bc=static_cast<CTK_cursesButtonClass*>(inst);
 	long					ud=(long)userdata;
-	char					*srcbuffercopy;
 
 	if(userdata!=NULL)
 		{
@@ -177,6 +177,7 @@ bool buttonselctCB(void *inst,void *userdata)
 						break;
 				}
 		}
+	return(true);
 }
 
 bool listselctCB(void *inst,void *userdata)
@@ -185,7 +186,7 @@ bool listselctCB(void *inst,void *userdata)
 	CTK_cursesListBoxClass		*ls=static_cast<CTK_cursesListBoxClass*>(inst);
 	std::string					itemstr="";
 
-	sprintf(buffer,"List %i List item '%s' clicked, user data=%p.",(long)userdata,ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
+	sprintf(buffer,"List %li List item '%s' clicked, user data=%p.",(long)userdata,ls->listItems[ls->listItemNumber]->label.c_str(),ls->listItems[ls->listItemNumber]->userData);
 
 	if(ls->CTK_getMultipleSelect()==true)
 		{
@@ -198,9 +199,10 @@ bool listselctCB(void *inst,void *userdata)
 						itemstr+=":";
 					}
 				}
-			sprintf(buffer,"List %i List items '%s' clicked, user data=%p.",(long)userdata,itemstr.c_str(),ls->listItems[ls->listItemNumber]->userData);
+			sprintf(buffer,"List %li List items '%s' clicked, user data=%p.",(long)userdata,itemstr.c_str(),ls->listItems[ls->listItemNumber]->userData);
 		}
 	resulttextbox->CTK_updateText(buffer);
+	return(true);
 }
 
 bool checkselctCB(void *inst,void *userdata)
@@ -228,6 +230,7 @@ bool checkselctCB(void *inst,void *userdata)
 	sprintf(buffer,"CheckBox '%s' clicked ... Value=%i",cb->label,cb->CTK_getValue());
 	mainApp->menuBar->CTK_drawDefaultMenuBar();
 	resultbuttonstextbox->CTK_updateText(buffer);
+	return(true);
 }
 
 bool dropboxCB(void *inst,void *userdata)
@@ -237,6 +240,7 @@ bool dropboxCB(void *inst,void *userdata)
 
 	sprintf(buffer,"Drop box item=%i label=%s",db->selectedItem,db->label.c_str());
 	resultbuttonstextbox->CTK_updateText(buffer);
+	return(true);
 }
 
 bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
@@ -283,7 +287,6 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 int main(int argc, char **argv)
 {
 	CTK_cursesButtonClass			*button;
-	CTK_cursesTextBoxClass			*textbox;
 	CTK_cursesInputClass			*input;
 	CTK_cursesCheckBoxClass			*checkbox;
 	CTK_cursesLabelClass			*label;
@@ -326,14 +329,10 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	int genw;
 	int	genh;
 
-//system("setterm --background white");
-//mainApp->windowColours.backCol=BACK_BOLD_WHITE;
 	mainApp->CTK_setTabWidth(TABWIDTH);
 
 	CTK_cursesUtilsClass	cu;
 	cu.CTK_splashScreen(mainApp,"Basic example of CTK gadgets.\nThis is the simple non-blocking splash screen.\nShould be used if your app takes a while to start up.\nIt will disappear in 2 seconds");
-//	sleep(2);
-//	mainApp->CTK_mainEventLoop(-2000);
 
 	mainApp->CTK_addNewMenuBar();
 
@@ -411,7 +410,6 @@ Drop boxes act the same as menus once selcted in the normal way\n\
 	label->gadgetColours.boxType=0;
 	geny+=3;
 	bool usenativehiliter=true;
-//	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp",usenativehiliter);
 	srceditbox=mainApp->CTK_addNewSourceEditBox(mainApp,genx,geny,genw,genh,true,"../CursesToolKit/src/cursesApplication.cpp");
 	srceditbox->CTK_setShowLineNumbers(4);
 	srceditbox->liveUpdate=true;

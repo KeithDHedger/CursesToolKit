@@ -7,11 +7,10 @@
 #Run eg:
 #(cd ../;make -j4);./fbimage.cpp /path/to/folder/with/images
 
-g++ -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ) -lcursestoolkit "$0" -o fbimageexample ||exit 1
-LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimageexample "$@"
+g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $(pkg-config --cflags --libs Magick++ ) -lcursestoolkit -o fbimageexample ||exit 1
+LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND ./fbimageexample
 retval=$?
 rm fbimageexample
-reset
 exit $retval
 
 #endif
@@ -25,7 +24,6 @@ exit $retval
 int main(int argc, char **argv)
 {
 	CTK_mainAppClass		*mainApp=new CTK_mainAppClass();
-	//coloursStruct			cs;
 	CTK_cursesLabelClass	*lab;
 	const char				*label="Simple Framebuffer Image Example, Press Any Key ...";
 	int						labellen=strlen(label);
@@ -36,11 +34,7 @@ int main(int argc, char **argv)
 	if(argc>1)
 		folder=argv[1];
 
-
-	//cs.windowBackCol=BACK_WHITE;
-	//mainApp->CTK_setColours(&cs,true);
-
-	mainApp->CTK_setFBBackDrop("/home/keithhedger/casper2.JPG");
+	//mainApp->CTK_setFBBackDrop("/home/keithhedger/casper2.JPG");
 
 	lab=mainApp->CTK_addNewLabel((mainApp->maxCols/2)-(labellen/2),1,labellen,1,label);
 	lab->CTK_setJustify(CENTREJUSTIFY);
