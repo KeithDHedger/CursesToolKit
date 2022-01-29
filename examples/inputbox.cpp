@@ -1,6 +1,6 @@
 #if 0
 
-#©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
+#(c)keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
 #Run eg:
 #(cd ..;make -j4);./inputbox.cpp "$(echo -ne "Body String line 1\nLine 2\nLine 3\nLine 4")" "Default Input String" "Window name" "Dialog title"  1 40
 

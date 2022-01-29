@@ -846,9 +846,14 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 
 	while(this->runEventLoop==true)
 		{
+
 			this->readKey->tabIsSpecial=true;
 			this->readKey->CTK_getInput();
 
+			if(this->eventLoopCBIn!=NULL)
+				this->eventLoopCBIn(this,this->userData);
+
+//fprintf(stderr,"xxxxxxxxxxxx\n");
 			if(THISPAGE.pageKey!=NULL)
 				if(THISPAGE.pageKey(this,THISPAGE.userData)==true)
 					continue;
@@ -898,7 +903,7 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 							if(THISPAGE.currentGadget!=-1)
 								if(CURRENTGADGET->CTK_getSelectKey()==CTK_KEY_NONE)
 									this->activateGadget();
-							//fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
+								//fprintf(stderr,"CTK_KEY_ENTER/RETURN\n");
 							break;
 						case CTK_KEY_BACKSPACE:
 							//fprintf(stderr,"CTK_KEY_BACKSPACE\n");
@@ -996,6 +1001,10 @@ int CTK_mainAppClass::CTK_mainEventLoop(int runcnt,bool docls,bool leavehilited)
 				}
 			if((cntflag==true) && (--runcnt<=0))
 				this->runEventLoop=false;
+			
+			if(this->eventLoopCBOut!=NULL)
+				this->eventLoopCBOut(this,this->userData);
+
 		}
 	return(this->readKey->inputBuffer.length());
 }

@@ -1,7 +1,7 @@
 #if 0
 
 #
-#©keithhedger Mon 9 Mar 12:50:13 GMT 2020 kdhedger68713@gmail.com
+#//©keithhedger Mon 9 Mar 12:50:13 GMT 2020 kdhedger68713@gmail.com
 #
 #CTKApp.cpp is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -282,6 +282,20 @@ bool pagekeyCB(CTK_mainAppClass *app,void *userdata)
 			return(true);
 		}
 	return(false);
+}
+
+void mainloopinCB(void *mainc,void *data)
+{
+	CTK_mainAppClass *mp=(CTK_mainAppClass *)mainc;
+	if((mp->readKey->isHexString==true) && (mp->readKey->specialKeyName==CTK_KEY_RETURN))
+		fprintf(stderr,"in - >\n");
+}
+
+void mainloopoutCB(void *mainc,void *data)
+{
+	CTK_mainAppClass *mp=(CTK_mainAppClass *)mainc;
+	if((mp->readKey->isHexString==true) && (mp->readKey->specialKeyName==CTK_KEY_RETURN))
+	fprintf(stderr,"out - >\n");
 }
 
 int main(int argc, char **argv)
@@ -727,6 +741,9 @@ geny+=3;
 	mainApp->CTK_setDefaultGadget(helptextbox);
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
 	mainApp->CTK_setDefaultGadget(helptextbox);//TODO// horible hack!
+
+//mainApp->eventLoopCBIn=mainloopinCB;
+//mainApp->eventLoopCBOut=mainloopoutCB;
 
 	if(false)
 		mainApp->CTK_mainEventLoop(0,true,true);
