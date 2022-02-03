@@ -48,6 +48,7 @@
 
 struct fbData
 {
+	bool						gotFrameBuffer=false;
 	struct fb_fix_screeninfo	frameBufferInfo;
 	long int					screensize=1;
 	char						*frameBufferMapPtr=NULL;

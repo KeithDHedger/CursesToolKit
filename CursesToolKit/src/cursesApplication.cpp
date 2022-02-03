@@ -44,7 +44,8 @@ CTK_mainAppClass::~CTK_mainAppClass()
 		delete static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob);
 	Magick::TerminateMagick();//is this needed?
 #endif
-	munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
+	if(frameBufferData.fbIsMapped==true)
+		munmap((void*)frameBufferData.frameBufferMapPtr,frameBufferData.screensize);
 	delete this->utils;
 	delete this->gc;
 	delete this->readKey;
@@ -81,21 +82,29 @@ CTK_mainAppClass::CTK_mainAppClass()
 
 	if(frameBufferData.fbIsMapped==false)
 		{
+			frameBufferData.gotFrameBuffer=false;
 // Open the file for reading and writing
 			fbfd=open("/dev/fb0",O_RDWR);
 			if(!fbfd)
 				{
-					fprintf(stderr,"Error: cannot open framebuffer device.\n");
-					return;
+					fprintf(stderr,"Error: cannot open framebuffer device, images will not be available ...\n");
 				}
-
-// Get fixed screen information
-			if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferData.frameBufferInfo))
+			else
 				{
-					fprintf(stderr,"Error reading fixed information.\n");
-					return;
+// Get fixed screen information
+					if(ioctl(fbfd,FBIOGET_FSCREENINFO,&frameBufferData.frameBufferInfo))
+						{
+							fprintf(stderr,"Error reading fixed information, images will not be available ...\n");
+						}
+					else
+						{
+							frameBufferData.gotFrameBuffer=true;
+						}
 				}
-
+			
+		}
+	if(frameBufferData.gotFrameBuffer==true)
+		{
 // map fb to user mem
 			frameBufferData.screensize=frameBufferData.frameBufferInfo.smem_len;
 			frameBufferData.frameBufferMapPtr=(char*)mmap(NULL,frameBufferData.screensize,(PROT_READ | PROT_WRITE),MAP_SHARED,fbfd,0);
@@ -137,7 +146,7 @@ void CTK_mainAppClass::CTK_clearScreen(void)
 {
 	setBothColours(this->windowColours.foreCol,this->windowColours.backCol);
 	MOVETO(1,1)
-	if(this->frameBufferData.backDropBlob!=NULL)
+	if((this->frameBufferData.gotFrameBuffer==true) && (this->frameBufferData.backDropBlob!=NULL))
 		{
 #ifdef _IMAGEMAGICK_
 			unsigned char *datptr=(unsigned char*)static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob)->data();
@@ -1280,6 +1289,9 @@ void CTK_mainAppClass::CTK_setFBBackDrop(const char *path)
 	char			buffer[256];
 	Magick::Image	*limage=NULL;
 	Magick::Blob	*lblob=NULL;
+
+	if(this->frameBufferData.gotFrameBuffer==false)
+		return;
 
 	if(this->frameBufferData.backDropBlob!=NULL)
 		delete static_cast<Magick::Blob*>(this->frameBufferData.backDropBlob);

@@ -78,6 +78,9 @@ void CTK_cursesFBImageClass::CTK_newFBImage(int x,int y,int width,int hite,const
 	Magick::Blob	*hblob=NULL;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
 
+	if(fbinfo->gotFrameBuffer==false)
+		return;
+
 	if(this->image!=NULL)
 		delete static_cast<Magick::Image*>(this->image);
 	if(this->blob!=NULL)
@@ -152,6 +155,9 @@ void CTK_cursesFBImageClass::CTK_newFBImageAbsCoords(int x,int y,int width,int h
 	Magick::Blob	*lblob=NULL;
 	Magick::Blob	*hblob=NULL;
 	struct fbData	*fbinfo=this->mc->CTK_getFBData();
+
+	if(fbinfo->gotFrameBuffer==false)
+		return;
 
 	if(this->image!=NULL)
 		delete static_cast<Magick::Image*>(this->image);
@@ -232,6 +238,9 @@ void CTK_cursesFBImageClass::drawFBImage(bool hilite)
 	Magick::Blob	*lblob=static_cast<Magick::Blob*>(this->blob);
 	Magick::Blob	*hblob=static_cast<Magick::Blob*>(this->blobHilite);
 
+	if(fbinfo->gotFrameBuffer==false)
+		return;
+
 	if(lblob==NULL)
 		return;
 
@@ -242,24 +251,24 @@ void CTK_cursesFBImageClass::drawFBImage(bool hilite)
 	else
 		datptr=(unsigned char *)hblob->data();
 
-if(this->useAbsCoords==false)
-{
-	for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
+	if(this->useAbsCoords==false)
 		{
-			pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
-			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
-			datptr+=this->wid*4;
+			for(int y=(this->sy-1)*fbinfo->charHeight;y<this->hite+((this->sy-1)*fbinfo->charHeight);y++)
+				{
+					pixoffset=((this->sx-1)*4*fbinfo->charWidth)+(y*fbinfo->frameBufferInfo.line_length);
+					memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+					datptr+=this->wid*4;
+				}
 		}
-}
-else
-{
-	for(int y=this->sy;y<this->hite;y++)
+	else
 		{
-			pixoffset=(this->sx)*4+(y*fbinfo->frameBufferInfo.line_length);
-			memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
-			datptr+=this->wid*4;
+			for(int y=this->sy;y<this->hite;y++)
+				{
+					pixoffset=(this->sx)*4+(y*fbinfo->frameBufferInfo.line_length);
+					memcpy(&(fbinfo->frameBufferMapPtr[pixoffset]),&datptr[0],this->wid*4);
+					datptr+=this->wid*4;
+				}
 		}
-}
 #endif
 }
 

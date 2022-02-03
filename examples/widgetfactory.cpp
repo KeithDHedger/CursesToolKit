@@ -3,19 +3,6 @@
 #
 #//©keithhedger Mon 9 Mar 12:50:13 GMT 2020 kdhedger68713@gmail.com
 #
-#CTKApp.cpp is free software: you can redistribute it and/or modify
-#it under the terms of the GNU General Public License as published by
-#the Free Software Foundation, either version 3 of the License, or
-#at your option) any later version.
-#
-#DevelopmentFiles is distributed in the hope that it will be useful,
-#but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#GNU General Public License for more details.
-#
-#You should have received a copy of the GNU General Public License
-#along with DevelopmentFiles.  If not, see <http://www.gnu.org/licenses/>.
-#
 
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s --show-error-list=yes --gen-suppressions="
 #USEVALGRIND="valgrind --leak-check=full --suppressions=./ignorelibleaks -s"

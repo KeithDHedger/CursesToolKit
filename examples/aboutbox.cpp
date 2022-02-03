@@ -1,6 +1,9 @@
 #if 0
 
-#©keithhedger Sun 24 Mar 19:15:22 GMT 2019 kdhedger68713@gmail.com
+#
+#//©keithhedger Mon 9 Mar 12:50:13 GMT 2020 kdhedger68713@gmail.com
+#
+
 #Run eg:
 #(cd ../;make -j4);./aboutbox.cpp  "About Example" "An example about box" "Copyright 2019 K.D.Hedger" "keithdhedger@gmail.com" "http://keithhedger.freeddns.org" "$(echo -e "K.D.Hedger\nJoe Bloggs")" "/media/LinuxData/Development64/Projects/CursesToolKit/LICENSE" -1
 

@@ -1,6 +1,8 @@
 #if 0
 
-#(c)keithhedger Thu 19 Sep 11:20:00 BST 2019 kdhedger68713@gmail.com
+#
+#//©keithhedger Mon 9 Mar 12:50:13 GMT 2020 kdhedger68713@gmail.com
+#
 
 #USEVALGRIND="valgrind --leak-check=full"
 
