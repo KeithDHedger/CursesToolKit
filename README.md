@@ -49,7 +49,8 @@ codeeditor.cpp.<br>
 about.cpp.<br>
 ![Alt text](screenshots/ctkssabout.png?raw=true "About box")
 
-keithdhedger@gmail.com
+BUGS etc.<br>
+kdhedger68713@gmail.com<br>
 
 Please donate
 If you have a PayPal account you can donate any amount you like by logging into your account and click the 'Send Money' tab, enter my email address and then send it
