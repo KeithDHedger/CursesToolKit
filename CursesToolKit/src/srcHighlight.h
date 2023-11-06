@@ -1,6 +1,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 #include <boost/regex.hpp>
 #include <boost/format.hpp>

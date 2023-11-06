@@ -26,3 +26,8 @@ Makefile.in
 configure
 config.h.in
 Doxyfile
+autom4te.cache
+aclocal.m4
+ltmain.sh
+localm4s
+

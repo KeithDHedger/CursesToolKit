@@ -25,14 +25,12 @@ m4_define([ctk_version],[CURSESTOOLKIT_REL_N.CURSESTOOLKIT_MIN_N.CURSESTOOLKIT_R
 
 AC_INIT([CursesToolKit],[ctk_version],[PROJ],[CursesToolKit])
 
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_PROG_CXX
 
 AM_INIT_AUTOMAKE
 
 AC_PROG_CC
-AC_HEADER_STDC
-#AC_CONFIG_MACRO_DIR([./localm4s])
 
 LT_INIT([disable-static])
 
@@ -64,9 +62,9 @@ AC_SUBST(NCURSES_LIBS)
 
 AC_MSG_CHECKING(whether to enable source-highlight syntax highliter)
 AC_ARG_ENABLE(sourcehighlight,
-    [  --disable-sourcehighlight	  Don't Use source-highlight library (Default is to enable).],
+    [  --disable-sourcehighlight	  Don't Use source-highlight library (Default is to disable it).],
     [enable_sourcehighlight=$enableval],
-    [enable_sourcehighlight="yes"])
+    [enable_sourcehighlight="no"])
 AC_MSG_RESULT($enable_sourcehighlight)
 
 if test "$enable_sourcehighlight" = "yes"; then
@@ -107,5 +105,6 @@ AX_BOOST_FILESYSTEM
 AX_BOOST_REGEX
 
 AC_CONFIG_FILES([cursestoolkit.pc])
-AC_OUTPUT(Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile)
+AC_CONFIG_FILES([Makefile CursesToolKit/lib/Makefile CursesToolKit/docs/Makefile])
+AC_OUTPUT
 
