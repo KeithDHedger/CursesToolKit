@@ -16,7 +16,7 @@ popd
 
 name=$(basename $0 .cpp)
 
-g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $USEDEBUG_ $(pkg-config --cflags --libs Magick++ ncurses ) -lcursestoolkit -lboost_system -lboost_filesystem -lboost_regex  -o $name ||exit 1
+g++ "$0" -Wall -ggdb -O0 -I.. -I../CursesToolKit/src -L../CursesToolKit/lib/.libs $USEDEBUG_ $(pkg-config --cflags --libs Magick++ ncurses ) -lcursestoolkit  -lboost_filesystem -lboost_regex  -o $name ||exit 1
 
 LD_LIBRARY_PATH=../CursesToolKit/lib/.libs $USEVALGRIND "./$name" "$@"
 retval=$?

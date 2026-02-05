@@ -2,7 +2,7 @@
 SUBDIRS = CursesToolKit/lib
 
 EXTRA_DIST = cursestoolkit.pc.in
-pkgconfigdir = $(libdir)/pkgconfig
+pkgconfigdir = /usr/lib/pkgconfig
 pkgconfig_DATA = cursestoolkit.pc
 DISTCLEANFILES = cursestoolkit.pc
 

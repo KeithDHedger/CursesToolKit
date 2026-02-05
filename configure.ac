@@ -99,8 +99,7 @@ if test "$enable_imagemagick" = "yes"; then
 	AC_SUBST(GOTIMIAGEMAGIC)
 fi
 
-AX_BOOST_BASE([1.63],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
-AX_BOOST_SYSTEM
+AX_BOOST_BASE([1.89],, [AC_MSG_ERROR([CursesToolKit needs Boost, but it was not found in your system])])
 AX_BOOST_FILESYSTEM
 AX_BOOST_REGEX
 
