@@ -24,7 +24,8 @@
 #include <term.h>
 
 const char	*CTK_cursesReadKeyClass::keyNames[]={"kcuu1","kcud1","kcub1","kcuf1","khome","kend","kpp","knp","kich1","kdch1","kent","kbs","kcbt","kf1","kf2","kf3","kf4","kf5","kf6","kf7","kf8","kf9","kf10","kf11","kf12",NULL};
-const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm-256color","vt100","xterm-noapp",NULL};
+//const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm-256color","vt100","xterm-noapp",NULL};
+const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm-256color","vt100",NULL};
 
 /**
 * CTK_cursesReadKeyClass class destroy.

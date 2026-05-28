@@ -1,5 +1,6 @@
 3.0.1
-fixed segfault without framebuffer device.
+Removed 'xterm-noapp' from list of terms.
+Fixed segfault without framebuffer device.
 Cleaned examples.
 Marked broken links.
 Ignore broken links now default in chooser.
