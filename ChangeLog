@@ -1,4 +1,5 @@
 3.0.1
+Ignore unusable terminfos.
 Removed 'xterm-noapp' from list of terms.
 Fixed segfault without framebuffer device.
 Cleaned examples.

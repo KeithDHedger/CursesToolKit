@@ -24,8 +24,8 @@
 #include <term.h>
 
 const char	*CTK_cursesReadKeyClass::keyNames[]={"kcuu1","kcud1","kcub1","kcuf1","khome","kend","kpp","knp","kich1","kdch1","kent","kbs","kcbt","kf1","kf2","kf3","kf4","kf5","kf6","kf7","kf8","kf9","kf10","kf11","kf12",NULL};
-//const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm-256color","vt100","xterm-noapp",NULL};
 const char	*CTK_cursesReadKeyClass::termInfoNames[]={NULL,"xterm","linux","xterm-256color","vt100",NULL};
+
 
 /**
 * CTK_cursesReadKeyClass class destroy.
@@ -200,8 +200,8 @@ void CTK_cursesReadKeyClass::CTK_getInput(void)
 */
 void CTK_cursesReadKeyClass::getKeyCodes(void)
 {
-	char		*strresult=NULL;
-	char		*hexpair[3]= {0,0,0};
+	char			*strresult=NULL;
+	char			*hexpair[3]= {0,0,0};
 	std::string	specialcodes;
 	int			keycode=0;
 	int			entnames=0;
@@ -211,7 +211,13 @@ void CTK_cursesReadKeyClass::getKeyCodes(void)
 			keycode=0;
 			while(keyNames[keycode]!=NULL)
 				{
-					setupterm(termInfoNames[entnames],STDOUT_FILENO,NULL);
+					int ret=OK,errret=0;
+					ret=setupterm(termInfoNames[entnames],STDOUT_FILENO,&errret);
+					if(ret!=OK)
+						{
+							entnames++;
+							continue;
+						}
 					specialcodes="";
 					strresult=NULL;
 					strresult=tigetstr(keyNames[keycode]);
